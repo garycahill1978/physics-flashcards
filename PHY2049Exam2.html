@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PHY 2049 Flashcards</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    .controls {
+      text-align: center;
+      padding: 15px;
+    }
+    select, button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+    }
+    #flashcard-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 10px;
+    }
+    .flashcard {
+      background: transparent;
+      width: 260px;
+      height: 200px;
+      perspective: 1000px;
+      margin: 10px;
+    }
+    .inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flashcard:hover .inner {
+      transform: rotateY(180deg);
+    }
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      font-size: 1em;
+    }
+    .front {
+      background: #ffffff;
+      font-weight: bold;
+    }
+    .back {
+      background: #dfefff;
+      transform: rotateY(180deg);
+    }
+    .rating-buttons {
+      margin-top: 10px;
+    }
+    .rating-buttons button {
+      margin: 2px;
+      padding: 5px 10px;
+      font-size: 0.8em;
+    }
+  </style>
+
+  <!-- ✅ MathJax for rendering equations -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+
+<body>
+
+<div class="controls">
+  <label for="rating-filter">Filter:</label>
+  <select id="rating-filter" onchange="displayFlashcards()">
+    <option value="all">All Ratings</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+  </select>
+
+  <label for="cardOrder">Show First:</label>
+  <select id="cardOrder" onchange="displayFlashcards()">
+    <option value="term">Question</option>
+    <option value="answer">Answer</option>
+  </select>
+
+  <button onclick="shuffleAndDisplay()">Shuffle Flashcards</button>
+  <button onclick="clearRatings()">Clear Ratings</button>
+</div>
+
+<div id="flashcard-container"></div>
+
+<script>
+// 🔁 Your flashcards array remains unchanged, just ensure equations are simple LaTeX like "V = IR"
+const flashcards = [
+  {
+    term: "What is Ohm’s Law?",
+    equation: "V = IR",
+    answer: "Voltage across a resistor equals current times resistance."
+  },
+  {
+    term: "What is the time constant in an RC circuit?",
+    equation: "\\tau = RC",
+    answer: "The time it takes for voltage or current to change by about 63%."
+  },
+  {
+    term: "What is the energy stored in a capacitor?",
+    equation: "U = \\frac{1}{2}CV^2",
+    answer: "The energy stored in the electric field between the plates."
+  },
+{
+  term: "What is an equipotential surface?",
+  equation: "\\text{E} \\perp \\text{surface, constant } V",
+  answer: "A surface where electric potential is constant; electric field is always perpendicular to it."
+},
+{
+  term: "What is the relationship between field lines and equipotential surfaces?",
+  equation: "\\vec{E} \\perp \\text{equipotential lines}",
+  answer: "Electric field lines are perpendicular to equipotential surfaces."
+},
+{
+  term: "What is Gauss’s Law for an infinite plane of charge?",
+  equation: "E = \\frac{\\sigma}{2\\varepsilon_0}",
+  answer: "The electric field is constant and does not depend on distance from the plane."
+},
+  {
+    term: "How do capacitors add in series?",
+    equation: "\\frac{1}{C_{eq}} = \\frac{1}{C_1} + \\frac{1}{C_2} + \\dots",
+    answer: "Capacitance decreases — total is less than the smallest capacitor."
+  },
+  {
+    term: "What is Gauss’s Law (integral form)?",
+    equation: "\\oint \\vec{E} \\cdot d\\vec{A} = \\frac{Q_{\\text{enclosed}}}{\\varepsilon_0}",
+    answer: "The net electric flux through a closed surface equals enclosed charge over ε₀."
+  },
+  {
+    term: "What is the work done by the electric field on a charge moving through a potential difference?",
+    equation: "W = q \\Delta V",
+    answer: "Work is positive if a positive charge moves from high to low potential."
+  },
+  {
+    term: "What happens to energy during capacitor discharge through a resistor?",
+    equation: "\\Delta U = U_{\\text{initial}} - U_{\\text{final}}",
+    answer: "The lost energy is dissipated as heat in the resistor."
+  },
+  {
+    term: "What is an equipotential surface?",
+    equation: "E \\perp \\text{surface}, \\text{ no work done}",
+    answer: "A surface where electric potential is constant; electric field is always perpendicular, and no work is done moving a charge along it."
+  },
+  {
+    term: "What is the relationship between electric field lines and equipotential surfaces?",
+    equation: "E \\perp \\text{equipotentials}",
+    answer: "Electric field lines are always perpendicular to equipotential surfaces."
+  },
+  {
+    term: "What happens to voltage when plate separation increases (isolated capacitor)?",
+    equation: "V \\propto \\frac{1}{C} \\propto d",
+    answer: "Voltage increases because charge is fixed and capacitance decreases."
+  },
+  {
+    term: "What force and torque does a dipole experience in a uniform electric field?",
+    equation: "\\tau = pE \\sin\\theta",
+    answer: "No net force, but it experiences torque aligning it with the field."
+  },
+  {
+    term: "What is the voltage across a charging capacitor over time?",
+    equation: "V(t) = V_0 (1 - e^{-t/RC})",
+    answer: "The voltage increases exponentially toward the battery voltage as it charges."
+  },
+  {
+    term: "What is the current in an RC discharging circuit?",
+    equation: "I(t) = I_0 e^{-t/RC}",
+    answer: "Current decreases exponentially over time during discharge."
+  },
+  {
+    term: "What is the time constant in an RC circuit?",
+    equation: "\\tau = RC",
+    answer: "The time it takes for voltage or current to change by about 63%."
+  },
+  {
+    term: "What is Ohm’s Law?",
+    equation: "V = IR",
+    answer: "Voltage across a resistor equals current times resistance."
+  },
+  {
+    term: "What is the equivalent resistance of resistors in series?",
+    equation: "R_{\\text{eq}} = R_1 + R_2 + \\dots",
+    answer: "Total resistance is the sum of the individual resistances."
+  },
+  {
+    term: "What is the equivalent resistance of resistors in parallel?",
+    equation: "\\frac{1}{R_{\\text{eq}}} = \\frac{1}{R_1} + \\frac{1}{R_2} + \\dots",
+    answer: "The reciprocal of total resistance is the sum of reciprocals of individual resistances."
+  },
+  {
+    term: "What is Kirchhoff’s Loop Rule?",
+    equation: "\\sum V = 0",
+    answer: "The sum of voltage changes around a loop is zero — energy is conserved."
+  },
+  {
+    term: "What is Kirchhoff’s Junction Rule?",
+    equation: "\\sum I_{\\text{in}} = \\sum I_{\\text{out}}",
+    answer: "The total current entering a junction equals the total leaving — charge is conserved."
+  },
+  {
+    term: "What is the power dissipated by a resistor?",
+    equation: "P = IV = I^2R = \\frac{V^2}{R}",
+    answer: "It is the rate at which energy is converted to heat in a resistor."
+  },
+  {
+    term: "What is the energy stored in a capacitor?",
+    equation: "U = \\frac{1}{2}CV^2",
+    answer: "The energy stored in the electric field between the plates."
+  },
+  {
+    term: "What is the principle of superposition for electric fields?",
+    equation: "E_{\\text{total}} = E_1 + E_2 + E_3 + \\dots",
+    answer: "The total electric field is the vector sum of fields from individual charges."
+  },
+  {
+    term: "What is the inverse square law in electrostatics?",
+    equation: "F \\propto \\frac{1}{r^2}",
+    answer: "The electric force between two charges decreases with the square of their separation."
+  },
+  {
+    term: "How is electric field related to charge distribution?",
+    equation: "E = k \\sum \\frac{q_i}{r_i^2}",
+    answer: "Each charge contributes to the total field according to Coulomb's law and superposition."
+  },
+  {
+    term: "How does distance affect the electric field of a point charge?",
+    equation: "E \\propto \\frac{1}{r^2}",
+    answer: "The field strength decreases with the square of the distance from the charge."
+  },
+{
+  term: "What is the net electric field at the midpoint between two equal and opposite charges?",
+  equation: "E = \\frac{2kq}{r^2} \\text{ (direction from + to -)}",
+  answer: "The fields add because they point in the same direction at the midpoint."
+},
+{
+  term: "What is the net electric field at the midpoint between two equal like charges?",
+  equation: "E = 0",
+  answer: "The fields cancel because they are equal in magnitude and opposite in direction."
+},
+{
+  term: "What is the electric field inside a conductor in electrostatic equilibrium?",
+  equation: "E = 0",
+  answer: "The electric field is zero inside a conductor at electrostatic equilibrium."
+},
+{
+  term: "Where is excess charge located on a conductor?",
+  equation: "\\text{On the surface}",
+  answer: "Excess charge moves to the surface to minimize repulsion."
+},
+{
+  term: "What is the force on a test charge in an electric field?",
+  equation: "F = qE",
+  answer: "A charge in an electric field experiences a force proportional to its value."
+},
+{
+  term: "What is the field at the center of a uniformly charged ring?",
+  equation: "E = 0",
+  answer: "The contributions from all charge elements cancel out at the center."
+},
+{
+  term: "What is the unit of electric field?",
+  equation: "E = \\text{N/C or V/m}",
+  answer: "Electric field can be expressed in newtons per coulomb or volts per meter."
+},
+{
+  term: "What happens to the electric field strength if distance doubles?",
+  equation: "E \\propto \\frac{1}{r^2}",
+  answer: "It decreases by a factor of 4."
+},
+{
+  term: "What is the direction of the electric field around a negative point charge?",
+  equation: "\\text{Toward the charge}",
+  answer: "Electric field lines point toward negative charges."
+},
+{
+  term: "What is the net electric force on a charge at equilibrium?",
+  equation: "F_{\\text{net}} = 0",
+  answer: "There is no net force when the charge is in equilibrium."
+},
+{
+  term: "What is the electric field just outside a conductor?",
+  equation: "E = \\frac{\\sigma}{\\varepsilon_0}",
+  answer: "It depends on the surface charge density."
+},
+{
+  term: "What is Gauss’s Law (integral form)?",
+  equation: "\\oint \\vec{E} \\cdot d\\vec{A} = \\frac{Q_{\\text{enclosed}}}{\\varepsilon_0}",
+  answer: "The net electric flux through a closed surface equals enclosed charge over ε₀."
+},
+{
+  term: "What shape of charge distribution makes Gauss’s Law easiest to apply?",
+  equation: "\\text{Spherical, cylindrical, planar symmetry}",
+  answer: "These symmetries let you factor E out of the integral."
+},
+{
+  term: "What is the net electric field inside a spherical shell of charge?",
+  equation: "E = 0",
+  answer: "The field inside a conducting shell is zero."
+},
+{
+  term: "What is the electric potential energy of two point charges?",
+  equation: "U = \\frac{k q_1 q_2}{r}",
+  answer: "It's positive for like charges and negative for opposites."
+},
+{
+  term: "How does potential energy relate to work?",
+  equation: "W = -\\Delta U",
+  answer: "Work done by the field reduces potential energy."
+},
+{
+  term: "What does a positive electric potential energy mean?",
+  equation: "\\text{Like charges}",
+  answer: "It means the charges repel and energy must be added to bring them together."
+},
+{
+  term: "What is the electric field due to a uniformly charged infinite plane?",
+  equation: "E = \\frac{\\sigma}{2\\varepsilon_0}",
+  answer: "It is constant and does not depend on distance."
+},
+{
+  term: "How does a Faraday cage block electric fields?",
+  equation: "E_{\\text{inside}} = 0",
+  answer: "Charges redistribute on the surface to cancel fields inside."
+},
+{
+  term: "What is the relationship between potential difference and electric field?",
+  equation: "E = -\\frac{dV}{dr}",
+  answer: "Electric field is the negative gradient of electric potential."
+},
+{
+  term: "What is the energy density in an electric field?",
+  equation: "u = \\frac{1}{2}\\varepsilon_0 E^2",
+  answer: "It gives the energy stored per unit volume."
+},
+{
+  term: "How does capacitance change if you double the plate area?",
+  equation: "C \\propto A",
+  answer: "Capacitance doubles."
+},
+{
+  term: "What happens to capacitance if you double plate separation?",
+  equation: "C \\propto \\frac{1}{d}",
+  answer: "Capacitance is halved."
+},
+{
+  term: "Does inserting a dielectric change stored charge if capacitor is isolated?",
+  equation: "Q = \\text{constant}",
+  answer: "Charge stays fixed if not connected to a battery."
+},
+{
+  term: "What happens to energy when a dielectric is inserted (battery disconnected)?",
+  equation: "U = \\frac{Q^2}{2C}",
+  answer: "Energy decreases because capacitance increases."
+},
+{
+  term: "How does a capacitor behave in DC circuits after a long time?",
+  equation: "\\text{It acts as an open circuit}",
+  answer: "No current flows through it after it's fully charged."
+},
+{
+  term: "How do capacitors add in parallel?",
+  equation: "C_{\\text{eq}} = C_1 + C_2 + \\dots",
+  answer: "Capacitance increases — total is the sum of individual capacitances."
+},
+{
+  term: "How do capacitors add in series?",
+  equation: "\\frac{1}{C_{\\text{eq}}} = \\frac{1}{C_1} + \\frac{1}{C_2} + \\dots",
+  answer: "Capacitance decreases — total is less than the smallest capacitor."
+}
+
+];
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setRating(index, color) {
+  localStorage.setItem('rating_' + flashcards[index].term, color);
+  displayFlashcards();
+}
+
+function getRating(term) {
+  return localStorage.getItem('rating_' + term);
+}
+
+function clearRatings() {
+  flashcards.forEach(card => localStorage.removeItem('rating_' + card.term));
+  displayFlashcards();
+}
+
+function displayFlashcards() {
+  const container = document.getElementById('flashcard-container');
+  container.innerHTML = '';
+  const selectedRating = document.getElementById('rating-filter').value;
+  const showTermFirst = document.getElementById('cardOrder').value === 'term';
+
+  flashcards.forEach((card, index) => {
+    const rating = getRating(card.term);
+    if (selectedRating === 'all' || rating === selectedRating) {
+      const cardEl = document.createElement('div');
+      let frontContent, backContent;
+
+      if (showTermFirst) {
+        frontContent = `${card.term}`;
+        backContent = `
+          ${card.answer}
+          <div class="equation"><small>$$${card.equation}$$</small></div>
+        `;
+      } else {
+        frontContent = `
+          ${card.answer}
+          <div class="equation"><small>$$${card.equation}$$</small></div>
+        `;
+        backContent = `${card.term}`;
+      }
+
+      cardEl.className = 'flashcard';
+      if (rating) cardEl.style.border = '4px solid ' + rating;
+
+      cardEl.innerHTML = `
+        <div class="inner">
+          <div class="front">${frontContent}</div>
+          <div class="back">
+            ${backContent}
+            <div class="rating-buttons">
+              <button onclick="setRating(${index}, 'red')">Red</button>
+              <button onclick="setRating(${index}, 'yellow')">Yellow</button>
+              <button onclick="setRating(${index}, 'green')">Green</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(cardEl);
+      MathJax.typesetPromise([cardEl]); // ✅ Render MathJax
+    }
+  });
+}
+
+function shuffleAndDisplay() {
+  shuffle(flashcards);
+  displayFlashcards();
+}
+
+displayFlashcards();
+</script>
+
+</body>
+</html>
