@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PHY 2049 Flashcards</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    .controls {
+      text-align: center;
+      padding: 15px;
+    }
+    select, button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+    }
+    #flashcard-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 10px;
+    }
+    .flashcard {
+      background: transparent;
+      width: 260px;
+      height: 200px;
+      perspective: 1000px;
+      margin: 10px;
+    }
+    .inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flashcard:hover .inner {
+      transform: rotateY(180deg);
+    }
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      font-size: 1em;
+    }
+    .front {
+      background: #ffffff;
+      font-weight: bold;
+    }
+    .back {
+      background: #dfefff;
+      transform: rotateY(180deg);
+    }
+    .rating-buttons {
+      margin-top: 10px;
+    }
+    .rating-buttons button {
+      margin: 2px;
+      padding: 5px 10px;
+      font-size: 0.8em;
+    }
+  </style>
+</head>
+<body>
+
+<div class="controls">
+  <label for="rating-filter">Filter:</label>
+  <select id="rating-filter" onchange="displayFlashcards()">
+    <option value="all">All Ratings</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+  </select>
+
+  <label for="cardOrder">Show First:</label>
+  <select id="cardOrder" onchange="displayFlashcards()">
+    <option value="term">Question</option>
+    <option value="answer">Answer</option>
+  </select>
+
+  <button onclick="shuffleAndDisplay()">Shuffle Flashcards</button>
+  <button onclick="clearRatings()">Clear Ratings</button>
+</div>
+
+<div id="flashcard-container"></div>
+
+<script>
+const flashcards = [
+  {
+    term: "What happens to unpolarized light after passing through a single polarizer?",
+    equation: "I = 0.5 I₀",
+    answer: "Its intensity is reduced by half."
+  },
+  {
+    term: "What is the mathematical expression for Malus's Law?",
+    equation: "I = I₀ cos²(θ)",
+    answer: "Where θ is the angle between light polarization and filter axis."
+  },
+  {
+    term: "What happens to the speed of light in a denser medium?",
+    equation: "v = c/n",
+    answer: "It decreases."
+  },
+  {
+    term: "What is the photon energy formula in terms of wavelength?",
+    equation: "E = hc/λ",
+    answer: "It gives the energy of a photon based on its wavelength."
+  },
+  {
+    term: "How do you calculate the number of photons per second from laser power?",
+    equation: "N = P/E = Pλ/hc",
+    answer: "Divide total power by the energy per photon."
+  },
+  {
+    term: "What is the thin lens equation?",
+    equation: "1/f = 1/do + 1/di",
+    answer: "Used to calculate image and object distances for lenses."
+  },
+  {
+    term: "What kind of lens corrects farsightedness?",
+    equation: "P = 1/required - 1/eye",
+    answer: "Converging (convex) lens."
+  },
+  {
+    term: "What kind of lens corrects nearsightedness?",
+    equation: "P = 1/required - 1/far point",
+    answer: "Diverging (concave) lens."
+  },
+  {
+    term: "A nearsighted person with a far point of 2m needs what lens power to see distant objects?",
+    equation: "P = 0 - 1/2.00",
+    answer: "-0.50 D"
+  },
+  {
+    term: "What causes interference patterns in double-slit experiments?",
+    equation: "d sin(θ) = mλ",
+    answer: "Constructive and destructive interference."
+  },
+  {
+    term: "What is the condition for the first minimum in a single-slit diffraction pattern?",
+    equation: "a sin(θ) = mλ (for m = ±1, ±2, ...)",
+    answer: "This is where destructive interference occurs in single-slit diffraction."
+  },
+  {
+    term: "How do you calculate fringe spacing in a double-slit setup?",
+    equation: "Δy = λL/d",
+    answer: "It gives the linear spacing between fringes on the screen."
+  },
+  {
+    term: "What happens to the fringe spacing if the slit separation increases?",
+    equation: "Δy = λL/d",
+    answer: "The spacing decreases (inverse relationship)."
+  },
+  {
+    term: "What is the lens power formula (in diopters)?",
+    equation: "P = 1/f (in meters)",
+    answer: "Power is the inverse of focal length in meters."
+  },
+  {
+    term: "What is the angular width of a single-slit diffraction minimum?",
+    equation: "sin(θ) = mλ/a",
+    answer: "It determines the angle to the m-th dark fringe."
+  },
+  {
+    term: "What’s the transmitted intensity when light passes through two polarizers at angle θ?",
+    equation: "I = I₀ cos²(θ)",
+    answer: "This is Malus’s Law."
+  },
+  {
+    term: "What is the visible light wavelength range?",
+    equation: "≈ 400–700 nm",
+    answer: "This is the range detectable by the human eye."
+  },
+{
+  term: "What causes a mirage to appear on hot surfaces like roads?",
+  equation: "Refraction due to temperature gradient in air",
+  answer: "Light bends upward due to lower refractive index near the hot ground, creating the illusion of water."
+},
+{
+  term: "What is looming in atmospheric optics?",
+  equation: "Light refracted in a thermal inversion layer",
+  answer: "It makes distant objects appear higher than they actually are due to temperature gradients bending light downward."
+},
+{
+  term: "How does a temperature gradient in air cause optical illusions like mirages or looming?",
+  equation: "n decreases with temperature; light bends toward cooler air",
+  answer: "Hot air near the ground or warm air above cold air causes refraction that alters apparent object positions."
+},
+  {
+    term: "What happens to frequency as wavelength decreases (EM waves)?",
+    equation: "c = fλ",
+    answer: "Frequency increases as wavelength decreases."
+  },
+  {
+    term: "Which region of the EM spectrum has the highest energy photons?",
+    equation: "E = hf",
+    answer: "Gamma rays (highest frequency)."
+  },
+  {
+    term: "Laser emits 650 nm, 2 mW. How many photons/s?",
+    equation: "N = Pλ/hc",
+    answer: "Use energy per photon to compute rate."
+  },
+{
+  term: "How do fiber optic cables transmit light?",
+  equation: "Total internal reflection",
+  answer: "Light reflects internally within the cable core due to a higher refractive index compared to the cladding."
+},
+{
+  term: "What condition is needed for total internal reflection in fiber optics?",
+  equation: "θ > θc, where sin(θc) = n₂/n₁",
+  answer: "The incident angle must exceed the critical angle, with light moving from a denser to a less dense medium."
+},
+{
+  term: "What is the critical angle in fiber optics?",
+  equation: "1/sin(θc) = n",
+  answer: "It's the smallest angle of incidence at which total internal reflection occurs."
+},
+  {
+    term: "Why do oil slicks show rainbow colors?",
+    equation: "2t = mλ/n (for constructive interference)",
+    answer: "Thin film interference causes wavelength-dependent reinforcement."
+  },
+  {
+    term: "What kind of lens creates magnified, virtual images?",
+    equation: "Convex lens (f > 0)",
+    answer: "Convex lens with object inside focal point."
+  },
+  {
+    term: "What is Snell's Law?",
+    equation: "sin(θi)/sin(θr) = n",
+    answer: "It governs how light bends when entering a new medium."
+  },
+  {
+    term: "What happens to wavelength in a medium (n = 1.5)?",
+    equation: "λ_medium = λ₀ / n",
+    answer: "Wavelength becomes shorter."
+  },
+  {
+    term: "Why is the sky blue?",
+    equation: "Scattering ∝ 1/λ⁴",
+    answer: "Blue light scatters more due to shorter wavelength."
+  },
+    {
+    term: "Lens f = +10 cm, object at 20 cm: image?",
+    equation: "1/f = 1/do + 1/di",
+    answer: "Real, inverted, and enlarged."
+  },
+  {
+    term: "Which wave has highest energy per photon?",
+    equation: "E = hf",
+    answer: "X-rays have more energy due to higher frequency."
+  },
+  {
+    term: "What increases when light enters glass?",
+    equation: "v = c/n",
+    answer: "Nothing; speed and wavelength decrease."
+  },
+  {
+    term: "Object at focal point of converging lens?",
+    equation: "1/f = 1/do + 1/di → di = ∞",
+    answer: "Image at infinity; rays emerge parallel."
+  },
+  {
+    term: "Polarized light through polarizer at 45°?",
+    equation: "I = I₀ cos²(45°)",
+    answer: "Intensity is reduced by half."
+  },
+  {
+    term: "Why do soap bubbles have color?",
+    equation: "2t = mλ/n",
+    answer: "Due to thin film interference."
+  },
+  {
+    term: "What type of mirror always forms virtual, upright, reduced images?",
+    equation: "Convex mirror",
+    answer: "Convex mirrors always form these images."
+  },
+  {
+    term: "What is the condition for minima in a single-slit diffraction pattern?",
+    equation: "a sin(θ) = mλ (m = ±1, ±2, ...)",
+    answer: "Destructive interference occurs at these angles."
+  },
+  {
+    term: "What causes the central maximum in a single-slit diffraction to be wider than other fringes?",
+    equation: "First minimum at a sin(θ) = λ",
+    answer: "It is due to the geometry of wavefront spreading and interference."
+  },
+  {
+    term: "How is angular width of a single-slit diffraction fringe determined?",
+    equation: "Δθ ≈ 2λ/a",
+    answer: "By the angle between the first minima on both sides of the central maximum."
+  },
+  {
+    term: "What is the condition for maxima in a double-slit interference pattern?",
+    equation: "d sin(θ) = mλ (m = 0, ±1, ±2, ...)",
+    answer: "Constructive interference occurs when the path difference is a multiple of the wavelength."
+  },
+  {
+    term: "How do you calculate fringe spacing in a double-slit experiment?",
+    equation: "Δy = λL/d",
+    answer: "It is the linear distance between adjacent bright fringes on the screen."
+  },
+  {
+    term: "What happens to fringe spacing if the slit separation increases (double slit)?",
+    equation: "Δy = λL/d",
+    answer: "Fringe spacing decreases; they get closer together."
+  },
+  {
+    term: "What is the formula for a diffraction grating's bright fringes?",
+    equation: "d sin(θ) = mλ",
+    answer: "Similar to double-slit, but with many slits; gives sharper and more defined maxima."
+  },
+  {
+    term: "How is slit spacing d related to lines per mm in a diffraction grating?",
+    equation: "d = 1/N",
+    answer: "N is the number of lines per meter; take reciprocal for spacing in meters."
+  },
+  {
+    term: "What advantage does a diffraction grating have over a double slit?",
+    equation: "More slits → sharper maxima",
+    answer: "It produces brighter and narrower fringes due to increased constructive interference."
+  },
+  {
+    term: "How many orders of maxima can a diffraction grating produce?",
+    equation: "m ≤ d/λ",
+    answer: "It depends on slit spacing and wavelength; larger d or smaller λ allows more orders."
+  },
+{
+  term: "What causes the formation of colors in a rainbow?",
+  equation: "Refraction + Reflection + Dispersion",
+  answer: "Colors are formed by refraction, internal reflection, and dispersion of sunlight in water droplets."
+},
+{
+  term: "What determines the resolution limit of an optical system?",
+  equation: "θ ≈ 1.22 λ/D",
+  answer: "The resolution is limited by diffraction and depends on the wavelength and lens diameter."
+},
+{
+  term: "When does a concave mirror form an image at the same position as the object?",
+  equation: "R = 2f (center of curvature)",
+  answer: "When the object is at the center of curvature, the image is real, inverted, and at the same location."
+},
+{
+  term: "What kind of image is formed by a plane mirror?",
+  equation: "No equation",
+  answer: "A virtual, upright image of the same size appears behind the mirror."
+}
+
+];
+
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setRating(index, color) {
+  localStorage.setItem('rating_' + flashcards[index].term, color);
+  displayFlashcards();
+}
+
+function getRating(term) {
+  return localStorage.getItem('rating_' + term);
+}
+
+function clearRatings() {
+  flashcards.forEach(card => localStorage.removeItem('rating_' + card.term));
+  displayFlashcards();
+}
+
+function displayFlashcards() {
+  const container = document.getElementById('flashcard-container');
+  container.innerHTML = '';
+  const selectedRating = document.getElementById('rating-filter').value;
+  const showTermFirst = document.getElementById('cardOrder').value === 'term';
+
+  flashcards.forEach((card, index) => {
+    const rating = getRating(card.term);
+    if (selectedRating === 'all' || rating === selectedRating) {
+      const cardEl = document.createElement('div');let frontContent, backContent;
+
+if (showTermFirst) {
+  // Front = Question only; Back = Answer + Equation
+  frontContent = `${card.term}`;
+  backContent = `
+    ${card.answer}
+    <div class="equation"><small>${card.equation}</small></div>
+  `;
+} else {
+  // Front = Answer + Equation; Back = Question only
+  frontContent = `
+    ${card.answer}
+    <div class="equation"><small>${card.equation}</small></div>
+  `;
+  backContent = `${card.term}`;
+}
+
+      cardEl.className = 'flashcard';
+      if (rating) cardEl.style.border = '4px solid ' + rating;
+
+     
+
+
+      cardEl.innerHTML = `
+        <div class="inner">
+          <div class="front">${frontContent}</div>
+          <div class="back">
+            ${backContent}
+            <div class="rating-buttons">
+              <button onclick="setRating(${index}, 'red')">Red</button>
+              <button onclick="setRating(${index}, 'yellow')">Yellow</button>
+              <button onclick="setRating(${index}, 'green')">Green</button>
+            </div>
+          </div>
+        </div>
+      `;
+      container.appendChild(cardEl);
+    }
+  });
+}
+
+function shuffleAndDisplay() {
+  shuffle(flashcards);
+  displayFlashcards();
+}
+
+displayFlashcards();
+</script>
+
+</body>
+</html>
