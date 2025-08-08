@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PHYSICS Flashcards</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    .controls {
+      text-align: center;
+      padding: 15px;
+    }
+    select, button {
+      padding: 10px 15px;
+      margin: 5px;
+      font-size: 16px;
+    }
+    #flashcard-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      padding: 10px;
+    }
+    .flashcard {
+      background: transparent;
+      width: 260px;
+      height: 200px;
+      perspective: 1000px;
+      margin: 10px;
+    }
+    .inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s;
+      transform-style: preserve-3d;
+    }
+    .flashcard:hover .inner {
+      transform: rotateY(180deg);
+    }
+    .front, .back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      padding: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      border-radius: 8px;
+      font-size: 1em;
+    }
+    .front {
+      background: #ffffff;
+      font-weight: bold;
+    }
+    .back {
+      background: #dfefff;
+      transform: rotateY(180deg);
+    }
+    .rating-buttons {
+      margin-top: 10px;
+    }
+    .rating-buttons button {
+      margin: 2px;
+      padding: 5px 10px;
+      font-size: 0.8em;
+    }
+  </style>
+
+  <!-- ✅ MathJax for rendering equations -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+</head>
+
+<body>
+
+<div class="controls">
+  <label for="rating-filter">Filter:</label>
+  <select id="rating-filter" onchange="displayFlashcards()">
+    <option value="all">All Ratings</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+  </select>
+
+  <label for="cardOrder">Show First:</label>
+  <select id="cardOrder" onchange="displayFlashcards()">
+    <option value="term">Question</option>
+    <option value="answer">Answer</option>
+  </select>
+
+  <button onclick="shuffleAndDisplay()">Shuffle Flashcards</button>
+  <button onclick="clearRatings()">Clear Ratings</button>
+</div>
+
+<div id="flashcard-container"></div>
+
+<script>
+// 🔁 Your flashcards array remains unchanged, just ensure equations are simple LaTeX like "V = IR"
+
+
+const flashcards = [
+
+ {
+    "term": "What are the SI base units for mass, length, and time?",
+    "equation": "kg, m, s",
+    "answer": "Kilogram (kg), metre (m), and second (s)."
+  },
+{
+  "term": "What is the circumference of the Earth at the equator?",
+  "equation": "C = 2\\pi R \\approx 40,075\\,\\text{km}",
+  "answer": "The Earth's equatorial circumference is approximately 40,075 km."
+},
+{
+  "term": "What are common metric prefixes for length?",
+  "equation": "\\begin{aligned} &1\\,\\text{km} = 10^3\\,\\text{m} \\\\ &1\\,\\text{m} = 10^0\\,\\text{m} \\\\ &1\\,\\text{cm} = 10^{-2}\\,\\text{m} \\\\ &1\\,\\text{mm} = 10^{-3}\\,\\text{m} \\\\ &1\\,\\mu\\text{m} = 10^{-6}\\,\\text{m} \\\\ &1\\,\\text{nm} = 10^{-9}\\,\\text{m} \\end{aligned}",
+  "answer": "Metric prefixes modify base units by powers of ten. For example: kilometre, centimetre, millimetre, micrometre (μm), and nanometre (nm)."
+},
+{
+  "term": "What is the Earth's polar circumference?",
+  "equation": "C_{\\text{polar}} \\approx 40,008\\,\\text{km}",
+  "answer": "The Earth's polar circumference is about 40,008 km — slightly less than the equatorial value due to flattening at the poles."
+},
+{
+  "term": "What is the mass of 1 litre of water?",
+  "equation": "1\\,\\text{L} = 1\\,\\text{kg}",
+  "answer": "1 litre of water has a mass of 1 kilogram at 4°C."
+},
+{
+  "term": "How many cubic centimetres are in 1 litre?",
+  "equation": "1\\,\\text{L} = 1000\\,\\text{cm}^3",
+  "answer": "A litre is defined as 1,000 cubic centimetres."
+},
+{
+  "term": "What is the distance from Earth to the Moon in light-seconds?",
+  "equation": "t = \\frac{384,400\\,\\text{km}}{3\\times10^5\\,\\text{km/s}} \\approx 1.28\\,\\text{s}",
+  "answer": "About 1.3 seconds — that's how long light takes to reach the Moon."
+},
+{
+  "term": "What is the distance from Earth to the Sun in light-seconds?",
+  "equation": "t = \\frac{1.5 \\times10^8\\,\\text{km}}{3\\times10^5\\,\\text{km/s}} \\approx 500\\,\\text{s}",
+  "answer": "Approximately 500 seconds — or about 8 minutes and 20 seconds."
+},
+{
+  "term": "How many millilitres are in 1 litre?",
+  "equation": "1\\,\\text{L} = 1000\\,\\text{mL}",
+  "answer": "One litre is 1,000 millilitres."
+},
+{
+  "term": "What does a kilogram measure?",
+  "equation": "\\text{kg = unit of mass}",
+  "answer": "The kilogram is the base SI unit of mass."
+},
+{
+  "term": "What does a litre measure?",
+  "equation": "\\text{L = unit of volume}",
+  "answer": "The litre is a non-SI unit of volume, equal to 0.001 cubic metres."
+},
+{
+  "term": "Why is water used to define mass and volume standards?",
+  "equation": "\\text{Density of water} = 1\\,\\text{kg/L}",
+  "answer": "Because its properties are stable and well-known — 1 L of water = 1 kg."
+},
+{
+  "term": "How far is a light-second in kilometres?",
+  "equation": "d = c \\cdot t = 3 \\times 10^8\\,\\text{m} = 300,000\\,\\text{km}",
+  "answer": "Light travels approximately 300,000 km in one second."
+},
+  {
+    "term": "What is the SI unit of force?",
+    "equation": "1\\,\\text{N} = 1\\,\\text{kg} \\cdot \\text{m/s}^2",
+    "answer": "A newton (N) is the force required to accelerate 1 kg at 1 m/s²."
+  },
+  {
+    "term": "What is a derived unit?",
+    "equation": "\\text{e.g.} \\quad \\text{Pa} = \\frac{N}{m^2}",
+    "answer": "A unit made by combining base units, like pascal (Pa) for pressure."
+  },
+  {
+    "term": "Define measurement uncertainty.",
+    "equation": "\\Delta x = \\pm 0.1\\,\\text{cm}",
+    "answer": "It tells how much the measured value could differ from the true value."
+  },
+  {
+    "term": "How do you reduce uncertainty?",
+    "equation": "\\text{Uncertainty} \\propto \\frac{1}{\\sqrt{N}}",
+    "answer": "Take repeated measurements and average the results."
+  },
+  {
+    "term": "What is accuracy?",
+    "equation": "\\text{Close to true value}",
+    "answer": "How close a measurement is to the correct or accepted value."
+  },
+  {
+    "term": "What is precision?",
+    "equation": "\\text{Repeatable results}",
+    "answer": "How consistent repeated measurements are."
+  },
+  {
+    "term": "Give an example of a precise but inaccurate measurement.",
+    "equation": "\\text{Systematic error}",
+    "answer": "A miscalibrated scale that always gives the same wrong weight."
+  },
+  {
+    "term": "What is the purpose of calibration?",
+    "equation": "\\text{Adjust to standard value}",
+    "answer": "To check or correct the accuracy of an instrument."
+  },
+  {
+    "term": "What is the smallest scale division on a standard metre stick?",
+    "equation": "\\pm 0.1\\,\\text{cm}",
+    "answer": "Typically 1 mm (0.1 cm), so the uncertainty is ±0.05 or ±0.1 cm."
+  },
+  {
+    "term": "What instrument do you use to measure a human hair’s diameter?",
+    "equation": "\\text{Micrometer}",
+    "answer": "A micrometer screw gauge."
+  },
+  {
+    "term": "What is the unit of energy in SI?",
+    "equation": "1\\,\\text{J} = 1\\,\\text{N} \\cdot \\text{m}",
+    "answer": "The joule (J), which is the work done by a force of 1 N over 1 m."
+  },
+  {
+    "term": "What is a standard physical reference?",
+    "equation": "\\text{e.g., 1 kg mass}",
+    "answer": "A known quantity used to calibrate instruments."
+  },
+  {
+    "term": "Convert 3.5 mm to metres.",
+    "equation": "3.5\\,\\text{mm} = 3.5 \\times 10^{-3}\\,\\text{m}",
+    "answer": "0.0035 m"
+  },
+  {
+    "term": "What does the prefix ‘micro-’ mean?",
+    "equation": "1\\,\\mu\\text{m} = 10^{-6}\\,\\text{m}",
+    "answer": "One-millionth (1/1,000,000)."
+  },
+  {
+    "term": "What is the resolution of a digital scale showing 0.01 g?",
+    "equation": "\\text{Smallest change it shows}",
+    "answer": "0.01 g — the smallest increment it can detect."
+  },
+  {
+    "term": "What is dimensional analysis?",
+    "equation": "[F] = MLT^{-2}",
+    "answer": "Checking that units on both sides of an equation are consistent."
+  },
+  {
+    "term": "What is the uncertainty in a digital reading?",
+    "equation": "\\pm 1\\,\\text{unit of last digit}",
+    "answer": "If a digital thermometer reads 25.3°C, uncertainty is ±0.1°C."
+  },
+  {
+    "term": "How do you express uncertainty as a percentage?",
+    "equation": "\\frac{\\Delta x}{x} \\times 100\\%",
+    "answer": "Percentage uncertainty = (uncertainty / value) × 100%"
+  },
+  {
+    "term": "Why are significant figures important?",
+    "equation": "\\text{They show confidence in data}",
+    "answer": "They reflect the precision of a measurement or calculation."
+  }
+
+
+
+];
+
+
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setRating(index, color) {
+  localStorage.setItem('rating_' + flashcards[index].term, color);
+  displayFlashcards();
+}
+
+function getRating(term) {
+  return localStorage.getItem('rating_' + term);
+}
+
+function clearRatings() {
+  flashcards.forEach(card => localStorage.removeItem('rating_' + card.term));
+  displayFlashcards();
+}
+
+function displayFlashcards() {
+  const container = document.getElementById('flashcard-container');
+  container.innerHTML = '';
+  const selectedRating = document.getElementById('rating-filter').value;
+  const showTermFirst = document.getElementById('cardOrder').value === 'term';
+
+  flashcards.forEach((card, index) => {
+    const rating = getRating(card.term);
+    if (selectedRating === 'all' || rating === selectedRating) {
+      const cardEl = document.createElement('div');
+      let frontContent, backContent;
+
+      if (showTermFirst) {
+        frontContent = `${card.term}`;
+        backContent = `
+          ${card.answer}
+          <div class="equation"><small>$$${card.equation}$$</small></div>
+        `;
+      } else {
+        frontContent = `
+          ${card.answer}
+          <div class="equation"><small>$$${card.equation}$$</small></div>
+        `;
+        backContent = `${card.term}`;
+      }
+
+      cardEl.className = 'flashcard';
+      if (rating) cardEl.style.border = '4px solid ' + rating;
+
+      cardEl.innerHTML = `
+        <div class="inner">
+          <div class="front">${frontContent}</div>
+          <div class="back">
+            ${backContent}
+            <div class="rating-buttons">
+              <button onclick="setRating(${index}, 'red')">Red</button>
+              <button onclick="setRating(${index}, 'yellow')">Yellow</button>
+              <button onclick="setRating(${index}, 'green')">Green</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      container.appendChild(cardEl);
+      MathJax.typesetPromise([cardEl]); // ✅ Render MathJax
+    }
+  });
+}
+
+function shuffleAndDisplay() {
+  shuffle(flashcards);
+  displayFlashcards();
+}
+
+displayFlashcards();
+</script>
+
+</body>
+</html>
