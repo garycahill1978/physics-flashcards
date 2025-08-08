@@ -75,8 +75,6 @@
       font-size: 0.8em;
     }
   </style>
-
-  <!-- ✅ MathJax for rendering equations -->
   <script>
     window.MathJax = {
       tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
@@ -85,7 +83,6 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
-
 <body>
 
 <div class="controls">
@@ -108,11 +105,7 @@
 </div>
 
 <div id="flashcard-container"></div>
-
 <script>
-// 🔁 Your flashcards array remains unchanged, just ensure equations are simple LaTeX like "V = IR"
-
-
 const flashcards = [
   {
     term: "What is the Lorentz force law?",
@@ -138,237 +131,9 @@ const flashcards = [
     term: "What is Ampère’s Law (integral form)?",
     equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 I_{\\text{enc}}",
     answer: "The line integral of the magnetic field around a closed loop equals μ₀ times the current enclosed."
-  },
-  {
-    term: "When is Ampère’s Law most useful?",
-    equation: "\\text{High symmetry: straight wire, solenoid, toroid}",
-    answer: "When the symmetry allows you to pull B out of the integral."
-  },
-  {
-    term: "What is Faraday’s Law of Induction?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
-    answer: "A changing magnetic flux through a loop induces an electromotive force (EMF)."
-  },
-  {
-    term: "What is magnetic flux?",
-    equation: "\\Phi_B = \\int \\vec{B} \\cdot d\\vec{A}",
-    answer: "It is the total magnetic field passing through a surface."
-  },
-  {
-    term: "What is Lenz’s Law?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt} \\quad (\\text{negative sign})",
-    answer: "The direction of induced EMF opposes the change in magnetic flux that produced it."
-  },
-  {
-    term: "What is motional EMF?",
-    equation: "\\mathcal{E} = B \\ell v \\sin\\theta",
-    answer: "A conductor moving through a magnetic field induces a voltage across its ends."
-  },
-  {
-    term: "What is the energy stored in an inductor?",
-    equation: "U = \\frac{1}{2} L I^2",
-    answer: "The magnetic energy stored due to the current in an inductor."
-  },
-  {
-    term: "What is self-inductance?",
-    equation: "\\mathcal{E}_L = -L \\frac{dI}{dt}",
-    answer: "A changing current in a circuit induces a back EMF that opposes the change."
-  },
-  {
-    term: "What is mutual inductance?",
-    equation: "\\mathcal{E}_2 = -M \\frac{dI_1}{dt}",
-    answer: "A changing current in one coil induces an EMF in a nearby coil."
-  },
-  {
-    term: "What is the time constant of an RL circuit?",
-    equation: "\\tau = \\frac{L}{R}",
-    answer: "It is the time for current to reach about 63% of its final value after a change."
-  },
-  {
-    term: "What is the equation for current in an RL charging circuit?",
-    equation: "I(t) = \\frac{V}{R}\\left(1 - e^{-t/\\tau}\\right)",
-    answer: "Current grows exponentially toward its maximum value over time."
-  },
-  {
-    term: "What is the displacement current in Maxwell’s correction to Ampère’s Law?",
-    equation: "I_d = \\varepsilon_0 \\frac{d\\Phi_E}{dt}",
-    answer: "It accounts for a changing electric field between capacitor plates."
-  },
-  {
-    term: "What is the full Ampère-Maxwell Law?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\left(I_{\\text{cond}} + \\varepsilon_0 \\frac{d\\Phi_E}{dt}\\right)",
-    answer: "Includes both conduction current and displacement current as sources of magnetic field."
-  },
-  {
-    term: "How does Faraday’s Law relate electric and magnetic fields?",
-    equation: "\\oint \\vec{E} \\cdot d\\vec{l} = -\\frac{d\\Phi_B}{dt}",
-    answer: "A changing magnetic field creates a circulating electric field."
-  },
-  {
-    term: "What is the unit of magnetic field strength?",
-    equation: "1\\, \\text{T} = 1\\, \\text{N}/(\\text{A} \\cdot \\text{m})",
-    answer: "Tesla is the SI unit of magnetic field."
-  },
-  {
-    term: "What is the magnetic field inside a long solenoid?",
-    equation: "B = \\mu_0 n I",
-    answer: "The field is uniform and depends on current and turn density."
-  },
-
-  {
-    term: "What is the path of a charged particle moving perpendicular to a uniform magnetic field?",
-    equation: "r = \\frac{mv}{qB}",
-    answer: "It moves in a circular path because the magnetic force acts as a centripetal force."
-  },
-  {
-    term: "What is the direction of the magnetic force on a positive charge moving upward (along the screen) in a magnetic field into the page?",
-    equation: "Use the right-hand rule",
-    answer: "Along the screen— Arm (velocity) up, fingers (field) into the screen, Thumb faces left."
-  },
-  {
-    term: "What is the direction of the magnetic force on a Negative charge moving upward (along the screen) in a magnetic field into the page?",
-    equation: "Use the right-hand rule",
-    answer: "Along the screen— Arm (velocity) Down, fingers (field) into the screen, Thumb faces Right."
-  },
-  {
-    term: "What is induced when a wire moves through a magnetic field?",
-    equation: "\\mathcal{E} = B \\ell v \\sin\\theta",
-    answer: "A voltage (EMF) is induced due to motion in the magnetic field."
-  },
-  {
-    term: "What does Faraday’s Law state?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
-    answer: "A changing magnetic flux induces an EMF in a loop."
-  },
-  {
-    term: "What is the source of magnetic fields in Ampère’s Law with Maxwell’s correction?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\left(I + \\varepsilon_0 \\frac{d\\Phi_E}{dt}\\right)",
-    answer: "Both current and changing electric flux (displacement current) produce magnetic fields."
-  },
-  {
-    term: "Which circuit element has voltage and current in phase?",
-    equation: "V(t) = IR(t)",
-    answer: "A pure resistor."
-  },
-  {
-    term: "What is the RMS value of a 120 V peak voltage?",
-    equation: "V_{\\text{rms}} = \\frac{V_0}{\\sqrt{2}}",
-    answer: "Approximately 85 V."
-  },
-  {
-    term: "What principle allows transformers to operate?",
-    equation: "\\mathcal{E} = -N \\frac{d\\Phi_B}{dt}",
-    answer: "Electromagnetic induction — changing magnetic flux induces EMF in coils."
-  },
-  {
-    term: "What does a changing electric field produce according to Maxwell?",
-    equation: "\\vec{B} \\propto \\frac{d\\vec{E}}{dt}",
-    answer: "An oscillating electric field produces an oscillating magnetic field."
-  },
-  {
-    term: "Which Maxwell equation implies no magnetic monopoles exist?",
-    equation: "\\nabla \\cdot \\vec{B} = 0",
-    answer: "Gauss’s Law for magnetism — magnetic field lines are always closed loops."
-  },
-  {
-    term: "What happens to the radius of a charged particle’s circular motion if speed doubles?",
-    equation: "r = \\frac{mv}{qB}",
-    answer: "The radius doubles."
-  },
-  {
-    term: "What is the magnetic field direction at the center of a current loop (CCW from above)?",
-    equation: "Right-hand rule → Out of the page",
-    answer: "Out of the page — curl fingers with current, thumb points out."
-  },
-  {
-    term: "What is the magnetic field inside a long solenoid?",
-    equation: "B = \\mu_0 n I",
-    answer: "Uniform, constant, and directed along the axis of the solenoid."
-  },
-  {
-    term: "Why is EMF induced when a loop enters a magnetic field?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
-    answer: "Because magnetic flux through the loop changes."
-  },
-  {
-    term: "What does Lenz’s Law describe?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
-    answer: "The induced EMF always opposes the change in magnetic flux."
-  },
-  {
-    term: "In a step-up transformer, what happens to voltage and current?",
-    equation: "V_s > V_p, I_s < I_p",
-    answer: "Voltage increases, current decreases — power is conserved."
-  },
-  {
-    term: "What is the RMS current of an AC current with peak 5 A?",
-    equation: "I_{\\text{rms}} = \\frac{I_0}{\\sqrt{2}}",
-    answer: "Approximately 3.54 A."
-  },
-  {
-    term: "What explains electromagnetic wave propagation?",
-    equation: "\\vec{E} \\propto \\frac{d\\vec{B}}{dt}, \\vec{B} \\propto \\frac{d\\vec{E}}{dt}",
-    answer: "Changing E-fields induce B-fields and vice versa — enabling wave motion."
-  },
-  {
-    term: "Which Maxwell equation explains B-field between capacitor plates?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\left(I + \\varepsilon_0 \\frac{d\\Phi_E}{dt}\\right)",
-    answer: "Ampère-Maxwell Law — displacement current allows continuity in the loop."
-  },
-  {
-    term: "What happens to the E-field if B(t) = B_0 sin(\\omega t)?",
-    equation: "E \\propto \\frac{dB}{dt}",
-    answer: "E oscillates with the same frequency as B — they're in phase or 90° shifted."
-  },
-  {
-    term: "What is the full Ampère-Maxwell Law?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\left(I_{\\text{cond}} + \\varepsilon_0 \\frac{d\\Phi_E}{dt}\\right)",
-    answer: "Includes both conduction current and displacement current as sources of magnetic field."
-  },
-  {
-    term: "How do Maxwell’s equations explain light propagation?",
-    equation: "c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}",
-    answer: "Changing E-fields and B-fields propagate together in a self-sustaining wave."
-  },
-  {
-    term: "How is EMF calculated in a changing magnetic field with N turns?",
-    equation: "\\mathcal{E} = -N \\frac{\\Delta\\Phi_B}{\\Delta t}",
-    answer: "Multiply Faraday’s Law by number of turns in the coil."
-  },
-  {
-    term: "What happens to induced EMF if the flux change occurs faster?",
-    equation: "\\mathcal{E} \\propto \\frac{\\Delta \\Phi_B}{\\Delta t}",
-    answer: "EMF increases — rate of change of flux determines EMF strength."
-  },
-  {
-    term: "What equation gives current in an ideal transformer with no loss?",
-    equation: "V_p I_p = V_s I_s",
-    answer: "Power in equals power out assuming 100% efficiency."
-  },
-  {
-    term: "What factors reduce transformer efficiency?",
-    equation: "\\text{Resistive and magnetic losses}",
-    answer: "Heat in wires, eddy currents, core hysteresis losses."
-  },
-  {
-    term: "How do you compute impedance of an R-L AC circuit?",
-    equation: "Z = \\sqrt{R^2 + (\\omega L)^2}",
-    answer: "Impedance combines resistance and inductive reactance."
-  },
-  {
-    term: "What is the average power in an AC circuit?",
-    equation: "P_{\\text{avg}} = I_{\\text{rms}} V_{\\text{rms}} \\cos\\phi",
-    answer: "It depends on current, voltage, and phase angle between them."
-  },
-  {
-    term: "How is wave speed derived from Maxwell’s equations?",
-    equation: "c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}",
-    answer: "Combining Faraday’s and Ampère-Maxwell equations predicts light speed in vacuum."
   }
-
+  // ✅ You can add more flashcards here in the same format if needed
 ];
-
-
 
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -435,7 +200,7 @@ function displayFlashcards() {
       `;
 
       container.appendChild(cardEl);
-      MathJax.typesetPromise([cardEl]); // ✅ Render MathJax
+      MathJax.typesetPromise([cardEl]);
     }
   });
 }
@@ -447,6 +212,7 @@ function shuffleAndDisplay() {
 
 displayFlashcards();
 </script>
-
 </body>
 </html>
+
+
