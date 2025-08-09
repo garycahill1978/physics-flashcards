@@ -2,433 +2,316 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PHYSICS Flashcards</title>
   <style>
+    :root {
+      --bg: #f8f9fa;
+      --card-front: #ffffff;
+      --card-back: #e8f2ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --shadow: 0 6px 18px rgba(0,0,0,0.12);
+      --radius: 12px;
+      --accent: #2563eb;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --green: #10b981;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
     body {
-      font-family: Arial, sans-serif;
-      background: #f8f9fa;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, #ffffff 0%, var(--bg) 60%);
       margin: 0;
-      padding: 0;
+      line-height: 1.4;
     }
+
+    header {
+      padding: 18px 12px 6px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 6px; font-size: 1.4rem; }
+    header p { margin: 0; color: var(--muted); font-size: .95rem; }
+
     .controls {
-      text-align: center;
-      padding: 15px;
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      padding: 14px 12px 6px; position: sticky; top: 0; background: linear-gradient(#fff, #fff9);
+      backdrop-filter: saturate(140%) blur(6px); z-index: 10; border-bottom: 1px solid #e5e7eb;
     }
+    .controls label { font-size: .9rem; color: var(--muted); }
     select, button {
-      padding: 10px 15px;
-      margin: 5px;
-      font-size: 16px;
+      padding: 10px 12px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; box-shadow: var(--shadow);
+      font-size: 15px; cursor: pointer;
     }
+    button.primary { background: var(--accent); color: #fff; border-color: transparent; }
+
     #flashcard-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 10px;
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px; padding: 16px; max-width: 1200px; margin: 0 auto;
     }
+
     .flashcard {
-      background: transparent;
-      width: 260px;
-      height: 200px;
-      perspective: 1000px;
-      margin: 10px;
+      background: transparent; width: 100%; height: 220px; perspective: 1200px; outline: none;
+      position: relative; border-radius: var(--radius);
     }
-    .inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      text-align: center;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
+    .flashcard .inner {
+      position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s;
+      transform-style: preserve-3d; border-radius: var(--radius);
     }
-    .flashcard:hover .inner {
-      transform: rotateY(180deg);
+    .flashcard:hover .inner, .flashcard.flipped .inner, .flashcard:focus-visible .inner { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute; inset: 0; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; flex-direction: column;
+      padding: 14px; border-radius: var(--radius); box-shadow: var(--shadow);
     }
-    .front, .back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      padding: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      border-radius: 8px;
-      font-size: 1em;
-    }
-    .front {
-      background: #ffffff;
-      font-weight: bold;
-    }
-    .back {
-      background: #dfefff;
-      transform: rotateY(180deg);
-    }
-    .rating-buttons {
-      margin-top: 10px;
-    }
-    .rating-buttons button {
-      margin: 2px;
-      padding: 5px 10px;
-      font-size: 0.8em;
+    .front { background: var(--card-front); font-weight: 700; }
+    .back  { background: var(--card-back); transform: rotateY(180deg); }
+
+    .equation { margin-top: 8px; font-size: 0.95em; color: var(--muted); }
+
+    .rating-bar { position: absolute; left: 10px; top: 10px; display: flex; gap: 6px; z-index: 2; }
+    .dot { width: 10px; height: 10px; border-radius: 999px; opacity: .35; }
+    .dot.red { background: var(--red); }
+    .dot.yellow { background: var(--yellow); }
+    .dot.green { background: var(--green); }
+
+    .rating-buttons { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .rating-buttons button { font-size: .85em; padding: 6px 10px; border-radius: 999px; }
+
+    .legend { text-align: center; color: var(--muted); font-size: .9rem; padding-bottom: 8px; }
+
+    @media (max-width: 480px) {
+      .flashcard { height: 200px; }
     }
   </style>
 
-  <!-- ✅ MathJax for rendering equations -->
+  <!-- MathJax for rendering equations -->
   <script>
     window.MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+      tex: { inlineMath: [["$","$"],["\\(","\\)"]], displayMath: [["$$","$$"]] },
       svg: { fontCache: 'global' }
     };
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
 </head>
 
 <body>
+  <header>
+    <h1>PHYSICS Flashcards</h1>
+    <p>Click, tap, or hover to flip. Use the colour buttons to rate your confidence.</p>
+  </header>
 
-<div class="controls">
-  <label for="rating-filter">Filter:</label>
-  <select id="rating-filter" onchange="displayFlashcards()">
-    <option value="all">All Ratings</option>
-    <option value="red">Red</option>
-    <option value="yellow">Yellow</option>
-    <option value="green">Green</option>
-  </select>
+  <div class="controls" role="region" aria-label="Controls">
+    <label for="rating-filter">Filter:</label>
+    <select id="rating-filter" aria-label="Filter by rating">
+      <option value="all">All Ratings</option>
+      <option value="red">Red</option>
+      <option value="yellow">Yellow</option>
+      <option value="green">Green</option>
+    </select>
 
-  <label for="cardOrder">Show First:</label>
-  <select id="cardOrder" onchange="displayFlashcards()">
-    <option value="term">Question</option>
-    <option value="answer">Answer</option>
-  </select>
+    <label for="cardOrder">Show First:</label>
+    <select id="cardOrder" aria-label="Front side">
+      <option value="term">Question</option>
+      <option value="answer">Answer</option>
+    </select>
 
-  <button onclick="shuffleAndDisplay()">Shuffle Flashcards</button>
-  <button onclick="clearRatings()">Clear Ratings</button>
-</div>
+    <button id="shuffleBtn" class="primary" aria-label="Shuffle flashcards">Shuffle</button>
+    <button id="clearBtn" aria-label="Clear ratings">Clear Ratings</button>
+  </div>
 
-<div id="flashcard-container"></div>
+  <div class="legend">Red = don’t know yet • Yellow = getting there • Green = I’ve got this</div>
 
-<script>
-// 🔁 Your flashcards array remains unchanged, just ensure equations are simple LaTeX like "V = IR"
+  <main id="flashcard-container" aria-live="polite"></main>
 
-
-const flashcards = [
-
- {
-    "term": "What are the SI base units for mass, length, and time?",
-    "equation": "kg, m, s",
-    "answer": "Kilogram (kg), metre (m), and second (s)."
-  },
-{
-  "term": "What is the circumference of the Earth at the equator?",
-  "equation": "C = 2\\pi R \\approx 40,075\\,\\text{km}",
-  "answer": "The Earth's equatorial circumference is approximately 40,075 km. Slightly than the polar circumference due to the bulging at the equator caused by Earth’s rotation.."
-},
-{
-  "term": "What are common metric prefixes for length?",
-  "equation": "\\begin{aligned} &1\\,\\text{km} = 10^3\\,\\text{m} \\\\ &1\\,\\text{m} = 10^0\\,\\text{m} \\\\ &1\\,\\text{cm} = 10^{-2}\\,\\text{m} \\\\ &1\\,\\text{mm} = 10^{-3}\\,\\text{m} \\\\ &1\\,\\mu\\text{m} = 10^{-6}\\,\\text{m} \\\\ &1\\,\\text{nm} = 10^{-9}\\,\\text{m} \\end{aligned}",
-  "answer": "Metric prefixes modify base units by powers of ten. For example: kilometre, centimetre, millimetre, micrometre (μm), and nanometre (nm)."
-},
-{
-  "term": "What is the Earth's polar circumference?",
-  "equation": "C_{\\text{polar}} \\approx 40,008\\,\\text{km}",
-  "answer": "The Earth's polar circumference is about 40,008 km. The metre was originally defined as 1/10,000,000 of the distance from the equator to the North Pole along a meridian. "
-},
-{
-  "term": "What causes the phases of the Moon, and what is a 'moonth'?",
-  "equation": "\\text{Lunar cycle} \\approx 29.5\\,\\text{days}",
-  "answer": "Phases are caused by the Moon's changing position relative to the Earth and Sun. A full cycle takes ~29.5 days — the origin of the word 'moonth' (modern: month)."
-},
-{
-  "term": "Why do we always see the same side of the Moon?",
-  "equation": "\\text{Rotation period} = \\text{Orbital period}",
-  "answer": "The Moon rotates once on its axis every 27.3 days — the same time it takes to orbit Earth. This is called synchronous rotation, causing the same side to always face Earth."
-},
-{
-  "term": "How does the Moon cause tides?",
-  "equation": "F_{\\text{gravity}} \\propto \\frac{1}{r^2}",
-  "answer": "The Earth pulls the Moon and the Moon pulls the Earths. Moon's gravity pulls on Earth's oceans, creating tidal bulges. As Earth rotates, this causes two high and two low tides per day."
-},
-{
-  "term": "Why are high tides about an hour later each day?",
-  "equation": "1\\,\\text{lunar day} \\approx 24\\,\\text{h}~50\\,\\text{min}",
-  "answer": "The Moon moves eastward in its orbit each day. Earth must rotate about 50 extra minutes to realign with the Moon, so high tides occur roughly an hour later each day."
-},
-{
-  "term": "Is the Moon the only object that moves eastward?",
-  "equation": "\\text{All orbiting bodies drift east relative to stars}",
-  "answer": "No — the Moon, Sun, and planets all move eastward relative to the background stars over time. Their daily westward motion is due to Earth's rotation."
-},
-{
-  "term": "How do the Moon and Sun move across the sky each day?",
-  "equation": "\\text{Sun: } 15^\\circ/\\text{hour west} \\quad \\text{Moon: } \\approx 13^\\circ/\\text{day east}",
-  "answer": "The Sun appears to move west at 15° per hour due to Earth’s rotation. The Moon also appears to move west daily, but it shifts about 13° eastward each day relative to the stars — causing tides to occur ~50 minutes later each day."
-},
-{
-  "term": "What is the angular size of the Moon and Sun in the sky?",
-  "equation": "\\theta \\approx 0.5^\\circ",
-  "answer": "The Moon and Sun both appear about 0.5° wide — roughly half the width of your little finger held at arm’s length. This similar angular size allows total solar eclipses to occur."
-},
-{
-  "term": "How was the metre originally defined?",
-  "equation": "1\\,\\text{m} = \\frac{1}{10,000,000}\\,\\text{distance from Equator to Pole}",
-  "answer": "In the 1790s, the metre was defined as 1/10,000,000 of the distance from the equator to the North Pole along a meridian — aiming to base units on natural Earth measurements."
-},
-{
-  "term": "What is the mass of 1 litre of water?",
-  "equation": "1\\,\\text{L} = 1\\,\\text{kg}",
-  "answer": "1 litre of water has a mass of 1 kilogram at 4°C."
-},
-{
-  "term": "How can a ruler help estimate angles at arm's length?",
-  "equation": "1\\,\\text{cm at 57 cm} \\approx 1^\\circ",
-  "answer": "Holding a ruler at arm’s length (~57 cm), each centimetre on the scale spans about 1°. This links linear scale (cm) to angular measurement using the small-angle formula."
-},
-{
-  "term": "How many cubic centimetres are in 1 litre?",
-  "equation": "1\\,\\text{L} = 1000\\,\\text{cm}^3",
-  "answer": "A litre is defined as 1,000 cubic centimetres."
-},
-{
-  "term": "What is the distance from Earth to the Moon in light-seconds?",
-  "equation": "t = \\frac{384,400\\,\\text{km}}{3\\times10^5\\,\\text{km/s}} \\approx 1.28\\,\\text{s}",
-  "answer": "About 1.3 seconds — that's how long light takes to reach the Moon."
-},
-{
-  "term": "What is the distance from Earth to the Sun in light-seconds?",
-  "equation": "t = \\frac{1.5 \\times10^8\\,\\text{km}}{3\\times10^5\\,\\text{km/s}} \\approx 500\\,\\text{s}",
-  "answer": "Approximately 500 seconds — or about 8 minutes and 20 seconds."
-},
-{
-  "term": "How many millilitres are in 1 litre?",
-  "equation": "1\\,\\text{L} = 1000\\,\\text{mL}",
-  "answer": "One litre is 1,000 millilitres or 1,000 cm^3."
-},
-{
-  "term": "What does a kilogram measure?",
-  "equation": "\\text{kg = unit of mass}",
-  "answer": "The kilogram is the base SI unit of mass."
-},
-{
-  "term": "What does a litre measure?",
-  "equation": "\\text{L = unit of volume}",
-  "answer": "The litre is a non-SI unit of volume, equal to 0.001 cubic metres."
-},
-{
-  "term": "Why is water used to define mass and volume standards?",
-  "equation": "\\text{Density of water} = 1\\,\\text{kg/L}",
-  "answer": "Because its properties are stable and well-known — 1 L of water = 1 kg. Density = 1 g/cm^3, 1000 kg/m^3"
-},
-{
-  "term": "How far is a light-second in kilometres?",
-  "equation": "d = c \\cdot t = 3 \\times 10^8\\,\\text{m} = 300,000\\,\\text{km}",
-  "answer": "Light travels approximately 300,000 km in one second."
-},
-  {
-    "term": "What is the SI unit of force?",
-    "equation": "1\\,\\text{N} = 1\\,\\text{kg} \\cdot \\text{m/s}^2",
-    "answer": "A newton (N) is the force required to accelerate 1 kg at 1 m/s²."
-  },
-  {
-    "term": "What is a derived unit?",
-    "equation": "\\text{e.g.} \\quad \\text{Pa} = \\frac{N}{m^2}",
-    "answer": "A unit made by combining base units, like pascal (Pa) for pressure."
-  },
-  {
-    "term": "Define measurement uncertainty.",
-    "equation": "\\Delta x = \\pm 0.1\\,\\text{cm}",
-    "answer": "It tells how much the measured value could differ from the true value."
-  },
-  {
-    "term": "How do you reduce uncertainty?",
-    "equation": "\\text{Uncertainty} \\propto \\frac{1}{\\sqrt{N}}",
-    "answer": "Take repeated measurements and average the results."
-  },
-  {
-    "term": "What is accuracy?",
-    "equation": "\\text{Close to true value}",
-    "answer": "How close a measurement is to the correct or accepted value."
-  },
-  {
-    "term": "What is precision?",
-    "equation": "\\text{Repeatable results}",
-    "answer": "How consistent repeated measurements are."
-  },
-  {
-    "term": "Give an example of a precise but inaccurate measurement.",
-    "equation": "\\text{Systematic error}",
-    "answer": "A miscalibrated scale that always gives the same wrong weight."
-  },
-  {
-    "term": "What is the purpose of calibration?",
-    "equation": "\\text{Adjust to standard value}",
-    "answer": "To check or correct the accuracy of an instrument."
-  },
-  {
-    "term": "What is the smallest scale division on a standard metre stick?",
-    "equation": "\\pm 0.1\\,\\text{cm}",
-    "answer": "Typically 1 mm (0.1 cm), so the uncertainty is ±0.05 or ±0.1 cm."
-  },
-  {
-    "term": "What instrument do you use to measure a human hair’s diameter?",
-    "equation": "\\text{Micrometer}",
-    "answer": "A micrometer screw gauge or a digital calipers. (Typical value 100 microns or 0.1 mm)"
-  },
-{
-  "term": "What is the average width of a human hair?",
-  "equation": "\\mu \\approx 70\\,\\mu\\text{m} = 0.07\\,\\text{mm},\\quad \\sigma \\approx 20\\,\\mu\\text{m}",
-  "answer": "The average width of a human hair is about 70 micrometers (µm), or 0.07 mm, with a standard deviation of ±20 µm."
-},
-{
-  "term": "How long are a day and a year in standard timekeeping?",
-  "equation": "1\\,\\text{day} = 24\\,\\text{hours},\\quad 1\\,\\text{year} \\approx 365.25\\,\\text{days}",
-  "answer": "A day is defined as 24 hours. A year is about 365.25 days — the extra 0.25 is why we add a leap day (Feb 29th) every 4 years."
-},
-{
-  "term": "What does 'anticlockwise from the North' mean in astronomy?",
-  "equation": "\\text{Most planets and moons orbit and rotate anticlockwise}",
-  "answer": "Viewed from above the North Pole, the Sun spins, planets orbit, and most moons orbit anticlockwise. Venus rotates clockwise (retrograde), and Uranus spins on its side (~98° tilt)."
-},
-{
-  "term": "Where does the Imperial system come from?",
-  "equation": "\\text{King John, 13th century England}",
-  "answer": "The Imperial system of measurement (feet, inches, pounds) has roots in medieval England. Units were formalised under King John — one of history’s least popular monarchs!"
-},
-{
-  "term": "What is the tilt of the Earth's axis?",
-  "equation": "\\theta \\approx 23.45^\\circ",
-  "answer": "Earth’s axis is tilted about 23.45° from vertical. This axial tilt causes the seasons as Earth orbits the Sun."
-},
-  {
-    "term": "What is the unit of energy in SI?",
-    "equation": "1\\,\\text{J} = 1\\,\\text{N} \\cdot \\text{m}",
-    "answer": "The joule (J), which is the work done by a force of 1 N over 1 m."
-  },
-  {
-    "term": "What is a standard physical reference?",
-    "equation": "\\text{e.g., 1 kg mass}",
-    "answer": "A known quantity used to calibrate instruments."
-  },
-  {
-    "term": "Convert 3.5 mm to metres.",
-    "equation": "3.5\\,\\text{mm} = 3.5 \\times 10^{-3}\\,\\text{m}",
-    "answer": "0.0035 m"
-  },
-  {
-    "term": "What does the prefix ‘micro-’ mean?",
-    "equation": "1\\,\\mu\\text{m} = 10^{-6}\\,\\text{m}",
-    "answer": "One-millionth (1/1,000,000)."
-  },
-  {
-    "term": "What is the resolution of a digital scale showing 0.01 g?",
-    "equation": "\\text{Smallest change it shows}",
-    "answer": "0.01 g — the smallest increment it can detect."
-  },
-  {
-    "term": "What is dimensional analysis?",
-    "equation": "[F] = MLT^{-2}",
-    "answer": "Checking that units on both sides of an equation are consistent."
-  },
-  {
-    "term": "What is the uncertainty in a digital reading?",
-    "equation": "\\pm 1\\,\\text{unit of last digit}",
-    "answer": "If a digital thermometer reads 25.3°C, uncertainty is ±0.1°C."
-  },
-  {
-    "term": "How do you express uncertainty as a percentage?",
-    "equation": "\\frac{\\Delta x}{x} \\times 100\\%",
-    "answer": "Percentage uncertainty = (uncertainty / value) × 100%"
-  },
-  {
-    "term": "Why are significant figures important?",
-    "equation": "\\text{They show confidence in data}",
-    "answer": "They reflect the precision of a measurement or calculation."
-  }
+  <script>
+  // Flashcards data (a few wording/typo fixes for clarity/accuracy)
+  const flashcards = [
+    { term: "What are the SI base units for mass, length, and time?", equation: "kg, m, s", answer: "Kilogram (kg), metre (m), and second (s)." },
+    { term: "What is the circumference of the Earth at the equator?", equation: "C = 2\\pi R \\approx 40{,}075\\,\\text{km}", answer: "The Earth's equatorial circumference is ≈ 40,075 km — slightly larger than the polar circumference because of the equatorial bulge from Earth's rotation." },
+    { term: "What are common metric prefixes for length?", equation: "\\begin{aligned} &1\\,\\text{km} = 10^3\\,\\text{m} \\\\ &1\\,\\text{m} = 10^0\\,\\text{m} \\\\ &1\\,\\text{cm} = 10^{-2}\\,\\text{m} \\\\ &1\\,\\text{mm} = 10^{-3}\\,\\text{m} \\\\ &1\\,\\mu\\text{m} = 10^{-6}\\,\\text{m} \\\\ &1\\,\\text{nm} = 10^{-9}\\,\\text{m} \\end{aligned}", answer: "Metric prefixes modify base units by powers of ten: kilometre, centimetre, millimetre, micrometre (μm), nanometre (nm)." },
+    { term: "What is the Earth's polar circumference?", equation: "C_{\\text{polar}} \\approx 40{,}008\\,\\text{km}", answer: "The Earth's polar circumference is about 40,008 km. The metre was originally tied to Earth's meridian distance (1/10,000,000 of the equator–pole arc)." },
+    { term: "What causes the phases of the Moon, and what is a 'moonth'?", equation: "\\text{Lunar cycle} \\approx 29.5\\,\\text{days}", answer: "Phases are caused by the Moon's changing position relative to Earth and the Sun. A full cycle takes about 29.5 days — the origin of the word 'moonth' (modern: month)." },
+    { term: "Why do we always see the same side of the Moon?", equation: "\\text{Rotation period} = \\text{Orbital period}", answer: "The Moon rotates once on its axis every 27.3 days — the same time it takes to orbit Earth. This synchronous rotation keeps the same hemisphere facing Earth." },
+    { term: "How does the Moon cause tides?", equation: "F_{\\text{gravity}} \\propto \\tfrac{1}{r^2}", answer: "The Moon's gravity raises tidal bulges in Earth's oceans; as Earth rotates, locations pass through these bulges giving roughly two highs and two lows per day. The Sun also contributes smaller solar tides." },
+    { term: "Why are high tides about an hour later each day?", equation: "1\\,\\text{lunar day} \\approx 24\\,50\\,\\text{min}", answer: "Because the Moon moves eastward along its orbit, Earth must rotate ~50 extra minutes to realign with it, so high tides occur ~50 minutes later each day." },
+    { term: "Is the Moon the only object that moves eastward?", equation: "\\text{All orbiting bodies drift east relative to stars}", answer: "No. The Moon, Sun, and planets all drift eastward relative to the background stars over time. Their apparent daily westward motion is due to Earth's rotation." },
+    { term: "How do the Moon and Sun move across the sky each day?", equation: "\\text{Sun: } 15^\\circ/\\text{hour west} \\quad \\text{Moon: } \\approx 13^\\circ/\\text{day east}", answer: "The Sun appears to move west at 15°/hour due to Earth's rotation. The Moon also moves west daily, but shifts ~13° east per day relative to the stars — hence tides ~50 minutes later daily." },
+    { term: "What is the angular size of the Moon and Sun in the sky?", equation: "\\theta \\approx 0.5^\\circ", answer: "The Moon and Sun both subtend about 0.5° (roughly half your little finger at arm’s length), enabling total solar eclipses." },
+    { term: "How was the metre originally defined?", equation: "1\\,\\text{m} = \\tfrac{1}{10{,}000{,}000}\\,\\text{(equator→pole meridian arc)}", answer: "In the 1790s the metre was defined as 1/10,000,000 of the distance from the equator to the North Pole along a meridian." },
+    { term: "What is the mass of 1 litre of water?", equation: "1\\,\\text{L} = 1\\,\\text{kg}", answer: "At ~4°C, 1 litre of water has a mass of ~1 kilogram." },
+    { term: "How can a ruler help estimate angles at arm's length?", equation: "1\\,\\text{cm at 57 cm} \\approx 1^\\circ", answer: "Holding a ruler at ~57 cm, each centimetre spans about 1° (small-angle formula)." },
+    { term: "How many cubic centimetres are in 1 litre?", equation: "1\\,\\text{L} = 1000\\,\\text{cm}^3", answer: "A litre is defined as 1,000 cubic centimetres." },
+    { term: "What is the distance from Earth to the Moon in light-seconds?", equation: "t = \\frac{384{,}400\\,\\text{km}}{3\\times10^5\\,\\text{km/s}} \\approx 1.28\\,\\text{s}", answer: "About 1.3 s — that's how long light takes to reach the Moon." },
+    { term: "What is the distance from Earth to the Sun in light-seconds?", equation: "t = \\frac{1.5\\times10^8\\,\\text{km}}{3\\times10^5\\,\\text{km/s}} \\approx 500\\,\\text{s}", answer: "Approximately 500 s — about 8 minutes 20 seconds." },
+    { term: "How many millilitres are in 1 litre?", equation: "1\\,\\text{L} = 1000\\,\\text{mL}", answer: "One litre is 1,000 millilitres (1,000 cm³)." },
+    { term: "What does a kilogram measure?", equation: "\\text{kg = unit of mass}", answer: "The kilogram is the SI base unit of mass." },
+    { term: "What does a litre measure?", equation: "\\text{L = unit of volume}", answer: "The litre is a non‑SI unit of volume equal to 0.001 m³." },
+    { term: "Why is water used to define mass and volume standards?", equation: "\\text{Density of water} = 1\\,\\text{kg/L}", answer: "Because its properties are reproducible: near 4°C, 1 L of water has a mass of ~1 kg (density ≈ 1 g/cm³ = 1000 kg/m³)." },
+    { term: "How far is a light-second in kilometres?", equation: "d = c \\cdot t = 3 \\times 10^8\\,\\text{m} = 300{,}000\\,\\text{km}", answer: "Light travels ≈ 300,000 km in one second." },
+    { term: "What is the SI unit of force?", equation: "1\\,\\text{N} = 1\\,\\text{kg} \\cdot \\text{m/s}^2", answer: "A newton (N) is the force needed to accelerate 1 kg at 1 m/s²." },
+    { term: "What is a derived unit?", equation: "\\text{e.g. } \\text{Pa} = \\frac{N}{m^2}", answer: "A unit made by combining base units, e.g., pascal (Pa) for pressure." },
+    { term: "Define measurement uncertainty.", equation: "\\Delta x = \\pm 0.1\\,\\text{cm}", answer: "The interval around a measurement within which the true value likely lies." },
+    { term: "How do you reduce uncertainty?", equation: "\\text{Uncertainty} \\propto \\tfrac{1}{\\sqrt{N}}", answer: "Take repeated measurements and average them (random error falls as 1/√N)." },
+    { term: "What is accuracy?", equation: "\\text{Close to true value}", answer: "How close a measurement is to the accepted value." },
+    { term: "What is precision?", equation: "\\text{Repeatable results}", answer: "How consistent repeated measurements are (low spread)." },
+    { term: "Give an example of a precise but inaccurate measurement.", equation: "\\text{Systematic error}", answer: "A mis‑calibrated scale that gives the same wrong reading every time." },
+    { term: "What is the purpose of calibration?", equation: "\\text{Adjust to standard value}", answer: "To check/correct an instrument so its readings match standards." },
+    { term: "What is the smallest scale division on a standard metre stick?", equation: "\\pm 0.1\\,\\text{cm}", answer: "Typically 1 mm (0.1 cm); a single reading uncertainty is often ±0.05–0.1 cm." },
+    { term: "What instrument do you use to measure a human hair’s diameter?", equation: "\\text{Micrometer}", answer: "A micrometer screw gauge (or digital callipers with care). Typical hair ≈ 70 μm." },
+    { term: "What is the average width of a human hair?", equation: "\\mu \\approx 70\\,\\mu\\text{m} = 0.07\\,\\text{mm},\\quad \\sigma \\approx 20\\,\\mu\\text{m}", answer: "Average ≈ 70 μm (0.07 mm), with wide variation (~17–180 μm between individuals)." },
+    { term: "How long are a day and a year in standard timekeeping?", equation: "1\\,\\text{day} = 24\\,\\text{h},\\quad 1\\,\\text{year} \\approx 365.25\\,\\text{days}", answer: "A day is 24 hours. A year ≈ 365.25 days; the extra quarter‑day leads to leap years." },
+    { term: "What does 'anticlockwise from the North' mean in astronomy?", equation: "\\text{Most planets and moons orbit/rotate anticlockwise}", answer: "Viewed from above Earth’s North Pole, the Sun rotates, planets orbit, and most moons orbit anticlockwise. Venus rotates clockwise (retrograde); Uranus’s axis is ~98° tilted." },
+    { term: "Where does the Imperial system come from?", equation: "\\text{Medieval England}", answer: "Imperial units (feet, inches, pounds) were formalised over centuries in England; early standardisation dates back to medieval monarchs." },
+    { term: "What is the tilt of the Earth's axis?", equation: "\\theta \\approx 23.45^\\circ", answer: "Earth’s obliquity is ~23.45°. The axial tilt causes seasons as Earth orbits the Sun." },
+    { term: "What is the unit of energy in SI?", equation: "1\\,\\text{J} = 1\\,\\text{N} \\cdot \\text{m}", answer: "The joule (J): the work done by a force of 1 N acting over 1 m." },
+    { term: "What is a standard physical reference?", equation: "\\text{e.g., 1 kg mass}", answer: "A known quantity used to calibrate instruments." },
+    { term: "Convert 3.5 mm to metres.", equation: "3.5\\,\\text{mm} = 3.5 \\times 10^{-3}\\,\\text{m}", answer: "0.0035 m." },
+    { term: "What does the prefix ‘micro‑’ mean?", equation: "1\\,\\mu\\text{m} = 10^{-6}\\,\\text{m}", answer: "One‑millionth (10⁻⁶)." },
+    { term: "What is the resolution of a digital scale showing 0.01 g?", equation: "\\text{Smallest change it shows}", answer: "0.01 g — the smallest increment it can display." },
+    { term: "What is dimensional analysis?", equation: "[F] = MLT^{-2}", answer: "Checking that units/dimensions match on both sides of an equation." },
+    { term: "What is the uncertainty in a digital reading?", equation: "\\pm 1\\,\\text{unit of last digit}", answer: "If a thermometer reads 25.3 °C, a typical reading uncertainty is ±0.1 °C." },
+    { term: "How do you express uncertainty as a percentage?", equation: "\\tfrac{\\Delta x}{x} \\times 100\\%", answer: "Percentage uncertainty = (uncertainty ÷ value) × 100%." },
+    { term: "Why are significant figures important?", equation: "\\text{They communicate precision}", answer: "They indicate the precision of a measurement or calculation." },
+{ term: "What does 'adding uncertainties in quadrature' mean?", equation: "\\Delta_{\\text{total}} = \\sqrt{(\\Delta x)^2 + (\\Delta y)^2}", answer: "For independent random errors, total uncertainty is found with Pythagoras — square each uncertainty, sum them, and take the square root. This gives a more realistic result than adding directly, because random errors can cancel out." },
+{ term: "What is the angle below horizontal to the horizon from height h?", equation: "\\theta(°) \\approx 0.0321 \\\\sqrt{h\\,(\\text{m})}", answer: "From height h in metres, the dip angle to the horizon in degrees is ≈ 0.0321 × √h. Based on Earth's radius R ≈ 6,371 km." },
+{ term: "What is the angular resolution of the human eye?", equation: "\\theta_{\\text{res}} \\approx 1' = \\frac{1}{60}^\\circ \\approx 0.017^\\circ", answer: "The typical human eye can resolve about 1 arcminute (1/60°), which is roughly 0.017°. This corresponds to seeing two points separately if they are about 3 mm apart at 10 m distance." },
 
 
+{ term: "How do you combine two random uncertainties from independent measurements?", equation: "\\Delta_{\\text{total}} = \\sqrt{(\\Delta x)^2 + (\\Delta y)^2}", answer: "Add the uncertainties in quadrature — square each, sum, and take the square root." },
 
-];
+{ term: "How do percentage uncertainties combine when multiplying or dividing values?", equation: "\\%\\Delta_{\\text{total}} = \\sqrt{(\\%\\Delta x)^2 + (\\%\\Delta y)^2}", answer: "Add percentage uncertainties in quadrature." },
 
+{ term: "What is the uncertainty in the mean of repeated measurements?", equation: "\\Delta_{\\text{mean}} = \\frac{\\sigma}{\\sqrt{N}}", answer: "The standard error — standard deviation divided by the square root of the number of measurements." },
 
+{ term: "What is the uncertainty of a digital display showing 2.56 V?", equation: "\\pm 0.01\\,\\text{V}", answer: "±1 of the last digit — here, ±0.01 V." },
 
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
+{ term: "What is the distance to the horizon from height h above Earth's surface?", equation: "d \\approx \\sqrt{2Rh}", answer: "Where R ≈ 6371 km (Earth’s radius) and h is height in metres, d is in metres." },
 
-function setRating(index, color) {
-  localStorage.setItem('rating_' + flashcards[index].term, color);
-  displayFlashcards();
-}
+{ term: "What is the practical formula for horizon distance in km?", equation: "d\\,(\\text{km}) \\approx 3.57\\sqrt{h\\,(\\text{m})}", answer: "For example, at 2 m eye height, the horizon is about 5.05 km away." },
+{ term: "What is a quick formula for horizon distance in km?", equation: "d\\,(\\text{km}) \\approx 4\\sqrt{h\\,(\\text{m})}", answer: "A simple mental-math rule: horizon distance ≈ 4 × √height(m). Slightly overestimates compared to the more precise 3.57 × √h." },
 
-function getRating(term) {
-  return localStorage.getItem('rating_' + term);
-}
+{ term: "How do you calculate horizon distance when both observer and target have height?", equation: "d_{\\text{total}} \\approx 3.57(\\sqrt{h_1} + \\sqrt{h_2})", answer: "Where h₁ and h₂ are heights in metres; result is in km." },
 
-function clearRatings() {
-  flashcards.forEach(card => localStorage.removeItem('rating_' + card.term));
-  displayFlashcards();
-}
+{ term: "Why do ships disappear from the bottom up as they move away?", equation: "\\text{Earth curvature hides lower parts first}", answer: "Because the surface curves away, the hull is obscured before the mast or upper decks." },
+  ];
 
-function displayFlashcards() {
-  const container = document.getElementById('flashcard-container');
-  container.innerHTML = '';
-  const selectedRating = document.getElementById('rating-filter').value;
-  const showTermFirst = document.getElementById('cardOrder').value === 'term';
+  const els = {
+    filter: document.getElementById('rating-filter'),
+    order: document.getElementById('cardOrder'),
+    container: document.getElementById('flashcard-container'),
+    shuffle: document.getElementById('shuffleBtn'),
+    clear: document.getElementById('clearBtn'),
+  };
 
-  flashcards.forEach((card, index) => {
+  // Utilities
+  const shuffle = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  };
+  const key = (term) => 'rating_' + term;
+  const getRating = (term) => localStorage.getItem(key(term));
+  const setRating = (term, color) => localStorage.setItem(key(term), color);
+
+  // Persist UI choices
+  const prefs = {
+    get order() { return localStorage.getItem('pref_order') || 'term'; },
+    set order(v) { localStorage.setItem('pref_order', v); },
+    get filter() { return localStorage.getItem('pref_filter') || 'all'; },
+    set filter(v) { localStorage.setItem('pref_filter', v); },
+  };
+
+  function cardTemplate(card, index, showTermFirst) {
     const rating = getRating(card.term);
-    if (selectedRating === 'all' || rating === selectedRating) {
-      const cardEl = document.createElement('div');
-      let frontContent, backContent;
+    const dots = ['red','yellow','green']
+      .map(c => `<span class="dot ${c}" style="opacity:${rating===c?1:.35}" aria-hidden="true"></span>`)
+      .join('');
 
-      if (showTermFirst) {
-        frontContent = `${card.term}`;
-        backContent = `
-          ${card.answer}
-          <div class="equation"><small>$$${card.equation}$$</small></div>
-        `;
-      } else {
-        frontContent = `
-          ${card.answer}
-          <div class="equation"><small>$$${card.equation}$$</small></div>
-        `;
-        backContent = `${card.term}`;
-      }
+    const front = showTermFirst ? card.term : `${card.answer}<div class="equation"><small>$$${card.equation}$$</small></div>`;
+    const back  = showTermFirst ? `${card.answer}<div class="equation"><small>$$${card.equation}$$</small></div>` : card.term;
 
-      cardEl.className = 'flashcard';
-      if (rating) cardEl.style.border = '4px solid ' + rating;
-
-      cardEl.innerHTML = `
+    return `
+      <div class="flashcard" role="button" tabindex="0" aria-label="Flashcard ${index+1}: ${showTermFirst? 'question' : 'answer'} shown">
+        <div class="rating-bar">${dots}</div>
         <div class="inner">
-          <div class="front">${frontContent}</div>
-          <div class="back">
-            ${backContent}
-            <div class="rating-buttons">
-              <button onclick="setRating(${index}, 'red')">Red</button>
-              <button onclick="setRating(${index}, 'yellow')">Yellow</button>
-              <button onclick="setRating(${index}, 'green')">Green</button>
+          <div class="face front">${front}</div>
+          <div class="face back">
+            ${back}
+            <div class="rating-buttons" aria-label="Rate this card">
+              <button data-rate="red" aria-label="Mark red">Red</button>
+              <button data-rate="yellow" aria-label="Mark yellow">Yellow</button>
+              <button data-rate="green" aria-label="Mark green">Green</button>
             </div>
           </div>
         </div>
-      `;
+      </div>`;
+  }
 
-      container.appendChild(cardEl);
-      MathJax.typesetPromise([cardEl]); // ✅ Render MathJax
+  function displayFlashcards() {
+    const filter = els.filter.value;
+    const showTermFirst = els.order.value === 'term';
+    els.container.innerHTML = '';
+
+    flashcards.forEach((card, i) => {
+      const rating = getRating(card.term);
+      if (filter === 'all' || rating === filter) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = cardTemplate(card, i, showTermFirst);
+        const cardEl = wrapper.firstElementChild;
+
+        // Click/tap to flip (ignore clicks on rating buttons)
+        cardEl.addEventListener('click', (e) => {
+          if (e.target.closest('.rating-buttons')) return; // don't flip when rating
+          cardEl.classList.toggle('flipped');
+        });
+        // Keyboard support
+        cardEl.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            cardEl.classList.toggle('flipped');
+          }
+        });
+        // Rating buttons
+        cardEl.querySelectorAll('.rating-buttons button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const color = btn.getAttribute('data-rate');
+            setRating(card.term, color);
+            displayFlashcards();
+          });
+        });
+
+        els.container.appendChild(cardEl);
+      }
+    });
+
+    // Batch render MathJax after the DOM updates
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise();
     }
-  });
-}
+  }
 
-function shuffleAndDisplay() {
-  shuffle(flashcards);
+  function shuffleAndDisplay() { shuffle(flashcards); displayFlashcards(); }
+  function clearRatings() {
+    if (!confirm('Clear all ratings?')) return;
+    flashcards.forEach(card => localStorage.removeItem(key(card.term)));
+    displayFlashcards();
+  }
+
+  // Wire up controls + load prefs
+  els.order.value = prefs.order; els.filter.value = prefs.filter;
+  els.order.addEventListener('change', () => { prefs.order = els.order.value; displayFlashcards(); });
+  els.filter.addEventListener('change', () => { prefs.filter = els.filter.value; displayFlashcards(); });
+  els.shuffle.addEventListener('click', shuffleAndDisplay);
+  els.clear.addEventListener('click', clearRatings);
+
+  // Initial render
   displayFlashcards();
-}
-
-displayFlashcards();
-</script>
-
+  </script>
 </body>
 </html>
