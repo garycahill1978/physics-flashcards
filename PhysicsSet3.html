@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHYSICS Flashcards</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --card-front: #ffffff;
+      --card-back: #e8f2ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --shadow: 0 6px 18px rgba(0,0,0,0.12);
+      --radius: 12px;
+      --accent: #2563eb;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --green: #10b981;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, #ffffff 0%, var(--bg) 60%);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    header {
+      padding: 18px 12px 6px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 6px; font-size: 1.4rem; }
+    header p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .controls {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      padding: 14px 12px 6px; position: sticky; top: 0; background: linear-gradient(#fff, #fff9);
+      backdrop-filter: saturate(140%) blur(6px); z-index: 10; border-bottom: 1px solid #e5e7eb;
+    }
+    .controls label { font-size: .9rem; color: var(--muted); }
+    select, button {
+      padding: 10px 12px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; box-shadow: var(--shadow);
+      font-size: 15px; cursor: pointer;
+    }
+    button.primary { background: var(--accent); color: #fff; border-color: transparent; }
+
+    #flashcard-container {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px; padding: 16px; max-width: 1200px; margin: 0 auto;
+    }
+
+    .flashcard {
+      background: transparent; width: 100%; height: 220px; perspective: 1200px; outline: none;
+      position: relative; border-radius: var(--radius);
+    }
+    .flashcard .inner {
+      position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s;
+      transform-style: preserve-3d; border-radius: var(--radius);
+    }
+    .flashcard:hover .inner, .flashcard.flipped .inner, .flashcard:focus-visible .inner { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute; inset: 0; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; flex-direction: column;
+      padding: 14px; border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .front { background: var(--card-front); font-weight: 700; }
+    .back  { background: var(--card-back); transform: rotateY(180deg); }
+
+    .equation { margin-top: 8px; font-size: 0.95em; color: var(--muted); }
+
+    .rating-bar { position: absolute; left: 10px; top: 10px; display: flex; gap: 6px; z-index: 2; }
+    .dot { width: 10px; height: 10px; border-radius: 999px; opacity: .35; }
+    .dot.red { background: var(--red); }
+    .dot.yellow { background: var(--yellow); }
+    .dot.green { background: var(--green); }
+
+    .rating-buttons { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .rating-buttons button { font-size: .85em; padding: 6px 10px; border-radius: 999px; }
+
+    .legend { text-align: center; color: var(--muted); font-size: .9rem; padding-bottom: 8px; }
+
+    @media (max-width: 480px) {
+      .flashcard { height: 200px; }
+    }
+  </style>
+
+  <!-- MathJax for rendering equations -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [["$","$"],["\\(","\\)"]], displayMath: [["$$","$$"]] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>PHYSICS Flashcards</h1>
+    <p>Click, tap, or hover to flip. Use the colour buttons to rate your confidence.</p>
+  </header>
+
+  <div class="controls" role="region" aria-label="Controls">
+    <label for="rating-filter">Filter:</label>
+    <select id="rating-filter" aria-label="Filter by rating">
+      <option value="all">All Ratings</option>
+      <option value="red">Red</option>
+      <option value="yellow">Yellow</option>
+      <option value="green">Green</option>
+    </select>
+
+    <label for="cardOrder">Show First:</label>
+    <select id="cardOrder" aria-label="Front side">
+      <option value="term">Question</option>
+      <option value="answer">Answer</option>
+    </select>
+
+    <button id="shuffleBtn" class="primary" aria-label="Shuffle flashcards">Shuffle</button>
+    <button id="clearBtn" aria-label="Clear ratings">Clear Ratings</button>
+  </div>
+
+  <div class="legend">Red = don’t know yet • Yellow = getting there • Green = I’ve got this</div>
+
+  <main id="flashcard-container" aria-live="polite"></main>
+
+  <script>
+  // Flashcards data (a few wording/typo fixes for clarity/accuracy)
+  const flashcards = [
+// --- PRESSURE & DENSITY (8 cards) ---
+{ term: "Definition of pressure", equation: "P = \\frac{F}{A}", answer: "Pressure is force per unit area; SI unit is pascal (Pa) = N/m²." },
+
+{ term: "Definition of density", equation: "\\rho = \\frac{m}{V}", answer: "Density is mass per unit volume; SI unit is kg/m³." },
+
+{ term: "Pressure exerted by a 500 N force on 0.25 m²", equation: "P = F/A", answer: "P = 500 / 0.25 = 2000 Pa." },
+
+{ term: "Density of a 2 kg block with volume 0.0005 m³", equation: "\\rho = m/V", answer: "ρ = 2 / 0.0005 = 4000 kg/m³." },
+
+{ term: "Why snowshoes prevent sinking", equation: "P = F/A", answer: "They increase the contact area, reducing pressure on the snow." },
+
+{ term: "SI unit of density", equation: "\\text{kg/m}^3", answer: "Kilogram per cubic metre." },
+
+{ term: "Relative density formula", equation: "\\text{RD} = \\frac{\\rho_{\\text{substance}}}{\\rho_{\\text{water}}}", answer: "Ratio of a substance's density to that of water." },
+
+{ term: "Material with highest known density", equation: "\\rho_{\\text{osmium}} \\approx 22{,}590\\,\\text{kg/m}^3", answer: "Osmium and iridium are the densest naturally occurring elements." },
+
+// --- ATMOSPHERE & FLUID PRESSURE (10 cards) ---
+{ term: "Pressure in a liquid at depth h", equation: "P = \\rho g h", answer: "Liquid pressure increases with density, gravity, and depth." },
+
+{ term: "Why ears 'pop' on descent in a plane", equation: "\\text{Air pressure increases}", answer: "External pressure rises and the eardrum adjusts via the Eustachian tube." },
+
+{ term: "Atmospheric pressure at sea level", equation: "P_0 \\approx 101{,}325\\,\\text{Pa}", answer: "About 101 kPa = 1 atm." },
+
+{ term: "Convert 1 atm to mmHg", equation: "1\\,\\text{atm} \\approx 760\\,\\text{mmHg}", answer: "Also equals 101.325 kPa." },
+
+{ term: "Why suction cups stick", equation: "\\text{Air pressure outside pushes in}", answer: "Removing air from inside reduces internal pressure, external pressure holds it." },
+
+{ term: "Pressure on a dam wall 15 m below surface (water)", equation: "P = 1000 \\times 9.81 \\times 15", answer: "P ≈ 147,150 Pa ≈ 147 kPa." },
+
+{ term: "Why deep-sea fish collapse at surface", equation: "\\text{Loss of pressure balance}", answer: "Their bodies are adapted to high pressure; low pressure causes expansion and rupture." },
+
+{ term: "Mercury barometer operation", equation: "P_{atm} = \\rho g h", answer: "Atmospheric pressure supports a column of mercury." },
+
+{ term: "Why water barometers need to be very tall", equation: "h = P/(\\rho g)", answer: "Water's lower density means ~10.3 m height to balance 1 atm." },
+
+{ term: "Pascal’s principle", equation: "\\text{Pressure change in enclosed fluid is transmitted equally}", answer: "Basis for hydraulic lifts and brakes." },
+
+// --- SOLIDS & ELASTICITY (5 cards) ---
+{ term: "Young’s modulus definition", equation: "E = \\frac{\\sigma}{\\varepsilon}", answer: "Ratio of stress to strain in the elastic limit; SI unit Pa." },
+
+{ term: "Stress formula", equation: "\\sigma = \\frac{F}{A}", answer: "Force per unit cross-sectional area." },
+
+{ term: "Strain formula", equation: "\\varepsilon = \\frac{\\Delta L}{L}", answer: "Extension per original length (dimensionless)." },
+
+{ term: "Why steel is used in bridges", equation: "\\text{High E, high strength}", answer: "Steel has high stiffness and tensile strength." },
+
+{ term: "Hooke’s law", equation: "F = kx", answer: "Extension is proportional to force within the elastic limit." },
+
+// --- HEAT & TEMPERATURE (6 cards) ---
+{ term: "Absolute zero", equation: "0\\,\\text{K} = -273.15\\,^{\\circ}\\text{C}", answer: "Lowest possible temperature; particles have minimum thermal energy." },
+
+{ term: "Convert °C to K", equation: "T_K = T_C + 273.15", answer: "Add 273.15 to Celsius temperature." },
+
+{ term: "Convert 300 K to °C", equation: "T_C = T_K - 273.15", answer: "300 − 273.15 = 26.85 °C." },
+
+{ term: "Why kelvin is absolute scale", equation: "\\text{Starts at absolute zero}", answer: "Zero kelvin means no thermal motion." },
+
+{ term: "Thermometer working principle", equation: "\\text{Property changes with temperature}", answer: "Liquid-in-glass thermometers rely on thermal expansion of liquid." },
+
+{ term: "Why alcohol thermometers work in cold regions", equation: "\\text{Alcohol freezes at much lower temperature}", answer: "Suitable for temperatures below −39 °C." },
+
+// --- THERMAL PROPERTIES & ENERGY (10 cards) ---
+{ term: "Specific heat capacity definition", equation: "Q = mc\\Delta T", answer: "Energy required to raise 1 kg by 1 °C (or 1 K)." },
+
+{ term: "Energy to heat 2 kg of water by 30 °C (c = 4200 J/kg·K)", equation: "Q = 2\\times 4200 \\times 30", answer: "Q = 252,000 J." },
+
+{ term: "Why coastal regions have milder climates", equation: "\\text{High c of water}", answer: "Water stores/release heat slowly, moderating temperature." },
+
+{ term: "Latent heat definition", equation: "Q = mL", answer: "Energy to change state without temperature change." },
+
+{ term: "Latent heat of fusion of ice", equation: "L_f \\approx 334{,}000\\,\\text{J/kg}", answer: "Energy to melt 1 kg of ice at 0 °C." },
+
+{ term: "Why sweating cools you", equation: "\\text{Evaporation uses latent heat}", answer: "Sweat absorbs heat from your body to evaporate." },
+
+{ term: "Energy to vaporise 0.5 kg of water (Lv = 2.26 MJ/kg)", equation: "Q = 0.5 \\times 2.26\\times 10^6", answer: "Q = 1.13 MJ." },
+
+{ term: "Why steam burns worse than boiling water", equation: "\\text{Steam condenses, releasing latent heat}", answer: "Condensation releases large amounts of heat into skin." },
+
+{ term: "Why ice at 0 °C cools drinks more than water at 0 °C", equation: "\\text{Latent heat of fusion}", answer: "Ice must absorb extra energy to melt before warming." },
+
+{ term: "What determines heat capacity of an object", equation: "C = mc", answer: "Mass × specific heat capacity." },
+
+// --- HEAT TRANSFER (7 cards) ---
+{ term: "Conduction definition", equation: "\\text{Transfer by particle collisions}", answer: "Occurs in solids; faster in metals due to free electrons." },
+
+{ term: "Convection definition", equation: "\\text{Transfer by fluid motion}", answer: "Occurs in liquids and gases as warmer, less dense fluid rises." },
+
+{ term: "Radiation definition", equation: "\\text{Transfer by electromagnetic waves}", answer: "No medium needed; occurs in vacuum." },
+
+{ term: "Why dark surfaces heat faster in sunlight", equation: "\\text{Absorb more radiation}", answer: "Darker colours absorb more wavelengths." },
+
+{ term: "Why vacuum flasks keep liquids hot", equation: "\\text{Reduce conduction, convection, radiation}", answer: "Insulation, vacuum gap, and reflective surfaces reduce heat loss." },
+
+{ term: "Why double glazing works", equation: "\\text{Air gap slows conduction/convection}", answer: "Air is a poor conductor; sealed gap reduces heat transfer." },
+
+{ term: "Best emitter of thermal radiation", equation: "\\text{Black, matte surface}", answer: "Also best absorber." },
+
+// --- EXPANSION (4 cards) ---
+{ term: "Linear expansion formula", equation: "\\Delta L = \\alpha L_0 \\Delta T", answer: "Length change = coefficient × original length × temperature change." },
+
+{ term: "Why gaps are left between railway tracks", equation: "\\text{Allow for thermal expansion}", answer: "Prevents buckling in hot weather." },
+
+{ term: "Volumetric expansion formula", equation: "\\Delta V = \\beta V_0 \\Delta T", answer: "Volume change in liquids/solids." },
+
+{ term: "Bimetallic strip use", equation: "\\text{Two metals expand differently}", answer: "Used in thermostats and switches." },
+
+// --- GAS LAWS & KINETIC THEORY (8 cards) ---
+{ term: "Boyle’s law", equation: "P \\propto 1/V\\ (T \\text{ constant})", answer: "Pressure is inversely proportional to volume at constant temperature." },
+
+{ term: "Charles’s law", equation: "V \\propto T\\ (P \\text{ constant})", answer: "Volume is proportional to absolute temperature at constant pressure." },
+
+{ term: "Pressure law", equation: "P \\propto T\\ (V \\text{ constant})", answer: "Pressure is proportional to absolute temperature at constant volume." },
+
+{ term: "Ideal gas equation", equation: "PV = nRT", answer: "Relates pressure, volume, moles, gas constant, and temperature." },
+
+{ term: "Gas constant R", equation: "R \\approx 8.314\\,\\text{J/(mol·K)}", answer: "Universal gas constant." },
+
+{ term: "Average kinetic energy of gas molecules", equation: "E_{\\text{avg}} = \\tfrac32 k_B T", answer: "Proportional to absolute temperature." },
+
+{ term: "Boltzmann constant", equation: "k_B \\approx 1.38\\times 10^{-23}\\,\\text{J/K}", answer: "Links temperature to molecular energy." },
+
+{ term: "Why hot air balloons rise", equation: "\\rho_{\\text{hot air}} < \\rho_{\\text{cool air}}", answer: "Heated air is less dense, so buoyant force exceeds weight." },
+
+// --- REFRIGERATION (2 cards) ---
+{ term: "Basic principle of refrigeration", equation: "\\text{Heat absorbed at low T, released at high T}", answer: "A working fluid evaporates to absorb heat, then is compressed and condensed to release it." },
+
+{ term: "Why compressors heat up", equation: "\\text{Gas compression increases T}", answer: "Work done on gas raises its internal energy." },
+// --- LATENT HEAT & EXAMPLES ---
+{ term: "Latent heat of vaporisation of water", equation: "L_v \\approx 2.26\\times 10^6\\,\\text{J/kg}", answer: "Energy needed to turn 1 kg of water at 100 °C into steam without temperature change." },
+
+{ term: "Energy to boil away 0.75 kg of water at 100 °C", equation: "Q = mL_v", answer: "Q = 0.75 × 2.26×10^6 ≈ 1.695 MJ." },
+
+{ term: "Why steaming clothes removes wrinkles", equation: "\\text{Steam condenses on fabric}", answer: "Condensation releases latent heat, heating and relaxing fibres." },
+
+{ term: "Why kettles consume a lot of power when boiling", equation: "\\text{Energy for latent heat}", answer: "Large energy is needed to change water to steam at constant temperature." },
+
+// --- HEAT ENERGY ---
+{ term: "Specific heat capacity of aluminium", equation: "c_{Al} \\approx 900\\,\\text{J/(kg·K)}", answer: "Lower than water, so aluminium heats up faster for the same energy input." },
+
+{ term: "Why coastal fog forms on cool mornings", equation: "\\text{Water vapour condenses}", answer: "Air cools below dew point, releasing latent heat into surroundings." },
+
+// --- GAS LAWS ---
+{ term: "Calculate final volume: 2.0 m³ of gas at 300 K expands at constant pressure to 350 K", equation: "V_f = V_i \\frac{T_f}{T_i}", answer: "V_f = 2.0 × (350/300) ≈ 2.33 m³." },
+
+{ term: "Pressure change: Gas at 1.2×10^5 Pa cooled from 320 K to 290 K at constant volume", equation: "P_f = P_i \\frac{T_f}{T_i}", answer: "P_f ≈ 1.2×10^5 × (290/320) ≈ 1.088×10^5 Pa." },
+
+// --- PRESSURE & DENSITY ---
+{ term: "Why scuba divers ascend slowly", equation: "\\text{Allow dissolved gases to leave blood safely}", answer: "Rapid ascent lowers pressure too quickly, causing gas bubbles (decompression sickness)." },
+
+{ term: "Depth at which pressure doubles from sea level (water)", equation: "P = P_0 + \\rho g h", answer: "At 1 atm extra pressure: h ≈ 101,325 / (1000×9.81) ≈ 10.33 m." },
+
+// --- HEAT TRANSFER ---
+{ term: "Why shiny foil behind radiators helps heating", equation: "\\text{Reflects IR radiation}", answer: "Reduces heat loss into walls, reflects it into the room." },
+
+{ term: "Why icebergs melt slowly in seawater", equation: "\\text{High latent heat of fusion}", answer: "Requires large energy input to change state, despite surrounding water." },
+
+// --- EXPANSION ---
+{ term: "Why overhead power lines sag more in summer", equation: "\\text{Thermal expansion}", answer: "Metal wires expand with heat, increasing slack." },
+
+// --- KINETIC THEORY ---
+{ term: "Why tyre pressure increases after driving", equation: "\\text{Air heats up from friction}", answer: "Molecular speeds increase, raising pressure at constant volume." },
+
+{ term: "Microscopic meaning of temperature", equation: "\\text{Average kinetic energy of particles}", answer: "Higher temperature means higher average particle speed." },
+// --- PRESSURE & DENSITY ---
+{ term: "Find the pressure exerted by a 600 N force on an area of 0.20 m².", equation: "P = F/A", answer: "P = 600 / 0.20 = 3000 Pa." },
+
+{ term: "A steel block has mass 50 kg and volume 0.00625 m³. Find its density.", equation: "\\rho = m/V", answer: "ρ = 50 / 0.00625 = 8000 kg/m³." },
+
+{ term: "Find the depth in freshwater where pressure is 150 kPa above atmospheric.", equation: "h = \\frac{P}{\\rho g}", answer: "h = 150,000 / (1000 × 9.81) ≈ 15.29 m." },
+
+{ term: "A diver is at 25 m depth in seawater (ρ ≈ 1025 kg/m³). Find the total pressure on them (include 1 atm at surface).", equation: "P = P_0 + \\rho g h", answer: "P ≈ 101,325 + (1025×9.81×25) ≈ 353,376 Pa (~353 kPa)." },
+
+// --- ATMOSPHERE & FLUIDS ---
+{ term: "Convert 85 kPa to mmHg.", equation: "h = P/(\\rho g)", answer: "h ≈ 85,000 / (13600×9.81) ≈ 637 mmHg." },
+
+{ term: "A hydraulic press has input piston area 0.01 m², output piston area 0.4 m². An input force of 150 N is applied. Find output force.", equation: "F_2 = F_1 \\frac{A_2}{A_1}", answer: "F₂ = 150 × (0.4 / 0.01) = 6000 N." },
+
+// --- SPECIFIC HEAT ---
+{ term: "How much energy is needed to raise 3 kg of copper (c = 390 J/kg·K) by 50 °C?", equation: "Q = mc\\Delta T", answer: "Q = 3×390×50 = 58,500 J." },
+
+{ term: "Find the final temperature of 2 kg water at 25 °C after absorbing 84,000 J (c = 4200 J/kg·K).", equation: "\\Delta T = Q/(mc)", answer: "ΔT = 84000 / (2×4200) = 10 °C, so T_f = 35 °C." },
+
+// --- LATENT HEAT ---
+{ term: "How much energy to melt 0.8 kg of ice at 0 °C (Lf = 334,000 J/kg)?", equation: "Q = mL_f", answer: "Q = 0.8 × 334,000 = 267,200 J." },
+
+{ term: "How much steam at 100 °C is needed to release 1.13 MJ when condensed? (Lv = 2.26 MJ/kg)", equation: "m = Q/L_v", answer: "m = 1.13×10^6 / 2.26×10^6 ≈ 0.5 kg." },
+
+// --- GAS LAWS ---
+{ term: "A gas at 120 kPa and volume 2 m³ is compressed to 1.2 m³ at constant temperature. Find final pressure.", equation: "P_1V_1 = P_2V_2", answer: "P₂ = 120×(2 / 1.2) = 200 kPa." },
+
+{ term: "A gas at 1.0 atm and 20 °C is heated to 80 °C at constant volume. Find final pressure in atm.", equation: "P_2 = P_1\\frac{T_2}{T_1}", answer: "T₁=293 K, T₂=353 K, P₂ ≈ 1.205 atm." },
+
+{ term: "5 mol of an ideal gas at 300 K in 0.1 m³. Find pressure.", equation: "P = nRT/V", answer: "P = (5×8.314×300) / 0.1 ≈ 124,710 Pa (~125 kPa)." },
+
+// --- MIXED HEAT & STATE ---
+{ term: "How much total energy to heat 0.5 kg ice at −10 °C to steam at 100 °C? (c_ice = 2100, c_water = 4200, Lf = 334,000, Lv = 2.26×10^6)", equation: "Q = mc_{ice}ΔT + mL_f + mc_{water}ΔT + mL_v", answer: "Q = (0.5×2100×10) + (0.5×334,000) + (0.5×4200×100) + (0.5×2.26×10^6) = 10,500 + 167,000 + 210,000 + 1,130,000 ≈ 1.5175 MJ." },
+
+{ term: "Energy to cool 2 kg water from 80 °C to 20 °C (c = 4200 J/kg·K).", equation: "Q = mc\\Delta T", answer: "Q = 2×4200×60 = 504,000 J." },
+
+// --- HEAT TRANSFER ---
+{ term: "A 5 m² metal plate has thermal conductivity k = 200 W/m·K, thickness 0.01 m, temperature difference 50 K. Find heat transfer rate.", equation: "Q/t = kA\\Delta T / L", answer: "Q/t = 200×5×50 / 0.01 = 5,000,000 W." },
+
+// --- EXPANSION ---
+{ term: "A 10 m steel rail (α = 12×10⁻⁶ K⁻¹) is heated from 10 °C to 40 °C. Find length increase.", equation: "ΔL = αL₀ΔT", answer: "ΔL = 12×10⁻⁶ × 10 × 30 = 3.6×10⁻³ m = 3.6 mm." },
+
+// --- REAL-WORLD ---
+{ term: "How high a water barometer column is supported by 1 atm?", equation: "h = P/(\\rho g)", answer: "h = 101,325 / (1000×9.81) ≈ 10.33 m." },
+
+{ term: "How high a mercury barometer column is supported by 1 atm? (ρ = 13,600 kg/m³)", equation: "h = P/(\\rho g)", answer: "h ≈ 101,325 / (13600×9.81) ≈ 0.760 m = 760 mm." }
+
+
+
+  ];
+
+  const els = {
+    filter: document.getElementById('rating-filter'),
+    order: document.getElementById('cardOrder'),
+    container: document.getElementById('flashcard-container'),
+    shuffle: document.getElementById('shuffleBtn'),
+    clear: document.getElementById('clearBtn'),
+  };
+
+  // Utilities
+  const shuffle = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  };
+  const key = (term) => 'rating_' + term;
+  const getRating = (term) => localStorage.getItem(key(term));
+  const setRating = (term, color) => localStorage.setItem(key(term), color);
+
+  // Persist UI choices
+  const prefs = {
+    get order() { return localStorage.getItem('pref_order') || 'term'; },
+    set order(v) { localStorage.setItem('pref_order', v); },
+    get filter() { return localStorage.getItem('pref_filter') || 'all'; },
+    set filter(v) { localStorage.setItem('pref_filter', v); },
+  };
+
+  function cardTemplate(card, index, showTermFirst) {
+    const rating = getRating(card.term);
+    const dots = ['red','yellow','green']
+      .map(c => `<span class="dot ${c}" style="opacity:${rating===c?1:.35}" aria-hidden="true"></span>`)
+      .join('');
+
+    const front = showTermFirst ? card.term : `${card.answer}<div class="equation"><small>$$${card.equation}$$</small></div>`;
+    const back  = showTermFirst ? `${card.answer}<div class="equation"><small>$$${card.equation}$$</small></div>` : card.term;
+
+    return `
+      <div class="flashcard" role="button" tabindex="0" aria-label="Flashcard ${index+1}: ${showTermFirst? 'question' : 'answer'} shown">
+        <div class="rating-bar">${dots}</div>
+        <div class="inner">
+          <div class="face front">${front}</div>
+          <div class="face back">
+            ${back}
+            <div class="rating-buttons" aria-label="Rate this card">
+              <button data-rate="red" aria-label="Mark red">Red</button>
+              <button data-rate="yellow" aria-label="Mark yellow">Yellow</button>
+              <button data-rate="green" aria-label="Mark green">Green</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function displayFlashcards() {
+    const filter = els.filter.value;
+    const showTermFirst = els.order.value === 'term';
+    els.container.innerHTML = '';
+
+    flashcards.forEach((card, i) => {
+      const rating = getRating(card.term);
+      if (filter === 'all' || rating === filter) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = cardTemplate(card, i, showTermFirst);
+        const cardEl = wrapper.firstElementChild;
+
+        // Click/tap to flip (ignore clicks on rating buttons)
+        cardEl.addEventListener('click', (e) => {
+          if (e.target.closest('.rating-buttons')) return; // don't flip when rating
+          cardEl.classList.toggle('flipped');
+        });
+        // Keyboard support
+        cardEl.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            cardEl.classList.toggle('flipped');
+          }
+        });
+        // Rating buttons
+        cardEl.querySelectorAll('.rating-buttons button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const color = btn.getAttribute('data-rate');
+            setRating(card.term, color);
+            displayFlashcards();
+          });
+        });
+
+        els.container.appendChild(cardEl);
+      }
+    });
+
+    // Batch render MathJax after the DOM updates
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  function shuffleAndDisplay() { shuffle(flashcards); displayFlashcards(); }
+  function clearRatings() {
+    if (!confirm('Clear all ratings?')) return;
+    flashcards.forEach(card => localStorage.removeItem(key(card.term)));
+    displayFlashcards();
+  }
+
+  // Wire up controls + load prefs
+  els.order.value = prefs.order; els.filter.value = prefs.filter;
+  els.order.addEventListener('change', () => { prefs.order = els.order.value; displayFlashcards(); });
+  els.filter.addEventListener('change', () => { prefs.filter = els.filter.value; displayFlashcards(); });
+  els.shuffle.addEventListener('click', shuffleAndDisplay);
+  els.clear.addEventListener('click', clearRatings);
+
+  // Initial render
+  displayFlashcards();
+  </script>
+</body>
+</html>
