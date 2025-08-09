@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PHYSICS Flashcards</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --card-front: #ffffff;
+      --card-back: #e8f2ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --shadow: 0 6px 18px rgba(0,0,0,0.12);
+      --radius: 12px;
+      --accent: #2563eb;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --green: #10b981;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, #ffffff 0%, var(--bg) 60%);
+      margin: 0;
+      line-height: 1.4;
+    }
+
+    header {
+      padding: 18px 12px 6px;
+      text-align: center;
+    }
+    header h1 { margin: 0 0 6px; font-size: 1.4rem; }
+    header p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .controls {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      padding: 14px 12px 6px; position: sticky; top: 0; background: linear-gradient(#fff, #fff9);
+      backdrop-filter: saturate(140%) blur(6px); z-index: 10; border-bottom: 1px solid #e5e7eb;
+    }
+    .controls label { font-size: .9rem; color: var(--muted); }
+    select, button {
+      padding: 10px 12px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; box-shadow: var(--shadow);
+      font-size: 15px; cursor: pointer;
+    }
+    button.primary { background: var(--accent); color: #fff; border-color: transparent; }
+
+    #flashcard-container {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px; padding: 16px; max-width: 1200px; margin: 0 auto;
+    }
+
+    .flashcard {
+      background: transparent; width: 100%; height: 220px; perspective: 1200px; outline: none;
+      position: relative; border-radius: var(--radius);
+    }
+    .flashcard .inner {
+      position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s;
+      transform-style: preserve-3d; border-radius: var(--radius);
+    }
+    .flashcard:hover .inner, .flashcard.flipped .inner, .flashcard:focus-visible .inner { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute; inset: 0; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; flex-direction: column;
+      padding: 14px; border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .front { background: var(--card-front); font-weight: 700; }
+    .back  { background: var(--card-back); transform: rotateY(180deg); }
+
+    .equation { margin-top: 8px; font-size: 0.95em; color: var(--muted); }
+
+    .rating-bar { position: absolute; left: 10px; top: 10px; display: flex; gap: 6px; z-index: 2; }
+    .dot { width: 10px; height: 10px; border-radius: 999px; opacity: .35; }
+    .dot.red { background: var(--red); }
+    .dot.yellow { background: var(--yellow); }
+    .dot.green { background: var(--green); }
+
+    .rating-buttons { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .rating-buttons button { font-size: .85em; padding: 6px 10px; border-radius: 999px; }
+
+    .legend { text-align: center; color: var(--muted); font-size: .9rem; padding-bottom: 8px; }
+
+    @media (max-width: 480px) {
+      .flashcard { height: 200px; }
+    }
+  </style>
+
+  <!-- MathJax for rendering equations -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [["$","$"],["\\(","\\)"]], displayMath: [["$$","$$"]] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>PHYSICS Flashcards</h1>
+    <p>Click, tap, or hover to flip. Use the colour buttons to rate your confidence.</p>
+  </header>
+
+  <div class="controls" role="region" aria-label="Controls">
+    <label for="rating-filter">Filter:</label>
+    <select id="rating-filter" aria-label="Filter by rating">
+      <option value="all">All Ratings</option>
+      <option value="red">Red</option>
+      <option value="yellow">Yellow</option>
+      <option value="green">Green</option>
+    </select>
+
+    <label for="cardOrder">Show First:</label>
+    <select id="cardOrder" aria-label="Front side">
+      <option value="term">Question</option>
+      <option value="answer">Answer</option>
+    </select>
+
+    <button id="shuffleBtn" class="primary" aria-label="Shuffle flashcards">Shuffle</button>
+    <button id="clearBtn" aria-label="Clear ratings">Clear Ratings</button>
+  </div>
+
+  <div class="legend">Red = don’t know yet • Yellow = getting there • Green = I’ve got this</div>
+
+  <main id="flashcard-container" aria-live="polite"></main>
+
+  <script>
+  // Flashcards data (a few wording/typo fixes for clarity/accuracy)
+  const flashcards = [
+// --- VECTORS (15 cards) ---
+{ term: "What is a scalar?", equation: "\\text{Scalar: magnitude only}", answer: "A quantity with size but no direction, e.g., mass, speed, temperature." },
+
+{ term: "What is a vector?", equation: "\\text{Vector: magnitude + direction}", answer: "A quantity with both size and direction, e.g., velocity, force, displacement." },
+
+{ term: "How are vectors represented?", equation: "\\vec{A} = (A_x, A_y)", answer: "Graphically by an arrow, or in component form with x- and y-components." },
+
+{ term: "Magnitude of a 2D vector", equation: "|\\vec{A}| = \\sqrt{A_x^2 + A_y^2}", answer: "The length of the vector is the square root of the sum of the squares of its components." },
+
+{ term: "Direction of a vector", equation: "\\theta = \\tan^{-1}(A_y/A_x)", answer: "Angle measured from the positive x-axis, using the correct quadrant." },
+
+{ term: "How to add vectors graphically?", equation: "\\text{Head-to-tail method}", answer: "Place the tail of the second vector at the head of the first, then draw the resultant from the start to the end." },
+
+{ term: "Parallelogram method of vector addition", equation: "\\text{Resultant = diagonal}", answer: "Draw both vectors from a common point; the diagonal of the parallelogram is the sum." },
+
+{ term: "Subtracting vectors", equation: "\\vec{A} - \\vec{B} = \\vec{A} + (-\\vec{B})", answer: "Reverse the direction of the vector to be subtracted, then add." },
+
+{ term: "Breaking a vector into components", equation: "A_x = A \\cos\\theta,\\quad A_y = A \\sin\\theta", answer: "Use trigonometry to resolve into perpendicular parts." },
+
+{ term: "Unit vectors in 2D", equation: "\\hat{i},\\,\\hat{j}", answer: "Vectors of length 1 in the x and y directions." },
+
+{ term: "Unit vectors in 3D", equation: "\\hat{i},\\,\\hat{j},\\,\\hat{k}", answer: "Vectors of length 1 along x, y, and z axes." },
+
+{ term: "Scalar (dot) product formula", equation: "\\vec{A} \\cdot \\vec{B} = AB\\cos\\theta", answer: "Gives a scalar; product of magnitudes and cosine of the angle between." },
+
+{ term: "Vector (cross) product formula", equation: "|\\vec{A} \\times \\vec{B}| = AB\\sin\\theta", answer: "Gives a vector perpendicular to both; magnitude from sine of the angle." },
+
+{ term: "Physical example of dot product", equation: "W = \\vec{F} \\cdot \\vec{s}", answer: "Work done by a force is the dot product of force and displacement." },
+
+{ term: "Physical example of cross product", equation: "\\vec{\\tau} = \\vec{r} \\times \\vec{F}", answer: "Torque is the cross product of position vector and force." },
+
+// --- SUVAT (15 cards) ---
+{ term: "What does SUVAT stand for?", equation: "s, u, v, a, t", answer: "Displacement, initial velocity, final velocity, acceleration, time — for constant acceleration motion." },
+
+{ term: "SUVAT equation without a", equation: "s = \\tfrac{1}{2}(u+v)t", answer: "Average velocity × time gives displacement." },
+
+{ term: "SUVAT equation without s", equation: "v = u + at", answer: "Final velocity = initial velocity + acceleration × time." },
+
+{ term: "SUVAT equation without v", equation: "s = ut + \\tfrac{1}{2}at^2", answer: "Displacement from initial velocity and acceleration over time." },
+
+{ term: "SUVAT equation without u", equation: "s = vt - \\tfrac{1}{2}at^2", answer: "Displacement from final velocity and acceleration over time." },
+
+{ term: "SUVAT equation without t", equation: "v^2 = u^2 + 2as", answer: "Relates velocities, acceleration, and displacement without time." },
+
+{ term: "Free fall acceleration near Earth", equation: "a = g \\approx 9.81\\,\\text{m/s}^2", answer: "Objects in free fall accelerate downwards at g, ignoring air resistance." },
+
+{ term: "Symmetry of projectile motion", equation: "t_{\\text{up}} = t_{\\text{down}}", answer: "Time up equals time down if launched and landed at same height." },
+
+{ term: "Maximum height formula", equation: "H = \\frac{u_y^2}{2g}", answer: "Vertical launch speed squared over 2g." },
+
+{ term: "Range formula for level ground", equation: "R = \\frac{u^2\\sin 2\\theta}{g}", answer: "Horizontal distance travelled for projectile on level ground." },
+
+{ term: "Effect of launch angle on range", equation: "R_{45^\\circ} = R_{\\text{max}}", answer: "For given speed, 45° gives maximum range on flat ground." },
+
+{ term: "Average velocity under constant acceleration", equation: "v_{\\text{avg}} = \\frac{u+v}{2}", answer: "Mean of initial and final velocities." },
+
+{ term: "Relationship between displacement–time graph and velocity", equation: "\\text{s–t slope} = v", answer: "Slope gives velocity; curve means changing velocity." },
+
+{ term: "Relationship between velocity–time graph and acceleration", equation: "\\text{v–t slope} = a", answer: "Slope gives acceleration; area under graph gives displacement." },
+
+{ term: "Area under acceleration–time graph", equation: "\\int a\\,dt = \\Delta v", answer: "Gives change in velocity." },
+
+// --- NEWTON'S LAWS & FORCES (10 cards) ---
+{ term: "Newton’s First Law", equation: "\\vec{F}_{\\text{net}} = 0 \\Rightarrow v = \\text{constant}", answer: "An object stays at rest or moves at constant velocity unless acted on by a net force." },
+
+{ term: "Newton’s Second Law", equation: "\\vec{F}_{\\text{net}} = m\\vec{a}", answer: "Acceleration is proportional to net force and inversely proportional to mass." },
+
+{ term: "Newton’s Third Law", equation: "\\vec{F}_{AB} = -\\vec{F}_{BA}", answer: "For every action, there is an equal and opposite reaction." },
+
+{ term: "Weight formula", equation: "W = mg", answer: "Gravitational force on a mass m near Earth’s surface." },
+
+{ term: "Normal force", equation: "N \\perp \\text{surface}", answer: "Reaction force perpendicular to a surface, balancing part/all of weight." },
+
+{ term: "Friction force", equation: "F_f = \\mu N", answer: "Friction = coefficient × normal force; opposes relative motion." },
+
+{ term: "Tension", equation: "\\text{Force along rope}", answer: "Pulling force transmitted along a rope, cable, or string." },
+
+{ term: "Free-body diagram", equation: "\\text{Draw all forces}", answer: "Sketch showing all forces acting on an object, with directions." },
+
+{ term: "Net force from components", equation: "F_{\\text{net}} = \\sqrt{F_x^2 + F_y^2}", answer: "Pythagoras on perpendicular components." },
+
+{ term: "Inclined plane component of weight", equation: "W_{\\parallel} = mg\\sin\\theta", answer: "Component of weight parallel to slope; perpendicular is mg cos θ." },
+
+// --- GRAVITY (10 cards) ---
+{ term: "Universal Law of Gravitation", equation: "F = G\\frac{m_1 m_2}{r^2}", answer: "Attractive force between two point masses." },
+
+{ term: "Value of G", equation: "G \\approx 6.674\\times 10^{-11} \\,\\text{N m}^2/\\text{kg}^2", answer: "Universal gravitational constant." },
+
+{ term: "Weight variation with height", equation: "g' = g\\left(\\frac{R}{R+h}\\right)^2", answer: "Gravity decreases with distance from Earth's center." },
+
+{ term: "g from Earth’s mass and radius", equation: "g = \\frac{GM}{R^2}", answer: "Near-surface gravity from universal gravitation." },
+
+{ term: "Gravitational field strength", equation: "g = \\frac{F}{m}", answer: "Force per unit mass at a point in a gravitational field." },
+
+{ term: "Escape velocity", equation: "v_e = \\sqrt{\\frac{2GM}{R}}", answer: "Minimum speed to escape without further propulsion." },
+
+{ term: "Orbital speed in circular orbit", equation: "v = \\sqrt{\\frac{GM}{r}}", answer: "Speed for a stable circular orbit of radius r." },
+
+{ term: "Orbital period", equation: "T = 2\\pi\\sqrt{\\frac{r^3}{GM}}", answer: "Time to complete one circular orbit." },
+
+{ term: "Acceleration due to gravity on Moon", equation: "g_{\\text{Moon}} \\approx 1.62\\,\\text{m/s}^2", answer: "About 1/6th of Earth's gravity." },
+
+{ term: "Cause of weightlessness in orbit", equation: "\\text{Free fall}", answer: "Astronauts are in continuous free fall around Earth, so they feel weightless." },
+// --- MOMENTUM & IMPULSE ---
+{ term: "Definition of momentum", equation: "\\vec{p} = m\\vec{v}", answer: "Momentum is mass × velocity; it is a vector quantity." },
+
+{ term: "Impulse–momentum theorem", equation: "\\vec{F}\\Delta t = \\Delta\\vec{p}", answer: "Impulse (force × time) equals the change in momentum." },
+
+{ term: "Conservation of momentum", equation: "\\sum \\vec{p}_{\\text{initial}} = \\sum \\vec{p}_{\\text{final}}", answer: "Total momentum of a system is constant if no external force acts." },
+
+{ term: "Elastic collision energy conservation", equation: "\\tfrac12 m_1 u_1^2 + \\tfrac12 m_2 u_2^2 = \\tfrac12 m_1 v_1^2 + \\tfrac12 m_2 v_2^2", answer: "Kinetic energy is conserved in elastic collisions." },
+
+{ term: "Inelastic collision", equation: "\\text{Kinetic energy not conserved}", answer: "Momentum is conserved, but some kinetic energy is converted to other forms." },
+
+{ term: "Perfectly inelastic collision", equation: "\\text{Objects stick together}", answer: "After collision, they move with a common velocity." },
+
+// --- WORK, ENERGY, POWER ---
+{ term: "Work done by a constant force", equation: "W = Fd\\cos\\theta", answer: "Force × displacement × cos(angle between force and displacement)." },
+
+{ term: "Kinetic energy formula", equation: "E_k = \\tfrac12 mv^2", answer: "Energy due to motion." },
+
+{ term: "Gravitational potential energy", equation: "E_p = mgh", answer: "Energy stored due to position in a gravitational field." },
+
+{ term: "Work–energy theorem", equation: "W_{\\text{net}} = \\Delta E_k", answer: "Net work done on an object equals its change in kinetic energy." },
+
+{ term: "Power formula", equation: "P = \\frac{W}{t}", answer: "Rate of doing work or transferring energy." },
+
+{ term: "Power from force and velocity", equation: "P = Fv\\cos\\theta", answer: "Instantaneous power for a force at angle θ to velocity." },
+
+{ term: "Efficiency formula", equation: "\\eta = \\frac{E_{\\text{useful}}}{E_{\\text{input}}} \\times 100\\%", answer: "Percentage of input energy converted to useful output." },
+
+// --- INTERESTING / APPLICATION ---
+{ term: "Why seatbelts reduce injury in a crash", equation: "F\\Delta t = \\Delta p", answer: "Seatbelts increase stopping time, reducing average force on passengers." },
+
+{ term: "Why crumple zones improve safety", equation: "W = \\Delta E_k", answer: "Crumple zones increase stopping distance/time, spreading out the energy change." },
+
+{ term: "Why astronauts float in the ISS", equation: "\\text{Orbit = continuous free fall}", answer: "They and the ISS fall around Earth at the same rate, so they appear weightless." },
+
+{ term: "Escape velocity from Earth", equation: "v_e = \\sqrt{\\frac{2GM}{R}} \\approx 11.2\\,\\text{km/s}", answer: "Minimum speed to escape Earth's gravity without further propulsion." },
+
+{ term: "Why a feather and hammer fall together on the Moon", equation: "a = g_{\\text{Moon}}", answer: "With no air resistance, all objects accelerate equally in a gravitational field." },
+
+{ term: "Why geostationary satellites stay above the same spot", equation: "T = 24\\,\\text{h},\\ r \\approx 42{,}164\\,\\text{km}", answer: "They orbit once per day at the same rate Earth rotates." },
+
+{ term: "Why moving faster increases kinetic energy a lot", equation: "E_k \\propto v^2", answer: "Doubling speed quadruples kinetic energy (and stopping distance in ideal conditions)." },
+// --- VECTORS ---
+{ term: "A vector has components Ax = 3 m, Ay = 4 m. What is its magnitude?", equation: "|\\vec{A}| = \\sqrt{3^2 + 4^2}", answer: "Magnitude = √(9 + 16) = √25 = 5 m." },
+
+{ term: "A displacement is 12 m east, then 5 m north. Find resultant displacement magnitude.", equation: "s = \\sqrt{12^2 + 5^2}", answer: "√(144 + 25) = √169 = 13 m." },
+
+{ term: "A force of 10 N acts at 60° to the horizontal. Find the horizontal component.", equation: "F_x = 10\\cos 60^\\circ", answer: "Fₓ = 10 × 0.5 = 5 N." },
+
+// --- SUVAT ---
+{ term: "A car accelerates from 10 m/s to 25 m/s in 5 s. Find acceleration.", equation: "a = \\frac{v - u}{t}", answer: "a = (25 − 10) / 5 = 3 m/s²." },
+
+{ term: "A ball is thrown vertically up at 15 m/s. How high does it go?", equation: "H = \\frac{u^2}{2g}", answer: "H = 225 / (2 × 9.81) ≈ 11.47 m." },
+
+{ term: "A car travels from rest with acceleration 2.5 m/s² for 8 s. Find distance covered.", equation: "s = ut + \\tfrac12 at^2", answer: "s = 0 + 0.5 × 2.5 × 64 = 80 m." },
+
+// --- FORCES ---
+{ term: "A 5 kg block is pulled with a horizontal force of 20 N. Find acceleration (no friction).", equation: "a = \\frac{F}{m}", answer: "a = 20 / 5 = 4 m/s²." },
+
+{ term: "An object weighs 150 N on Earth. Find its mass.", equation: "m = \\frac{W}{g}", answer: "m = 150 / 9.81 ≈ 15.3 kg." },
+
+{ term: "A slope is 30° and frictionless. Find acceleration of a block sliding down.", equation: "a = g\\sin30^\\circ", answer: "a = 9.81 × 0.5 = 4.905 m/s²." },
+
+// --- MOMENTUM ---
+{ term: "A 0.145 kg baseball is thrown at 40 m/s. Find its momentum.", equation: "p = mv", answer: "p = 0.145 × 40 = 5.8 kg·m/s." },
+
+{ term: "A 60 kg ice skater moving at 3 m/s collides and sticks to a stationary 40 kg skater. Find their final speed.", equation: "v_f = \\frac{m_1 u_1 + m_2 u_2}{m_1 + m_2}", answer: "v_f = (60×3 + 40×0) / 100 = 1.8 m/s." },
+
+// --- ENERGY ---
+{ term: "Find kinetic energy of a 1200 kg car moving at 20 m/s.", equation: "E_k = \\tfrac12 mv^2", answer: "Eₖ = 0.5 × 1200 × 400 = 240,000 J." },
+
+{ term: "Find the work done to lift a 25 kg box by 2.0 m.", equation: "W = mgh", answer: "W = 25 × 9.81 × 2.0 ≈ 490.5 J." },
+
+{ term: "A motor delivers 500 W of power to lift a 50 kg mass. Find the vertical speed.", equation: "P = Fv", answer: "F = 50×9.81 = 490.5 N, v = 500 / 490.5 ≈ 1.019 m/s." },
+
+// --- MIXED ---
+{ term: "A ball drops from 45 m. How long until it hits the ground? (ignore air resistance)", equation: "s = \\tfrac12 gt^2", answer: "t = √(2×45 / 9.81) ≈ 3.03 s." },
+// --- VECTORS ---
+{ term: "A displacement is 8 m east then 6 m south. Find resultant magnitude and direction.", equation: "R = \\sqrt{8^2 + 6^2},\\ \\theta = \\tan^{-1}\\frac{-6}{8}", answer: "R = 10 m, θ ≈ −36.87° (south of east)." },
+
+{ term: "Two forces act at 90°: 6 N east, 8 N north. Find resultant magnitude.", equation: "F_R = \\sqrt{6^2 + 8^2}", answer: "F_R = 10 N." },
+
+{ term: "Two forces act at 60°: 10 N and 15 N. Find the resultant magnitude.", equation: "F_R = \\sqrt{10^2 + 15^2 + 2(10)(15)\\cos 60^\\circ}", answer: "F_R ≈ 22.91 N." },
+
+// --- SUVAT ---
+{ term: "A sprinter accelerates from rest at 4.0 m/s² for 3.0 s. Find final speed.", equation: "v = u + at", answer: "v = 0 + 4 × 3 = 12 m/s." },
+
+{ term: "A ball is dropped from a height and hits the ground at 19.6 m/s. Find the height.", equation: "v^2 = 2gh", answer: "h = (19.6²) / (2 × 9.81) = 19.6 m." },
+
+{ term: "A car travels at 20 m/s and brakes to a stop over 50 m. Find the deceleration.", equation: "0 = u^2 + 2as", answer: "a = −(20²) / (2 × 50) = −4 m/s²." },
+
+{ term: "An object is thrown upward at 12 m/s. How long until it returns to start height?", equation: "T = \\frac{2u}{g}", answer: "T = (2 × 12) / 9.81 ≈ 2.45 s." },
+
+// --- FORCES ---
+{ term: "A 10 kg crate is pushed with 50 N on a horizontal surface with μ = 0.3. Find acceleration.", equation: "F_{net} = 50 - (\\mu mg),\\ a = F_{net}/m", answer: "F_net = 50 − (0.3×10×9.81) ≈ 20.57 N, a ≈ 2.06 m/s²." },
+
+{ term: "A 2 kg block is pulled up a frictionless 30° incline by a force parallel to slope. Find force for 3 m/s² acceleration.", equation: "F - mg\\sin30^\\circ = ma", answer: "F = (2×9.81×0.5) + (2×3) ≈ 9.81 + 6 = 15.81 N." },
+
+{ term: "A 70 kg person stands in a lift accelerating upward at 2.0 m/s². Find scale reading.", equation: "N = m(g + a)", answer: "N = 70 × (9.81 + 2) ≈ 826.7 N." },
+
+// --- MOMENTUM ---
+{ term: "A 0.2 kg ball moving at 5 m/s rebounds at −3 m/s. Find impulse.", equation: "J = m(v - u)", answer: "J = 0.2 × (−3 − 5) = −1.6 N·s (direction reversed)." },
+
+{ term: "A 500 kg cart moving at 2 m/s hits and sticks to a 300 kg cart at rest. Find final speed.", equation: "v_f = \\frac{500×2}{500+300}", answer: "v_f = 1000 / 800 = 1.25 m/s." },
+
+{ term: "A tennis ball of mass 0.06 kg changes velocity from −20 m/s to 20 m/s in 0.05 s. Find average force.", equation: "F = m\\frac{v - u}{t}", answer: "F = 0.06 × (40 / 0.05) = 48 N." },
+
+// --- ENERGY ---
+{ term: "A 2 kg mass falls 5 m. Find speed just before hitting ground (no air resistance).", equation: "v = \\sqrt{2gh}", answer: "v = √(2×9.81×5) ≈ 9.90 m/s." },
+
+{ term: "A 1500 kg car accelerates from 10 m/s to 25 m/s. Find change in kinetic energy.", equation: "\\Delta E_k = \\tfrac12 m(v^2 - u^2)", answer: "ΔEₖ = 0.5 × 1500 × (625 − 100) = 393,750 J." },
+
+{ term: "A crane lifts a 500 kg load 12 m in 15 s. Find average power output.", equation: "P = \\frac{mgh}{t}", answer: "P = (500×9.81×12) / 15 ≈ 3924 W." },
+
+{ term: "A spring with k = 200 N/m is stretched by 0.15 m. Find elastic potential energy.", equation: "E = \\tfrac12 kx^2", answer: "E = 0.5 × 200 × 0.0225 = 2.25 J." },
+
+// --- MIXED MULTI-STEP ---
+{ term: "A 2 kg object moves at 4 m/s. A constant force of 6 N acts in the same direction for 3 s. Find final speed.", equation: "a = F/m,\\ v = u + at", answer: "a = 6/2 = 3 m/s², v = 4 + 3×3 = 13 m/s." },
+
+{ term: "A 5 kg block is pushed 8 m along a horizontal surface by a 20 N force. μ = 0.2. Find net work done.", equation: "W = (F - \\mu mg)s", answer: "F_f = 0.2×5×9.81 ≈ 9.81 N, Net F ≈ 10.19 N, W ≈ 81.5 J." }
+
+
+
+
+  ];
+
+  const els = {
+    filter: document.getElementById('rating-filter'),
+    order: document.getElementById('cardOrder'),
+    container: document.getElementById('flashcard-container'),
+    shuffle: document.getElementById('shuffleBtn'),
+    clear: document.getElementById('clearBtn'),
+  };
+
+  // Utilities
+  const shuffle = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+  };
+  const key = (term) => 'rating_' + term;
+  const getRating = (term) => localStorage.getItem(key(term));
+  const setRating = (term, color) => localStorage.setItem(key(term), color);
+
+  // Persist UI choices
+  const prefs = {
+    get order() { return localStorage.getItem('pref_order') || 'term'; },
+    set order(v) { localStorage.setItem('pref_order', v); },
+    get filter() { return localStorage.getItem('pref_filter') || 'all'; },
+    set filter(v) { localStorage.setItem('pref_filter', v); },
+  };
+
+  function cardTemplate(card, index, showTermFirst) {
+    const rating = getRating(card.term);
+    const dots = ['red','yellow','green']
+      .map(c => `<span class="dot ${c}" style="opacity:${rating===c?1:.35}" aria-hidden="true"></span>`)
+      .join('');
+
+    const front = showTermFirst ? card.term : `${card.answer}<div class="equation"><small>$$${card.equation}$$</small></div>`;
+    const back  = showTermFirst ? `${card.answer}<div class="equation"><small>$$${card.equation}$$</small></div>` : card.term;
+
+    return `
+      <div class="flashcard" role="button" tabindex="0" aria-label="Flashcard ${index+1}: ${showTermFirst? 'question' : 'answer'} shown">
+        <div class="rating-bar">${dots}</div>
+        <div class="inner">
+          <div class="face front">${front}</div>
+          <div class="face back">
+            ${back}
+            <div class="rating-buttons" aria-label="Rate this card">
+              <button data-rate="red" aria-label="Mark red">Red</button>
+              <button data-rate="yellow" aria-label="Mark yellow">Yellow</button>
+              <button data-rate="green" aria-label="Mark green">Green</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function displayFlashcards() {
+    const filter = els.filter.value;
+    const showTermFirst = els.order.value === 'term';
+    els.container.innerHTML = '';
+
+    flashcards.forEach((card, i) => {
+      const rating = getRating(card.term);
+      if (filter === 'all' || rating === filter) {
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = cardTemplate(card, i, showTermFirst);
+        const cardEl = wrapper.firstElementChild;
+
+        // Click/tap to flip (ignore clicks on rating buttons)
+        cardEl.addEventListener('click', (e) => {
+          if (e.target.closest('.rating-buttons')) return; // don't flip when rating
+          cardEl.classList.toggle('flipped');
+        });
+        // Keyboard support
+        cardEl.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            cardEl.classList.toggle('flipped');
+          }
+        });
+        // Rating buttons
+        cardEl.querySelectorAll('.rating-buttons button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const color = btn.getAttribute('data-rate');
+            setRating(card.term, color);
+            displayFlashcards();
+          });
+        });
+
+        els.container.appendChild(cardEl);
+      }
+    });
+
+    // Batch render MathJax after the DOM updates
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  function shuffleAndDisplay() { shuffle(flashcards); displayFlashcards(); }
+  function clearRatings() {
+    if (!confirm('Clear all ratings?')) return;
+    flashcards.forEach(card => localStorage.removeItem(key(card.term)));
+    displayFlashcards();
+  }
+
+  // Wire up controls + load prefs
+  els.order.value = prefs.order; els.filter.value = prefs.filter;
+  els.order.addEventListener('change', () => { prefs.order = els.order.value; displayFlashcards(); });
+  els.filter.addEventListener('change', () => { prefs.filter = els.filter.value; displayFlashcards(); });
+  els.shuffle.addEventListener('click', shuffleAndDisplay);
+  els.clear.addEventListener('click', clearRatings);
+
+  // Initial render
+  displayFlashcards();
+  </script>
+</body>
+</html>
