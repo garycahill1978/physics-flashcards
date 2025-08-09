@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Junior Cert Maths — Flashcards</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --card-front: #ffffff;
+      --card-back: #e8f2ff;
+      --text: #111827;
+      --muted: #6b7280;
+      --shadow: 0 6px 18px rgba(0,0,0,0.12);
+      --radius: 12px;
+      --accent: #2563eb;
+      --red: #ef4444;
+      --yellow: #f59e0b;
+      --green: #10b981;
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 800px at 10% -10%, #ffffff 0%, var(--bg) 60%);
+      margin: 0;
+      line-height: 1.4;
+    }
+    header { padding: 18px 12px 6px; text-align: center; }
+    header h1 { margin: 0 0 6px; font-size: 1.4rem; }
+    header p { margin: 0; color: var(--muted); font-size: .95rem; }
+
+    .controls {
+      display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
+      padding: 14px 12px 6px; position: sticky; top: 0; background: linear-gradient(#fff, #fff9);
+      backdrop-filter: saturate(140%) blur(6px); z-index: 10; border-bottom: 1px solid #e5e7eb;
+    }
+    .controls label { font-size: .9rem; color: var(--muted); }
+    select, button {
+      padding: 10px 12px; border-radius: 10px; border: 1px solid #e5e7eb; background: #fff; box-shadow: var(--shadow);
+      font-size: 15px; cursor: pointer;
+    }
+    button.primary { background: var(--accent); color: #fff; border-color: transparent; }
+
+    #flashcard-container {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px; padding: 16px; max-width: 1200px; margin: 0 auto;
+    }
+
+    .flashcard {
+      background: transparent; width: 100%; height: 220px; perspective: 1200px; outline: none;
+      position: relative; border-radius: var(--radius);
+    }
+    .flashcard .inner {
+      position: relative; width: 100%; height: 100%; text-align: center; transition: transform 0.6s;
+      transform-style: preserve-3d; border-radius: var(--radius);
+    }
+    .flashcard:hover .inner, .flashcard.flipped .inner, .flashcard:focus-visible .inner { transform: rotateY(180deg); }
+
+    .face {
+      position: absolute; inset: 0; backface-visibility: hidden; display: flex; justify-content: center; align-items: center; flex-direction: column;
+      padding: 14px; border-radius: var(--radius); box-shadow: var(--shadow);
+    }
+    .front { background: var(--card-front); font-weight: 700; }
+    .back  { background: var(--card-back); transform: rotateY(180deg); }
+    .term { font-size: 1rem; }
+    .equation { margin-top: 8px; font-size: 0.95em; color: var(--muted); }
+
+    .rating-bar { position: absolute; left: 10px; top: 10px; display: flex; gap: 6px; z-index: 2; }
+    .dot { width: 10px; height: 10px; border-radius: 999px; opacity: .35; }
+    .dot.red { background: var(--red); }
+    .dot.yellow { background: var(--yellow); }
+    .dot.green { background: var(--green); }
+
+    .rating-buttons { margin-top: 10px; display: flex; gap: 6px; flex-wrap: wrap; }
+    .rating-buttons button { font-size: .85em; padding: 6px 10px; border-radius: 999px; }
+
+    .legend { text-align: center; color: var(--muted); font-size: .9rem; padding-bottom: 8px; }
+
+    @media (max-width: 480px) { .flashcard { height: 200px; } }
+  </style>
+
+  <!-- MathJax -->
+  <script>
+    window.MathJax = {
+      tex: { inlineMath: [["$","$"],["\\(","\\)"]], displayMath: [["$$","$$"]] },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" defer></script>
+</head>
+
+<body>
+  <header>
+    <h1>Junior Cert Maths — Flashcards</h1>
+    <p>Click, tap, or hover to flip. Use the colour buttons to rate your confidence.</p>
+  </header>
+
+  <div class="controls" role="region" aria-label="Controls">
+    <label for="topic-filter">Topic:</label>
+    <select id="topic-filter" aria-label="Filter by topic"></select>
+
+    <label for="rating-filter">Rating:</label>
+    <select id="rating-filter" aria-label="Filter by rating">
+      <option value="all">All Ratings</option>
+      <option value="red">Red</option>
+      <option value="yellow">Yellow</option>
+      <option value="green">Green</option>
+    </select>
+
+    <label for="cardOrder">Show First:</label>
+    <select id="cardOrder" aria-label="Front side">
+      <option value="term">Question</option>
+      <option value="answer">Answer</option>
+    </select>
+
+    <button id="shuffleBtn" class="primary" aria-label="Shuffle flashcards">Shuffle</button>
+    <button id="clearBtn" aria-label="Clear ratings">Clear Ratings</button>
+  </div>
+
+  <div class="legend">Red = don’t know yet • Yellow = getting there • Green = I’ve got this</div>
+
+  <main id="flashcard-container" aria-live="polite"></main>
+
+  <script>
+  // ================== PASTE/KEEP YOUR ARRAY HERE ==================
+  const flashcards = [
+  { term: "What is the value of 7²?", equation: "7^2", answer: "49", topic: "Number & Arithmetic" },
+  { term: "Evaluate 3³ × 2²", equation: "3^3 \\times 2^2", answer: "27 × 4 = 108", topic: "Number & Arithmetic" },
+  { term: "Simplify 4⁻²", equation: "4^{-2}", answer: "1 / 16", topic: "Number & Arithmetic" },
+  { term: "What is √144?", equation: "\\sqrt{144}", answer: "12", topic: "Number & Arithmetic" },
+  { term: "Convert 0.375 to a fraction", equation: "0.375", answer: "3/8", topic: "Number & Arithmetic" },
+  { term: "Write 7/20 as a percentage", equation: "\\frac{7}{20}", answer: "35%", topic: "Number & Arithmetic" },
+  { term: "Round 3.456 to 2 decimal places", equation: "3.456", answer: "3.46", topic: "Number & Arithmetic" },
+  { term: "Find 25% of 480", equation: "0.25 \\times 480", answer: "120", topic: "Number & Arithmetic" },
+  { term: "Simplify (3/4) ÷ (2/5)", equation: "\\frac{3}{4} \\div \\frac{2}{5}", answer: "15/8 or 1.875", topic: "Number & Arithmetic" },
+  { term: "Find the reciprocal of 0.25", equation: "1/0.25", answer: "4", topic: "Number & Arithmetic" },
+  { term: "Write 3.2 × 10⁴ in ordinary form", equation: "3.2 \\times 10^4", answer: "32,000", topic: "Number & Arithmetic" },
+  { term: "Write 0.00056 in scientific notation", equation: "0.00056", answer: "5.6 × 10^{-4}", topic: "Number & Arithmetic" },
+  { term: "What is 12 mod 5?", equation: "12 \\bmod 5", answer: "2", topic: "Number & Arithmetic" },
+  { term: "Find the GCD of 24 and 36", equation: "\\text{gcd}(24,36)", answer: "12", topic: "Number & Arithmetic" },
+  { term: "Find the LCM of 8 and 12", equation: "\\text{lcm}(8,12)", answer: "24", topic: "Number & Arithmetic" },
+
+  // --- ALGEBRA BASICS (15 cards) ---
+  { term: "Simplify: 3x + 4x", equation: "3x + 4x", answer: "7x", topic: "Algebra" },
+  { term: "Simplify: 5a - 2a + 7", equation: "5a - 2a + 7", answer: "3a + 7", topic: "Algebra" },
+  { term: "Expand: (x + 3)(x + 5)", equation: "(x + 3)(x + 5)", answer: "x^2 + 8x + 15", topic: "Algebra" },
+  { term: "Expand: (2x - 4)²", equation: "(2x - 4)^2", answer: "4x^2 - 16x + 16", topic: "Algebra" },
+  { term: "Factorise: x² + 5x + 6", equation: "x^2 + 5x + 6", answer: "(x + 2)(x + 3)", topic: "Algebra" },
+  { term: "Factorise: x² - 9", equation: "x^2 - 9", answer: "(x - 3)(x + 3)", topic: "Algebra" },
+  { term: "Factorise: 3x² - 12x", equation: "3x^2 - 12x", answer: "3x(x - 4)", topic: "Algebra" },
+  { term: "Solve: x + 7 = 15", equation: "x + 7 = 15", answer: "x = 8", topic: "Algebra" },
+  { term: "Solve: 5x = 20", equation: "5x = 20", answer: "x = 4", topic: "Algebra" },
+  { term: "Solve: 2x - 3 = 9", equation: "2x - 3 = 9", answer: "x = 6", topic: "Algebra" },
+  { term: "Solve: 3x + 5 = 2x + 9", equation: "3x + 5 = 2x + 9", answer: "x = 4", topic: "Algebra" },
+  { term: "Solve: 4(x - 2) = 12", equation: "4(x - 2) = 12", answer: "x = 5", topic: "Algebra" },
+  { term: "Simplify: 2(x + 3) + 4(x - 1)", equation: "2(x + 3) + 4(x - 1)", answer: "6x + 2", topic: "Algebra" },
+  { term: "Expand: (x + 2)(x² - 2x + 4)", equation: "(x + 2)(x^2 - 2x + 4)", answer: "x^3 + 8", topic: "Algebra" },
+  { term: "Factorise completely: x³ - 8", equation: "x^3 - 8", answer: "(x - 2)(x^2 + 2x + 4)", topic: "Algebra" },
+
+  // --- ALGEBRA PROBLEMS & PATTERNS (20 cards) ---
+  { term: "Solve: 2x + 5 = 17", equation: "2x + 5 = 17", answer: "x = 6", topic: "Algebra" },
+  { term: "Solve: 7 - x = 3", equation: "7 - x = 3", answer: "x = 4", topic: "Algebra" },
+  { term: "Solve: 5x/2 = 15", equation: "\\frac{5x}{2} = 15", answer: "x = 6", topic: "Algebra" },
+  { term: "Solve: (x/3) + 4 = 7", equation: "\\frac{x}{3} + 4 = 7", answer: "x = 9", topic: "Algebra" },
+  { term: "Find nth term: 3, 7, 11, 15, ...", equation: "a_n = a_1 + (n-1)d", answer: "a_n = 4n - 1", topic: "Algebra" },
+  { term: "Find nth term: 10, 8, 6, 4, ...", equation: "a_n = a_1 + (n-1)d", answer: "a_n = 12 - 2n", topic: "Algebra" },
+  { term: "Sum of first 10 terms of 2, 5, 8, ...", equation: "S_n = \\tfrac{n}{2}(2a_1 + (n-1)d)", answer: "S_{10} = 155", topic: "Algebra" },
+  { term: "Sum of first 8 terms of 7, 14, 21, ...", equation: "S_n = \\tfrac{n}{2}(2a_1 + (n-1)d)", answer: "S_8 = 252", topic: "Algebra" },
+  { term: "Geometric sequence: 3, 6, 12,... Find r", equation: "r = \\tfrac{a_2}{a_1}", answer: "r = 2", topic: "Algebra" },
+  { term: "Find 6th term of 5, 15, 45,...", equation: "a_n = a_1 r^{n-1}", answer: "a_6 = 1215", topic: "Algebra" },
+  { term: "Sum of first 4 terms: 2, 4, 8, 16", equation: "S_n = a\\,\\tfrac{r^n - 1}{r - 1}", answer: "S_4 = 30", topic: "Algebra" },
+  { term: "Solve: 2x² = 50", equation: "2x^2 = 50", answer: "x = \\pm 5", topic: "Algebra" },
+  { term: "Solve: x² - 9 = 0", equation: "x^2 - 9 = 0", answer: "x = \\pm 3", topic: "Algebra" },
+  { term: "Solve: x² + 4x + 4 = 0", equation: "x^2 + 4x + 4 = 0", answer: "x = -2 (double root)", topic: "Algebra" },
+  { term: "Solve: x² - 5x + 6 = 0", equation: "x^2 - 5x + 6 = 0", answer: "x = 2 or 3", topic: "Algebra" },
+  { term: "If f(x) = 2x + 3, find f(4)", equation: "f(x) = 2x + 3", answer: "f(4) = 11", topic: "Functions & Graphs" },
+  { term: "If f(x) = x² - 1, find f(5)", equation: "f(x) = x^2 - 1", answer: "f(5) = 24", topic: "Functions & Graphs" },
+  { term: "If f(x) = 3x - 4, solve f(x) = 5", equation: "3x - 4 = 5", answer: "x = 3", topic: "Functions & Graphs" },
+  { term: "If g(x) = x², find g(0.5)", equation: "g(x) = x^2", answer: "g(0.5) = 0.25", topic: "Functions & Graphs" },
+
+  // --- GEOMETRY BASICS (10 cards) ---
+  { term: "Sum of interior angles of a triangle", equation: "\\sum \\theta = 180^{\\circ}", answer: "180°", topic: "Geometry" },
+  { term: "Sum of interior angles of a quadrilateral", equation: "\\sum \\theta = 360^{\\circ}", answer: "360°", topic: "Geometry" },
+  { term: "Find each angle in an equilateral triangle", equation: "\\sum \\theta = 180^{\\circ}", answer: "Each = 60°", topic: "Geometry" },
+  { term: "Exterior angle of a regular hexagon", equation: "E = \\tfrac{360^{\\circ}}{n}", answer: "E = 60°", topic: "Geometry" },
+  { term: "Interior angle of a regular pentagon", equation: "I = 180^{\\circ} - E", answer: "I = 108°", topic: "Geometry" },
+  { term: "Number of diagonals in an n-gon", equation: "d = \\tfrac{n(n-3)}{2}", answer: "Pentagon → 5 diagonals", topic: "Geometry" },
+  { term: "Area of a triangle", equation: "A = \\tfrac12 b h", answer: "Half base × height", topic: "Geometry" },
+  { term: "Area of a parallelogram", equation: "A = b h", answer: "Base × height", topic: "Geometry" },
+  { term: "Area of a trapezium", equation: "A = \\tfrac12 (a + b) h", answer: "Half the sum of parallel sides × height", topic: "Geometry" },
+  { term: "Circumference of a circle", equation: "C = 2\\pi r", answer: "2π × radius", topic: "Geometry" },
+
+  // --- MEASUREMENT & 3D SHAPES (10 cards) ---
+  { term: "Area of a circle radius 7 cm", equation: "A = \\pi r^2", answer: "≈ 153.94 cm^2", topic: "Measurement & 3D" },
+  { term: "Volume of a cuboid (4×5×6)", equation: "V = lwh", answer: "120", topic: "Measurement & 3D" },
+  { term: "Volume of a cylinder (r=3, h=10)", equation: "V = \\pi r^2 h", answer: "≈ 282.74", topic: "Measurement & 3D" },
+  { term: "Surface area of a sphere radius 5", equation: "A = 4\\pi r^2", answer: "≈ 314.16", topic: "Measurement & 3D" },
+  { term: "Volume of a sphere radius 5", equation: "V = \\tfrac{4}{3}\\pi r^3", answer: "≈ 523.6", topic: "Measurement & 3D" },
+  { term: "Pythagoras: Find hypotenuse if legs are 6, 8", equation: "c = \\sqrt{6^2 + 8^2}", answer: "c = 10", topic: "Measurement & 3D" },
+  { term: "Pythagoras: Find leg if hypotenuse 13, other leg 5", equation: "a = \\sqrt{13^2 - 5^2}", answer: "a = 12", topic: "Measurement & 3D" },
+  { term: "Convert 2 m³ to litres", equation: "1\\,\\text{m}^3 = 1000\\,\\text{L}", answer: "2000 L", topic: "Measurement & 3D" },
+  { term: "Convert 4500 cm³ to litres", equation: "1000\\,\\text{cm}^3 = 1\\,\\text{L}", answer: "4.5 L", topic: "Measurement & 3D" },
+  { term: "Perimeter of a semicircle radius 4 cm (ignore diameter)", equation: "P = \\pi r", answer: "≈ 12.57 cm", topic: "Measurement & 3D" },
+
+  // --- TRIGONOMETRY BASICS (15 cards) ---
+  { term: "sin 30°", equation: "\\sin 30^{\\circ}", answer: "0.5", topic: "Trigonometry" },
+  { term: "cos 60°", equation: "\\cos 60^{\\circ}", answer: "0.5", topic: "Trigonometry" },
+  { term: "tan 45°", equation: "\\tan 45^{\\circ}", answer: "1", topic: "Trigonometry" },
+  { term: "Find hypotenuse: opposite=5, angle=30°", equation: "h = \\tfrac{\\text{opp}}{\\sin \\theta}", answer: "h = 10", topic: "Trigonometry" },
+  { term: "Find adjacent: hypotenuse=10, angle=60°", equation: "a = h\\cos \\theta", answer: "a = 5", topic: "Trigonometry" },
+  { term: "Find opposite: adjacent=7, angle=40°", equation: "o = a\\tan \\theta", answer: "≈ 5.88", topic: "Trigonometry" },
+  { term: "Sine rule", equation: "\\tfrac{a}{\\sin A} = \\tfrac{b}{\\sin B} = \\tfrac{c}{\\sin C}", answer: "Relates sides & angles of any triangle", topic: "Trigonometry" },
+  { term: "Cosine rule", equation: "c^2 = a^2 + b^2 - 2ab\\cos C", answer: "Find a side or angle", topic: "Trigonometry" },
+  { term: "Area of triangle (Sine rule form)", equation: "A = \\tfrac12 ab\\sin C", answer: "Half product × sine included angle", topic: "Trigonometry" },
+  { term: "Find angle: sin A = 0.8", equation: "A = \\sin^{-1}(0.8)", answer: "≈ 53.13°", topic: "Trigonometry" },
+  { term: "Find side using sine rule: a=7, A=40°, B=75°", equation: "b = a\\,\\tfrac{\\sin B}{\\sin A}", answer: "≈ 10.46", topic: "Trigonometry" },
+  { term: "Find c using cosine rule: a=8, b=6, C=60°", equation: "c^2 = 8^2 + 6^2 - 2\\cdot 8\\cdot 6\\cdot \\cos 60^{\\circ}", answer: "c ≈ 6.93", topic: "Trigonometry" },
+  { term: "Find missing side in right triangle: hyp=15, angle=25°", equation: "a = h\\cos \\theta", answer: "≈ 13.59", topic: "Trigonometry" },
+  { term: "Find missing angle: opp=9, hyp=12", equation: "\\theta = \\sin^{-1}(9/12)", answer: "≈ 48.59°", topic: "Trigonometry" },
+  { term: "If tan θ = 3/4, find sin θ", equation: "\\sin \\theta = \\tfrac{\\text{opp}}{\\text{hyp}}", answer: "sin θ = 3/5", topic: "Trigonometry" },
+
+  // --- APPLIED GEOMETRY PROBLEMS (15 cards) ---
+  { term: "Find diagonal of rectangle 12×5", equation: "d = \\sqrt{12^2 + 5^2}", answer: "d = 13", topic: "Geometry" },
+  { term: "A ladder 8 m leans at 70°. How far up the wall?", equation: "h = L\\sin 70^{\\circ}", answer: "≈ 7.52 m", topic: "Geometry" },
+  { term: "A ladder 8 m leans at 70°. How far from wall?", equation: "x = L\\cos 70^{\\circ}", answer: "≈ 2.74 m", topic: "Geometry" },
+  { term: "Kite string 50 m at 40° to ground. Height?", equation: "h = 50\\sin 40^{\\circ}", answer: "≈ 32.14 m", topic: "Geometry" },
+  { term: "Ship sails 12 km east then 5 km north. Distance?", equation: "d = \\sqrt{12^2 + 5^2}", answer: "13 km", topic: "Geometry" },
+  { term: "Rise over 200 m slope at 12°", equation: "\\text{rise} = 200\\sin 12^{\\circ}", answer: "≈ 41.6 m", topic: "Geometry" },
+  { term: "Area of sector r=6 m, angle 90°", equation: "A = \\tfrac{\\theta}{360^{\\circ}}\\,\\pi r^2", answer: "≈ 28.27 m^2", topic: "Geometry" },
+  { term: "Arc length r=4 m, angle 120°", equation: "L = \\tfrac{\\theta}{360^{\\circ}}\\,2\\pi r", answer: "≈ 8.38 m", topic: "Geometry" },
+  { term: "Cone r=3, h=4. Slant height?", equation: "l = \\sqrt{r^2 + h^2}", answer: "l = 5", topic: "Measurement & 3D" },
+  { term: "Surface area of cone r=3, l=5", equation: "A = \\pi r l + \\pi r^2", answer: "≈ 75.40", topic: "Measurement & 3D" },
+  { term: "Volume of cone r=3, h=4", equation: "V = \\tfrac13 \\pi r^2 h", answer: "≈ 37.70", topic: "Measurement & 3D" },
+  { term: "Area of trapezium with bases 8, 5 and height 4", equation: "A = \\tfrac12 (8+5)\\cdot 4", answer: "26", topic: "Geometry" },
+  { term: "Height of equilateral triangle side 10", equation: "h = \\tfrac{\\sqrt{3}}{2}a", answer: "≈ 8.66", topic: "Geometry" },
+  { term: "Circumference of semicircle r=7 (incl. diameter)", equation: "C = \\pi r + 2r", answer: "≈ 36.99", topic: "Geometry" },
+  { term: "Convert 2.5 hours to minutes", equation: "t = 2.5\\times 60", answer: "150 minutes", topic: "Number & Arithmetic" },
+
+  // --- FUNCTIONS & GRAPHS (15 cards) ---
+  { term: "If f(x) = 2x + 5, find f(3)", equation: "f(x) = 2x + 5", answer: "11", topic: "Functions & Graphs" },
+  { term: "If f(x) = x² - 4, find f(−2)", equation: "f(x) = x^2 - 4", answer: "0", topic: "Functions & Graphs" },
+  { term: "If g(x) = √x, find g(9)", equation: "g(x) = \\sqrt{x}", answer: "3", topic: "Functions & Graphs" },
+  { term: "Find x if f(x) = 7, where f(x) = 3x − 2", equation: "3x - 2 = 7", answer: "x = 3", topic: "Functions & Graphs" },
+  { term: "Gradient of y = 4x + 7", equation: "m = 4", answer: "4", topic: "Functions & Graphs" },
+  { term: "y-intercept of y = 2x − 5", equation: "c = -5", answer: "-5", topic: "Functions & Graphs" },
+  { term: "Line through (0,3) with slope 2", equation: "y = mx + c", answer: "y = 2x + 3", topic: "Functions & Graphs" },
+  { term: "Gradient between (2,5) and (6,9)", equation: "m = \\tfrac{y_2 - y_1}{x_2 - x_1}", answer: "m = 1", topic: "Functions & Graphs" },
+  { term: "Midpoint between (2,3) and (8,9)", equation: "M = (\\tfrac{x_1+x_2}{2},\\tfrac{y_1+y_2}{2})", answer: "(5, 6)", topic: "Coordinate Geometry" },
+  { term: "Distance between (0,0) and (5,12)", equation: "d = \\sqrt{(5-0)^2 + (12-0)^2}", answer: "13", topic: "Coordinate Geometry" },
+  { term: "Roots of x² − 9 = 0", equation: "x^2 - 9 = 0", answer: "x = ±3", topic: "Algebra" },
+  { term: "Vertex of y = x² − 4x + 5", equation: "x_v = -\\tfrac{b}{2a}", answer: "(2,1)", topic: "Functions & Graphs" },
+  { term: "Axis of symmetry for y = 2x² + 8x + 3", equation: "x = -\\tfrac{b}{2a}", answer: "x = -2", topic: "Functions & Graphs" },
+  { term: "If y = 3x², find y when x = −4", equation: "y = 3x^2", answer: "48", topic: "Functions & Graphs" },
+  { term: "If y = 2x + 1, find x when y = 9", equation: "2x + 1 = 9", answer: "x = 4", topic: "Functions & Graphs" },
+
+  // --- PROBABILITY BASICS (15 cards) ---
+  { term: "P(rolling a 4 on a fair die)", equation: "P = 1/6", answer: "≈ 0.167", topic: "Probability" },
+  { term: "P(heads on a fair coin)", equation: "P = 1/2", answer: "0.5", topic: "Probability" },
+  { term: "P(even number on a die)", equation: "P = 3/6", answer: "0.5", topic: "Probability" },
+  { term: "P(number > 4 on a die)", equation: "P = 2/6", answer: "≈ 0.333", topic: "Probability" },
+  { term: "P(not rolling a 6)", equation: "P = 5/6", answer: "≈ 0.833", topic: "Probability" },
+  { term: "P(red card from a standard deck)", equation: "P = 26/52", answer: "0.5", topic: "Probability" },
+  { term: "P(drawing an Ace)", equation: "P = 4/52", answer: "≈ 0.077", topic: "Probability" },
+  { term: "P(2 heads in 2 flips)", equation: "P = (1/2)\\times(1/2)", answer: "0.25", topic: "Probability" },
+  { term: "P(at least 1 head in 2 flips)", equation: "1 - P(0\\ \\text{heads})", answer: "0.75", topic: "Probability" },
+  { term: "P(blue from bag with 3 blue, 5 red)", equation: "P = 3/8", answer: "0.375", topic: "Probability" },
+  { term: "Expected sixes in 12 die rolls", equation: "E = n\\,p", answer: "2", topic: "Probability" },
+  { term: "Complement rule", equation: "P(A') = 1 - P(A)", answer: "Probability of not A", topic: "Probability" },
+  { term: "P(roll 2 then 3 on a die)", equation: "P = (1/6)\\times(1/6)", answer: "1/36", topic: "Probability" },
+  { term: "P(heart or club from deck)", equation: "P = 26/52", answer: "0.5", topic: "Probability" },
+  { term: "P(queen then king without replacement)", equation: "P = (4/52)\\times(4/51)", answer: "≈ 0.006", topic: "Probability" },
+
+  // --- STATISTICS (15 cards) ---
+  { term: "Mean of 4, 6, 8", equation: "\\bar{x} = \\tfrac{4+6+8}{3}", answer: "6", topic: "Statistics" },
+  { term: "Median of 3, 7, 9, 12, 14", equation: "\\text{median} = \\text{middle value}", answer: "9", topic: "Statistics" },
+  { term: "Mode of 4, 4, 5, 6, 7", equation: "\\text{mode} = \\text{most frequent}", answer: "4", topic: "Statistics" },
+  { term: "Range of 5, 8, 12, 15", equation: "\\text{Range} = \\max - \\min", answer: "10", topic: "Statistics" },
+  { term: "Mean of 10, 15, 20, 25", equation: "\\bar{x} = \\tfrac{\\Sigma x}{n}", answer: "17.5", topic: "Statistics" },
+  { term: "Median of 8, 12, 14, 16", equation: "\\text{median} = \\tfrac{12+14}{2}", answer: "13", topic: "Statistics" },
+  { term: "Mean with frequencies f=3,5,2 for x=2,4,6", equation: "\\bar{x} = \\tfrac{\\Sigma f x}{\\Sigma f}", answer: "4", topic: "Statistics" },
+  { term: "If Σx = 120 and n = 8, mean?", equation: "\\bar{x} = \\tfrac{\\Sigma x}{n}", answer: "15", topic: "Statistics" },
+  { term: "If Σx = 300, Σx²=9600, n=10: variance", equation: "\\sigma^2 = \\tfrac{\\Sigma x^2}{n} - \\bar{x}^2", answer: "60", topic: "Statistics" },
+  { term: "Std. dev. from variance 25", equation: "\\sigma = \\sqrt{\\sigma^2}", answer: "5", topic: "Statistics" },
+  { term: "Positively skewed data", equation: "\\text{Mean} > \\text{Median}", answer: "Tail to right", topic: "Statistics" },
+  { term: "Negatively skewed data", equation: "\\text{Mean} < \\text{Median}", answer: "Tail to left", topic: "Statistics" },
+  { term: "Cumulative frequency graph use", equation: "\\text{Medians, quartiles}", answer: "Running totals", topic: "Statistics" },
+  { term: "Box plot key points", equation: "\\{\\min, Q_1, \\text{Med}, Q_3, \\max\\}", answer: "Spread & symmetry", topic: "Statistics" },
+  { term: "Histogram vs bar chart", equation: "\\text{Histogram: continuous data}", answer: "Bars touch; bar chart: discrete", topic: "Statistics" },
+
+  // --- REAL-WORLD APPLICATIONS (5 cards) ---
+  { term: "Speed formula", equation: "v = \\tfrac{d}{t}", answer: "Distance ÷ Time", topic: "Applied" },
+  { term: "If car travels 150 km in 3 hours, speed?", equation: "v = \\tfrac{150}{3}", answer: "50 km/h", topic: "Applied" },
+  { term: "If speed = 80 km/h, time = 2.5 h, distance?", equation: "d = v t", answer: "200 km", topic: "Applied" },
+  { term: "If v = 10 m/s, t = 8 s, distance?", equation: "d = 10\\times 8", answer: "80 m", topic: "Applied" },
+  { term: "If v = 12 m/s, d = 240 m, find time", equation: "t = \\tfrac{d}{v}", answer: "20 s", topic: "Applied" },
+
+  // --- COORDINATE GEOMETRY (15 cards) ---
+  { term: "Slope between (4,7) and (8,15)", equation: "m = \\tfrac{15-7}{8-4}", answer: "m = 2", topic: "Coordinate Geometry" },
+  { term: "Line slope 3 through (2,5)", equation: "y - y_1 = m(x - x_1)", answer: "y = 3x - 1", topic: "Coordinate Geometry" },
+  { term: "Line through (0,−4) and (4,0)", equation: "m = \\tfrac{0+4}{4-0}", answer: "m=1, y = x - 4", topic: "Coordinate Geometry" },
+  { term: "Perpendicular slope to y = 2x + 3", equation: "m_\\perp = -\\tfrac{1}{m}", answer: "−1/2", topic: "Coordinate Geometry" },
+  { term: "Are y = 2x + 5 and y = 2x − 1 parallel?", equation: "m_1 = m_2", answer: "Yes", topic: "Coordinate Geometry" },
+  { term: "Midpoint between (−3,4) and (5,−2)", equation: "M = (\\tfrac{-3+5}{2},\\tfrac{4-2}{2})", answer: "(1,1)", topic: "Coordinate Geometry" },
+  { term: "Distance between (2,3) and (5,7)", equation: "d = \\sqrt{(5-2)^2 + (7-3)^2}", answer: "5", topic: "Coordinate Geometry" },
+  { term: "Length from (0,0) to (7,24)", equation: "d = \\sqrt{7^2 + 24^2}", answer: "25", topic: "Coordinate Geometry" },
+  { term: "Horizontal line through (2,−5)", equation: "y = c", answer: "y = −5", topic: "Coordinate Geometry" },
+  { term: "Vertical line through (−4,3)", equation: "x = c", answer: "x = −4", topic: "Coordinate Geometry" },
+  { term: "Slope through (2,3) and (2,7)", equation: "m = \\tfrac{7-3}{2-2}", answer: "Undefined (vertical)", topic: "Coordinate Geometry" },
+  { term: "Slope through (1,5) and (7,5)", equation: "m = \\tfrac{5-5}{7-1}", answer: "0 (horizontal)", topic: "Coordinate Geometry" },
+  { term: "x-intercept of y = 2x − 6", equation: "0 = 2x - 6", answer: "x = 3", topic: "Coordinate Geometry" },
+  { term: "y-intercept of 4x + 2y = 10", equation: "4(0) + 2y = 10", answer: "y = 5", topic: "Coordinate Geometry" },
+  { term: "Line through (3,4) // to y = −2x + 1", equation: "y - 4 = -2(x - 3)", answer: "y = -2x + 10", topic: "Coordinate Geometry" },
+
+  // --- ALGEBRA REVIEW (10 cards) ---
+  { term: "Expand (x + 4)(x + 3)", equation: "(x + 4)(x + 3)", answer: "x^2 + 7x + 12", topic: "Algebra" },
+  { term: "Expand (x − 5)²", equation: "(x - 5)^2", answer: "x^2 - 10x + 25", topic: "Algebra" },
+  { term: "Factorise x² + 7x + 12", equation: "x^2 + 7x + 12", answer: "(x + 3)(x + 4)", topic: "Algebra" },
+  { term: "Factorise x² − 9", equation: "x^2 - 9", answer: "(x - 3)(x + 3)", topic: "Algebra" },
+  { term: "Solve x² + 5x + 6 = 0", equation: "x^2 + 5x + 6 = 0", answer: "x = −2 or −3", topic: "Algebra" },
+  { term: "Solve 3x − 7 = 11", equation: "3x - 7 = 11", answer: "x = 6", topic: "Algebra" },
+  { term: "Simplify (2x²y)(3xy³)", equation: "(2x^2y)(3xy^3)", answer: "6x^3 y^4", topic: "Algebra" },
+  { term: "Simplify (x³)²", equation: "(x^3)^2", answer: "x^6", topic: "Algebra" },
+  { term: "Simplify 5a²b / 10ab³", equation: "\\tfrac{5a^2 b}{10 a b^3}", answer: "\\tfrac{1}{2} a b^{-2}", topic: "Algebra" },
+  { term: "Solve for x: 2x + 3 = 7", equation: "2x + 3 = 7", answer: "x = 2", topic: "Algebra" },
+
+  // --- WORD PROBLEMS (10 cards) ---
+  { term: "A car travels 240 km at 80 km/h. Time?", equation: "t = \\tfrac{d}{v}", answer: "3 hours", topic: "Word Problems" },
+  { term: "Tank fills at 50 L/min. Time for 600 L?", equation: "t = \\tfrac{600}{50}", answer: "12 min", topic: "Word Problems" },
+  { term: "3 pens for €2.40. Price per pen?", equation: "p = \\tfrac{2.40}{3}", answer: "€0.80", topic: "Word Problems" },
+  { term: "Phone €500 → €450. % decrease?", equation: "\\tfrac{50}{500}\\times 100\\%", answer: "10%", topic: "Word Problems" },
+  { term: "Item €60, VAT 23%. Total price?", equation: "P = 60\\times 1.23", answer: "€73.80", topic: "Word Problems" },
+  { term: "Train speed 90 km/h, time 2.5 h. Distance?", equation: "d = v t", answer: "225 km", topic: "Word Problems" },
+  { term: "Shirt €40 reduced 15%. New price?", equation: "P = 40\\times 0.85", answer: "€34", topic: "Word Problems" },
+  { term: "5 kg apples cost €12.50. €/kg?", equation: "p = \\tfrac{12.50}{5}", answer: "€2.50/kg", topic: "Word Problems" },
+  { term: "€1 = $1.12. Convert €250 to USD", equation: "\\$ = 250\\times 1.12", answer: "$280", topic: "Word Problems" },
+  { term: "€500 TV reduced 30%. Sale price?", equation: "P = 500\\times 0.7", answer: "€350", topic: "Word Problems" },
+
+  // ==== BATCH 1 of 4 (50 CARDS) ====
+  // --- ALGEBRA: INDICES & SURDS (10) ---
+  { term: "Law of indices: a^m × a^n", equation: "a^m\\, a^n = a^{m+n}", answer: "Add powers when multiplying same base.", topic: "Algebra" },
+  { term: "Law of indices: a^m ÷ a^n", equation: "\\tfrac{a^m}{a^n} = a^{m-n}", answer: "Subtract powers when dividing same base.", topic: "Algebra" },
+  { term: "(a^m)^n equals…", equation: "(a^m)^n = a^{mn}", answer: "Multiply the powers.", topic: "Algebra" },
+  { term: "Negative indices rule", equation: "a^{-n} = \\tfrac{1}{a^n}", answer: "Negative power means reciprocal.", topic: "Algebra" },
+  { term: "Fractional index rule", equation: "a^{\\tfrac{p}{q}} = \\sqrt[q]{a^p}", answer: "Power p then qth root.", topic: "Algebra" },
+  { term: "Simplify: √50", equation: "\\sqrt{50} = \\sqrt{25\\cdot 2}", answer: "5\\sqrt{2}", topic: "Algebra" },
+  { term: "Rationalise: 1/√3", equation: "\\tfrac{1}{\\sqrt{3}}\\cdot\\tfrac{\\sqrt{3}}{\\sqrt{3}}", answer: "\\tfrac{\\sqrt{3}}{3}", topic: "Algebra" },
+  { term: "Rationalise: 3/(2+√5)", equation: "\\tfrac{3}{2+\\sqrt{5}}\\cdot\\tfrac{2-\\sqrt{5}}{2-\\sqrt{5}}", answer: "3\\sqrt{5}-6", topic: "Algebra" },
+  { term: "Simplify: (9x^4y^2)^{1/2}", equation: "(9x^4y^2)^{1/2}", answer: "3x^2y (x,y\\ge 0)", topic: "Algebra" },
+  { term: "Simplify: √(12a³)", equation: "\\sqrt{12a^3} = \\sqrt{4a^2}\\,\\sqrt{3a}", answer: "2a\\sqrt{3a}", topic: "Algebra" },
+
+  // --- ALGEBRA: LINEAR & FRACTION EQUATIONS (10) ---
+  { term: "Solve: (2x−3)/5 = 7", equation: "\\tfrac{2x-3}{5} = 7", answer: "x = 19", topic: "Algebra" },
+  { term: "Solve: 3(2x−1) = 5x+8", equation: "3(2x-1)=5x+8", answer: "x = 11", topic: "Algebra" },
+  { term: "Solve: x/3 + x/2 = 10", equation: "\\tfrac{x}{3}+\\tfrac{x}{2}=10", answer: "x = 12", topic: "Algebra" },
+  { term: "Solve: 5/x = 2", equation: "\\tfrac{5}{x}=2", answer: "x = 2.5", topic: "Algebra" },
+  { term: "Solve: 4 − 3/x = 1", equation: "4 - \\tfrac{3}{x} = 1", answer: "x = 1", topic: "Algebra" },
+  { term: "Solve: (2x+1)/x = 5", equation: "\\tfrac{2x+1}{x}=5", answer: "x = 1/3", topic: "Algebra" },
+  { term: "Solve: (x−2)/4 − (x+1)/3 = 1", equation: "\\tfrac{x-2}{4}-\\tfrac{x+1}{3}=1", answer: "x = −6", topic: "Algebra" },
+  { term: "Solve: 5x − (2x − 7) = 16", equation: "5x-(2x-7)=16", answer: "x = 3", topic: "Algebra" },
+  { term: "Solve: 7 − 2(3x − 4) = 1", equation: "7-2(3x-4)=1", answer: "x = 2", topic: "Algebra" },
+  { term: "Solve: (x−1)/2 = (x+5)/4", equation: "\\tfrac{x-1}{2} = \\tfrac{x+5}{4}", answer: "x = 7", topic: "Algebra" },
+
+  // --- ALGEBRA: INEQUALITIES (5) ---
+  { term: "Solve inequality: 3x − 5 < 7", equation: "3x - 5 < 7", answer: "x < 4", topic: "Algebra" },
+  { term: "Solve inequality: 2 − x ≤ 5", equation: "2 - x \\le 5", answer: "x ≥ −3", topic: "Algebra" },
+  { term: "Solve: −2 ≤ x+1 < 5", equation: "-2 \\le x+1 < 5", answer: "−3 ≤ x < 4", topic: "Algebra" },
+  { term: "Solve: (x−2)/3 > 1", equation: "\\tfrac{x-2}{3} > 1", answer: "x > 5", topic: "Algebra" },
+  { term: "Graph on number line: x ≥ 2", equation: "x \\ge 2", answer: "Closed dot at 2, shade right", topic: "Algebra" },
+
+  // --- ALGEBRA: SIMULTANEOUS EQUATIONS (7) ---
+  { term: "Solve: x + y = 12; x − y = 4", equation: "\\begin{cases}x+y=12\\\\x-y=4\\end{cases}", answer: "x=8, y=4", topic: "Algebra" },
+  { term: "Solve: 2x + 3y = 13; x − y = 1", equation: "\\begin{cases}2x+3y=13\\\\x-y=1\\end{cases}", answer: "x=4, y=3", topic: "Algebra" },
+  { term: "Solve: 3x − y = 7; 2x + y = 11", equation: "\\begin{cases}3x-y=7\\\\2x+y=11\\end{cases}", answer: "x=3.6, y=2.6", topic: "Algebra" },
+  { term: "Solve: 4x + 5y = 2; 2x − y = 7", equation: "\\begin{cases}4x+5y=2\\\\2x-y=7\\end{cases}", answer: "x=\\tfrac{37}{14}, y=\\tfrac{9}{7}", topic: "Algebra" },
+  { term: "Solve: x+2y=10; 3x−2y=2", equation: "\\begin{cases}x+2y=10\\\\3x-2y=2\\end{cases}", answer: "x=3, y=3.5", topic: "Algebra" },
+  { term: "Solve: 5x+2y=1; 3x−2y=11", equation: "\\begin{cases}5x+2y=1\\\\3x-2y=11\\end{cases}", answer: "x=1.5, y=-3.25", topic: "Algebra" },
+  { term: "Check (same system) result", equation: "8x=12 \\Rightarrow x=1.5", answer: "Then y = −3.25", topic: "Algebra" },
+
+  // --- ALGEBRA: QUADRATICS (10) ---
+  { term: "Quadratic formula", equation: "x = \\tfrac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}", answer: "Solves ax²+bx+c=0", topic: "Algebra" },
+  { term: "Discriminant meaning", equation: "\\Delta = b^2 - 4ac", answer: "Δ>0 two; Δ=0 double; Δ<0 none", topic: "Algebra" },
+  { term: "Solve: x² − 7x + 12 = 0", equation: "x^2 - 7x + 12 = 0", answer: "x=3 or 4", topic: "Algebra" },
+  { term: "Solve: 2x² + x − 3 = 0", equation: "2x^2 + x - 3 = 0", answer: "x=1 or −3/2", topic: "Algebra" },
+  { term: "Complete the square: x² + 6x + 5", equation: "x^2 + 6x + 5", answer: "(x+3)^2 - 4", topic: "Algebra" },
+  { term: "Vertex form of y = x² − 4x + 1", equation: "y = x^2 - 4x + 1", answer: "y = (x-2)^2 - 3", topic: "Functions & Graphs" },
+  { term: "Roots of x² = 9", equation: "x^2 = 9", answer: "x = ±3", topic: "Algebra" },
+  { term: "Solve: x(x − 5) = 0", equation: "x(x-5)=0", answer: "x=0 or 5", topic: "Algebra" },
+  { term: "Factorise: x² − x − 12", equation: "x^2 - x - 12", answer: "(x-4)(x+3)", topic: "Algebra" },
+  { term: "Solve: 3x² − 12x = 0", equation: "3x^2 - 12x = 0", answer: "x=0 or 4", topic: "Algebra" },
+
+  // --- NUMBER & RATIO / PROPORTION (8) ---
+  { term: "Simplify ratio 18:30", equation: "\\tfrac{18}{30} = \\tfrac{3}{5}", answer: "3:5", topic: "Number & Arithmetic" },
+  { term: "Divide €240 in ratio 2:3", equation: "\\text{Total parts }=5", answer: "€96 and €144", topic: "Number & Arithmetic" },
+  { term: "Direct proportion y ∝ x", equation: "y = kx", answer: "k constant", topic: "Number & Arithmetic" },
+  { term: "Inverse proportion y ∝ 1/x", equation: "y = \\tfrac{k}{x}", answer: "y decreases as x increases", topic: "Number & Arithmetic" },
+  { term: "Compound increase 10% on €500", equation: "500\\times 1.10", answer: "€550", topic: "Number & Arithmetic" },
+  { term: "Compound decrease 8% on €250", equation: "250\\times 0.92", answer: "€230", topic: "Number & Arithmetic" },
+  { term: "Simple interest 5% of €800 for 3 y", equation: "I = Prt", answer: "€120", topic: "Number & Arithmetic" },
+  { term: "Best value: 12 pens €6 or 20 pens €9?", equation: "0.50\\,vs\\,0.45", answer: "€9 pack better", topic: "Word Problems" },
+
+  // ==== BATCH 2 of 4 (50 CARDS) ====
+  // --- GEOMETRY & MENSURATION (10) ---
+  { term: "Area of a kite d₁=8, d₂=6 cm", equation: "A = \\tfrac{1}{2} d_1 d_2", answer: "24 cm^2", topic: "Geometry" },
+  { term: "Area of rhombus side 10, height 6", equation: "A = b h", answer: "60 cm^2", topic: "Geometry" },
+  { term: "Perimeter of sector r=5 cm, 60°", equation: "P = 2r + \\tfrac{\\theta}{360^{\\circ}}2\\pi r", answer: "10 + \\tfrac{5\\pi}{3} cm", topic: "Geometry" },
+  { term: "Area of annulus R=7, r=3", equation: "A = \\pi(R^2 - r^2)", answer: "40\\pi ≈ 125.66 cm^2", topic: "Geometry" },
+  { term: "Volume of prism A_b=18, L=12", equation: "V = A_b L", answer: "216 cm^3", topic: "Measurement & 3D" },
+  { term: "Surface area of cylinder r=4, h=9", equation: "A = 2\\pi r^2 + 2\\pi r h", answer: "104\\pi cm^2", topic: "Measurement & 3D" },
+  { term: "Volume of pyramid A_b=30, h=9", equation: "V = \\tfrac{1}{3} A_b h", answer: "90 cm^3", topic: "Measurement & 3D" },
+  { term: "Similar shapes: k=1.5 area factor", equation: "A_2/A_1 = k^2", answer: "2.25", topic: "Geometry" },
+  { term: "Similar shapes: k=0.5 volume factor", equation: "V_2/V_1 = k^3", answer: "0.125", topic: "Measurement & 3D" },
+  { term: "Exterior angle theorem", equation: "\\text{Ext} = \\text{sum of two remote interior}", answer: "Key triangle fact", topic: "Geometry" },
+
+  // --- TRIGONOMETRY (10) ---
+  { term: "Right tri: adj=9, hyp=15. cos θ", equation: "\\cos \\theta = \\tfrac{9}{15}", answer: "0.6", topic: "Trigonometry" },
+  { term: "Right tri: opp=7, hyp=25. sin θ", equation: "\\sin \\theta = \\tfrac{7}{25}", answer: "0.28", topic: "Trigonometry" },
+  { term: "Find θ if tan θ = 0.75", equation: "\\theta = \\tan^{-1}(0.75)", answer: "≈ 36.87°", topic: "Trigonometry" },
+  { term: "Building height 30 m away, elev 40°", equation: "h = 30\\tan 40^{\\circ}", answer: "≈ 25.2 m", topic: "Trigonometry" },
+  { term: "Distance across river (120,90,∠58°)", equation: "c^2 = a^2 + b^2 - 2ab\\cos C", answer: "≈ 105.1 m", topic: "Trigonometry" },
+  { term: "Area: sides 8,11, included 35°", equation: "A = \\tfrac{1}{2} ab\\sin C", answer: "≈ 25.2", topic: "Trigonometry" },
+  { term: "Find a: A=42°, B=73°, b=15", equation: "\\tfrac{a}{\\sin 42^{\\circ}} = \\tfrac{15}{\\sin 73^{\\circ}}", answer: "a ≈ 10.4", topic: "Trigonometry" },
+  { term: "Find B: a=7, b=9, A=50°", equation: "\\tfrac{\\sin B}{b} = \\tfrac{\\sin 50^{\\circ}}{a}", answer: "B ≈ 74.3°", topic: "Trigonometry" },
+  { term: "Exact value: sin 45°", equation: "\\sin 45^{\\circ}", answer: "\\tfrac{\\sqrt{2}}{2}", topic: "Trigonometry" },
+  { term: "Exact value: cos 30°", equation: "\\cos 30^{\\circ}", answer: "\\tfrac{\\sqrt{3}}{2}", topic: "Trigonometry" },
+
+  // --- COORDINATE GEOMETRY (8) ---
+  { term: "Gradient through (−3,4) & (5,−2)", equation: "m = \\tfrac{-2-4}{5+3}", answer: "−3/4", topic: "Coordinate Geometry" },
+  { term: "Distance between (−1,−2) & (6,2)", equation: "d = \\sqrt{(6+1)^2 + (2+2)^2}", answer: "\\sqrt{65} ≈ 8.06", topic: "Coordinate Geometry" },
+  { term: "Midpoint of (−4,7) & (10,−1)", equation: "M = (\\tfrac{-4+10}{2},\\tfrac{7-1}{2})", answer: "(3,3)", topic: "Coordinate Geometry" },
+  { term: "Line through (2,−1) slope −3", equation: "y - (-1) = -3(x - 2)", answer: "y = −3x + 5", topic: "Coordinate Geometry" },
+  { term: "Line through (−2,5) & (4,−1)", equation: "m = \\tfrac{-1-5}{4+2}", answer: "m = −1; y = −x + 3", topic: "Coordinate Geometry" },
+  { term: "Perp. slope to 3x − 2y = 7", equation: "y = \\tfrac{3}{2}x - \\tfrac{7}{2}", answer: "m_\\perp = −\\tfrac{2}{3}", topic: "Coordinate Geometry" },
+  { term: "Circle centre (0,0) radius 5", equation: "x^2 + y^2 = r^2", answer: "x^2 + y^2 = 25", topic: "Coordinate Geometry" },
+  { term: "Circle centre (3,−2) radius 4", equation: "(x-3)^2 + (y+2)^2 = 16", answer: "Standard form", topic: "Coordinate Geometry" },
+
+  // --- FUNCTIONS & GRAPHS (7) ---
+  { term: "Slope of y = −5x + 12", equation: "m = -5", answer: "Gradient −5", topic: "Functions & Graphs" },
+  { term: "y-intercept of y = 7x − 9", equation: "c = -9", answer: "(0,−9)", topic: "Functions & Graphs" },
+  { term: "Solve y=0 for y = 2x − 8", equation: "0 = 2x - 8", answer: "x = 4", topic: "Functions & Graphs" },
+  { term: "Vertex of y = x² + 6x + 5", equation: "x_v = -\\tfrac{6}{2}", answer: "(−3, −4)", topic: "Functions & Graphs" },
+  { term: "Range of y = x² + 3", equation: "y_{\\min} = 3", answer: "y ≥ 3", topic: "Functions & Graphs" },
+  { term: "Composition: f(x)=2x+1, g(x)=x². (g∘f)(2)", equation: "g(f(2)) = (2\\cdot2+1)^2", answer: "25", topic: "Functions & Graphs" },
+  { term: "Is y = 3x − 4 invertible?", equation: "m \\ne 0", answer: "Yes; inverse x = (y+4)/3", topic: "Functions & Graphs" },
+
+  // --- PROBABILITY (8) ---
+  { term: "P(H then 6) coin then die", equation: "P(H)\\cdot P(6) = \\tfrac12 \\cdot \\tfrac16", answer: "1/12", topic: "Probability" },
+  { term: "Bag 5R,3B: P(B then R) w/o repl.", equation: "\\tfrac{3}{8}\\cdot\\tfrac{5}{7}", answer: "15/56", topic: "Probability" },
+  { term: "Two dice sum to 7", equation: "\\tfrac{6}{36}", answer: "1/6", topic: "Probability" },
+  { term: "At least one head in 3 flips", equation: "1 - (\\tfrac12)^3", answer: "7/8", topic: "Probability" },
+  { term: "Choose 2 from 6 students", equation: "\\binom{6}{2}", answer: "15", topic: "Probability" },
+  { term: "Choose 3 from 8 books", equation: "\\binom{8}{3}", answer: "56", topic: "Probability" },
+  { term: "Codes: 2 letters, 3 digits", equation: "26^2\\cdot 10^3", answer: "676,000", topic: "Probability" },
+  { term: "Mutually exclusive: P(A∪B)", equation: "P(A)+P(B)", answer: "0.8", topic: "Probability" },
+
+  // --- STATISTICS (7) ---
+  { term: "Mean of 5,7,9,9,10", equation: "\\bar{x} = \\tfrac{\\Sigma x}{n}", answer: "8", topic: "Statistics" },
+  { term: "Median of 4,6,7,12,14,18", equation: "\\text{median} = \\tfrac{7+12}{2}", answer: "9.5", topic: "Statistics" },
+  { term: "Mode of 2,3,3,3,6,7,7", equation: "\\text{mode}", answer: "3", topic: "Statistics" },
+  { term: "Range of 12,17,19,25,28", equation: "28-12", answer: "16", topic: "Statistics" },
+  { term: "IQR of 1,2,4,7,8,9,12,13", equation: "Q_1=3,\\ Q_3=10.5", answer: "IQR = 7.5", topic: "Statistics" },
+  { term: "Weighted mean 60%:72, 40%:85", equation: "0.6\\cdot72 + 0.4\\cdot85", answer: "77.2", topic: "Statistics" },
+  { term: "Mean from freq: x=1,2,4; f=2,3,5", equation: "\\bar{x} = \\tfrac{\\Sigma fx}{\\Sigma f}", answer: "2.8", topic: "Statistics" },
+
+  // ==== BATCH 3 of 4 (50 CARDS) ====
+  // --- ALGEBRA: SEQUENCES & SERIES (10) ---
+  { term: "nth term arithmetic a₁=5, d=3", equation: "u_n = a_1 + (n-1)d", answer: "u_n = 3n + 2", topic: "Algebra" },
+  { term: "15th term of 4,7,10,…", equation: "u_{15} = 4 + 14\\cdot 3", answer: "46", topic: "Algebra" },
+  { term: "Sum first 20 terms a₁=8, d=5", equation: "S_n = \\tfrac{n}{2}(2a_1+(n-1)d)", answer: "1110", topic: "Algebra" },
+  { term: "Geometric u₁=2, r=3: 5th term", equation: "u_n = a_1 r^{n-1}", answer: "162", topic: "Algebra" },
+  { term: "Geometric sum a₁=5, r=2, n=6", equation: "S_n = a\\,\\tfrac{r^n-1}{r-1}", answer: "315", topic: "Algebra" },
+  { term: "Arithmetic mean of 8 and 14", equation: "\\tfrac{a+b}{2}", answer: "11", topic: "Algebra" },
+  { term: "Find d from 2nd=10, 7th=25", equation: "a+d=10,\\ a+6d=25", answer: "d=3", topic: "Algebra" },
+  { term: "Find r: u₁=81, u₄=3", equation: "81 r^3 = 3", answer: "r=1/3", topic: "Algebra" },
+  { term: "Geometric mean of 4 and 16", equation: "\\sqrt{ab}", answer: "8", topic: "Algebra" },
+  { term: "Sum to infinity a=12, r=1/4", equation: "S_\\infty = \\tfrac{a}{1-r}", answer: "16", topic: "Algebra" },
+
+  // --- ALGEBRA: FACTORISATION & EXPANSION (10) ---
+  { term: "Expand (x+5)(x−2)", equation: "(x+5)(x-2)", answer: "x^2 + 3x - 10", topic: "Algebra" },
+  { term: "Expand (3x−4)²", equation: "(3x-4)^2", answer: "9x^2 - 24x + 16", topic: "Algebra" },
+  { term: "Factorise x² + 7x + 10", equation: "x^2 + 7x + 10", answer: "(x+5)(x+2)", topic: "Algebra" },
+  { term: "Factorise 4x² − 25", equation: "4x^2 - 25", answer: "(2x-5)(2x+5)", topic: "Algebra" },
+  { term: "Factorise x² − 6x + 9", equation: "x^2 - 6x + 9", answer: "(x-3)^2", topic: "Algebra" },
+  { term: "Expand (x+2)(x²−x+3)", equation: "(x+2)(x^2-x+3)", answer: "x^3 + x^2 + x + 6", topic: "Algebra" },
+  { term: "Factorise 3x² − 15x", equation: "3x^2 - 15x", answer: "3x(x-5)", topic: "Algebra" },
+  { term: "Factorise completely 2x² − 8x − 10", equation: "2x^2 - 8x - 10", answer: "2(x-5)(x+1)", topic: "Algebra" },
+  { term: "Expand (2x+3y)(x−y)", equation: "(2x+3y)(x-y)", answer: "2x^2 + xy - 3y^2", topic: "Algebra" },
+  { term: "Factorise 6x²y − 9xy²", equation: "6x^2y - 9xy^2", answer: "3xy(2x-3y)", topic: "Algebra" },
+
+  // --- TRANSFORMATIONS & SYMMETRY (5) ---
+  { term: "Reflect (3,−5) in x-axis", equation: "(x,y)\\to(x,-y)", answer: "(3,5)", topic: "Geometry" },
+  { term: "Reflect (3,−5) in y-axis", equation: "(x,y)\\to(-x,y)", answer: "(−3,−5)", topic: "Geometry" },
+  { term: "Rotate 90° anticlockwise: (2,1)", equation: "(x,y)\\to(-y,x)", answer: "(−1,2)", topic: "Geometry" },
+  { term: "Translate by (4,−2): (−3,7)", equation: "(x+4, y-2)", answer: "(1,5)", topic: "Geometry" },
+  { term: "Enlarge k=3: (2,−1)", equation: "(kx,ky)", answer: "(6,−3)", topic: "Geometry" },
+
+  // --- APPLIED MATHS PROBLEMS (15) ---
+  { term: "Speed: 120 km in 3 h", equation: "v = \\tfrac{d}{t}", answer: "40 km/h", topic: "Applied" },
+  { term: "Time: 150 km at 60 km/h", equation: "t = \\tfrac{d}{v}", answer: "2.5 h", topic: "Applied" },
+  { term: "Density m=250 g, V=50 cm³", equation: "\\rho = \\tfrac{m}{V}", answer: "5 g/cm^3", topic: "Applied" },
+  { term: "Pressure F=200 N, A=0.5 m²", equation: "p = \\tfrac{F}{A}", answer: "400 Pa", topic: "Applied" },
+  { term: "Force m=20 kg, a=3 m/s²", equation: "F = ma", answer: "60 N", topic: "Applied" },
+  { term: "Weight of 15 kg (g=9.8)", equation: "W = mg", answer: "147 N", topic: "Applied" },
+  { term: "Work F=50 N over d=12 m", equation: "W = Fd", answer: "600 J", topic: "Applied" },
+  { term: "Kinetic energy m=2 kg, v=5", equation: "E_k = \\tfrac12 m v^2", answer: "25 J", topic: "Applied" },
+  { term: "Potential energy m=4 kg, h=10", equation: "E_p = mgh", answer: "392 J", topic: "Applied" },
+  { term: "Momentum m=3 kg, v=6", equation: "p = mv", answer: "18 kg·m/s", topic: "Applied" },
+  { term: "Impulse F=40 N, t=0.5 s", equation: "J = Ft", answer: "20 N·s", topic: "Applied" },
+  { term: "Power W=1500 J in 30 s", equation: "P = \\tfrac{W}{t}", answer: "50 W", topic: "Applied" },
+  { term: "Acceleration u=0, v=20, t=5", equation: "a = \\tfrac{v-u}{t}", answer: "4 m/s^2", topic: "Applied" },
+  { term: "SUVAT: u=5, a=3, t=4; s=?", equation: "s = ut + \\tfrac12 at^2", answer: "44 m", topic: "Applied" },
+  { term: "SUVAT: u=0, s=50, a=2; v=?", equation: "v^2 = u^2 + 2as", answer: "≈ 14.14 m/s", topic: "Applied" },
+
+  // --- MISC. MATHS FACTS (5) ---
+  { term: "Value of π (4 d.p.)", equation: "\\pi \\approx 3.1416", answer: "Irrational constant", topic: "Facts" },
+  { term: "Golden ratio φ", equation: "\\varphi = \\tfrac{1+\\sqrt{5}}{2}", answer: "≈ 1.6180", topic: "Facts" },
+  { term: "Degrees in a circle", equation: "360^{\\circ}", answer: "One full revolution", topic: "Facts" },
+  { term: "Radians in a circle", equation: "2\\pi", answer: "One full revolution", topic: "Facts" },
+  { term: "1 radian in degrees", equation: "\\tfrac{180^{\\circ}}{\\pi}", answer: "≈ 57.2958°", topic: "Facts" },
+
+  // ==== BATCH 4 of 4 (50 CARDS) ====
+  // --- PROBABILITY & COMBINATORICS (10) ---
+  { term: "P(rolling a prime on a die)", equation: "3/6", answer: "0.5", topic: "Probability" },
+  { term: "P(two heads in two flips)", equation: "(1/2)^2", answer: "1/4", topic: "Probability" },
+  { term: "P(ace from 52 cards)", equation: "4/52", answer: "1/13", topic: "Probability" },
+  { term: "3-digit numbers from 1–9, no repeat", equation: "9\\cdot 8\\cdot 7", answer: "504", topic: "Probability" },
+  { term: "Arrange 5 books", equation: "5!", answer: "120", topic: "Combinatorics" },
+  { term: "Choose 4 from 10 students", equation: "\\binom{10}{4}", answer: "210", topic: "Probability" },
+  { term: "P(sum 8 on two dice)", equation: "5/36", answer: "≈ 0.1389", topic: "Probability" },
+  { term: "Expected value of fair die", equation: "\\tfrac{1+2+3+4+5+6}{6}", answer: "3.5", topic: "Probability" },
+
+
+
+{ term: "Probability of no heads in 4 flips", equation: "(1/2)^4", answer: "1/16 = 0.0625", topic: "Probability" },
+{ term: "Probability of at least one head in 4 flips", equation: "1 - (1/2)^4", answer: "1 - 1/16 = 15/16 = 0.9375", topic: "Probability" },
+
+// --- STATISTICS (10) ---
+{ term: "Median of 3, 5, 7, 9, 11", equation: "Middle value", answer: "7", topic: "Statistics" },
+{ term: "Range of 12, 15, 19, 22", equation: "max - min", answer: "10", topic: "Statistics" },
+{ term: "Mode of 5, 6, 6, 8, 10", equation: "Most frequent", answer: "6", topic: "Statistics" },
+{ term: "Mean of 8, 12, 20", equation: "(8+12+20)/3", answer: "13.33", topic: "Statistics" },
+{ term: "Population variance formula", equation: "\\sigma^2 = \\frac{\\Sigma(x-\\mu)^2}{N}", answer: "Square differences, sum, divide by N", topic: "Statistics" },
+{ term: "Sample variance formula", equation: "s^2 = \\frac{\\Sigma(x-\\bar{x})^2}{n-1}", answer: "Divide by n−1", topic: "Statistics" },
+{ term: "Standard deviation formula", equation: "\\sigma = \\sqrt{\\sigma^2}", answer: "Square root of variance", topic: "Statistics" },
+{ term: "IQR definition", equation: "Q_3 - Q_1", answer: "Spread of middle 50% of data", topic: "Statistics" },
+{ term: "Boxplot whiskers represent?", equation: "min & max (or 1.5×IQR limits)", answer: "Smallest/largest non-outlier values", topic: "Statistics" },
+{ term: "Histogram vs bar chart", equation: "Histogram: continuous data", answer: "Bars touch; bar chart for discrete data", topic: "Statistics" },
+
+// --- NUMBER THEORY & ARITHMETIC (10) ---
+{ term: "HCF of 24 and 36", equation: "Prime factors: 24=2³·3, 36=2²·3²", answer: "HCF=2²·3=12", topic: "Number Theory" },
+{ term: "LCM of 8 and 12", equation: "2³·3", answer: "24", topic: "Number Theory" },
+{ term: "Is 97 prime?", equation: "Check divisibility to √97", answer: "Yes, 97 is prime", topic: "Number Theory" },
+{ term: "Prime factors of 84", equation: "84=2²·3·7", answer: "2², 3, 7", topic: "Number Theory" },
+{ term: "Simplify: 72/96", equation: "Divide by HCF=24", answer: "3/4", topic: "Number Theory" },
+{ term: "Convert 0.125 to fraction", equation: "125/1000", answer: "1/8", topic: "Number Theory" },
+{ term: "Convert 7/20 to decimal", equation: "7÷20", answer: "0.35", topic: "Number Theory" },
+{ term: "Recurring decimal for 1/3", equation: "0.333…", answer: "Infinite recurring", topic: "Number Theory" },
+{ term: "Convert 45° to radians", equation: "\\pi/4", answer: "≈ 0.7854 rad", topic: "Number Theory" },
+{ term: "Convert π/3 radians to degrees", equation: "π rad = 180°", answer: "60°", topic: "Number Theory" },
+
+// --- PROBLEM SOLVING & APPLICATIONS (10) ---
+{ term: "Area of trapezium bases 8 cm & 12 cm, height 5 cm", equation: "A = (1/2)(a+b)h", answer: "A = (1/2)(20)(5) = 50 cm²", topic: "Measurement" },
+{ term: "Travel time: 240 km at 80 km/h", equation: "t = d/v", answer: "t = 3 h", topic: "Applied" },
+{ term: "Cost: 2.5 kg apples at €3.20/kg", equation: "Cost = m × price", answer: "€8.00", topic: "Applied" },
+{ term: "Area of sector: r=6 m, θ=120°", equation: "A = (θ/360)πr²", answer: "A = (1/3)π·36 = 12π ≈ 37.7 m²", topic: "Geometry" },
+{ term: "Volume of sphere r=4 cm", equation: "V = (4/3)πr³", answer: "V = (4/3)π·64 ≈ 268.1 cm³", topic: "Geometry" },
+{ term: "Speed: 20 m/s in km/h", equation: "× 3.6", answer: "72 km/h", topic: "Applied" },
+{ term: "Perimeter of rectangle 12 m by 8 m", equation: "P = 2(l+w)", answer: "40 m", topic: "Measurement" },
+{ term: "Solve: 5x − 7 = 18", equation: "5x = 25", answer: "x = 5", topic: "Algebra" },
+{ term: "Solve: 3(x−4) = 15", equation: "3x − 12 = 15", answer: "x = 9", topic: "Algebra" },
+{ term: "Solve: 2x + 5 = 3x − 1", equation: "5+1 = 3x−2x", answer: "x = 6", topic: "Algebra" },
+
+// --- INTERESTING MATHS FACTS (5) ---
+{ term: "Fibonacci sequence start", equation: "0, 1, 1, 2, 3, 5, 8...", answer: "Each term is sum of previous two", topic: "Facts" },
+{ term: "Sum of first n natural numbers", equation: "S_n = n(n+1)/2", answer: "Triangular numbers", topic: "Facts" },
+{ term: "Sum of first n odd numbers", equation: "n²", answer: "Forms perfect squares", topic: "Facts" },
+{ term: "Angle sum of polygon with n sides", equation: "(n−2)·180°", answer: "e.g., hexagon: 720°", topic: "Facts" },
+{ term: "Angle in a semicircle", equation: "90°", answer: "Thales' theorem", topic: "Facts" }
+  ];
+  // ================== END ARRAY ==================
+
+  // ---------- UI HOOKS ----------
+  const els = {
+    container: document.getElementById('flashcard-container'),
+    topic: document.getElementById('topic-filter'),
+    filter: document.getElementById('rating-filter'),
+    order: document.getElementById('cardOrder'),
+    shuffle: document.getElementById('shuffleBtn'),
+    clear: document.getElementById('clearBtn'),
+  };
+
+  // ---------- HELPERS ----------
+  const shuffle = (array) => { for (let i = array.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [array[i], array[j]] = [array[j], array[i]]; } };
+  const key = (term) => 'rating_' + term;
+  const getRating = (term) => localStorage.getItem(key(term));
+  const setRating = (term, color) => localStorage.setItem(key(term), color);
+
+  // Persist UI choices
+  const prefs = {
+    get order() { return localStorage.getItem('pref_order') || 'term'; },
+    set order(v) { localStorage.setItem('pref_order', v); },
+    get filter() { return localStorage.getItem('pref_filter') || 'all'; },
+    set filter(v) { localStorage.setItem('pref_filter', v); },
+    get topic() { return localStorage.getItem('pref_topic') || 'all'; },
+    set topic(v) { localStorage.setItem('pref_topic', v); },
+  };
+
+  // Smart equation rendering: if looks like plain words, render as \text{...}
+  function toDisplayEq(raw) {
+    if (!raw || !raw.trim()) return "";
+    const needsText = !/[\\^_0-9=+\-*/()<>πΣ√∑]/.test(raw);
+    const safeText = (s) => s.replace(/[{}\\]/g, "\\$&");
+    return needsText ? `\\text{${safeText(raw)}}` : raw;
+  }
+
+  function cardTemplate(card, index, showTermFirst) {
+    const rating = getRating(card.term);
+    const dots = ['red','yellow','green']
+      .map(c => `<span class="dot ${c}" style="opacity:${rating===c?1:.35}" aria-hidden="true"></span>`)
+      .join('');
+    const eq = card.equation ? `<div class="equation"><small>$$${toDisplayEq(card.equation)}$$</small></div>` : "";
+
+// in cardTemplate()
+
+const front = showTermFirst
+  ? card.term
+  : `${card.answer}${renderEquation(card.equation)}`;
+
+const back  = showTermFirst
+  ? `${card.answer}${renderEquation(card.equation)}`
+  : card.term;
+
+    return `
+      <div class="flashcard" role="button" tabindex="0" aria-label="Flashcard ${index+1}: ${showTermFirst? 'question' : 'answer'} shown">
+        <div class="rating-bar">${dots}</div>
+        <div class="inner">
+          <div class="face front">${front}</div>
+          <div class="face back">
+            ${back}
+            <div class="rating-buttons" aria-label="Rate this card">
+              <button data-rate="red" aria-label="Mark red">Red</button>
+              <button data-rate="yellow" aria-label="Mark yellow">Yellow</button>
+              <button data-rate="green" aria-label="Mark green">Green</button>
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  // Build Topic selector dynamically (with fallback "General")
+  function buildTopicOptions() {
+    const topics = new Set(["all"]);
+    flashcards.forEach(c => topics.add((c.topic && String(c.topic).trim()) || "General"));
+    els.topic.innerHTML = "";
+    for (const t of topics) {
+      const opt = document.createElement("option");
+      opt.value = t; opt.textContent = t === "all" ? "All Topics" : t;
+      els.topic.appendChild(opt);
+    }
+    els.topic.value = prefs.topic;
+    if (![...topics].includes(prefs.topic)) els.topic.value = "all";
+  }
+
+function sanitizeToLatex(s='') {
+  return s
+    .replace(/√\s*\(/g, '\\sqrt{(')
+    .replace(/√(\w+)/g, '\\sqrt{$1}')
+    .replace(/×/g, '\\times ')
+    .replace(/÷/g, '\\div ')
+    .replace(/≤/g, '\\le ')
+    .replace(/≥/g, '\\ge ')
+    .replace(/±/g, '\\pm ')
+    .replace(/°/g, '^{\\circ}');
+}
+
+function looksLikeLatex(s='') {
+  return /\\|[{^}_]|\\dfrac|\\frac|\\sqrt|\\sin|\\cos|\\tan|\\binom|\\Sigma|\\Delta/.test(s);
+}
+
+function renderEquation(eq) {
+  if (!eq) return '';
+  const sanitized = sanitizeToLatex(eq);
+  return looksLikeLatex(sanitized)
+    ? `<div class="equation"><small>$$${sanitized}$$</small></div>`
+    : `<div class="equation"><small>${eq}</small></div>`;
+}
+
+
+
+  function displayFlashcards() {
+    const selectedTopic = els.topic.value;
+    const selectedRating = els.filter.value;
+    const showTermFirst = els.order.value === 'term';
+
+    els.container.innerHTML = '';
+
+    flashcards.forEach((card, i) => {
+      const topic = (card.topic && String(card.topic).trim()) || "General";
+      const rating = getRating(card.term);
+
+      if ((selectedTopic === 'all' || topic === selectedTopic) &&
+          (selectedRating === 'all' || rating === selectedRating)) {
+
+        const wrapper = document.createElement('div');
+        wrapper.innerHTML = cardTemplate(card, i, showTermFirst);
+        const cardEl = wrapper.firstElementChild;
+
+        // Click/tap to flip (ignore rating button clicks)
+        cardEl.addEventListener('click', (e) => {
+          if (e.target.closest('.rating-buttons')) return;
+          cardEl.classList.toggle('flipped');
+        });
+        // Keyboard
+        cardEl.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); cardEl.classList.toggle('flipped'); }
+        });
+        // Ratings
+        cardEl.querySelectorAll('.rating-buttons button').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const color = btn.getAttribute('data-rate');
+            setRating(card.term, color);
+            displayFlashcards();
+          });
+        });
+
+        els.container.appendChild(cardEl);
+      }
+    });
+
+    // Batch render MathJax
+    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise();
+  }
+
+  function shuffleAndDisplay() { shuffle(flashcards); displayFlashcards(); }
+  function clearRatings() {
+    if (!confirm('Clear all ratings?')) return;
+    flashcards.forEach(card => localStorage.removeItem(key(card.term)));
+    displayFlashcards();
+  }
+
+  // Wire up
+  buildTopicOptions();
+  els.order.value = prefs.order; els.filter.value = prefs.filter;
+  els.order.addEventListener('change', () => { prefs.order = els.order.value; displayFlashcards(); });
+  els.filter.addEventListener('change', () => { prefs.filter = els.filter.value; displayFlashcards(); });
+  els.topic.addEventListener('change', () => { prefs.topic = els.topic.value; displayFlashcards(); });
+  els.shuffle.addEventListener('click', shuffleAndDisplay);
+  els.clear.addEventListener('click', clearRatings);
+
+  // Initial render
+  displayFlashcards();
+  </script>
+</body>
+</html>
