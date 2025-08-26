@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Carlow Vectors — Teaching Tool</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<style>
+  :root{
+    --grid-size: 600px;
+    --px-per-km: 6;        /* 6 px = 1 km */
+    --tick: 60px;          /* 10 km */
+    --vec: #2563eb;        /* blue vector */
+    --blue: #0b63d1;
+    --green: #0a8a43;
+  }
+
+  /* clean UI + larger text */
+  body{
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+    margin: 20px;
+    color: #111827;
+    font-size: 16px;
+  }
+  h1{ font-size: 22px; margin: 0 0 12px; font-weight: 650; }
+
+  .layout{
+    display: grid;
+    gap: 20px;
+    grid-template-columns: var(--grid-size) minmax(340px, 1fr);
+    align-items: start;
+    max-width: calc(600px + 640px);
+    margin: 0 auto;
+  }
+
+  /* LEFT: map panel */
+  .controls{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 14px;
+    margin-bottom: 10px;
+    font-size: 15px;
+  }
+  .controls label{ display: flex; align-items: center; gap: 8px; }
+  select, button, input[type="number"]{
+    font: inherit; font-size: 15px; padding: 8px 10px; border: 1px solid #d1d5db; border-radius: 10px; background: #fff;
+  }
+  button{ cursor: pointer; }
+  button:hover{ background: #f9fafb; }
+
+  .grid {
+    position: relative;
+    width: var(--grid-size);
+    height: var(--grid-size);
+    border: 2px solid #888;
+    background-size: 30px 30px; /* 5 km squares (since 6 px = 1 km) */
+    background-image:
+      linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+      linear-gradient(to top,   #e5e7eb 1px, transparent 1px);
+  }
+  .grid.hide-grid{ background-image: none; }
+
+  .axis { position: absolute; background: #000; }
+  .x-axis { height: 2px; width: 100%; }
+  .y-axis { width: 2px; height: 100%; }
+
+  .origin {
+    position: absolute;
+    width: 12px; height: 12px; background: #000; border-radius: 50%;
+    transform: translate(-50%,-50%); cursor: grab; z-index: 10;
+  }
+  .origin:active{ cursor: grabbing; }
+
+  .axis-label{ position:absolute; font-weight: 600; user-select: none; font-size: 16px; }
+  .north{ top: 8px; left: 8px; }
+  .east { right: 8px; bottom: 8px; }
+
+  .scale-x,.scale-y{ position: absolute; font-size: 13px; color: #6b7280; user-select: none; }
+
+  .town{
+    position: absolute; transform: translate(-50%,-50%); text-align: center;
+    color: var(--blue); font-size: 16px; white-space: nowrap;
+  }
+  .town .dot{
+    width: 12px; height: 12px; background: var(--blue); border-radius: 50%;
+    margin: 0 auto 2px;
+  }
+  .town.carlow{ color: var(--green); font-weight: 700; }
+  .town.carlow .dot{ background: var(--green); }
+
+  svg.vlayer{ position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  /* vector now blue and a bit smaller */
+  .arrow{ stroke: var(--vec); stroke-width: 2.5; fill: none; opacity: 0.98; }
+  .arrowhead{ fill: var(--vec); }
+  .leg{ stroke: var(--vec); stroke-width: 2; stroke-dasharray: 6 6; opacity: .75; }
+  .ghost{ stroke: #9ca3af; stroke-width: 1.5; opacity: .6; }
+
+  .hint{ font-size: 13px; color: #6b7280; margin-top: 6px; }
+
+  /* RIGHT: results panel */
+  .panel{
+    border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px;
+    background: #fafafa;
+  }
+  .panel h2{ font-size: 18px; margin: 0 0 10px; }
+
+  .toggles{ display: grid; gap: 8px; font-size: 15px; margin-bottom: 10px; }
+
+  /* “Professional equation” look: use math/serif stack */
+  .equation{
+    font-family: Cambria, "Cambria Math", "STIX Two Math", "Times New Roman", Times, serif;
+    background: #ffffff; border: 1px solid #e5e7eb; border-radius: 10px;
+    padding: 12px; font-size: 16px; white-space: pre-wrap; line-height: 1.4;
+  }
+
+  .divider{ height: 1px; background: #e5e7eb; margin: 12px 0; }
+
+  .townlist{
+    background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; padding: 10px;
+    font-family: ui-monospace, "SF Mono", Menlo, Consolas, "Courier New", monospace; font-size: 14px;
+    max-height: 260px; overflow: auto; white-space: pre;
+  }
+</style>
+</head>
+<body>
+  <h1>Carlow Vector Map (6 px = 1 km)</h1>
+  <div class="layout">
+    <!-- LEFT: Map and controls -->
+    <div>
+      <div class="controls">
+        <label>From (A):
+          <select id="fromTown"></select>
+        </label>
+        <label>To (B):
+          <select id="toTown"></select>
+        </label>
+        <button id="snapOrigin">Snap origin to A</button>
+        <label><input type="checkbox" id="toggleGrid" checked> Show grid</label>
+        <label><input type="checkbox" id="showFan"> Show vectors from origin to all towns</label>
+      </div>
+
+      <div class="grid" id="grid">
+        <div class="x-axis axis" id="xAxis"></div>
+        <div class="y-axis axis" id="yAxis"></div>
+        <div class="origin" id="origin" title="Drag the origin"></div>
+
+        <svg class="vlayer" id="svg" viewBox="0 0 600 600" preserveAspectRatio="none" aria-hidden="true">
+          <defs>
+            <marker id="arrowEnd" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto">
+              <path d="M0,0 L10,5 L0,10 z" class="arrowhead"></path>
+            </marker>
+          </defs>
+          <!-- selected vector A->B -->
+          <line id="vecMain" class="arrow" marker-end="url(#arrowEnd)" x1="0" y1="0" x2="0" y2="0"></line>
+          <!-- component legs (dashed) -->
+          <line id="legX" class="leg" x1="0" y1="0" x2="0" y2="0"></line>
+          <line id="legY" class="leg" x1="0" y1="0" x2="0" y2="0"></line>
+          <!-- fan from origin -->
+          <g id="fan"></g>
+        </svg>
+
+        <div id="xScales"></div>
+        <div id="yScales"></div>
+
+        <div class="axis-label north">North<br>km</div>
+        <div class="axis-label east">East<br>km</div>
+
+        <!-- Towns (positions are px; dot sits above the label) -->
+        <div class="town carlow" style="left:300px; top:300px;" data-name="Carlow"><div class="dot"></div>Carlow</div>
+        <div class="town" style="left:360px; top:210px;" data-name="Athy"><div class="dot"></div>Athy</div>
+        <div class="town" style="left:150px; top:360px;" data-name="Kilkenny"><div class="dot"></div>Kilkenny</div>
+        <div class="town" style="left:360px; top:342px;" data-name="Tullow"><div class="dot"></div>Tullow</div>
+        <div class="town" style="left:270px; top:390px;" data-name="Bagenalstown"><div class="dot"></div>Bagenalstown</div>
+        <div class="town" style="left:120px; top:120px;" data-name="Portlaoise"><div class="dot"></div>Portlaoise</div>
+        <div class="town" style="left:450px; top:0px;" data-name="Naas"><div class="dot"></div>Naas</div>
+        <div class="town" style="left:570px; top:150px;" data-name="Wicklow"><div class="dot"></div>Wicklow</div>
+        <div class="town" style="left:270px; top:570px;" data-name="New Ross"><div class="dot"></div>New Ross</div>
+        <div class="town" style="left:510px; top:420px;" data-name="Enniscorthy"><div class="dot"></div>Enniscorthy</div>
+        <div class="town" style="left:210px; top:588px;" data-name="Waterford"><div class="dot"></div>Waterford</div>
+      </div>
+      <div class="hint">Drag the black dot (origin). Use “Snap origin to A” for clean readings. Grid squares are 5 km.</div>
+    </div>
+
+    <!-- RIGHT: Readout panel -->
+    <div class="panel">
+      <h2>Vector A → B</h2>
+
+      <div class="toggles">
+        <label><input type="checkbox" id="showIJ" checked> Show i, j components</label>
+        <label><input type="checkbox" id="showMD" checked> Show magnitude & direction</label>
+        <label><input type="checkbox" id="showTownComponents" checked> Show (i, j) from origin to each town</label>
+      </div>
+
+      <div id="readout" class="equation"></div>
+
+      <div class="divider"></div>
+      <div id="townList" class="townlist"></div>
+    </div>
+  </div>
+
+<script>
+/* ====== Elements & constants ====== */
+const PX_PER_KM = 6;
+const grid = document.getElementById('grid');
+const origin = document.getElementById('origin');
+const xAxis = document.getElementById('xAxis');
+const yAxis = document.getElementById('yAxis');
+const xScales = document.getElementById('xScales');
+const yScales = document.getElementById('yScales');
+
+const vecMain = document.getElementById('vecMain');
+const legX = document.getElementById('legX');
+const legY = document.getElementById('legY');
+const fan = document.getElementById('fan');
+
+const fromSel = document.getElementById('fromTown');
+const toSel = document.getElementById('toTown');
+const toggleGrid = document.getElementById('toggleGrid');
+const showFan = document.getElementById('showFan');
+const snapOriginBtn = document.getElementById('snapOrigin');
+
+const showIJ = document.getElementById('showIJ');
+const showMD = document.getElementById('showMD');
+const showTownComponents = document.getElementById('showTownComponents');
+const readout = document.getElementById('readout');
+const townList = document.getElementById('townList');
+
+let isDragging = false;
+let dragOff = {x:0, y:0};
+
+/* ====== Helpers ====== */
+/* Use the BLUE DOT centre (not the label block) to avoid the 1 km vertical bias */
+function getTownDotCentres(){
+  const towns = [...document.querySelectorAll('.town')];
+  const grect = grid.getBoundingClientRect();
+  return towns.map(n => {
+    const dot = n.querySelector('.dot');
+    const r = dot.getBoundingClientRect();
+    return {
+      name: n.dataset.name,
+      x: r.left - grect.left + r.width/2,
+      y: r.top  - grect.top  + r.height/2,
+      node: n
+    };
+  });
+}
+function fillSelectors(list){
+  fromSel.innerHTML = ''; toSel.innerHTML = '';
+  list.forEach((t,i) => {
+    const o1 = document.createElement('option'); o1.value=i; o1.textContent=t.name; fromSel.appendChild(o1);
+    const o2 = document.createElement('option'); o2.value=i; o2.textContent=t.name; toSel.appendChild(o2);
+  });
+  const idxCarlow = list.findIndex(t => t.name === 'Carlow');
+  if (idxCarlow >= 0) fromSel.value = String(idxCarlow);
+  toSel.value = String((idxCarlow + 1) % list.length);
+}
+const km = px => px / PX_PER_KM;
+const deg = (dx, dy) => (Math.atan2(-dy, dx) * 180 / Math.PI + 360) % 360;
+const sgn = n => (n >= 0 ? '+' : '−');
+function fmt(n, d=1){ return Math.abs(n) < 1e-9 ? '0' : n.toFixed(d); }
+
+function setOrigin(x, y){
+  origin.style.left = x + 'px';
+  origin.style.top  = y + 'px';
+  xAxis.style.top = y + 'px';
+  yAxis.style.left = x + 'px';
+  drawTicks(x, y);
+}
+function drawTicks(x, y){
+  xScales.innerHTML = ''; yScales.innerHTML = '';
+  for(let i=0;i<=600;i+=60){
+    const xl = document.createElement('div');
+    xl.className='scale-x'; xl.style.left=i+'px'; xl.style.top=(y + 8)+'px';
+    xl.textContent = ((i - x) / PX_PER_KM).toFixed(0);
+    xScales.appendChild(xl);
+
+    const yl = document.createElement('div');
+    yl.className='scale-y'; yl.style.left=(x + 8)+'px'; yl.style.top=i+'px';
+    yl.textContent = ((y - i) / PX_PER_KM).toFixed(0);
+    yScales.appendChild(yl);
+  }
+}
+
+/* ====== Drawing ====== */
+function drawSelectedVector(){
+  const towns = getTownDotCentres();
+  if (!towns.length) return;
+  const A = towns[Number(fromSel.value)];
+  const B = towns[Number(toSel.value)];
+
+  // A→B from dot-centre to dot-centre
+  vecMain.setAttribute('x1', A.x); vecMain.setAttribute('y1', A.y);
+  vecMain.setAttribute('x2', B.x); vecMain.setAttribute('y2', B.y);
+
+  // Component legs (dashed): horizontal then vertical
+  legX.setAttribute('x1', A.x); legX.setAttribute('y1', A.y);
+  legX.setAttribute('x2', B.x); legX.setAttribute('y2', A.y);
+
+  legY.setAttribute('x1', B.x); legY.setAttribute('y1', A.y);
+  legY.setAttribute('x2', B.x); legY.setAttribute('y2', B.y);
+
+  // Components (km) with +j north
+  const dx = B.x - A.x;
+  const dy = B.y - A.y;
+  const i =  km(dx);
+  const j = -km(dy);
+  const mag = Math.hypot(i, j);
+  const theta = deg(dx, dy);
+
+  // Toggle legs visibility
+  legX.style.display = showIJ.checked ? 'block' : 'none';
+  legY.style.display = showIJ.checked ? 'block' : 'none';
+
+  // Equation-style readout (serif/math font)
+  const rows = [];
+  rows.push(`𝐯_AB  =  ⟨ ${fmt(i)} , ${fmt(j)} ⟩  km`);
+  if (showIJ.checked) {
+    rows.push(`i = Δx = ${fmt(i)}  km`);
+    rows.push(`j = Δy = ${fmt(j)}  km`);
+  }
+  if (showMD.checked) {
+    rows.push(`|𝐯_AB| = ${fmt(mag,2)}  km`);
+    rows.push(`θ = ${fmt(theta,1)}°  (from +x, CCW)`);
+  }
+  if (!showIJ.checked && !showMD.checked) {
+    rows.push('Select a display option above (i/j or magnitude/direction).');
+  }
+  rows.unshift(`A = ${A.name}   B = ${B.name}`);
+  readout.textContent = rows.join('\n');
+}
+
+function drawFanFromOrigin(){
+  fan.innerHTML = '';
+  if (!showFan.checked) return;
+  const towns = getTownDotCentres();
+  const ox = parseFloat(origin.style.left);
+  const oy = parseFloat(origin.style.top);
+  towns.forEach(t => {
+    const ln = document.createElementNS('http://www.w3.org/2000/svg','line');
+    ln.setAttribute('x1', ox); ln.setAttribute('y1', oy);
+    ln.setAttribute('x2', t.x); ln.setAttribute('y2', t.y);
+    ln.setAttribute('class','ghost');
+    fan.appendChild(ln);
+  });
+}
+
+function drawTownComponentList(){
+  if (!showTownComponents.checked){
+    townList.textContent = 'Town (i, j) from current origin\n—';
+    return;
+  }
+  const towns = getTownDotCentres();
+  const ox = parseFloat(origin.style.left);
+  const oy = parseFloat(origin.style.top);
+
+  const lines = [];
+  lines.push('Town                          (   i ,    j )  km');
+  lines.push('------------------------------------------------');
+  towns.forEach(t => {
+    const i =  km(t.x - ox);
+    const j = -km(t.y - oy);
+    const name = (t.name + '                         ').slice(0, 28);
+    lines.push(`${name}  ( ${fmt(i,1).padStart(5)} , ${fmt(j,1).padStart(5)} )`);
+  });
+  townList.textContent = lines.join('\n');
+}
+
+function refresh(){
+  drawSelectedVector();
+  drawFanFromOrigin();
+  drawTownComponentList();
+}
+
+/* ====== Origin drag ====== */
+function pointerXY(e){
+  return (e.touches && e.touches[0]) ? {x:e.touches[0].clientX, y:e.touches[0].clientY} : {x:e.clientX, y:e.clientY};
+}
+origin.addEventListener('pointerdown', (e)=>{
+  e.preventDefault();
+  const p = pointerXY(e);
+  const r = grid.getBoundingClientRect();
+  const ox = parseFloat(origin.style.left);
+  const oy = parseFloat(origin.style.top);
+  dragOff.x = p.x - r.left - ox;
+  dragOff.y = p.y - r.top  - oy;
+  isDragging = true;
+  origin.setPointerCapture(e.pointerId);
+});
+origin.addEventListener('pointermove', (e)=>{
+  if (!isDragging) return;
+  const p = pointerXY(e);
+  const r = grid.getBoundingClientRect();
+  let x = p.x - r.left - dragOff.x;
+  let y = p.y - r.top  - dragOff.y;
+  x = Math.max(0, Math.min(x, 600));
+  y = Math.max(0, Math.min(y, 600));
+  setOrigin(x, y);
+  drawFanFromOrigin();
+  drawTownComponentList();
+});
+origin.addEventListener('pointerup', ()=>{ isDragging = false; });
+
+/* ====== UI wiring ====== */
+fromSel.addEventListener('change', refresh);
+toSel.addEventListener('change', refresh);
+showIJ.addEventListener('change', refresh);
+showMD.addEventListener('change', refresh);
+showTownComponents.addEventListener('change', refresh);
+toggleGrid.addEventListener('change', ()=> grid.classList.toggle('hide-grid', !toggleGrid.checked));
+showFan.addEventListener('change', refresh);
+
+snapOriginBtn.addEventListener('click', ()=>{
+  const towns = getTownDotCentres();
+  const A = towns[Number(fromSel.value)];
+  setOrigin(A.x, A.y);
+  refresh();
+});
+
+/* ====== Init ====== */
+(function init(){
+  // Start at centre
+  setOrigin(300, 300);
+
+  // Populate selectors and draw
+  const towns = getTownDotCentres();
+  fillSelectors(towns);
+  refresh();
+})();
+</script>
+</body>
+</html>
