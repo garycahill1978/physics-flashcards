@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Flashcards (Standalone)</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f8f9fa; margin:0; padding:0; }
+    .controls {
+      text-align:center; padding:15px; position:sticky; top:0; background:#f8f9fa;
+      z-index:10; border-bottom:1px solid #e5e7eb;
+    }
+    select, button {
+      padding:10px 15px; margin:5px; font-size:16px; border-radius:10px;
+      border:1px solid #d1d5db; background:white; cursor:pointer;
+    }
+    button:hover { background:#f3f4f6; }
+    #flashcard-container { display:flex; flex-wrap:wrap; justify-content:center; padding:10px; }
+
+    .flashcard { background:transparent; width:280px; height:240px; perspective:1000px; margin:10px; }
+    .inner { position:relative; width:100%; height:100%; text-align:center; transition:transform .6s; transform-style:preserve-3d; }
+    .flashcard:hover .inner { transform: rotateY(180deg); }
+
+    .front, .back {
+      position:absolute; width:100%; height:100%; backface-visibility:hidden;
+      display:flex; justify-content:center; align-items:center; flex-direction:column;
+      padding:12px; box-shadow:0 4px 10px rgba(0,0,0,.18); border-radius:12px;
+      font-size:.98em; gap:8px;
+    }
+    .front { background:#fff; font-weight:700; }
+    .back  { background:#dfefff; transform: rotateY(180deg); font-weight:400; }
+
+    .term { font-size:1.02em; line-height:1.2em; }
+    .answer { font-size:.96em; line-height:1.25em; }
+    .equation {
+      margin-top:6px; padding:6px 8px; border-radius:10px;
+      background:rgba(255,255,255,.6); border:1px dashed rgba(17,24,39,.25);
+      font-family:"Courier New", monospace; font-size:.9em;
+    }
+    .diagram { width:100%; display:flex; justify-content:center; align-items:center; }
+    .diagram svg { max-width:240px; height:auto; }
+
+    .rating-buttons { margin-top:8px; display:flex; gap:6px; flex-wrap:wrap; justify-content:center; }
+    .rating-buttons button { margin:0; padding:6px 10px; font-size:.8em; }
+    .small-note { font-size:.82em; color:#374151; }
+  </style>
+</head>
+<body>
+
+<div class="controls">
+  <label for="rating-filter">Filter:</label>
+  <select id="rating-filter" onchange="displayFlashcards()">
+    <option value="all">All Ratings</option>
+    <option value="red">Red</option>
+    <option value="yellow">Yellow</option>
+    <option value="green">Green</option>
+  </select>
+
+  <label for="cardOrder">Show First:</label>
+  <select id="cardOrder" onchange="displayFlashcards()">
+    <option value="term">Question (with picture)</option>
+    <option value="answer">Answer (then flip)</option>
+  </select>
+
+  <button onclick="shuffleAndDisplay()">Shuffle Flashcards</button>
+  <button onclick="clearRatings()">Clear Ratings</button>
+</div>
+
+<div id="flashcard-container"></div>
+
+<script>
+// ✅ PASTE/EDIT YOUR FLASHCARDS IN THIS ARRAY ONLY.
+const flashcards = [
+
+
+
+
+
+  // { term:"...", answer:"...", equation:"...", svg:"<svg>...</svg>" }
+
+
+{
+  term: "Wavelength (λ)",
+  answer: "The distance between two identical points on a wave (e.g. crest to crest or compression to compression). Measured in metres (m).",
+  equation: "λ (m)",
+   svg: `
+<svg viewBox="0 0 400 120" width="100%" height="120">
+  <path d="M0 60 
+           Q 50 10, 100 60
+           T 200 60
+           T 300 60
+           T 400 60"
+        fill="none"
+        stroke="#1f77b4"
+        stroke-width="3"/>
+
+  <line x1="100" y1="100" x2="300" y2="100"
+        stroke="black" stroke-width="2"/>
+  <line x1="100" y1="95" x2="100" y2="105" stroke="black" stroke-width="2"/>
+  <line x1="300" y1="95" x2="300" y2="105" stroke="black" stroke-width="2"/>
+
+  <text x="190" y="115" font-size="16">λ</text>
+</svg>
+`
+},
+{
+  term: "Frequency (f)",
+  answer: "The number of complete waves (oscillations) passing a point each second. Measured in hertz (Hz).",
+  equation: "f (Hz)",
+ svg: `
+<svg viewBox="0 0 400 160" width="100%" height="160">
+  <path d="M 0 40 Q 33 10, 66 40 T 132 40 T 198 40 T 264 40 T 330 40 T 400 40"
+        fill="none" stroke="#1f77b4" stroke-width="3"/>
+  <text x="10" y="20" font-size="14" fill="#1f77b4">Higher frequency</text>
+
+  <path d="M 0 110 Q 100 60, 200 110 T 400 110"
+        fill="none" stroke="#d62728" stroke-width="3"/>
+  <text x="10" y="145" font-size="14" fill="#d62728">Lower frequency</text>
+</svg>
+`
+},
+{
+  term: "Amplitude (A)",
+  answer: "The maximum displacement from the equilibrium (rest) position. Larger amplitude means a bigger wave (often louder for sound, brighter for light intensity).",
+  equation: "A (m)",
+  svg: `
+<svg viewBox="0 0 400 210" width="100%" height="200" xmlns="http://www.w3.org/2000/svg">
+  <text x="200" y="22" text-anchor="middle" font-size="16" font-weight="700">Amplitude (A)</text>
+
+  <!-- equilibrium (midline) -->
+  <line x1="20" y1="120" x2="380" y2="120" stroke="#6b7280" stroke-dasharray="6,6" stroke-width="2"/>
+  <text x="28" y="114" font-size="12" fill="#374151">equilibrium</text>
+
+  <!-- wave (centered on equilibrium) -->
+  <path d="M20 120
+           C 60 70, 100 70, 140 120
+           C 180 170, 220 170, 260 120
+           C 300 70, 340 70, 380 120"
+        fill="none" stroke="#1f77b4" stroke-width="3"/>
+
+  <!-- crest marker -->
+  <circle cx="80" cy="85" r="4" fill="#1f77b4"/>
+  <text x="88" y="88" font-size="12" fill="#1f77b4">crest</text>
+
+  <!-- amplitude arrow -->
+  <defs>
+    <marker id="arrowHead" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- arrow from equilibrium to crest -->
+  <line x1="80" y1="120" x2="80" y2="88"
+        stroke="#111827" stroke-width="2"
+        marker-end="url(#arrowHead)"/>
+  <text x="90" y="108" font-size="14" font-weight="700" fill="#111827">A</text>
+
+  <!-- note -->
+  <text x="200" y="195" text-anchor="middle" font-size="12" fill="#374151">
+    Amplitude = maximum displacement from equilibrium
+  </text>
+</svg>
+`
+},
+
+{
+  term: "Wave speed (c or v)",
+  answer: "Wave speed = frequency × wavelength. For EM waves in vacuum, c ≈ 3.0 × 10^8 m/s. For sound in air, ≈ 330–340 m/s (depends on conditions).",
+  equation: "c = fλ",
+  svg: ""
+},
+{
+  term: "Transverse wave",
+  answer: "Oscillations are perpendicular to the direction the wave travels. Example: light, water waves. Can be polarised.",
+  equation: "",
+   svg: `
+<svg viewBox="0 0 400 120" width="100%" height="120">
+  <path d="M0 60 
+           Q 50 10, 100 60
+           T 200 60
+           T 300 60
+           T 400 60"
+        fill="none"
+        stroke="#1f77b4"
+        stroke-width="3"/>
+
+  <line x1="100" y1="100" x2="300" y2="100"
+        stroke="black" stroke-width="2"/>
+  <line x1="100" y1="95" x2="100" y2="105" stroke="black" stroke-width="2"/>
+  <line x1="300" y1="95" x2="300" y2="105" stroke="black" stroke-width="2"/>
+
+  <text x="190" y="115" font-size="16">λ</text>
+</svg>
+`
+
+},
+{
+  term: "Longitudinal wave",
+  answer: "Oscillations are parallel to the direction the wave travels. Consists of compressions and rarefactions. Example: sound.",
+  equation: "",
+   svg: `
+<svg viewBox="0 0 420 180" width="100%" height="180">
+
+  <!-- Title -->
+  <text x="210" y="25" text-anchor="middle"
+        font-size="16" font-weight="bold">
+    Longitudinal wave (compressions & rarefactions)
+  </text>
+
+  <!-- Tube / region -->
+  <rect x="30" y="55" width="360" height="70" rx="12"
+        fill="#f3f4f6" stroke="#c9c9c9"/>
+
+  <!-- Vertical "particle" lines: tight = compression, wide = rarefaction -->
+  <g stroke="#111827" stroke-width="3">
+    <!-- Compression -->
+    <line x1="60" y1="65" x2="60" y2="115"/>
+    <line x1="68" y1="65" x2="68" y2="115"/>
+    <line x1="76" y1="65" x2="76" y2="115"/>
+    <line x1="84" y1="65" x2="84" y2="115"/>
+
+    <!-- Rarefaction (spaced) -->
+    <line x1="125" y1="65" x2="125" y2="115"/>
+    <line x1="155" y1="65" x2="155" y2="115"/>
+    <line x1="185" y1="65" x2="185" y2="115"/>
+
+    <!-- Compression -->
+    <line x1="235" y1="65" x2="235" y2="115"/>
+    <line x1="243" y1="65" x2="243" y2="115"/>
+    <line x1="251" y1="65" x2="251" y2="115"/>
+    <line x1="259" y1="65" x2="259" y2="115"/>
+
+    <!-- Rarefaction -->
+    <line x1="300" y1="65" x2="300" y2="115"/>
+    <line x1="330" y1="65" x2="330" y2="115"/>
+    <line x1="360" y1="65" x2="360" y2="115"/>
+  </g>
+
+  <!-- Labels -->
+  <text x="72" y="145" text-anchor="middle" font-size="12" fill="#374151">
+    compression
+  </text>
+  <text x="155" y="145" text-anchor="middle" font-size="12" fill="#374151">
+    rarefaction
+  </text>
+  <text x="247" y="145" text-anchor="middle" font-size="12" fill="#374151">
+    compression
+  </text>
+  <text x="330" y="145" text-anchor="middle" font-size="12" fill="#374151">
+    rarefaction
+  </text>
+
+</svg>
+
+`
+
+},
+{
+  term: "Sound intensity (I)",
+  answer: "Sound power per unit area. Units: W/m². Intensity decreases with distance from the source.",
+  equation: "I = P/A",
+  svg: ""
+},
+{
+  term: "Pitch",
+  answer: "How high or low a sound seems. Pitch depends mainly on frequency: higher frequency → higher pitch.",
+  equation: "",
+  svg: ""
+},
+{
+  term: "Laws of reflection",
+  answer: "1) Angle of incidence = angle of reflection. 2) The incident ray, reflected ray and normal all lie in the same plane.",
+  equation: "i = r",
+ svg: `
+
+<svg viewBox="0 0 400 260" width="100%" height="260">
+
+  <!-- Title -->
+  <text x="200" y="25" text-anchor="middle"
+        font-size="16" font-weight="bold">
+    Laws of Reflection
+  </text>
+
+  <!-- Mirror -->
+  <line x1="50" y1="200" x2="350" y2="200"
+        stroke="black" stroke-width="4"/>
+  <text x="360" y="205" font-size="12">Mirror</text>
+
+  <!-- Normal -->
+  <line x1="200" y1="60" x2="200" y2="200"
+        stroke="#555" stroke-dasharray="6,6"/>
+  <text x="205" y="80" font-size="12">Normal</text>
+
+  <!-- Arrow definition -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10"
+            refX="5" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="black"/>
+    </marker>
+  </defs>
+
+  <!-- Incident ray -->
+  <line x1="80" y1="80" x2="200" y2="200"
+        stroke="#1f77b4" stroke-width="3"
+        marker-end="url(#arrow)"/>
+  <text x="95" y="90" font-size="12" fill="#1f77b4">
+    Incident ray
+  </text>
+
+  <!-- Reflected ray -->
+  <line x1="200" y1="200" x2="320" y2="80"
+        stroke="#d62728" stroke-width="3"
+        marker-end="url(#arrow)"/>
+  <text x="250" y="90" font-size="12" fill="#d62728">
+    Reflected ray
+  </text>
+
+  <!-- Angle labels -->
+  <path d="M 200 160 A 40 40 0 0 0 160 165"
+        fill="none" stroke="black"/>
+  <text x="165" y="160" font-size="12">
+    i
+  </text>
+
+  <path d="M 200 160 A 40 40 0 0 1 240 165"
+        fill="none" stroke="black"/>
+  <text x="235" y="160" font-size="12">
+    r
+  </text>
+
+  <!-- Law text -->
+  <text x="200" y="245" text-anchor="middle" font-size="13">
+    Angle of incidence = Angle of reflection
+  </text>
+
+</svg>
+
+
+`
+  
+
+},
+{
+  term: "Laws of refraction (Snell’s law)",
+  answer: "1) The incident ray, refracted ray and normal lie in the same plane. 2) Snell’s law: n1 sin(i) = n2 sin(r).",
+  equation: "n1 sin(i) = n2 sin(r)",
+svg: `
+
+<svg viewBox="0 0 420 280" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+      <path d="M0,0 L10,5 L0,10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- Boundary -->
+  <line x1="40" y1="150" x2="380" y2="150" stroke="#111827" stroke-width="4"/>
+  <text x="385" y="154" font-size="12" font-family="Arial" fill="#111827">boundary</text>
+
+  <!-- Normal -->
+  <line x1="210" y1="40" x2="210" y2="260" stroke="#6b7280" stroke-width="2" stroke-dasharray="6,6"/>
+  <text x="218" y="60" font-size="12" font-family="Arial" fill="#6b7280">normal</text>
+
+  <!-- Incident ray -->
+  <line x1="80" y1="60" x2="210" y2="150" stroke="#1f77b4" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="78" y="52" font-size="12" font-family="Arial" fill="#1f77b4">incident ray</text>
+
+  <!-- Refracted ray -->
+  <line x1="210" y1="150" x2="320" y2="285" stroke="#d62728" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="285" y="235" font-size="12" font-family="Arial" fill="#d62728">refracted ray</text>
+
+  <!-- Angle arcs -->
+  <!-- i (incident angle) -->
+  <path d="M210 150
+           L210 115
+           A 35 35 0 0 0 185 128
+           Z" fill="none" stroke="#111827" stroke-width="2"/>
+  <text x="188" y="118" font-size="14" font-family="Arial" fill="#111827" font-weight="700">i</text>
+
+  <!-- r (refracted angle) -->
+  <path d="M210 150
+           L210 185
+           A 35 35 0 0 0 230 170
+           Z" fill="none" stroke="#111827" stroke-width="2"/>
+  <text x="242" y="186" font-size="14" font-family="Arial" fill="#111827" font-weight="700">r</text>
+
+  <!-- Media labels -->
+  <text x="60" y="135" font-size="12" font-family="Arial" fill="#374151">medium 1 fast</text>
+  <text x="60" y="175" font-size="12" font-family="Arial" fill="#374151">medium 2 slow </text>
+
+  <!-- Formula -->
+  <text x="210" y="270" text-anchor="middle" font-size="16" font-family="Arial" fill="#111827" font-weight="700">
+    n = sin(i) / sin(r)
+  </text>
+</svg>
+
+
+
+`
+  
+
+}
+,
+
+{
+  term: "Total Internal Reflection (TIR)",
+  answer: "When a ray travels from a higher refractive index to a lower refractive index and the angle of incidence is greater than the critical angle, so no refraction occurs and the ray reflects back inside.",
+  equation: "i > c  (from n₁ > n₂)",
+  svg: `
+<svg viewBox="0 0 420 260" width="100%" height="260">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="bold">Total Internal Reflection</text>
+
+  <!-- boundary -->
+  <line x1="40" y1="170" x2="380" y2="170" stroke="#111827" stroke-width="3"/>
+  <text x="50" y="155" font-size="12" fill="#374151">n₁ (denser)</text>
+  <text x="50" y="195" font-size="12" fill="#374151">n₂ (less dense)</text>
+
+  <!-- normal -->
+  <line x1="210" y1="60" x2="210" y2="170" stroke="#555" stroke-dasharray="6,6"/>
+  <text x="216" y="80" font-size="12" fill="#374151">normal</text>
+
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- incident ray (in denser medium) -->
+  <line x1="120" y1="90" x2="210" y2="170" stroke="#1f77b4" stroke-width="3" marker-end="url(#arr)"/>
+  <text x="105" y="92" font-size="12" fill="#1f77b4">incident</text>
+
+  <!-- reflected ray (stays in denser medium) -->
+  <line x1="210" y1="170" x2="300" y2="90" stroke="#d62728" stroke-width="3" marker-end="url(#arr)"/>
+  <text x="292" y="92" font-size="12" fill="#d62728" text-anchor="end">reflected</text>
+
+  <!-- angle i (left side) -->
+  <path d="M210 140 A 35 35 0 0 1 185 160" fill="none" stroke="#111827" stroke-width="2"/>
+  <text x="178" y="145" font-size="13" font-weight="bold">i</text>
+
+  <text x="210" y="235" text-anchor="middle" font-size="13">Condition: from n₁ &gt; n₂ and i &gt; c</text>
+</svg>
+`
+},
+{
+  term: "Critical angle (c)",
+  answer: "The angle of incidence in the denser medium for which the angle of refraction is 90°. For i greater than c, total internal reflection occurs.",
+  equation: "sin c = n₂ / n₁  (n₁ &gt; n₂)",
+  svg: `
+<svg viewBox="0 0 420 270" width="100%" height="270">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="bold">Critical Angle</text>
+
+  <!-- boundary -->
+  <line x1="40" y1="170" x2="380" y2="170" stroke="#111827" stroke-width="3"/>
+  <text x="50" y="155" font-size="12" fill="#374151">n₁ (denser)</text>
+  <text x="50" y="195" font-size="12" fill="#374151">n₂ (less dense)</text>
+
+  <!-- normal -->
+  <line x1="210" y1="60" x2="210" y2="170" stroke="#555" stroke-dasharray="6,6"/>
+  <text x="216" y="80" font-size="12" fill="#374151">normal</text>
+
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- incident ray -->
+  <line x1="120" y1="95" x2="210" y2="170" stroke="#1f77b4" stroke-width="3" marker-end="url(#arr2)"/>
+  <text x="105" y="98" font-size="12" fill="#1f77b4">incident</text>
+
+  <!-- refracted ray at 90 degrees (along boundary) -->
+  <line x1="210" y1="170" x2="330" y2="170" stroke="#2ca02c" stroke-width="3" marker-end="url(#arr2)"/>
+  <text x="336" y="174" font-size="12" fill="#2ca02c">r = 90°</text>
+
+  <!-- angle c -->
+  <path d="M210 140 A 35 35 0 0 1 185 160" fill="none" stroke="#111827" stroke-width="2"/>
+  <text x="178" y="145" font-size="13" font-weight="bold">c</text>
+
+  <text x="210" y="245" text-anchor="middle" font-size="13">At the critical angle: refracted ray runs along the boundary</text>
+</svg>
+`
+},
+{
+  term: "Fibre optic cables",
+  answer: "Cables that carry light signals by repeated total internal reflection inside a glass/plastic core. A cladding with lower refractive index surrounds the core so TIR occurs.",
+  equation: "core n₁ &gt; cladding n₂",
+  svg: `
+<svg viewBox="0 0 420 220" width="100%" height="220">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="bold">Fibre Optic Cable (TIR)</text>
+
+  <!-- cladding -->
+  <rect x="40" y="70" width="340" height="90" rx="18" fill="#eef2ff" stroke="#374151" stroke-width="2"/>
+  <text x="55" y="65" font-size="12" fill="#374151">cladding (n₂)</text>
+
+  <!-- core -->
+  <rect x="70" y="95" width="280" height="40" rx="12" fill="#dbeafe" stroke="#1f77b4" stroke-width="2"/>
+  <text x="80" y="90" font-size="12" fill="#1f77b4">core (n₁)</text>
+
+  <defs>
+    <marker id="arr3" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#d62728"/>
+    </marker>
+  </defs>
+
+  <!-- zig-zag light ray inside core -->
+  <path d="M 90 115 L 150 98 L 210 132 L 270 98 L 330 132"
+        fill="none" stroke="#d62728" stroke-width="3" marker-end="url(#arr3)"/>
+  <text x="210" y="185" text-anchor="middle" font-size="13">
+    Light reflects repeatedly inside core (TIR)
+  </text>
+</svg>
+`
+},
+{
+  term: "Mirage",
+  answer: "An optical illusion caused by refraction (and sometimes TIR) through layers of air at different temperatures. Hot air near the ground is less dense → lower refractive index → light bends upward, making the ground look like water.",
+  equation: "n decreases as air gets hotter",
+  svg: `
+<svg viewBox="0 0 420 260" width="100%" height="260">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="bold">Mirage (hot ground)</text>
+
+  <!-- sky/air layers -->
+  <rect x="40" y="50" width="340" height="130" fill="#f8fafc" stroke="#cbd5e1"/>
+  <rect x="40" y="140" width="340" height="40" fill="#fee2e2" stroke="#cbd5e1"/>
+  <text x="55" y="75" font-size="12" fill="#374151">cooler air (higher n)</text>
+  <text x="55" y="165" font-size="12" fill="#7f1d1d">hot air (lower n)</text>
+
+  <!-- ground -->
+  <line x1="40" y1="190" x2="380" y2="190" stroke="#111827" stroke-width="4"/>
+  <text x="360" y="210" font-size="12" fill="#374151">ground</text>
+
+  <defs>
+    <marker id="arr4" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#1f77b4"/>
+    </marker>
+  </defs>
+
+  <!-- curved ray bending upward -->
+  <path d="
+M 340 115
+  C 280 130, 240 150, 200 165
+  C 165 180, 135 175, 110 160
+"
+        fill="none" stroke="#1f77b4" stroke-width="3" marker-end="url(#arr4)"/>
+
+  <!-- eye -->
+  <circle cx="110" cy="160" r="8" fill="#111827"/>
+  <text x="95" y="225" font-size="12" fill="#374151">observer</text>
+
+  <text x="210" y="245" text-anchor="middle" font-size="13">
+    Light curves upward → appears to come from the ground (\"water\")
+  </text>
+</svg>
+`
+},
+{
+  term: "Looming",
+  answer: "A superior mirage where distant objects appear higher or stretched. It happens when cold, dense air is near the ground and warmer air is above (temperature inversion), bending light downward toward the observer.",
+  equation: "temperature inversion → n higher near ground",
+  svg: `
+<svg viewBox="0 0 420 270" width="100%" height="270">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="bold">Looming (superior mirage)</text>
+
+  <!-- air layers -->
+  <rect x="40" y="60" width="340" height="50" fill="#fee2e2" stroke="#cbd5e1"/>
+  <rect x="40" y="110" width="340" height="90" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="55" y="90" font-size="12" fill="#7f1d1d">warmer air        (lower n)</text>
+  <text x="55" y="150" font-size="12" fill="#374151">colder air (higher n)</text>
+
+  <!-- ground -->
+  <line x1="40" y1="205" x2="380" y2="205" stroke="#111827" stroke-width="4"/>
+
+  <!-- distant object -->
+  <rect x="330" y="160" width="18" height="45" fill="#111827"/>
+  <text x="360" y="170" font-size="12" fill="#374151">object</text>
+
+  <!-- observer -->
+  <circle cx="110" cy="205" r="8" fill="#111827"/>
+  <text x="95" y="235" font-size="12" fill="#374151">observer</text>
+
+  <defs>
+    <marker id="arr5" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#1f77b4"/>
+    </marker>
+  </defs>
+
+  <!-- curved ray bending downward -->
+  <path d="M 340 165
+           C 300 140, 260 130, 220 140
+           C 180 150, 150 175, 125 195"
+        fill="none" stroke="#1f77b4" stroke-width="3" marker-end="url(#arr5)"/>
+
+  <text x="210" y="260" text-anchor="middle" font-size="13">
+    Light bends downward → object appears higher than it really is
+  </text>
+</svg>
+`
+},
+
+{
+  term: "Diffraction (narrow aperture)",
+  answer: "When a wave passes through a narrow gap, it spreads out. The wavefronts change from straight lines to circular arcs after the aperture. Diffraction is strongest when gap size is similar to the wavelength.",
+  equation: "",
+  svg: `
+<svg viewBox="0 0 400 200" width="100%" height="200">
+
+  <!-- Barrier with narrow gap -->
+  <rect x="185" y="20" width="30" height="70" fill="#111827"/>
+  <rect x="185" y="120" width="30" height="60" fill="#111827"/>
+  <text x="165" y="15" font-size="12" fill="#111827">narrow gap</text>
+
+  <!-- Incoming plane wavefronts -->
+  <g stroke="#2563eb" stroke-width="3">
+    <line x1="40" y1="30" x2="40" y2="170"/>
+    <line x1="70" y1="30" x2="70" y2="170"/>
+    <line x1="100" y1="30" x2="100" y2="170"/>
+    <line x1="130" y1="30" x2="130" y2="170"/>
+    <line x1="160" y1="30" x2="160" y2="170"/>
+  </g>
+
+  <!-- Aperture centre -->
+  <circle cx="215" cy="105" r="2.5" fill="#111827"/>
+
+  <!-- Diffracted circular wavefronts (±22.5° about +x axis) -->
+  <g fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round">
+    <path d="M233.5 97.8  A20 20 0 0 1 233.5 112.2"/>
+    <path d="M256.6 88.3  A45 45 0 0 1 256.6 121.7"/>
+    <path d="M284.3 76.8  A75 75 0 0 1 284.3 133.2"/>
+    <path d="M316.6 63.4  A110 110 0 0 1 316.6 146.6"/>
+    <path d="M353.6 48.1  A150 150 0 0 1 353.6 161.9"/>
+  </g>
+
+</svg>
+
+`
+},
+
+
+
+
+
+
+
+{
+  term: "Constructive interference",
+  answer: "When two waves meet in phase, their amplitudes add together to form a larger wave.",
+  equation: "",
+  svg: `
+<svg viewBox="0 0 400 160" width="100%" height="160">
+  <!-- wave 1 -->
+  <path d="M20 80 Q 70 40, 120 80 T 220 80 T 320 80"
+        fill="none" stroke="#2563eb" stroke-width="3"/>
+
+  <!-- wave 2 -->
+  <path d="M20 80 Q 70 40, 120 80 T 220 80 T 320 80"
+        fill="none" stroke="#ef4444" stroke-width="3" stroke-dasharray="6,6"/>
+
+  <!-- result -->
+  <path d="M20 80 Q 70 20, 120 80 T 220 80 T 320 80"
+        fill="none" stroke="#111827" stroke-width="4"/>
+
+  <text x="20" y="25" font-size="12">Resultant (larger amplitude)</text>
+</svg>
+`
+}
+,
+{
+  term: "Destructive interference",
+  answer: "When two waves meet out of phase, their amplitudes cancel, producing a smaller or zero wave.",
+  equation: "",
+  svg: `
+<svg viewBox="0 0 400 160" width="100%" height="160">
+  <!-- wave up -->
+  <path d="M20 80 Q 70 40, 120 80 T 220 80 T 320 80"
+        fill="none" stroke="#2563eb" stroke-width="3"/>
+
+  <!-- wave down -->
+  <path d="M20 80 Q 70 120, 120 80 T 220 80 T 320 80"
+        fill="none" stroke="#ef4444" stroke-width="3" stroke-dasharray="6,6"/>
+
+  <!-- result -->
+  <line x1="20" y1="80" x2="320" y2="80"
+        stroke="#111827" stroke-width="4"/>
+
+  <text x="20" y="25" font-size="12">Resultant (cancelled)</text>
+</svg>
+`
+}
+,
+{
+  term: "Doppler shift (moving source)",
+  answer: "Wavefronts are closer together in front of a moving source (shorter λ, higher f) and more spread out behind (longer λ, lower f).",
+  equation: "",
+  svg: `
+
+
+<svg viewBox="-120 -120 320 240" width="100%" height="220">
+
+  <!-- Circles -->
+  <circle cx="0" cy="0" r="100"
+          fill="none" stroke="#111827" stroke-width="2"/>
+  <circle cx="10" cy="0" r="80"
+          fill="none" stroke="#111827" stroke-width="2"/>
+  <circle cx="20" cy="0" r="60"
+          fill="none" stroke="#111827" stroke-width="2"/>
+
+  <!-- Centre dots -->
+  <circle cx="0" cy="0" r="4" fill="#111827"/>
+  <circle cx="10" cy="0" r="4" fill="#111827"/>
+  <circle cx="20" cy="0" r="4" fill="#111827"/>
+
+  <!-- Arrow definition -->
+  <defs>
+    <marker id="motionArrow" markerWidth="10" markerHeight="10"
+            refX="5" refY="5" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- Direction of motion arrow -->
+  <line x1="-40" y1="60" x2="80" y2="60"
+        stroke="#111827" stroke-width="3"
+        marker-end="url(#motionArrow)"/>
+
+  <text x="-38" y="52" font-size="14">motion</text>
+
+</svg>
+
+
+
+
+`
+}
+,
+{
+  term: "Resonance",
+  answer: "When a system vibrates with maximum amplitude at its natural frequency due to energy transfer.",
+  equation: "",
+  svg: `
+<svg viewBox="0 0 400 180" width="100%" height="180">
+  <!-- equilibrium -->
+  <line x1="60" y1="90" x2="340" y2="90"
+        stroke="#999" stroke-dasharray="5,5"/>
+
+  <!-- small vibration -->
+  <path d="M60 90 Q 100 85, 140 90 T 220 90 T 300 90"
+        fill="none" stroke="#2563eb" stroke-width="2"/>
+
+  <!-- resonant vibration -->
+  <path d="M60 90 Q 100 40, 140 90 T 220 90 T 300 90"
+        fill="none" stroke="#111827" stroke-width="4"/>
+
+  <text x="120" y="30" font-size="12">resonance → large amplitude</text>
+</svg>
+`
+},
+// ===============================
+// ADDITIONAL FLASHCARDS (TEXT ONLY)
+// ===============================
+
+{
+  term: "What is a wave?",
+  answer: "A disturbance that transfers energy from one place to another without permanent transfer of matter.",
+  equation: ""
+},
+{
+  term: "What determines the speed of a wave?",
+  answer: "The properties of the medium (e.g. tension, density), not the amplitude or frequency.",
+  equation: ""
+},
+{
+  term: "Frequency and wavelength relationship",
+  answer: "For a constant wave speed, increasing frequency causes wavelength to decrease.",
+  equation: "v = fλ"
+},
+{
+  term: "Wavefront",
+  answer: "A line or surface joining points that are in the same phase of vibration.",
+  equation: ""
+},
+{
+  term: "Phase",
+  answer: "The position of a point in a wave cycle at a given time.",
+  equation: ""
+},
+{
+  term: "Coherent waves",
+  answer: "Waves with the same frequency and a constant phase difference.",
+  equation: ""
+},
+{
+  term: "Why is coherence needed for interference?",
+  answer: "Only coherent waves produce stable interference patterns.",
+  equation: ""
+},
+{
+  term: "Principle of superposition",
+  answer: "When waves overlap, the resultant displacement equals the sum of the individual displacements.",
+  equation: ""
+},
+{
+  term: "Node",
+  answer: "A point where the wave displacement is always zero due to destructive interference.",
+  equation: ""
+},
+{
+  term: "Antinode",
+  answer: "A point of maximum displacement caused by constructive interference.",
+  equation: ""
+},
+
+{
+  term: "Type of wave: Light",
+  answer: "Light is a transverse electromagnetic wave.",
+  equation: ""
+},
+{
+  term: "Does light need a medium?",
+  answer: "No. Light can travel through a vacuum.",
+  equation: ""
+},
+{
+  term: "Speed of light in vacuum",
+  answer: "Approximately 3.0 × 10⁸ m/s.",
+  equation: "c ≈ 3.0 × 10⁸ m/s"
+},
+{
+  term: "Light speed in denser media",
+  answer: "Light travels more slowly in optically denser materials.",
+  equation: ""
+},
+{
+  term: "Frequency of light during refraction",
+  answer: "The frequency of light remains constant when it enters a different medium.",
+  equation: ""
+},
+
+{
+  term: "Normal (optics)",
+  answer: "A line drawn perpendicular to a surface at the point of incidence.",
+  equation: ""
+},
+{
+  term: "Image formed by a plane mirror",
+  answer: "Virtual, upright, same size as object, laterally inverted.",
+  equation: ""
+},
+{
+  term: "Lateral inversion",
+  answer: "Left and right are reversed in a mirror image.",
+  equation: ""
+},
+{
+  term: "Mirror used in car headlights",
+  answer: "Concave mirror.",
+  equation: ""
+},
+{
+  term: "Why are convex mirrors used for security?",
+  answer: "They provide a wider field of view.",
+  equation: ""
+},
+
+{
+  term: "Real image",
+  answer: "An image that can be formed on a screen.",
+  equation: ""
+},
+{
+  term: "Virtual image",
+  answer: "An image that cannot be formed on a screen.",
+  equation: ""
+},
+{
+  term: "Lens used in a magnifying glass",
+  answer: "Convex (converging) lens.",
+  equation: ""
+},
+
+
+
+{
+  term: "Light entering glass from air",
+  answer: "The light ray bends towards the normal.",
+  equation: ""
+},
+{
+  term: "Refractive index",
+  answer: "A measure of how much light slows down in a medium.",
+  equation: "n = c / v"
+},
+
+{
+  term: "Diffraction and light",
+  answer: "Diffraction shows that light behaves as a wave.",
+  equation: ""
+},
+{
+  term: "When is diffraction strongest?",
+  answer: "When the gap size is similar to the wavelength.",
+  equation: ""
+},
+{
+  term: "Cause of dispersion",
+  answer: "Different wavelengths refract by different amounts.",
+  equation: ""
+},
+{
+  term: "Shortest wavelength (visible light)",
+  answer: "Violet light.",
+  equation: ""
+},
+{
+  term: "Longest wavelength (visible light)",
+  answer: "Red light.",
+  equation: ""
+},
+
+{
+  term: "Polarisation",
+  answer: "Restricting vibrations of a transverse wave to one plane.",
+  equation: ""
+},
+{
+  term: "Can longitudinal waves be polarised?",
+  answer: "No. Only transverse waves can be polarised.",
+  equation: ""
+},
+{
+  term: "Application of polarisation",
+  answer: "Polarised sunglasses reduce glare from reflected light.",
+  equation: ""
+},
+{
+  term: "Part of the eye controlling light entry",
+  answer: "The iris.",
+  equation: ""
+},
+{
+  term: "Short-sightedness (myopia)",
+  answer: "The image is formed in front of the retina.",
+  equation: ""
+},
+
+{
+  term: "Type of wave: Sound",
+  answer: "Sound is a longitudinal mechanical wave.",
+  equation: ""
+},
+{
+  term: "Does sound travel in a vacuum?",
+  answer: "No. Sound requires a medium.",
+  equation: ""
+},
+{
+  term: "Speed of sound in air depends on",
+  answer: "Temperature and humidity.",
+  equation: ""
+},
+{
+  term: "Loudness of sound depends on",
+  answer: "Amplitude (sound intensity).",
+  equation: ""
+},
+{
+  term: "Pitch of sound depends on",
+  answer: "Frequency.",
+  equation: ""
+},
+
+{
+  term: "Resonance (sound)",
+  answer: "Large amplitude vibration when a system is driven at its natural frequency.",
+  equation: ""
+},
+{
+  term: "Harmonics",
+  answer: "Frequencies that are whole-number multiples of the fundamental frequency.",
+  equation: ""
+},
+{
+  term: "Fundamental frequency",
+  answer: "The lowest natural frequency of a vibrating system.",
+  equation: ""
+},
+{
+  term: "Why instruments sound different",
+  answer: "Different harmonics and waveforms are produced.",
+  equation: ""
+},
+{
+  term: "Standing wave",
+  answer: "A wave formed by two waves of the same frequency travelling in opposite directions.",
+  equation: ""
+},
+
+{
+  term: "Ultrasound",
+  answer: "High-frequency sound waves above the range of human hearing.",
+  equation: ""
+},
+{
+  term: "Why ultrasound is safe",
+  answer: "It is non-ionising radiation.",
+  equation: ""
+},
+{
+  term: "Property used in ultrasound imaging",
+  answer: "Reflection of sound waves (echoes).",
+  equation: ""
+},
+{
+  term: "Ultrasound at tissue boundaries",
+  answer: "Some sound is reflected and some is transmitted.",
+  equation: ""
+},
+{
+  term: "Purpose of gel in ultrasound scans",
+  answer: "To reduce reflection at the skin–air boundary.",
+  equation: ""
+} ,
+
+
+// ===============================
+// EXTRA DETAIL: EYESIGHT + LENSES (WITH SMALL DIAGRAMS)
+// ===============================
+
+{
+  term: "Myopia (short-sightedness): what happens?",
+  answer: "Distant objects appear blurry because parallel rays from a distant object focus in front of the retina (eye is too strong or eyeball too long).",
+  equation: "",
+  svg: `
+<svg viewBox="0 0 420 220" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="20" text-anchor="middle" font-size="16" font-weight="700">Myopia: focus in front of retina</text>
+
+  <!-- eye outline -->
+  <ellipse cx="300" cy="120" rx="85" ry="55" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+  <!-- lens -->
+  <path d="M250 95 Q265 120 250 145 Q240 120 250 95" fill="#dbeafe" stroke="#1f77b4" stroke-width="2"/>
+  <text x="245" y="88" font-size="12" fill="#1f77b4">lens</text>
+
+  <!-- retina -->
+  <line x1="370" y1="75" x2="370" y2="165" stroke="#ef4444" stroke-width="4"/>
+  <text x="372" y="70" font-size="12" fill="#ef4444">retina</text>
+
+  <!-- incoming parallel rays -->
+  <defs>
+    <marker id="arrA" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+  <line x1="30" y1="95" x2="245" y2="95" stroke="#111827" stroke-width="2" marker-end="url(#arrA)"/>
+  <line x1="30" y1="120" x2="245" y2="120" stroke="#111827" stroke-width="2" marker-end="url(#arrA)"/>
+  <line x1="30" y1="145" x2="245" y2="145" stroke="#111827" stroke-width="2" marker-end="url(#arrA)"/>
+  <text x="35" y="80" font-size="12" fill="#111827">parallel rays (distant object)</text>
+
+  <!-- refracted rays -->
+  <line x1="250" y1="95" x2="320" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="250" y1="120" x2="320" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="250" y1="145" x2="320" y2="120" stroke="#111827" stroke-width="2"/>
+
+  <!-- focus point in front of retina -->
+  <circle cx="332" cy="120" r="4" fill="#ef4444"/>
+  <text x="250" y="205" text-anchor="middle" font-size="13">Focus occurs before retina → blurry distance vision</text>
+</svg>
+`
+},
+
+{
+  term: "Myopia correction",
+  answer: "Corrected using a diverging (concave) lens. It spreads rays out slightly so the eye focuses them onto the retina.",
+  equation: "diverging lens (concave)",
+  svg: `
+<svg viewBox="0 0 420 220" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="20" text-anchor="middle" font-size="16" font-weight="700">Myopia correction: diverging lens</text>
+
+<!-- diverging lens -->
+<path d="M190 50
+         Q220 105 190 160
+         L230 160
+         Q200 105 230 50
+         Z"
+      fill="#e0f2fe"
+      stroke="#0284c7"
+      stroke-width="3"/>
+
+
+  <!-- eye outline -->
+  <ellipse cx="305" cy="120" rx="85" ry="55" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+//  <!-- eye lens -->
+ // <path d="M255 95 Q270 120 255 145 Q245 120 255 95" fill="#dbeafe" stroke="#1f77b4" stroke-width="2"/>
+  <!-- retina -->
+  <line x1="375" y1="75" x2="375" y2="165" stroke="#ef4444" stroke-width="4"/>
+  <text x="377" y="70" font-size="12" fill="#ef4444">retina</text>
+
+  <defs>
+    <marker id="arrB" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- incoming parallel rays -->
+  <line x1="25" y1="95" x2="112" y2="95" stroke="#111827" stroke-width="2" marker-end="url(#arrB)"/>
+  <line x1="25" y1="120" x2="112" y2="120" stroke="#111827" stroke-width="2" marker-end="url(#arrB)"/>
+  <line x1="25" y1="145" x2="112" y2="145" stroke="#111827" stroke-width="2" marker-end="url(#arrB)"/>
+
+  <!-- after diverging lens: slightly spread -->
+  <line x1="128" y1="95" x2="250" y2="85" stroke="#111827" stroke-width="2"/>
+  <line x1="128" y1="120" x2="250" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="128" y1="145" x2="250" y2="155" stroke="#111827" stroke-width="2"/>
+
+  <!-- through eye lens to retina -->
+  <line x1="255" y1="85" x2="375" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="255" y1="120" x2="375" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="255" y1="155" x2="375" y2="120" stroke="#111827" stroke-width="2"/>
+
+  <circle cx="375" cy="120" r="4" fill="#22c55e"/>
+  <text x="210" y="205" text-anchor="middle" font-size="13">Diverging lens reduces eye power → focus on retina</text>
+</svg>
+`
+},
+
+{
+  term: "Hyperopia (long-sightedness): what happens?",
+  answer: "Near objects appear blurry because rays would focus behind the retina (eye is too weak or eyeball too short).",
+  equation: "",
+  svg: `
+<svg viewBox="0 0 420 220" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="20" text-anchor="middle" font-size="16" font-weight="700">Hyperopia: focus behind retina</text>
+
+  <!-- eye outline -->
+  <ellipse cx="300" cy="120" rx="85" ry="55" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+  <!-- lens -->
+  <path d="M250 95 Q265 120 250 145 Q240 120 250 95" fill="#dbeafe" stroke="#1f77b4" stroke-width="2"/>
+  <!-- retina -->
+  <line x1="370" y1="75" x2="370" y2="165" stroke="#ef4444" stroke-width="4"/>
+  <text x="372" y="70" font-size="12" fill="#ef4444">retina</text>
+
+  <defs>
+    <marker id="arrC" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- incoming rays (slightly diverging to represent near object) -->
+  <line x1="35" y1="110" x2="245" y2="95" stroke="#111827" stroke-width="2" marker-end="url(#arrC)"/>
+  <line x1="35" y1="120" x2="245" y2="120" stroke="#111827" stroke-width="2" marker-end="url(#arrC)"/>
+  <line x1="35" y1="130" x2="245" y2="145" stroke="#111827" stroke-width="2" marker-end="url(#arrC)"/>
+  <text x="35" y="90" font-size="12" fill="#111827">near object rays</text>
+
+  <!-- refracted rays: not converging enough by retina -->
+  <line x1="250" y1="95" x2="370" y2="110" stroke="#111827" stroke-width="2"/>
+  <line x1="250" y1="120" x2="370" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="250" y1="145" x2="370" y2="130" stroke="#111827" stroke-width="2"/>
+
+  <!-- show focus behind retina (dashed) -->
+  <line x1="370" y1="110" x2="410" y2="120" stroke="#111827" stroke-width="2" stroke-dasharray="6,6"/>
+  <line x1="370" y1="130" x2="410" y2="120" stroke="#111827" stroke-width="2" stroke-dasharray="6,6"/>
+  <circle cx="410" cy="120" r="4" fill="#ef4444"/>
+  <text x="210" y="205" text-anchor="middle" font-size="13">Focus would occur behind retina → blurry near vision</text>
+</svg>
+`
+},
+
+{
+  term: "Hyperopia correction",
+  answer: "Corrected using a converging (convex) lens. It brings rays together so the eye focuses them onto the retina.",
+  equation: "converging lens (convex)",
+  svg: `
+<svg viewBox="0 0 420 220" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="20" text-anchor="middle" font-size="16" font-weight="700">Hyperopia correction: converging lens</text>
+
+  <!-- converging lens -->
+  <path d="M120 65 Q150 110 120 155 Q90 110 120 65 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="120" y="60" text-anchor="middle" font-size="12" fill="#0284c7">converging lens</text>
+
+  <!-- eye -->
+  <ellipse cx="305" cy="120" rx="85" ry="55" fill="#f8fafc" stroke="#111827" stroke-width="3"/>
+  <path d="M255 95 Q270 120 255 145 Q245 120 255 95" fill="#dbeafe" stroke="#1f77b4" stroke-width="2"/>
+  <line x1="375" y1="75" x2="375" y2="165" stroke="#ef4444" stroke-width="4"/>
+  <text x="377" y="70" font-size="12" fill="#ef4444">retina</text>
+
+  <defs>
+    <marker id="arrD" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- incoming near-object rays -->
+  <line x1="25" y1="110" x2="112" y2="95" stroke="#111827" stroke-width="2" marker-end="url(#arrD)"/>
+  <line x1="25" y1="120" x2="112" y2="120" stroke="#111827" stroke-width="2" marker-end="url(#arrD)"/>
+  <line x1="25" y1="130" x2="112" y2="145" stroke="#111827" stroke-width="2" marker-end="url(#arrD)"/>
+
+  <!-- after converging lens: start converging -->
+  <line x1="128" y1="95" x2="250" y2="105" stroke="#111827" stroke-width="2"/>
+  <line x1="128" y1="120" x2="250" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="128" y1="145" x2="250" y2="135" stroke="#111827" stroke-width="2"/>
+
+  <!-- through eye to retina -->
+  <line x1="255" y1="105" x2="375" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="255" y1="120" x2="375" y2="120" stroke="#111827" stroke-width="2"/>
+  <line x1="255" y1="135" x2="375" y2="120" stroke="#111827" stroke-width="2"/>
+
+  <circle cx="375" cy="120" r="4" fill="#22c55e"/>
+  <text x="210" y="205" text-anchor="middle" font-size="13">Converging lens increases power → focus on retina</text>
+</svg>
+`
+},
+
+{
+  term: "Diverging (concave) lens: effect on rays",
+  answer: "A diverging lens spreads out parallel rays so they appear to come from a focal point on the same side as the incoming light (virtual focus). Used to correct myopia.",
+  equation: "f < 0 (diverging lens)",
+  svg: `
+<svg viewBox="0 0 420 210" width="100%" height="170" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="20" text-anchor="middle" font-size="16" font-weight="700">Diverging lens</text>
+
+
+
+<!-- diverging lens -->
+<path d="M190 50
+         Q220 105 190 160
+         L230 160
+         Q200 105 230 50
+         Z"
+      fill="#e0f2fe"
+      stroke="#0284c7"
+      stroke-width="3"/>
+
+
+  <!-- axis -->
+  <line x1="40" y1="105" x2="380" y2="105" stroke="#9ca3af" stroke-dasharray="6,6"/>
+
+  <defs>
+    <marker id="arrE" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- incoming parallel rays -->
+  <line x1="50" y1="80" x2="200" y2="80" stroke="#111827" stroke-width="2" marker-end="url(#arrE)"/>
+  <line x1="50" y1="105" x2="200" y2="105" stroke="#111827" stroke-width="2" marker-end="url(#arrE)"/>
+  <line x1="50" y1="130" x2="200" y2="130" stroke="#111827" stroke-width="2" marker-end="url(#arrE)"/>
+
+  <!-- outgoing diverging rays -->
+  <line x1="220" y1="80" x2="360" y2="60" stroke="#111827" stroke-width="2" marker-end="url(#arrE)"/>
+  <line x1="220" y1="105" x2="360" y2="105" stroke="#111827" stroke-width="2" marker-end="url(#arrE)"/>
+  <line x1="220" y1="130" x2="360" y2="150" stroke="#111827" stroke-width="2" marker-end="url(#arrE)"/>
+
+  <!-- virtual focus (dashed back extensions) -->
+  <line x1="220" y1="80" x2="120" y2="95" stroke="#111827" stroke-width="2" stroke-dasharray="6,6"/>
+  <line x1="220" y1="130" x2="120" y2="115" stroke="#111827" stroke-width="2" stroke-dasharray="6,6"/>
+  <circle cx="110" cy="105" r="4" fill="#ef4444"/>
+  <text x="110" y="125" text-anchor="middle" font-size="12" fill="#ef4444">F</text>
+</svg>
+`
+},
+
+{
+  term: "Converging (convex) lens: effect on rays",
+  answer: "A converging lens brings parallel rays together to a real focal point on the far side of the lens. Used to correct hyperopia and in magnifying glasses.",
+  equation: "f > 0 (converging lens)",
+  svg: `
+<svg viewBox="0 0 420 210" width="100%" height="170" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="20" text-anchor="middle" font-size="16" font-weight="700">Converging lens</text>
+
+  <!-- lens -->
+  <path d="M210 50 Q255 105 210 160 Q165 105 210 50 Z" fill="#e0f2fe" stroke="#0284c7" stroke-width="3"/>
+
+  <!-- axis -->
+  <line x1="40" y1="105" x2="380" y2="105" stroke="#9ca3af" stroke-dasharray="6,6"/>
+
+  <defs>
+    <marker id="arrF" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- incoming parallel rays -->
+  <line x1="50" y1="80" x2="200" y2="80" stroke="#111827" stroke-width="2" marker-end="url(#arrF)"/>
+  <line x1="50" y1="105" x2="200" y2="105" stroke="#111827" stroke-width="2" marker-end="url(#arrF)"/>
+  <line x1="50" y1="130" x2="200" y2="130" stroke="#111827" stroke-width="2" marker-end="url(#arrF)"/>
+
+  <!-- outgoing converging rays to focus -->
+  <line x1="220" y1="80" x2="330" y2="105" stroke="#111827" stroke-width="2" marker-end="url(#arrF)"/>
+  <line x1="220" y1="105" x2="330" y2="105" stroke="#111827" stroke-width="2" marker-end="url(#arrF)"/>
+  <line x1="220" y1="130" x2="330" y2="105" stroke="#111827" stroke-width="2" marker-end="url(#arrF)"/>
+
+  <circle cx="330" cy="105" r="4" fill="#22c55e"/>
+  <text x="330" y="125" text-anchor="middle" font-size="12" fill="#22c55e">F</text>
+</svg>
+`
+},
+
+// ===============================
+// ELECTROMAGNETIC SPECTRUM (SVG “SLIDE” CARDS)
+// ===============================
+
+{
+  term: "Electromagnetic spectrum (big picture)",
+  answer: "All electromagnetic waves travel at the same speed in a vacuum (c). They differ by wavelength (λ) and frequency (f). Order (long λ → short λ): radio → microwaves → infrared → visible → ultraviolet → X‑rays → gamma.",
+  equation: "c = fλ",
+  svg: `
+<svg viewBox="0 0 420 190" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="700">Electromagnetic spectrum</text>
+
+  <!-- spectrum bar -->
+  <g transform="translate(20,55)">
+    <rect x="0"   y="0" width="54" height="40" fill="#c7d2fe" stroke="#111827"/>
+    <rect x="54"  y="0" width="54" height="40" fill="#bae6fd" stroke="#111827"/>
+    <rect x="108" y="0" width="54" height="40" fill="#bbf7d0" stroke="#111827"/>
+    <rect x="162" y="0" width="54" height="40" fill="#fde68a" stroke="#111827"/>
+    <rect x="216" y="0" width="54" height="40" fill="#fecaca" stroke="#111827"/>
+    <rect x="270" y="0" width="54" height="40" fill="#fbcfe8" stroke="#111827"/>
+    <rect x="324" y="0" width="56" height="40" fill="#ddd6fe" stroke="#111827"/>
+
+    <text x="27"  y="25" text-anchor="middle" font-size="10" font-weight="700">Radio</text>
+    <text x="81"  y="25" text-anchor="middle" font-size="10" font-weight="700">Micro</text>
+    <text x="135" y="25" text-anchor="middle" font-size="10" font-weight="700">IR</text>
+    <text x="189" y="25" text-anchor="middle" font-size="10" font-weight="700">Visible</text>
+    <text x="243" y="25" text-anchor="middle" font-size="10" font-weight="700">UV</text>
+    <text x="297" y="25" text-anchor="middle" font-size="10" font-weight="700">X‑ray</text>
+    <text x="352" y="25" text-anchor="middle" font-size="10" font-weight="700">Gamma</text>
+  </g>
+
+  <!-- arrows -->
+  <defs>
+    <marker id="arr" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <line x1="40" y1="120" x2="380" y2="120" stroke="#111827" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="210" y="140" text-anchor="middle" font-size="12">frequency & energy increase →</text>
+
+  <line x1="380" y1="155" x2="40" y2="155" stroke="#111827" stroke-width="2" marker-end="url(#arr)"/>
+  <text x="210" y="176" text-anchor="middle" font-size="12">← wavelength increases</text>
+</svg>
+`
+},
+
+{
+  term: "Wavelength vs frequency (what changes?)",
+  answer: "For EM waves in the same medium, speed is constant, so wavelength and frequency are inversely related: higher f means shorter λ.",
+  equation: "c = fλ",
+  svg: `
+<svg viewBox="0 0 420 180" width="100%" height="170" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="700">If speed stays the same…</text>
+
+  <defs>
+    <marker id="arr2" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <text x="95" y="65" font-size="14" font-weight="700">frequency (f)</text>
+  <line x1="60" y1="80" x2="160" y2="80" stroke="#111827" stroke-width="3" marker-end="url(#arr2)"/>
+  <text x="170" y="85" font-size="14">increases</text>
+
+  <text x="95" y="120" font-size="14" font-weight="700">wavelength (λ)</text>
+  <line x1="160" y1="135" x2="60" y2="135" stroke="#111827" stroke-width="3" marker-end="url(#arr2)"/>
+  <text x="170" y="140" font-size="14">decreases</text>
+
+  <text x="210" y="165" text-anchor="middle" font-size="12">Higher f → shorter λ (when c is constant)</text>
+</svg>
+`
+},
+
+{
+  term: "Visible light (order of colours)",
+  answer: "Visible light is a small part of the EM spectrum. Red has longer wavelength; violet has shorter wavelength (higher frequency/energy).",
+  equation: "red (long λ) → violet (short λ)",
+  svg: `
+<svg viewBox="0 0 420 180" width="100%" height="170" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="700">Visible spectrum</text>
+
+  <!-- colour blocks -->
+  <g transform="translate(35,60)">
+    <rect x="0"   y="0" width="50" height="35" fill="#ef4444" stroke="#111827"/>
+    <rect x="50"  y="0" width="50" height="35" fill="#f97316" stroke="#111827"/>
+    <rect x="100" y="0" width="50" height="35" fill="#facc15" stroke="#111827"/>
+    <rect x="150" y="0" width="50" height="35" fill="#22c55e" stroke="#111827"/>
+    <rect x="200" y="0" width="50" height="35" fill="#06b6d4" stroke="#111827"/>
+    <rect x="250" y="0" width="50" height="35" fill="#3b82f6" stroke="#111827"/>
+    <rect x="300" y="0" width="50" height="35" fill="#8b5cf6" stroke="#111827"/>
+
+    <text x="25"  y="55" text-anchor="middle" font-size="10" font-weight="700">Red</text>
+    <text x="75"  y="55" text-anchor="middle" font-size="10" font-weight="700">Orange</text>
+    <text x="125" y="55" text-anchor="middle" font-size="10" font-weight="700">Yellow</text>
+    <text x="175" y="55" text-anchor="middle" font-size="10" font-weight="700">Green</text>
+    <text x="225" y="55" text-anchor="middle" font-size="10" font-weight="700">Cyan</text>
+    <text x="275" y="55" text-anchor="middle" font-size="10" font-weight="700">Blue</text>
+    <text x="325" y="55" text-anchor="middle" font-size="10" font-weight="700">Violet</text>
+  </g>
+
+  <defs>
+    <marker id="arr3" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <line x1="55" y1="140" x2="365" y2="140" stroke="#111827" stroke-width="2" marker-end="url(#arr3)"/>
+  <text x="210" y="162" text-anchor="middle" font-size="12">frequency/energy increase →</text>
+</svg>
+`
+},
+
+{
+  term: "Ionising vs non-ionising radiation (concept)",
+  answer: "Higher-frequency EM waves carry more energy. At the high-energy end (UV, X‑rays, gamma), radiation can be ionising and may damage cells/DNA, so exposure is controlled in healthcare.",
+  equation: "higher f → higher energy",
+  svg: `
+<svg viewBox="0 0 420 190" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="700">Non‑ionising vs ionising (idea)</text>
+
+  <g transform="translate(25,60)">
+    <rect x="0" y="0" width="250" height="35" fill="#d1fae5" stroke="#111827"/>
+    <rect x="250" y="0" width="120" height="35" fill="#fee2e2" stroke="#111827"/>
+
+    <text x="125" y="23" text-anchor="middle" font-size="12" font-weight="700">mostly non‑ionising</text>
+    <text x="310" y="23" text-anchor="middle" font-size="12" font-weight="700">ionising end</text>
+
+    <text x="20"  y="55" font-size="11">radio</text>
+    <text x="95"  y="55" font-size="11">IR</text>
+    <text x="150" y="55" font-size="11">visible</text>
+    <text x="235" y="55" font-size="11">UV</text>
+    <text x="300" y="55" font-size="11">X‑ray</text>
+    <text x="355" y="55" font-size="11">gamma</text>
+  </g>
+
+  <defs>
+    <marker id="arr4" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <line x1="60" y1="125" x2="365" y2="125" stroke="#111827" stroke-width="2" marker-end="url(#arr4)"/>
+  <text x="210" y="150" text-anchor="middle" font-size="12">frequency/energy increase →</text>
+</svg>
+`
+},
+
+{
+  term: "X‑rays: why bones show up clearly?",
+  answer: "Different tissues absorb X‑rays by different amounts. Bone absorbs more X‑rays than soft tissue, creating contrast on the detector/image.",
+  equation: "",
+  svg: `
+<svg viewBox="0 0 420 190" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="700">X‑ray imaging (simple model)</text>
+
+  <!-- source -->
+  <rect x="30" y="70" width="55" height="55" rx="10" fill="#e5e7eb" stroke="#111827"/>
+  <text x="57.5" y="102" text-anchor="middle" font-size="12" font-weight="700">source</text>
+
+  <!-- patient -->
+  <rect x="165" y="55" width="90" height="85" rx="12" fill="#f8fafc" stroke="#111827" stroke-width="2"/>
+  <text x="210" y="70" text-anchor="middle" font-size="11">patient</text>
+  <!-- bone -->
+  <rect x="200" y="80" width="20" height="40" fill="#111827" opacity="0.75"/>
+  <text x="210" y="135" text-anchor="middle" font-size="10">bone absorbs more</text>
+
+  <!-- detector -->
+  <rect x="335" y="60" width="55" height="75" rx="10" fill="#dbeafe" stroke="#111827"/>
+  <text x="362.5" y="102" text-anchor="middle" font-size="12" font-weight="700">detector</text>
+
+  <!-- rays -->
+  <defs>
+    <marker id="arr5" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+  <line x1="85" y1="80" x2="335" y2="80" stroke="#111827" stroke-width="2" marker-end="url(#arr5)"/>
+  <line x1="85" y1="97" x2="335" y2="97" stroke="#111827" stroke-width="2" marker-end="url(#arr5)"/>
+  <line x1="85" y1="114" x2="335" y2="114" stroke="#111827" stroke-width="2" marker-end="url(#arr5)"/>
+
+  <text x="210" y="170" text-anchor="middle" font-size="12">More absorption → fewer X‑rays reach detector → contrast</text>
+</svg>
+`
+},
+
+{
+  term: "Infrared (IR): what do we use it for?",
+  answer: "Infrared is ‘heat radiation’ linked to temperature. It’s used in thermal imaging (detecting warm areas) and in remote controls/short‑range sensors.",
+  equation: "",
+  svg: `
+<svg viewBox="0 0 420 190" width="100%" height="180" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="700">Infrared (IR)</text>
+
+  <!-- simple person + heat waves -->
+  <circle cx="140" cy="80" r="18" fill="#111827"/>
+  <rect x="125" y="98" width="30" height="55" rx="12" fill="#111827"/>
+
+  <path d="M210 70 C 220 60, 235 60, 245 70
+           C 255 80, 255 95, 245 105
+           C 235 115, 220 115, 210 105"
+        fill="none" stroke="#ef4444" stroke-width="3"/>
+  <path d="M250 60 C 265 45, 290 45, 305 60
+           C 320 75, 320 95, 305 110
+           C 290 125, 265 125, 250 110"
+        fill="none" stroke="#f97316" stroke-width="3"/>
+
+  <text x="260" y="150" font-size="12">warm objects emit more IR</text>
+
+  <!-- tiny spectrum pointer -->
+  <g transform="translate(55,160)">
+    <rect x="0" y="0" width="310" height="10" fill="#e5e7eb" stroke="#111827"/>
+    <rect x="120" y="0" width="55" height="10" fill="#bbf7d0" stroke="#111827"/>
+    <text x="147" y="-4" text-anchor="middle" font-size="10" font-weight="700">IR</text>
+  </g>
+</svg>
+`
+},
+
+{
+  term: "Electromagnetic spectrum (with typical wavelengths)",
+  answer: "Typical wavelength ranges (very approximate): Radio > 1 m; Microwaves ~ 1 m–1 mm; Infrared ~ 1 mm–700 nm; Visible ~ 700–400 nm; UV ~ 400–10 nm; X-rays ~ 10–0.01 nm; Gamma < 0.01 nm. (Frequency/energy increase to the right.)",
+  equation: "c = fλ",
+  svg: `
+<svg viewBox="0 0 420 235" width="100%" height="210" xmlns="http://www.w3.org/2000/svg">
+  <text x="210" y="22" text-anchor="middle" font-size="16" font-weight="700">EM spectrum (typical wavelengths)</text>
+
+  <!-- spectrum bar -->
+  <g transform="translate(20,52)">
+    <rect x="0"   y="0" width="54" height="34" fill="#c7d2fe" stroke="#111827"/>
+    <rect x="54"  y="0" width="54" height="34" fill="#bae6fd" stroke="#111827"/>
+    <rect x="108" y="0" width="54" height="34" fill="#bbf7d0" stroke="#111827"/>
+    <rect x="162" y="0" width="54" height="34" fill="#fde68a" stroke="#111827"/>
+    <rect x="216" y="0" width="54" height="34" fill="#fecaca" stroke="#111827"/>
+    <rect x="270" y="0" width="54" height="34" fill="#fbcfe8" stroke="#111827"/>
+    <rect x="324" y="0" width="56" height="34" fill="#ddd6fe" stroke="#111827"/>
+
+    <text x="27"  y="22" text-anchor="middle" font-size="10" font-weight="700">Radio</text>
+    <text x="81"  y="22" text-anchor="middle" font-size="10" font-weight="700">Micro</text>
+    <text x="135" y="22" text-anchor="middle" font-size="10" font-weight="700">IR</text>
+    <text x="189" y="22" text-anchor="middle" font-size="10" font-weight="700">Visible</text>
+    <text x="243" y="22" text-anchor="middle" font-size="10" font-weight="700">UV</text>
+    <text x="297" y="22" text-anchor="middle" font-size="10" font-weight="700">X-ray</text>
+    <text x="352" y="22" text-anchor="middle" font-size="10" font-weight="700">Gamma</text>
+  </g>
+
+  <!-- wavelength labels -->
+  <g transform="translate(20,108)" font-size="10" fill="#111827">
+    <text x="27"  y="0" text-anchor="middle">> 1 m</text>
+    <text x="81"  y="0" text-anchor="middle">1 m–1 mm</text>
+    <text x="135" y="0" text-anchor="middle">1 mm–700 nm</text>
+    <text x="189" y="0" text-anchor="middle">700–400 nm</text>
+    <text x="243" y="0" text-anchor="middle">400–10 nm</text>
+    <text x="297" y="0" text-anchor="middle">10–0.01 nm</text>
+    <text x="352" y="0" text-anchor="middle">< 0.01 nm</text>
+  </g>
+
+  <!-- big arrows -->
+  <defs>
+    <marker id="arrWL" markerWidth="10" markerHeight="10" refX="6" refY="5" orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <line x1="45" y1="145" x2="375" y2="145" stroke="#111827" stroke-width="2" marker-end="url(#arrWL)"/>
+  <text x="210" y="165" text-anchor="middle" font-size="12">frequency & energy increase →</text>
+
+  <line x1="375" y1="187" x2="45" y2="187" stroke="#111827" stroke-width="2" marker-end="url(#arrWL)"/>
+  <text x="210" y="210" text-anchor="middle" font-size="12">← wavelength increases</text>
+
+  <text x="210" y="228" text-anchor="middle" font-size="10" fill="#374151">
+    Ranges are approximate (orders of magnitude), but good for 1st-year reference.
+  </text>
+</svg>
+`
+}
+
+
+
+
+
+
+
+
+
+
+];
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setRating(index, color) {
+  localStorage.setItem('rating_' + flashcards[index].term, color);
+  displayFlashcards();
+}
+
+function getRating(term) {
+  return localStorage.getItem('rating_' + term);
+}
+
+function clearRatings() {
+  flashcards.forEach(card => localStorage.removeItem('rating_' + card.term));
+  displayFlashcards();
+}
+
+function frontBlock(card, showTermFirst) {
+  if (showTermFirst) {
+    // Question first: front shows ONLY the term (no image)
+    return `
+      <div class="term">${card.term}</div>
+      <div class="small-note"></div>
+    `;
+  } else {
+    // Answer first: front shows answer + equation + image
+    return `
+      <div class="answer">${card.answer}</div>
+      ${card.equation ? `<div class="equation">${card.equation}</div>` : ``}
+      ${card.svg ? `<div class="diagram">${card.svg}</div>` : ``}
+      <div class="small-note"></div>
+    `;
+  }
+}
+
+function backBlock(card, showTermFirst) {
+  if (showTermFirst) {
+    // Question first: back shows answer + equation + image
+    return `
+      <div class="answer">${card.answer}</div>
+      ${card.equation ? `<div class="equation">${card.equation}</div>` : ``}
+      ${card.svg ? `<div class="diagram">${card.svg}</div>` : ``}
+    `;
+  } else {
+    // Answer first: back shows ONLY the term (no image)
+    return `
+      <div class="term">${card.term}</div>
+    `;
+  }
+}
+
+function displayFlashcards() {
+  const container = document.getElementById('flashcard-container');
+  container.innerHTML = '';
+  const selectedRating = document.getElementById('rating-filter').value;
+  const showTermFirst = document.getElementById('cardOrder').value === 'term';
+
+  flashcards.forEach((card, index) => {
+    const rating = getRating(card.term);
+    if (selectedRating === 'all' || rating === selectedRating) {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'flashcard';
+      if (rating) cardEl.style.border = '4px solid ' + rating;
+
+      cardEl.innerHTML = `
+        <div class="inner">
+          <div class="front">${frontBlock(card, showTermFirst)}</div>
+          <div class="back">
+            ${backBlock(card, showTermFirst)}
+            <div class="rating-buttons">
+              <button onclick="setRating(${index}, 'red')">Red</button>
+              <button onclick="setRating(${index}, 'yellow')">Yellow</button>
+              <button onclick="setRating(${index}, 'green')">Green</button>
+            </div>
+          </div>
+        </div>
+      `;
+      container.appendChild(cardEl);
+    }
+  });
+}
+
+function shuffleAndDisplay() {
+  shuffle(flashcards);
+  displayFlashcards();
+}
+
+displayFlashcards();
+</script>
+
+</body>
+</html>
