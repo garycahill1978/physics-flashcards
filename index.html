@@ -1,448 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PHY 2049 Flashcards</title>
+  <meta charset="UTF-8">
+  <title>Physics Flashcards</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f8f9fa;
+      background: #f8fafc;
       margin: 0;
       padding: 0;
     }
-    .controls {
+
+    header {
+      background: #1e293b;
+      color: white;
+      padding: 20px;
       text-align: center;
-      padding: 15px;
     }
-    select, button {
-      padding: 10px 15px;
-      margin: 5px;
-      font-size: 16px;
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8em;
     }
-    #flashcard-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      padding: 10px;
+
+    header p {
+      margin-top: 8px;
+      opacity: 0.9;
     }
-    .flashcard {
-      background: transparent;
-      width: 260px;
-      height: 200px;
-      perspective: 1000px;
-      margin: 10px;
+
+    main {
+      max-width: 900px;
+      margin: 40px auto;
+      padding: 0 20px;
     }
-    .inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+    }
+
+    a.card {
+      display: block;
+      background: white;
+      padding: 20px;
+      border-radius: 14px;
+      text-decoration: none;
+      color: #111;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    a.card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.18);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 1.2em;
+    }
+
+    .card p {
+      margin-bottom: 0;
+      color: #374151;
+      font-size: 0.95em;
+    }
+
+    footer {
       text-align: center;
-      transition: transform 0.6s;
-      transform-style: preserve-3d;
-    }
-    .flashcard:hover .inner {
-      transform: rotateY(180deg);
-    }
-    .front, .back {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      padding: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      border-radius: 8px;
-      font-size: 1em;
-    }
-    .front {
-      background: #ffffff;
-      font-weight: bold;
-    }
-    .back {
-      background: #dfefff;
-      transform: rotateY(180deg);
-    }
-    .rating-buttons {
-      margin-top: 10px;
-    }
-    .rating-buttons button {
-      margin: 2px;
-      padding: 5px 10px;
-      font-size: 0.8em;
+      padding: 20px;
+      font-size: 0.85em;
+      color: #6b7280;
     }
   </style>
-  <script>
-    window.MathJax = {
-      tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
-      svg: { fontCache: 'global' }
-    };
-  </script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
 </head>
+
 <body>
 
-<div class="controls">
-  <label for="rating-filter">Filter:</label>
-  <select id="rating-filter" onchange="displayFlashcards()">
-    <option value="all">All Ratings</option>
-    <option value="red">Red</option>
-    <option value="yellow">Yellow</option>
-    <option value="green">Green</option>
-  </select>
+<header>
+  <h1>Physics Flashcards & Resources</h1>
+  <p>Light • Sound • Waves • Exams • Problem Sets</p>
+</header>
 
-  <label for="cardOrder">Show First:</label>
-  <select id="cardOrder" onchange="displayFlashcards()">
-    <option value="term">Question</option>
-    <option value="answer">Answer</option>
-  </select>
+<main>
 
-  <button onclick="shuffleAndDisplay()">Shuffle Flashcards</button>
-  <button onclick="clearRatings()">Clear Ratings</button>
-</div>
+  <div class="grid">
 
-<div id="flashcard-container"></div>
-<script>
-const flashcards = [
-  {
-    term: "What is the Lorentz force law?",
-    equation: "F = q(\\vec{E} + \\vec{v} \\times \\vec{B})",
-    answer: "It describes the total force on a charged particle due to electric and magnetic fields."
-  },
-  {
-    term: "What is the magnetic part of the Lorentz force?",
-    equation: "F = q \\vec{v} \\times \\vec{B}",
-    answer: "A charge moving through a magnetic field experiences a force perpendicular to its velocity and the field."
-  },
-  {
-    term: "What is the force on a current-carrying wire in a magnetic field?",
-    equation: "F = I \\vec{\\ell} \\times \\vec{B}",
-    answer: "The wire experiences a force based on current direction, wire length, and the magnetic field."
-  },
-  {
-    term: "What is the Biot–Savart Law?",
-    equation: "\\vec{B} = \\frac{\\mu_0}{4\\pi} \\int \\frac{I \\, d\\vec{l} \\times \\hat{r}}{r^2}",
-    answer: "It gives the magnetic field produced at a point by a current element."
-  },
-  {
-    term: "What is Ampère’s Law (integral form)?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 I_{\\text{enc}}",
-    answer: "The line integral of the magnetic field around a closed loop equals μ₀ times the current enclosed."
-  },
-  {
-    term: "When is Ampère’s Law most useful?",
-    equation: "\\text{High symmetry: straight wire, solenoid, toroid}",
-    answer: "When the symmetry allows you to pull B out of the integral."
-  },
-  {
-    term: "What is Faraday’s Law of Induction?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
-    answer: "A changing magnetic flux through a loop induces an electromotive force (EMF)."
-  },
-  {
-    term: "What is magnetic flux?",
-    equation: "\\Phi_B = \\int \\vec{B} \\cdot d\\vec{A}",
-    answer: "It is the total magnetic field passing through a surface."
-  },
-  {
-    term: "What is Lenz’s Law?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt} \\quad (\\text{negative sign})",
-    answer: "The direction of induced EMF opposes the change in magnetic flux that produced it."
-  },
-  {
-    term: "What is motional EMF?",
-    equation: "\\mathcal{E} = B \\ell v \\sin\\theta",
-    answer: "A conductor moving through a magnetic field induces a voltage across its ends."
-  },
-  {
-    term: "What is the energy stored in an inductor?",
-    equation: "U = \\frac{1}{2} L I^2",
-    answer: "The magnetic energy stored due to the current in an inductor."
-  },
-  {
-    term: "What is self-inductance?",
-    equation: "\\mathcal{E}_L = -L \\frac{dI}{dt}",
-    answer: "A changing current in a circuit induces a back EMF that opposes the change."
-  },
-  {
-    term: "What is mutual inductance?",
-    equation: "\\mathcal{E}_2 = -M \\frac{dI_1}{dt}",
-    answer: "A changing current in one coil induces an EMF in a nearby coil."
-  },
-  {
-    term: "What is the time constant of an RL circuit?",
-    equation: "\\tau = \\frac{L}{R}",
-    answer: "It is the time for current to reach about 63% of its final value after a change."
-  },
-  {
-    term: "What is the equation for current in an RL charging circuit?",
-    equation: "I(t) = \\frac{V}{R}\\left(1 - e^{-t/\\tau}\\right)",
-    answer: "Current grows exponentially toward its maximum value over time."
-  },
-  {
-    term: "What is the displacement current in Maxwell’s correction to Ampère’s Law?",
-    equation: "I_d = \\varepsilon_0 \\frac{d\\Phi_E}{dt}",
-    answer: "It accounts for a changing electric field between capacitor plates."
-  },
-  {
-    term: "What is the full Ampère-Maxwell Law?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\left(I_{\\text{cond}} + \\varepsilon_0 \\frac{d\\Phi_E}{dt}\\right)",
-    answer: "Includes both conduction current and displacement current as sources of magnetic field."
-  },
-  {
-    term: "How does Faraday’s Law relate electric and magnetic fields?",
-    equation: "\\oint \\vec{E} \\cdot d\\vec{l} = -\\frac{d\\Phi_B}{dt}",
-    answer: "A changing magnetic field creates a circulating electric field."
-  },
-  {
-    term: "What is the unit of magnetic field strength?",
-    equation: "1\\, \\text{T} = 1\\, \\text{N}/(\\text{A} \\cdot \\text{m})",
-    answer: "Tesla is the SI unit of magnetic field."
-  },
-  {
-    term: "What is the magnetic field inside a long solenoid?",
-    equation: "B = \\mu_0 n I",
-    answer: "The field is uniform and depends on current and turn density."
-  },
+    <!-- FLASHCARDS -->
+    <a class="card" href="light-and-sound-flashcards.html">
+      <h2>🌈 Light & Sound Flashcards</h2>
+      <p>Interactive flashcards for waves, optics, sound, and medical applications.</p>
+    </a>
 
-  {
-    term: "What is the path of a charged particle moving perpendicular to a uniform magnetic field?",
-    equation: "r = \\frac{mv}{qB}",
-    answer: "It moves in a circular path because the magnetic force acts as a centripetal force."
-  },
-  {
-    term: "What is the direction of the magnetic force on a positive charge moving upward (along the screen) in a magnetic field into the page?",
-    equation: "Use the right-hand rule",
-    answer: "Along the screen— Arm (velocity) up, fingers (field) into the screen, Thumb faces left."
-  },
-  {
-    term: "What is the direction of the magnetic force on a Negative charge moving upward (along the screen) in a magnetic field into the page?",
-    equation: "Use the right-hand rule",
-    answer: "Along the screen— Arm (velocity) Down, fingers (field) into the screen, Thumb faces Right."
-  },
-  {
-    term: "What is induced when a wire moves through a magnetic field?",
-    equation: "\\mathcal{E} = B \\ell v \\sin\\theta",
-    answer: "A voltage (EMF) is induced due to motion in the magnetic field."
-  },
-  {
-    term: "What does Faraday’s Law state?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
-    answer: "A changing magnetic flux induces an EMF in a loop."
-  },
-  {
-    term: "What is the source of magnetic fields in Ampère’s Law with Maxwell’s correction?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\left(I + \\varepsilon_0 \\frac{d\\Phi_E}{dt}\\right)",
-    answer: "Both current and changing electric flux (displacement current) produce magnetic fields."
-  },
-  {
-    term: "Which circuit element has voltage and current in phase?",
-    equation: "V(t) = IR(t)",
-    answer: "A pure resistor."
-  },
-  {
-    term: "What is the RMS value of a 120 V peak voltage?",
-    equation: "V_{\\text{rms}} = \\frac{V_0}{\\sqrt{2}}",
-    answer: "Approximately 85 V."
-  },
-  {
-    term: "What principle allows transformers to operate?",
-    equation: "\\mathcal{E} = -N \\frac{d\\Phi_B}{dt}",
-    answer: "Electromagnetic induction — changing magnetic flux induces EMF in coils."
-  },
-  {
-    term: "What does a changing electric field produce according to Maxwell?",
-    equation: "\\vec{B} \\propto \\frac{d\\vec{E}}{dt}",
-    answer: "An oscillating electric field produces an oscillating magnetic field."
-  },
-  {
-    term: "Which Maxwell equation implies no magnetic monopoles exist?",
-    equation: "\\nabla \\cdot \\vec{B} = 0",
-    answer: "Gauss’s Law for magnetism — magnetic field lines are always closed loops."
-  },
-  {
-    term: "What happens to the radius of a charged particle’s circular motion if speed doubles?",
-    equation: "r = \\frac{mv}{qB}",
-    answer: "The radius doubles."
-  },
-  {
-    term: "What is the magnetic field direction at the center of a current loop (CCW from above)?",
-    equation: "Right-hand rule → Out of the page",
-    answer: "Out of the page — curl fingers with current, thumb points out."
-  },
-  {
-    term: "What is the magnetic field inside a long solenoid?",
-    equation: "B = \\mu_0 n I",
-    answer: "Uniform, constant, and directed along the axis of the solenoid."
-  },
-  {
-    term: "Why is EMF induced when a loop enters a magnetic field?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
-    answer: "Because magnetic flux through the loop changes."
-  },
-  {
-    term: "What does Lenz’s Law describe?",
-    equation: "\\mathcal{E} = -\\frac{d\\Phi_B}{dt}",
-    answer: "The induced EMF always opposes the change in magnetic flux."
-  },
-  {
-    term: "In a step-up transformer, what happens to voltage and current?",
-    equation: "V_s > V_p, I_s < I_p",
-    answer: "Voltage increases, current decreases — power is conserved."
-  },
-  {
-    term: "What is the RMS current of an AC current with peak 5 A?",
-    equation: "I_{\\text{rms}} = \\frac{I_0}{\\sqrt{2}}",
-    answer: "Approximately 3.54 A."
-  },
-  {
-    term: "What explains electromagnetic wave propagation?",
-    equation: "\\vec{E} \\propto \\frac{d\\vec{B}}{dt}, \\vec{B} \\propto \\frac{d\\vec{E}}{dt}",
-    answer: "Changing E-fields induce B-fields and vice versa — enabling wave motion."
-  },
-  {
-    term: "Which Maxwell equation explains B-field between capacitor plates?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\left(I + \\varepsilon_0 \\frac{d\\Phi_E}{dt}\\right)",
-    answer: "Ampère-Maxwell Law — displacement current allows continuity in the loop."
-  },
-  {
-    term: "What happens to the E-field if B(t) = B_0 sin(\\omega t)?",
-    equation: "E \\propto \\frac{dB}{dt}",
-    answer: "E oscillates with the same frequency as B — they're in phase or 90° shifted."
-  },
-  {
-    term: "What is the full Ampère-Maxwell Law?",
-    equation: "\\oint \\vec{B} \\cdot d\\vec{l} = \\mu_0 \\left(I_{\\text{cond}} + \\varepsilon_0 \\frac{d\\Phi_E}{dt}\\right)",
-    answer: "Includes both conduction current and displacement current as sources of magnetic field."
-  },
-  {
-    term: "How do Maxwell’s equations explain light propagation?",
-    equation: "c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}",
-    answer: "Changing E-fields and B-fields propagate together in a self-sustaining wave."
-  },
-  {
-    term: "How is EMF calculated in a changing magnetic field with N turns?",
-    equation: "\\mathcal{E} = -N \\frac{\\Delta\\Phi_B}{\\Delta t}",
-    answer: "Multiply Faraday’s Law by number of turns in the coil."
-  },
-  {
-    term: "What happens to induced EMF if the flux change occurs faster?",
-    equation: "\\mathcal{E} \\propto \\frac{\\Delta \\Phi_B}{\\Delta t}",
-    answer: "EMF increases — rate of change of flux determines EMF strength."
-  },
-  {
-    term: "What equation gives current in an ideal transformer with no loss?",
-    equation: "V_p I_p = V_s I_s",
-    answer: "Power in equals power out assuming 100% efficiency."
-  },
-  {
-    term: "What factors reduce transformer efficiency?",
-    equation: "\\text{Resistive and magnetic losses}",
-    answer: "Heat in wires, eddy currents, core hysteresis losses."
-  },
-  {
-    term: "How do you compute impedance of an R-L AC circuit?",
-    equation: "Z = \\sqrt{R^2 + (\\omega L)^2}",
-    answer: "Impedance combines resistance and inductive reactance."
-  },
-  {
-    term: "What is the average power in an AC circuit?",
-    equation: "P_{\\text{avg}} = I_{\\text{rms}} V_{\\text{rms}} \\cos\\phi",
-    answer: "It depends on current, voltage, and phase angle between them."
-  },
-  {
-    term: "How is wave speed derived from Maxwell’s equations?",
-    equation: "c = \\frac{1}{\\sqrt{\\mu_0 \\varepsilon_0}}",
-    answer: "Combining Faraday’s and Ampère-Maxwell equations predicts light speed in vacuum."
-  }
+    <!-- WAVES -->
+    <a class="card" href="waves-flashcards.html">
+      <h2>🌊 Waves</h2>
+      <p>Wave properties, interference, diffraction, Doppler effect.</p>
+    </a>
 
+    <!-- PROBLEM SETS -->
+    <a class="card" href="PhysicsSet1.html">
+      <h2>📘 Problem Sets</h2>
+      <p>Practice questions and worked examples.</p>
+    </a>
 
-  
-  // ✅ You can add more flashcards here in the same format if needed
-];
+    <!-- EXAMS -->
+    <a class="card" href="PHY2049Exam1.html">
+      <h2>📝 Exam Practice</h2>
+      <p>Past exam questions for PHY2049.</p>
+    </a>
 
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-}
+  </div>
 
-function setRating(index, color) {
-  localStorage.setItem('rating_' + flashcards[index].term, color);
-  displayFlashcards();
-}
+</main>
 
-function getRating(term) {
-  return localStorage.getItem('rating_' + term);
-}
+<footer>
+  © Physics Flashcards • GitHub Pages
+</footer>
 
-function clearRatings() {
-  flashcards.forEach(card => localStorage.removeItem('rating_' + card.term));
-  displayFlashcards();
-}
-
-function displayFlashcards() {
-  const container = document.getElementById('flashcard-container');
-  container.innerHTML = '';
-  const selectedRating = document.getElementById('rating-filter').value;
-  const showTermFirst = document.getElementById('cardOrder').value === 'term';
-
-  flashcards.forEach((card, index) => {
-    const rating = getRating(card.term);
-    if (selectedRating === 'all' || rating === selectedRating) {
-      const cardEl = document.createElement('div');
-      let frontContent, backContent;
-
-      if (showTermFirst) {
-        frontContent = `${card.term}`;
-        backContent = `
-          ${card.answer}
-          <div class="equation"><small>$$${card.equation}$$</small></div>
-        `;
-      } else {
-        frontContent = `
-          ${card.answer}
-          <div class="equation"><small>$$${card.equation}$$</small></div>
-        `;
-        backContent = `${card.term}`;
-      }
-
-      cardEl.className = 'flashcard';
-      if (rating) cardEl.style.border = '4px solid ' + rating;
-
-      cardEl.innerHTML = `
-        <div class="inner">
-          <div class="front">${frontContent}</div>
-          <div class="back">
-            ${backContent}
-            <div class="rating-buttons">
-              <button onclick="setRating(${index}, 'red')">Red</button>
-              <button onclick="setRating(${index}, 'yellow')">Yellow</button>
-              <button onclick="setRating(${index}, 'green')">Green</button>
-            </div>
-          </div>
-        </div>
-      `;
-
-      container.appendChild(cardEl);
-      MathJax.typesetPromise([cardEl]);
-    }
-  });
-}
-
-function shuffleAndDisplay() {
-  shuffle(flashcards);
-  displayFlashcards();
-}
-
-displayFlashcards();
-</script>
 </body>
 </html>
-
-
-
