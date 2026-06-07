@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Czech Travel Flashcards</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background:#f8f9fa;
+      margin:0;
+      padding:0;
+      color:#111827;
+    }
+
+    .page-title {
+      text-align:center;
+      padding:22px 12px 10px;
+      background:#f8f9fa;
+    }
+
+    .page-title h1 {
+      margin:0;
+      font-size:1.7em;
+    }
+
+    .page-title p {
+      margin:8px 0 0;
+      color:#4b5563;
+      font-size:.95em;
+    }
+
+    .controls {
+      text-align:center;
+      padding:14px;
+      position:sticky;
+      top:0;
+      background:#f8f9fa;
+      z-index:1000;
+      border-bottom:1px solid #e5e7eb;
+      box-shadow:0 2px 8px rgba(0,0,0,.06);
+    }
+
+    .control-row {
+      margin:6px 0;
+    }
+
+    select, button {
+      padding:10px 15px;
+      margin:5px;
+      font-size:16px;
+      border-radius:10px;
+      border:1px solid #d1d5db;
+      background:white;
+      cursor:pointer;
+    }
+
+    button:hover {
+      background:#f3f4f6;
+    }
+
+    .topic-label {
+      display:block;
+      margin-top:10px;
+      font-size:.9em;
+      color:#4b5563;
+    }
+
+    .topic-buttons {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:6px;
+      margin-top:8px;
+    }
+
+    .topic-btn {
+      padding:8px 12px;
+      font-size:14px;
+      border-radius:999px;
+    }
+
+    .topic-btn.active {
+      background:#111827;
+      color:#ffffff;
+      border-color:#111827;
+    }
+
+    #flashcard-container {
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      padding:14px;
+    }
+
+    .flashcard {
+      background:transparent;
+      width:280px;
+      height:230px;
+      perspective:1000px;
+      margin:12px;
+    }
+
+    .inner {
+      position:relative;
+      width:100%;
+      height:100%;
+      text-align:center;
+      transition:transform .6s;
+      transform-style:preserve-3d;
+    }
+
+    .flashcard:hover .inner,
+    .flashcard.flipped .inner {
+      transform:rotateY(180deg);
+    }
+
+    .front, .back {
+      position:absolute;
+      width:100%;
+      height:100%;
+      backface-visibility:hidden;
+      display:flex;
+      justify-content:flex-start;
+      align-items:center;
+      flex-direction:column;
+      box-sizing:border-box;
+      overflow-y:auto;
+      padding:14px;
+      box-shadow:0 4px 10px rgba(0,0,0,.18);
+      border-radius:12px;
+      font-size:1em;
+      gap:8px;
+    }
+
+    .front {
+      background:#ffffff;
+      font-weight:700;
+    }
+
+    .back {
+      background:#dfefff;
+      transform:rotateY(180deg);
+      font-weight:400;
+    }
+
+    .topic-tag {
+      font-size:.78em;
+      color:#374151;
+      background:#eef2ff;
+      border:1px solid #c7d2fe;
+      padding:3px 8px;
+      border-radius:999px;
+      margin-bottom:4px;
+      flex:0 0 auto;
+    }
+
+    .term {
+      font-size:1.25em;
+      line-height:1.2em;
+      margin-top:8px;
+    }
+
+    .definition {
+      font-size:1.05em;
+      line-height:1.25em;
+      margin-top:8px;
+    }
+
+    .phonetic {
+      font-size:.9em;
+      color:#4b5563;
+      margin-top:4px;
+      font-style:italic;
+      line-height:1.25em;
+    }
+
+    .note {
+      font-size:.82em;
+      color:#374151;
+      background:rgba(255,255,255,.55);
+      border-radius:8px;
+      padding:5px 7px;
+      margin-top:4px;
+    }
+
+    .rating-buttons {
+      margin-top:auto;
+      padding-top:8px;
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      justify-content:center;
+      position:relative;
+      z-index:20;
+      background:rgba(223,239,255,.95);
+      width:100%;
+    }
+
+    .rating-buttons button {
+      margin:0;
+      padding:6px 10px;
+      font-size:.8em;
+    }
+
+    @media (max-width:520px) {
+      .flashcard {
+        width:calc(100vw - 34px);
+        height:250px;
+      }
+      .controls {
+        position:static;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-title">
+  <h1>Czech Travel Flashcards</h1>
+  <p>Useful words and phrases for Brno: greetings, travel, food, directions, numbers and emergencies.</p>
+</div>
+
+<div class="controls">
+  <div class="control-row">
+    <label for="rating-filter">Confidence filter:</label>
+    <select id="rating-filter" onchange="displayFlashcards()">
+      <option value="all">All cards</option>
+      <option value="red">Red — needs revision</option>
+      <option value="yellow">Yellow — nearly there</option>
+      <option value="green">Green — confident</option>
+    </select>
+  </div>
+
+  <div class="control-row">
+    <label for="cardOrder">Card order:</label>
+    <select id="cardOrder" onchange="displayFlashcards()">
+      <option value="english">English first</option>
+      <option value="czech">Czech first</option>
+    </select>
+  </div>
+
+  <span class="topic-label">Topic filter:</span>
+  <div id="topic-buttons" class="topic-buttons"></div>
+
+  <div class="control-row">
+    <button onclick="shuffleAndDisplay()">Shuffle flashcards</button>
+    <button onclick="clearRatings()">Clear colour ratings</button>
+  </div>
+</div>
+
+<div id="flashcard-container"></div>
+
+<script>
+const flashcards = [
+  { topic: "Basics", term: "Ahoj", phonetic: "(ah-hoy)", definition: "Hello / Hi" },
+  { topic: "Basics", term: "Dobrý den", phonetic: "(doh-bree den)", definition: "Good day / Hello", note: "More formal than Ahoj." },
+  { topic: "Basics", term: "Dobrý večer", phonetic: "(doh-bree veh-cher)", definition: "Good evening" },
+  { topic: "Basics", term: "Sbohem", phonetic: "(sbo-hem)", definition: "Goodbye" },
+  { topic: "Basics", term: "Na shledanou", phonetic: "(nah skhle-dah-noh)", definition: "Goodbye / See you", note: "Common polite goodbye." },
+  { topic: "Basics", term: "Prosím", phonetic: "(pro-seem)", definition: "Please / You're welcome" },
+  { topic: "Basics", term: "Děkuji", phonetic: "(dyeh-koo-yi)", definition: "Thank you" },
+  { topic: "Basics", term: "Díky", phonetic: "(dee-kee)", definition: "Thanks", note: "Less formal." },
+  { topic: "Basics", term: "Ano", phonetic: "(ah-no)", definition: "Yes" },
+  { topic: "Basics", term: "Ne", phonetic: "(neh)", definition: "No" },
+  { topic: "Basics", term: "Promiňte", phonetic: "(pro-min-tye)", definition: "Excuse me / Sorry" },
+  { topic: "Basics", term: "Mluvíte anglicky?", phonetic: "(mloo-vee-teh ang-lits-kee)", definition: "Do you speak English?" },
+  { topic: "Basics", term: "Nerozumím", phonetic: "(neh-ro-zoo-meem)", definition: "I don't understand" },
+  { topic: "Basics", term: "Můžete to zopakovat?", phonetic: "(moo-zheh-teh to zo-pah-ko-vat)", definition: "Can you repeat that?" },
+  { topic: "Basics", term: "Můžete mluvit pomaleji?", phonetic: "(moo-zheh-teh mloo-vit po-mah-leh-yi)", definition: "Can you speak more slowly?" },
+  { topic: "Basics", term: "Můžeme si tykat?", phonetic: "(moo-zheh-meh si tih-kat)", definition: "Can we speak informally?" },
+
+  { topic: "Money", term: "Koruna", phonetic: "(koh-roo-nah)", definition: "Czech crown / Czech currency", note: "Plural: koruny or korun, depending on number." },
+  { topic: "Money", term: "Kolik to stojí?", phonetic: "(ko-leek to stoy-ee)", definition: "How much does it cost?" },
+  { topic: "Money", term: "Kartou, prosím", phonetic: "(kar-toh pro-seem)", definition: "By card, please" },
+  { topic: "Money", term: "Hotově", phonetic: "(ho-to-vyeh)", definition: "In cash" },
+  { topic: "Money", term: "Účet, prosím", phonetic: "(oo-chet pro-seem)", definition: "The bill, please" },
+  { topic: "Money", term: "To je drahé", phonetic: "(to yeh drah-heh)", definition: "That is expensive" },
+
+  { topic: "Food & Drink", term: "Voda", phonetic: "(voh-dah)", definition: "Water" },
+  { topic: "Food & Drink", term: "Perlivá voda", phonetic: "(per-lee-vah voh-dah)", definition: "Sparkling water" },
+  { topic: "Food & Drink", term: "Neperlivá voda", phonetic: "(neh-per-lee-vah voh-dah)", definition: "Still water" },
+  { topic: "Food & Drink", term: "Jídlo", phonetic: "(yeed-loh)", definition: "Food" },
+  { topic: "Food & Drink", term: "Pivo", phonetic: "(pee-voh)", definition: "Beer" },
+  { topic: "Food & Drink", term: "Káva", phonetic: "(kah-vah)", definition: "Coffee" },
+  { topic: "Food & Drink", term: "Čaj", phonetic: "(chai)", definition: "Tea" },
+  { topic: "Food & Drink", term: "Mléko", phonetic: "(mleh-ko)", definition: "Milk" },
+  { topic: "Food & Drink", term: "Bez masa", phonetic: "(bez mah-sah)", definition: "Without meat" },
+  { topic: "Food & Drink", term: "Jsem vegetarián", phonetic: "(ysem veh-geh-tah-ree-ahn)", definition: "I am vegetarian" },
+
+  { topic: "Travel", term: "Nádraží", phonetic: "(nah-drah-zhee)", definition: "Train station" },
+  { topic: "Travel", term: "Autobus", phonetic: "(ow-toh-boos)", definition: "Bus" },
+  { topic: "Travel", term: "Tramvaj", phonetic: "(trahm-vai)", definition: "Tram" },
+  { topic: "Travel", term: "Jízdenka", phonetic: "(yeez-den-kah)", definition: "Ticket" },
+  { topic: "Travel", term: "Zastávka", phonetic: "(zah-stahv-kah)", definition: "Stop / station stop" },
+  { topic: "Travel", term: "Hotel", phonetic: "(ho-tel)", definition: "Hotel" },
+  { topic: "Travel", term: "Letiště", phonetic: "(leh-tee-sh-tyeh)", definition: "Airport" },
+  { topic: "Travel", term: "Kde je nádraží?", phonetic: "(gdeh yeh nah-drah-zhee)", definition: "Where is the train station?" },
+  { topic: "Travel", term: "Kde je zastávka?", phonetic: "(gdeh yeh zah-stahv-kah)", definition: "Where is the stop?" },
+  { topic: "Travel", term: "Kdy odjíždí vlak?", phonetic: "(gdee od-yeezh-dee vlak)", definition: "When does the train leave?" },
+
+  { topic: "Directions", term: "Kde je toaleta?", phonetic: "(gdeh yeh toh-ah-leh-tah)", definition: "Where is the bathroom?" },
+  { topic: "Directions", term: "Vlevo", phonetic: "(vleh-voh)", definition: "Left" },
+  { topic: "Directions", term: "Vpravo", phonetic: "(vprah-voh)", definition: "Right" },
+  { topic: "Directions", term: "Rovně", phonetic: "(rov-nyeh)", definition: "Straight ahead" },
+  { topic: "Directions", term: "Tady", phonetic: "(tah-dee)", definition: "Here" },
+  { topic: "Directions", term: "Tam", phonetic: "(tahm)", definition: "There" },
+  { topic: "Directions", term: "Blízko", phonetic: "(bleez-ko)", definition: "Near" },
+  { topic: "Directions", term: "Daleko", phonetic: "(dah-leh-ko)", definition: "Far" },
+  { topic: "Directions", term: "Hlavní", phonetic: "(hlahv-nyee)", definition: "Main" },
+  { topic: "Directions", term: "Hlavní náměstí", phonetic: "(hlahv-nyee nah-myest-ee)", definition: "Main Square" },
+
+  { topic: "Time", term: "Dnes", phonetic: "(dnes)", definition: "Today" },
+  { topic: "Time", term: "Zítra", phonetic: "(zee-trah)", definition: "Tomorrow" },
+  { topic: "Time", term: "Včera", phonetic: "(fcheh-rah)", definition: "Yesterday" },
+  { topic: "Time", term: "Teď", phonetic: "(tyehd)", definition: "Now" },
+  { topic: "Time", term: "Ráno", phonetic: "(rah-no)", definition: "Morning" },
+  { topic: "Time", term: "Večer", phonetic: "(veh-cher)", definition: "Evening" },
+
+  { topic: "Emergency", term: "Pomoc!", phonetic: "(po-mots)", definition: "Help!" },
+  { topic: "Emergency", term: "Potřebuji lékaře", phonetic: "(po-tzhe-boo-yi lay-kah-zheh)", definition: "I need a doctor" },
+  { topic: "Emergency", term: "Zavolejte policii", phonetic: "(zah-vo-lay-teh po-lee-tsee-ee)", definition: "Call the police" },
+  { topic: "Emergency", term: "Jsem ztracený", phonetic: "(ysem ztrah-tseh-nee)", definition: "I am lost", note: "Masculine form. Feminine: ztracená." },
+  { topic: "Emergency", term: "Nemám signál", phonetic: "(neh-mahm sig-nahl)", definition: "I have no signal" },
+
+  { topic: "Numbers", term: "Jeden", phonetic: "(yeh-den)", definition: "One" },
+  { topic: "Numbers", term: "Dva", phonetic: "(dvah)", definition: "Two" },
+  { topic: "Numbers", term: "Tři", phonetic: "(tshree)", definition: "Three" },
+  { topic: "Numbers", term: "Čtyři", phonetic: "(chtih-rzhee)", definition: "Four" },
+  { topic: "Numbers", term: "Pět", phonetic: "(pyeht)", definition: "Five" },
+  { topic: "Numbers", term: "Šest", phonetic: "(shest)", definition: "Six" },
+  { topic: "Numbers", term: "Sedm", phonetic: "(seh-dm)", definition: "Seven" },
+  { topic: "Numbers", term: "Osm", phonetic: "(oh-sm)", definition: "Eight" },
+  { topic: "Numbers", term: "Devět", phonetic: "(de-vyet)", definition: "Nine" },
+  { topic: "Numbers", term: "Deset", phonetic: "(de-set)", definition: "Ten" },
+  { topic: "Numbers", term: "Sto", phonetic: "(sto)", definition: "One hundred / 100" },
+  { topic: "Numbers", term: "Tři sta dvacet dva", phonetic: "(tshree sta dvah-tset dvah)", definition: "322" },
+  { topic: "Numbers", term: "Čtyři sta devět", phonetic: "(chtih-rzhee sta de-vyet)", definition: "409" }
+];
+
+let selectedTopics = new Set();
+
+function topicCounts() {
+  const counts = {};
+  flashcards.forEach(card => {
+    counts[card.topic] = (counts[card.topic] || 0) + 1;
+  });
+  return counts;
+}
+
+function renderTopicButtons() {
+  const holder = document.getElementById("topic-buttons");
+  const counts = topicCounts();
+  const topics = Object.keys(counts).sort();
+  const allActive = selectedTopics.size === 0;
+
+  holder.innerHTML = `
+    <button class="topic-btn ${allActive ? "active" : ""}" onclick="toggleTopic('all')">
+      All (${flashcards.length})
+    </button>
+    ${topics.map(topic => `
+      <button class="topic-btn ${selectedTopics.has(topic) ? "active" : ""}" onclick="toggleTopic('${topic.replace(/'/g, "\\'")}')">
+        ${topic} (${counts[topic]})
+      </button>
+    `).join("")}
+  `;
+}
+
+function toggleTopic(topic) {
+  if (topic === "all") {
+    selectedTopics.clear();
+  } else {
+    if (selectedTopics.has(topic)) selectedTopics.delete(topic);
+    else selectedTopics.add(topic);
+  }
+  renderTopicButtons();
+  displayFlashcards();
+}
+
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+function setRating(term, color) {
+  localStorage.setItem('cz_rating_' + term, color);
+  displayFlashcards();
+}
+
+function getRating(term) {
+  return localStorage.getItem('cz_rating_' + term);
+}
+
+function clearRatings() {
+  if (!confirm("Clear all colour ratings?")) return;
+  flashcards.forEach(card => localStorage.removeItem('cz_rating_' + card.term));
+  displayFlashcards();
+}
+
+function displayFlashcards() {
+  const container = document.getElementById('flashcard-container');
+  container.innerHTML = '';
+
+  const selectedRating = document.getElementById('rating-filter').value;
+  const showEnglishFirst = document.getElementById('cardOrder').value === 'english';
+
+  flashcards.forEach((card) => {
+    const rating = getRating(card.term);
+    const topicMatch = selectedTopics.size === 0 || selectedTopics.has(card.topic);
+    const ratingMatch = selectedRating === 'all' || rating === selectedRating;
+
+    if (topicMatch && ratingMatch) {
+      const cardEl = document.createElement('div');
+      cardEl.className = 'flashcard';
+      if (rating) cardEl.style.outline = '4px solid ' + rating;
+
+      const czechSide = `
+        <div class="topic-tag">${card.topic}</div>
+        <div class="term">${card.term}</div>
+        <div class="phonetic">${card.phonetic}</div>
+        ${card.note ? `<div class="note">${card.note}</div>` : ""}
+      `;
+
+      const englishSide = `
+        <div class="topic-tag">${card.topic}</div>
+        <div class="definition">${card.definition}</div>
+        ${card.note ? `<div class="note">${card.note}</div>` : ""}
+      `;
+
+      const frontContent = showEnglishFirst ? englishSide : czechSide;
+      const backContent = showEnglishFirst ? czechSide : englishSide;
+
+      cardEl.innerHTML = `
+        <div class="inner">
+          <div class="front">${frontContent}</div>
+          <div class="back">
+            ${backContent}
+            <div class="rating-buttons">
+              <button onclick="event.stopPropagation(); setRating('${card.term.replace(/'/g, "\\'")}', 'red')">Red</button>
+              <button onclick="event.stopPropagation(); setRating('${card.term.replace(/'/g, "\\'")}', 'yellow')">Yellow</button>
+              <button onclick="event.stopPropagation(); setRating('${card.term.replace(/'/g, "\\'")}', 'green')">Green</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      cardEl.addEventListener('click', (e) => {
+        if (e.target.closest('.rating-buttons')) return;
+        cardEl.classList.toggle('flipped');
+      });
+
+      container.appendChild(cardEl);
+    }
+  });
+}
+
+function shuffleAndDisplay() {
+  shuffle(flashcards);
+  displayFlashcards();
+}
+
+renderTopicButtons();
+displayFlashcards();
+</script>
+
+</body>
+</html>
