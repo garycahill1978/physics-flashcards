@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Relativity: Light Clock on a Moving Train</title>
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121a33;
+      --panel-2: #172244;
+      --text: #eef3ff;
+      --muted: #aeb9d8;
+      --accent: #79c7ff;
+      --track: #47516f;
+      --inside: #c79bff;
+      --outside: #9be7c7;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #1b2a55 0, var(--bg) 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    .app {
+      width: min(1180px, 100%);
+      display: grid;
+      grid-template-columns: 1fr 330px;
+      gap: 18px;
+    }
+
+    .stage, .controls {
+      background: rgba(18, 26, 51, 0.92);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 22px;
+      box-shadow: 0 24px 80px rgba(0,0,0,0.34);
+      overflow: hidden;
+    }
+
+    .stage-header { padding: 16px 18px 0; }
+
+    h1 {
+      font-size: clamp(22px, 3vw, 34px);
+      line-height: 1.05;
+      margin: 0 0 6px;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      margin: 0 0 12px;
+      font-size: 14px;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      background: linear-gradient(#111936, #0d142b 72%, #0a0e1d);
+    }
+
+    .controls {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .group {
+      background: rgba(255,255,255,0.045);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .group h2 {
+      font-size: 15px;
+      margin: 0 0 12px;
+      color: #f4f7ff;
+      letter-spacing: 0.01em;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin: 10px 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .value {
+      color: var(--text);
+      font-variant-numeric: tabular-nums;
+      font-weight: 700;
+    }
+
+    label { color: var(--muted); font-size: 14px; }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+    }
+
+    .segmented {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 12px;
+      color: var(--text);
+      background: var(--panel-2);
+      cursor: pointer;
+      font-weight: 700;
+      transition: transform 0.12s ease, background 0.12s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button.active { background: linear-gradient(135deg, #2d8cff, #7f5cff); }
+    button.secondary { background: rgba(255,255,255,0.08); }
+
+    .clock {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 6px 10px;
+      align-items: center;
+      font-size: 14px;
+    }
+
+    .clock .name { color: var(--muted); }
+    .clock .time { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .clock .bar {
+      grid-column: 1 / -1;
+      height: 8px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 99px;
+      overflow: hidden;
+    }
+
+    .fill { height: 100%; width: 0%; border-radius: inherit; }
+    .fill.inside { background: var(--inside); }
+    .fill.outside { background: var(--outside); }
+
+    .note {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .equation {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      background: rgba(0,0,0,0.23);
+      border-radius: 12px;
+      padding: 12px;
+      color: #dbe7ff;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 900px) {
+      body { padding: 12px; }
+      .app { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <section class="stage">
+      <div class="stage-header">
+        <h1>Light clock on a moving train</h1>
+        <p class="subtitle">Switch observer frames to see why the same light pulse looks vertical inside the train but diagonal from the platform.</p>
+      </div>
+      <canvas id="canvas" width="900" height="560" aria-label="Relativity light clock simulation"></canvas>
+    </section>
+
+    <aside class="controls">
+      <div class="group">
+        <h2>Observer</h2>
+        <div class="segmented">
+          <button id="trainBtn" class="active">In train</button>
+          <button id="outsideBtn">Outside</button>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Train speed</h2>
+        <label for="speed">Fraction of light speed, v/c</label>
+        <input id="speed" type="range" min="0" max="0.95" step="0.01" value="0.60" />
+        <div class="row"><span>v/c</span><span id="speedVal" class="value">0.60</span></div>
+        <div class="row"><span>γ factor</span><span id="gammaVal" class="value">1.250</span></div>
+      </div>
+
+      <div class="group">
+        <h2>Clocks</h2>
+        <div class="clock">
+          <div class="name">Train clock</div><div id="trainTime" class="time">0.00</div>
+          <div class="bar"><div id="trainFill" class="fill inside"></div></div>
+        </div>
+        <div style="height:12px"></div>
+        <div class="clock">
+          <div class="name">Outside clock</div><div id="outsideTime" class="time">0.00</div>
+          <div class="bar"><div id="outsideFill" class="fill outside"></div></div>
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Playback</h2>
+        <div class="segmented">
+          <button id="pauseBtn" class="secondary">Pause</button>
+          <button id="resetBtn" class="secondary">Reset</button>
+        </div>
+        <div style="height:12px"></div>
+        <label for="trailLength">Outside trail length</label>
+        <input id="trailLength" type="range" min="40" max="800" step="10" value="420" />
+        <div class="row"><span>Trail points</span><span id="trailVal" class="value">420</span></div>
+      </div>
+
+      <div class="group">
+        <h2>What this shows</h2>
+        <p class="note">Inside the train, the light travels straight up and down between mirrors. Outside, the train moves sideways while the light is in flight, so the light follows a longer diagonal path.</p>
+        <div class="equation">
+          c is constant<br>
+          γ = 1 / √(1 − v²/c²)<br>
+          outside time = γ × train time
+        </div>
+      </div>
+
+      <div class="group">
+        <h2>Relativity geometry</h2>
+        <label>
+          <input id="showGeometry" type="checkbox" checked />
+          Show Pythagorean geometry proof
+        </label>
+        <div class="equation" style="margin-top:12px">
+          (c·t)² = (v·t)² + (c·τ)²<br><br>
+          c²t² − v²t² = c²τ²<br><br>
+          t²(c² − v²) = c²τ²<br><br>
+          t = τ / √(1 − v²/c²)
+        </div>
+      </div>
+      </div>
+    </aside>
+  </main>
+
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+
+    const speedSlider = document.getElementById('speed');
+    const speedVal = document.getElementById('speedVal');
+    const gammaVal = document.getElementById('gammaVal');
+    const trainBtn = document.getElementById('trainBtn');
+    const outsideBtn = document.getElementById('outsideBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const resetBtn = document.getElementById('resetBtn');
+    const trainTimeEl = document.getElementById('trainTime');
+    const outsideTimeEl = document.getElementById('outsideTime');
+    const trainFill = document.getElementById('trainFill');
+    const outsideFill = document.getElementById('outsideFill');
+    const trailSlider = document.getElementById('trailLength');
+    const trailVal = document.getElementById('trailVal');
+    const showGeometry = document.getElementById('showGeometry');
+
+    let observer = 'train';
+    let paused = false;
+    let last = performance.now();
+    let trainProperTime = 0;
+    let lightTrail = [];
+
+    const H = 230;
+    const cDraw = 120;
+    const period = (2 * H) / cDraw;
+    const trainW = 520;
+    const trainH = 255;
+    const baseTrainX = 190;
+    const trainY = 190;
+    const groundY = 465;
+
+    function gamma(beta) {
+      return 1 / Math.sqrt(1 - beta * beta);
+    }
+
+    function getFrameState(beta, trainTime) {
+      const g = gamma(beta);
+      const outsideTime = trainTime * g;
+      let trainX = baseTrainX;
+      let backgroundShift = 0;
+
+      if (observer === 'outside') {
+        // Keep the train motion continuous without visible wrap jumps.
+        // The train slows near the edges instead of teleporting.
+        const travelWidth = canvas.width + trainW + 240;
+        trainX = -trainW + ((outsideTime * beta * 80) % travelWidth);
+      } else {
+        backgroundShift = (trainTime * beta * 120) % 44;
+      }
+
+      return { beta, g, outsideTime, trainX, backgroundShift };
+    }
+
+    function runSelfTests() {
+      console.assert(Math.abs(gamma(0) - 1) < 1e-12, 'gamma(0) should be 1');
+      console.assert(gamma(0.6) > 1, 'gamma should increase above 1 when speed is non-zero');
+
+      const previousObserver = observer;
+      observer = 'train';
+      const trainFrame = getFrameState(0.6, 2);
+      console.assert(Number.isFinite(trainFrame.backgroundShift), 'train frame backgroundShift should be initialized');
+      console.assert(trainFrame.backgroundShift >= 0 && trainFrame.backgroundShift < 44, 'train frame backgroundShift should wrap within one track interval');
+
+      observer = 'outside';
+      const outsideFrame = getFrameState(0.6, 2);
+      console.assert(outsideFrame.backgroundShift === 0, 'outside frame backgroundShift should remain zero');
+      console.assert(Number.isFinite(outsideFrame.trainX), 'outside frame trainX should be initialized');
+
+      const mirrorXLocal = trainW / 2;
+      const sampleLightX = outsideFrame.trainX + mirrorXLocal;
+      console.assert(Number.isFinite(sampleLightX), 'light should remain horizontally aligned with the train mirrors');
+      observer = previousObserver;
+    }
+
+    function setObserver(next) {
+      observer = next;
+      trainBtn.classList.toggle('active', observer === 'train');
+      outsideBtn.classList.toggle('active', observer === 'outside');
+    }
+
+    trainBtn.addEventListener('click', () => setObserver('train'));
+    outsideBtn.addEventListener('click', () => setObserver('outside'));
+    pauseBtn.addEventListener('click', () => {
+      paused = !paused;
+      pauseBtn.textContent = paused ? 'Play' : 'Pause';
+    });
+    resetBtn.addEventListener('click', () => {
+      trainProperTime = 0;
+      lightTrail = [];
+      last = performance.now();
+    });
+
+    function drawRoundedRect(x, y, w, h, r) {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+    }
+
+    function drawClock(x, y, r, label, time, color) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.stroke();
+
+      const hand = (time * Math.PI * 2 / period) - Math.PI / 2;
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+      ctx.lineTo(x + Math.cos(hand) * r * 0.62, y + Math.sin(hand) * r * 0.62);
+      ctx.stroke();
+
+      ctx.fillStyle = '#eef3ff';
+      ctx.font = '700 13px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x, y + r + 18);
+      ctx.fillStyle = '#aeb9d8';
+      ctx.font = '12px system-ui';
+      ctx.fillText(time.toFixed(2), x, y + r + 34);
+      ctx.restore();
+    }
+
+    function drawPerson(x, y, color, label) {
+      ctx.save();
+      ctx.strokeStyle = color;
+      ctx.fillStyle = color;
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.arc(x, y - 48, 12, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(x, y - 36);
+      ctx.lineTo(x, y - 8);
+      ctx.moveTo(x - 18, y - 24);
+      ctx.lineTo(x + 18, y - 24);
+      ctx.moveTo(x, y - 8);
+      ctx.lineTo(x - 15, y + 16);
+      ctx.moveTo(x, y - 8);
+      ctx.lineTo(x + 15, y + 16);
+      ctx.stroke();
+      ctx.fillStyle = '#eef3ff';
+      ctx.font = '700 12px system-ui';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, x, y + 36);
+      ctx.restore();
+    }
+
+    function drawBackground(backgroundShift) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.save();
+      ctx.fillStyle = 'rgba(255,255,255,0.32)';
+      for (let i = 0; i < 55; i++) {
+        const x = (i * 157 + 41 - backgroundShift * 2) % canvas.width;
+        const y = (i * 83 + 26) % 250;
+        ctx.fillRect(x < 0 ? x + canvas.width : x, y, 1.6, 1.6);
+      }
+      ctx.restore();
+
+      ctx.strokeStyle = '#47516f';
+      ctx.lineWidth = 6;
+      ctx.beginPath();
+      ctx.moveTo(30, groundY);
+      ctx.lineTo(870, groundY);
+      ctx.stroke();
+
+      ctx.lineWidth = 2;
+      for (let x = 40 - backgroundShift; x < 920; x += 44) {
+        ctx.beginPath();
+        ctx.moveTo(x, groundY + 18);
+        ctx.lineTo(x + 26, groundY - 6);
+        ctx.stroke();
+      }
+    }
+
+    function drawScene() {
+      const beta = Number(speedSlider.value);
+      const frame = getFrameState(beta, trainProperTime);
+      const { g, outsideTime, trainX, backgroundShift } = frame;
+
+      speedVal.textContent = beta.toFixed(2);
+      gammaVal.textContent = g.toFixed(3);
+      // Reset displayed clock times every bounce cycle.
+      const displayedTrainTime = trainProperTime % period;
+      const displayedOutsideTime = outsideTime % (period * g);
+
+      trainTimeEl.textContent = displayedTrainTime.toFixed(2);
+      outsideTimeEl.textContent = displayedOutsideTime.toFixed(2);
+
+      trainFill.style.width = `${(displayedTrainTime / period) * 100}%`;
+      outsideFill.style.width = `${(displayedOutsideTime / (period * g)) * 100}%`;
+
+      drawBackground(backgroundShift);
+
+      const mirrorXLocal = trainW / 2;
+      const floorYLocal = trainH - 60;
+      const roofYLocal = floorYLocal - H;
+      // Define one full light-clock cycle as bottom mirror -> top -> bottom.
+      // The clocks visually reset each time the light returns to the
+      // bottom mirror.
+      const cycleTime = trainProperTime % period;
+      const localPhase = cycleTime;
+      const goingUp = localPhase < period / 2;
+      const lightYLocal = goingUp
+        ? floorYLocal - (localPhase / (period / 2)) * H
+        : roofYLocal + ((localPhase - period / 2) / (period / 2)) * H;
+
+      const lightXTrain = trainX + mirrorXLocal;
+
+      // Trail points for the outside observer.
+      // The diagonal path emerges naturally from the motion.
+      const dxOneWay = beta * g * H;
+
+      // Light pulse coordinates.
+      // The pulse always remains on the vertical light-clock line between
+      // the two mirrors attached to the train. In the outside view, the
+      // trail of this moving point naturally forms the diagonal path.
+      const lightX = lightXTrain;
+      const lightY = trainY + lightYLocal;
+
+      const mirrorTopY = trainY + roofYLocal;
+      const mirrorBottomY = trainY + floorYLocal;
+
+      ctx.save();
+      ctx.fillStyle = 'rgba(45,140,255,0.18)';
+      ctx.strokeStyle = 'rgba(121,199,255,0.85)';
+      ctx.lineWidth = 3;
+      drawRoundedRect(trainX, trainY, trainW, trainH, 26);
+
+      ctx.fillStyle = 'rgba(121,199,255,0.22)';
+      ctx.strokeStyle = 'rgba(219,231,255,0.28)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 4; i++) {
+        drawRoundedRect(trainX + 45 + i * 105, trainY + 35, 74, 48, 12);
+      }
+
+      ctx.fillStyle = '#0b1020';
+      ctx.strokeStyle = '#aeb9d8';
+      ctx.lineWidth = 4;
+      for (const wx of [trainX + 95, trainX + trainW - 95]) {
+        ctx.beginPath();
+        ctx.arc(wx, trainY + trainH + 4, 32, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+      }
+
+      // Mirrors: draw these large and bright so the light-clock is always obvious.
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 11;
+      ctx.lineCap = 'round';
+      ctx.beginPath();
+      ctx.moveTo(lightXTrain - 72, mirrorTopY);
+      ctx.lineTo(lightXTrain + 72, mirrorTopY);
+      ctx.moveTo(lightXTrain - 72, mirrorBottomY);
+      ctx.lineTo(lightXTrain + 72, mirrorBottomY);
+      ctx.stroke();
+
+      ctx.strokeStyle = 'rgba(121,199,255,0.9)';
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(lightXTrain - 72, mirrorTopY - 7);
+      ctx.lineTo(lightXTrain + 72, mirrorTopY - 7);
+      ctx.moveTo(lightXTrain - 72, mirrorBottomY + 7);
+      ctx.lineTo(lightXTrain + 72, mirrorBottomY + 7);
+      ctx.stroke();
+      ctx.lineCap = 'butt';
+
+      // Draw beam guides.
+      ctx.strokeStyle = 'rgba(255,230,109,0.45)';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([8, 8]);
+      ctx.beginPath();
+
+      if (observer === 'train') {
+        ctx.moveTo(lightXTrain, mirrorBottomY);
+        ctx.lineTo(lightXTrain, mirrorTopY);
+        ctx.lineTo(lightXTrain, mirrorBottomY);
+      } else {
+        // Outside frame: no precomputed diagonal. The yellow trail below
+        // traces the actual moving light point through space.
+        ctx.moveTo(lightXTrain, mirrorBottomY);
+        ctx.lineTo(lightXTrain, mirrorTopY);
+        ctx.lineTo(lightXTrain, mirrorBottomY);
+      }
+
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Persistent trail in outside frame.
+      // Points are stored in screen/platform coordinates, so the trace
+      // remains in place after the train moves on.
+      const maxTrail = Number(trailSlider.value);
+      trailVal.textContent = maxTrail;
+
+      if (observer === 'outside' && !paused) {
+        const lastPoint = lightTrail[lightTrail.length - 1];
+        const farEnough = !lastPoint || Math.hypot(lightX - lastPoint.x, lightY - lastPoint.y) > 2;
+        if (farEnough) {
+          lightTrail.push({ x: lightX, y: lightY });
+        }
+        while (lightTrail.length > maxTrail) {
+          lightTrail.shift();
+        }
+      }
+
+      if (observer === 'outside' && lightTrail.length > 1) {
+        ctx.beginPath();
+        for (let i = 0; i < lightTrail.length; i++) {
+          const p = lightTrail[i];
+          if (i === 0) {
+            ctx.moveTo(p.x, p.y);
+          } else {
+            ctx.lineTo(p.x, p.y);
+          }
+        }
+
+        ctx.strokeStyle = 'rgba(255,230,109,0.9)';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = '#ffe66d';
+      ctx.shadowColor = '#ffe66d';
+      ctx.shadowBlur = 22;
+      ctx.beginPath();
+      ctx.arc(lightX, lightY, 10, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      const personY = trainY + trainH - 33;
+      drawPerson(trainX + 72, personY, '#c79bff', 'train observer');
+      ctx.restore();
+
+      // In the train frame, the outside observer moves with the passing background.
+      const outsideObserverX = observer === 'train'
+        ? canvas.width - 120 - (trainProperTime * beta * 120)
+        : 80;
+
+      drawPerson(outsideObserverX, groundY - 4, '#9be7c7', 'outside observer');
+      drawClock(90, 92, 34, 'outside clock', displayedOutsideTime, '#9be7c7');
+      drawClock(805, 92, 34, 'train clock', displayedTrainTime, '#c79bff');
+
+      ctx.fillStyle = '#eef3ff';
+      ctx.font = '800 17px system-ui';
+      ctx.textAlign = 'left';
+      ctx.fillText(observer === 'train' ? 'View: inside the train' : 'View: outside on the platform', 28, 35);
+      ctx.fillStyle = '#aeb9d8';
+      ctx.font = '14px system-ui';
+      ctx.fillText(
+        observer === 'train'
+          ? 'The train is at rest in this frame; the platform and track slide backward.'
+          : 'The platform observer is at rest while the train moves across the scene.',
+        28,
+        58
+      );
+
+      ctx.strokeStyle = '#79c7ff';
+      ctx.fillStyle = '#79c7ff';
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(610, 420);
+      ctx.lineTo(610 + beta * 130, 420);
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(610 + beta * 130, 420);
+      ctx.lineTo(598 + beta * 130, 413);
+      ctx.lineTo(598 + beta * 130, 427);
+      ctx.closePath();
+      ctx.fill();
+      ctx.font = '700 13px system-ui';
+      ctx.fillText('train velocity', 610, 402);
+
+      // Geometry proof overlay.
+      if (showGeometry.checked && observer === 'outside') {
+        const triBase = beta * 180;
+        const triHeight = 180;
+        const ox = 640;
+        const oy = 180;
+
+        ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        ctx.moveTo(ox, oy + triHeight);
+        ctx.lineTo(ox + triBase, oy + triHeight);
+        ctx.lineTo(ox + triBase, oy);
+        ctx.closePath();
+        ctx.stroke();
+
+        ctx.strokeStyle = '#ffe66d';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.moveTo(ox, oy + triHeight);
+        ctx.lineTo(ox + triBase, oy);
+        ctx.stroke();
+
+        // Larger, clearer labels for the geometry proof.
+        ctx.fillStyle = '#ffffff';
+        ctx.font = '700 20px system-ui';
+        ctx.textAlign = 'center';
+
+        // Horizontal side: train motion.
+        ctx.fillText('v · t', ox + triBase / 2, oy + triHeight + 34);
+
+        // Vertical side: proper time measured in the train frame.
+        ctx.fillText('c · τ  (train frame)', ox + triBase + 92, oy + triHeight / 2 + 8);
+
+        // Diagonal side: outside observer light path.
+        ctx.fillStyle = '#ffe66d';
+        ctx.fillText('c · t  (platform frame)', ox + triBase / 2 + 92, oy + triHeight / 2 - 18);
+
+        // Add subtle backing boxes for readability.
+        ctx.fillStyle = 'rgba(0,0,0,0.45)';
+        ctx.fillRect(ox - 10, oy - 38, 290, 28);
+
+        ctx.fillStyle = '#dbe7ff';
+        ctx.font = '700 15px system-ui';
+        ctx.textAlign = 'left';
+        ctx.fillText('Pythagorean geometry of time dilation', ox, oy - 18);
+      }
+    }
+
+    function tick(now) {
+      const dt = Math.min(0.05, (now - last) / 1000);
+      last = now;
+      if (!paused) trainProperTime += dt;
+      drawScene();
+      requestAnimationFrame(tick);
+    }
+
+    runSelfTests();
+    requestAnimationFrame(tick);
+  </script>
+</body>
+</html>
