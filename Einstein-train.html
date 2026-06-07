@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Einstein Train Simultaneity Thought Experiment</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: #121a33;
+    --panel2: #172244;
+    --text: #eef3ff;
+    --muted: #aeb9d8;
+    --train: #c79bff;
+    --platform: #9be7c7;
+    --light: #ffe66d;
+    --accent: #79c7ff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    background: radial-gradient(circle at top, #1b2a55 0, var(--bg) 60%);
+    color: var(--text);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+  }
+
+  .app {
+    width: min(1280px, 100%);
+    display: grid;
+    grid-template-columns: 1fr 330px;
+    gap: 18px;
+  }
+
+  .stage, .controls {
+    background: rgba(18,26,51,0.94);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+  }
+
+  .stage-header { padding: 16px 18px 0; }
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: clamp(24px, 3vw, 36px);
+    line-height: 1.05;
+  }
+
+  .subtitle {
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: linear-gradient(#111936, #0d142b 72%, #0a0e1d);
+  }
+
+  .controls {
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .group {
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .group h2 { margin: 0 0 12px; font-size: 15px; }
+
+  .segmented {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  button {
+    border: 0;
+    border-radius: 12px;
+    padding: 11px 12px;
+    background: var(--panel2);
+    color: var(--text);
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  button.active { background: linear-gradient(135deg, #2d8cff, #7f5cff); }
+
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+  .note { color: var(--muted); font-size: 13px; line-height: 1.5; }
+
+  .equation {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.25);
+    font-family: ui-monospace, monospace;
+    line-height: 1.6;
+    color: #dbe7ff;
+    font-size: 13px;
+  }
+
+  .highlight {
+    font-size: 18px;
+    font-weight: 900;
+    text-align: center;
+    color: white;
+  }
+
+  @media (max-width: 900px) {
+    .app { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<main class="app">
+  <section class="stage">
+    <div class="stage-header">
+      <h1>Einstein Train Simultaneity Thought Experiment</h1>
+      <p class="subtitle">
+        Two lightning strikes hit the front and back of the train.
+        The key question is not only when the flashes arrive, but what each observer infers about when the strikes occurred.
+      </p>
+    </div>
+
+    <canvas id="canvas" width="980" height="620"></canvas>
+  </section>
+
+  <aside class="controls">
+    <div class="group">
+      <h2>Observer</h2>
+      <div class="segmented">
+        <button id="trainBtn" class="active">Train observer</button>
+        <button id="platformBtn">Platform observer</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Train speed</h2>
+      <input id="speed" type="range" min="0" max="0.9" step="0.01" value="0.55" />
+      <div class="equation">
+        Light speed stays constant.<br><br>
+        Different observers disagree about simultaneity.
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>View mode</h2>
+      <div class="segmented">
+        <button id="animationBtn" class="active">Animation</button>
+        <button id="spacetimeBtn">Spacetime</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Playback</h2>
+      <div class="segmented">
+        <button id="pauseBtn">Pause</button>
+        <button id="resetBtn">Reset</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>What the train observer says</h2>
+      <div class="equation">
+        The observer sits midway between the lightning strikes.<br><br>
+        Light reaches them simultaneously.<br><br>
+        Therefore:<br>
+        the strikes were simultaneous in the train frame.
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>What the platform observer says</h2>
+      <div class="equation">
+        The lightning strikes are fixed platform events.<br><br>
+        The train observer moves right after the strikes.<br><br>
+        So flash B has less distance to travel, while flash A has more distance to travel.<br><br>
+        Therefore B reaches the moving observer first.
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Core insight</h2>
+      <div class="highlight">There is no universal NOW.</div>
+      <p class="note">Different observers divide spacetime into different present moments.</p>
+    </div>
+  </aside>
+</main>
+
+<script>
+'use strict';
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const trainBtn = document.getElementById('trainBtn');
+const platformBtn = document.getElementById('platformBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const resetBtn = document.getElementById('resetBtn');
+const speedSlider = document.getElementById('speed');
+const animationBtn = document.getElementById('animationBtn');
+const spacetimeBtn = document.getElementById('spacetimeBtn');
+
+let observer = 'train';
+let viewMode = 'animation';
+let paused = false;
+let t = 0;
+let last = performance.now();
+
+const trainWidth = 520;
+const trainHeight = 140;
+const trainY = 300;
+const groundY = 470;
+const baseX = 220;
+const flashSpeed = 280;
+const trainSpeedScale = 140;
+
+function setObserver(next) {
+  observer = next;
+  trainBtn.classList.toggle('active', observer === 'train');
+  platformBtn.classList.toggle('active', observer === 'platform');
+}
+
+trainBtn.addEventListener('click', () => setObserver('train'));
+platformBtn.addEventListener('click', () => setObserver('platform'));
+
+function setViewMode(next) {
+  viewMode = next;
+  animationBtn.classList.toggle('active', viewMode === 'animation');
+  spacetimeBtn.classList.toggle('active', viewMode === 'spacetime');
+}
+
+animationBtn.addEventListener('click', () => setViewMode('animation'));
+spacetimeBtn.addEventListener('click', () => setViewMode('spacetime'));
+
+pauseBtn.addEventListener('click', () => {
+  paused = !paused;
+  pauseBtn.textContent = paused ? 'Play' : 'Pause';
+});
+
+resetBtn.addEventListener('click', () => {
+  t = 0;
+  paused = false;
+  pauseBtn.textContent = 'Pause';
+});
+
+function drawRoundedRect(x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+}
+
+function drawPerson(x, y, color, label) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = 4;
+
+  ctx.beginPath();
+  ctx.arc(x, y - 46, 12, 0, Math.PI * 2);
+  ctx.fill();
+
+  ctx.beginPath();
+  ctx.moveTo(x, y - 34);
+  ctx.lineTo(x, y - 6);
+  ctx.moveTo(x - 16, y - 22);
+  ctx.lineTo(x + 16, y - 22);
+  ctx.moveTo(x, y - 6);
+  ctx.lineTo(x - 14, y + 18);
+  ctx.moveTo(x, y - 6);
+  ctx.lineTo(x + 14, y + 18);
+  ctx.stroke();
+
+  ctx.fillStyle = '#eef3ff';
+  ctx.font = '700 13px system-ui';
+  ctx.textAlign = 'center';
+  ctx.fillText(label, x, y + 38);
+  ctx.restore();
+}
+
+function drawFlash(x, y) {
+  ctx.save();
+  ctx.strokeStyle = '#ffe66d';
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.moveTo(x, y - 26);
+  ctx.lineTo(x + 10, y - 4);
+  ctx.lineTo(x - 2, y - 4);
+  ctx.lineTo(x + 10, y + 24);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawPulse(x, y, color = '#ffe66d') {
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 18;
+  ctx.beginPath();
+  ctx.arc(x, y, 10, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+}
+
+function computeState(time, beta) {
+  const trainVelocity = beta * trainSpeedScale;
+
+  // Train frame: the train is at rest and the lightning points stay attached
+  // to the train ends. This keeps the train-observer view symmetric.
+  if (observer === 'train') {
+    const trainX = baseX;
+    const trainObserverX = trainX + trainWidth / 2;
+    const leftStrikeX = trainX;
+    const rightStrikeX = trainX + trainWidth;
+    const pulseDistance = time * flashSpeed;
+    const leftPulseX = leftStrikeX + pulseDistance;
+    const rightPulseX = rightStrikeX - pulseDistance;
+
+    return {
+      trainVelocity,
+      trainX,
+      trainObserverX,
+      leftStrikeX,
+      rightStrikeX,
+      leftPulseX,
+      rightPulseX,
+      leftArrived: leftPulseX >= trainObserverX,
+      rightArrived: rightPulseX <= trainObserverX,
+      meetingX: trainObserverX
+    };
+  }
+
+  // Platform frame: lightning strikes are fixed events on the platform.
+  // The train moves right after the strikes. This is the key correction.
+  const leftStrikeX = baseX;
+  const rightStrikeX = baseX + trainWidth;
+  const trainX = baseX + time * trainVelocity;
+  const trainObserverX = trainX + trainWidth / 2;
+  const pulseDistance = time * flashSpeed;
+  const leftPulseX = leftStrikeX + pulseDistance;
+  const rightPulseX = rightStrikeX - pulseDistance;
+
+  return {
+    trainVelocity,
+    trainX,
+    trainObserverX,
+    leftStrikeX,
+    rightStrikeX,
+    leftPulseX,
+    rightPulseX,
+    leftArrived: leftPulseX >= trainObserverX,
+    rightArrived: rightPulseX <= trainObserverX,
+    meetingX: trainObserverX
+  };
+}
+
+function drawWorldLine(x1, ct1, x2, ct2, originX, originY, graphScale, color, width = 3, dash = []) {
+  const ax = originX + x1 * graphScale;
+  const ay = originY - ct1 * graphScale;
+  const bx = originX + x2 * graphScale;
+  const by = originY - ct2 * graphScale;
+
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.lineWidth = width;
+  ctx.setLineDash(dash);
+  ctx.beginPath();
+  ctx.moveTo(ax, ay);
+  ctx.lineTo(bx, by);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawEventPoint(x, ct, originX, originY, graphScale, label, color) {
+  const px = originX + x * graphScale;
+  const py = originY - ct * graphScale;
+
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 12;
+  ctx.beginPath();
+  ctx.arc(px, py, 6, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '800 13px system-ui';
+  ctx.fillText(label, px + 9, py - 8);
+  ctx.restore();
+}
+
+function drawSpacetimePanel() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const beta = Number(speedSlider.value);
+  const trainVelocity = beta * trainSpeedScale;
+  const graphScale = 58;
+  const originX = 470;
+  const originY = 540;
+  const maxCt = 7.6;
+
+  // Use two scenarios:
+  // train frame: strikes simultaneous at train ends
+  // platform frame: strikes fixed on platform; moving train observer receives B first
+  const frameTitle = observer === 'train'
+    ? 'SPACETIME VIEW: TRAIN FRAME'
+    : 'SPACETIME VIEW: PLATFORM FRAME';
+
+  ctx.fillStyle = 'rgba(0,0,0,0.42)';
+  ctx.fillRect(34, 24, 720, 96);
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 30px system-ui';
+  ctx.fillText(frameTitle, 54, 62);
+  ctx.fillStyle = '#dbe7ff';
+  ctx.font = '800 17px system-ui';
+  ctx.fillText('Vertical axis is time. Horizontal axis is position. Light rays are 45° lines.', 54, 94);
+
+  // Grid.
+  ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+  ctx.lineWidth = 1;
+  for (let x = -5; x <= 5; x++) {
+    drawWorldLine(x, 0, x, maxCt, originX, originY, graphScale, 'rgba(255,255,255,0.08)', 1);
+  }
+  for (let ct = 0; ct <= maxCt; ct++) {
+    drawWorldLine(-5.5, ct, 5.5, ct, originX, originY, graphScale, 'rgba(255,255,255,0.08)', 1);
+  }
+
+  // Axes.
+  drawWorldLine(-5.6, 0, 5.6, 0, originX, originY, graphScale, '#dbe7ff', 3);
+  drawWorldLine(0, 0, 0, maxCt, originX, originY, graphScale, '#dbe7ff', 3);
+  ctx.fillStyle = '#dbe7ff';
+  ctx.font = '900 17px system-ui';
+  ctx.fillText('SPACE', originX + 235, originY - 12);
+  ctx.fillText('TIME ↑', originX + 12, originY - maxCt * graphScale + 18);
+
+  // Current animation time slice.
+  const currentCt = Math.min(t * 2.4, maxCt);
+  drawWorldLine(-5.4, currentCt, 5.4, currentCt, originX, originY, graphScale, 'rgba(121,199,255,0.45)', 2, [10, 8]);
+  ctx.fillStyle = '#79c7ff';
+  ctx.font = '800 13px system-ui';
+  ctx.fillText('current frame time', originX - 305, originY - currentCt * graphScale - 8);
+
+  if (observer === 'train') {
+    // Train frame coordinates: train observer is vertical at x=0.
+    // A and B strikes are simultaneous at ct=0.
+    const A = { x: -2.2, ct: 0, label: 'A strike' };
+    const B = { x: 2.2, ct: 0, label: 'B strike' };
+    const meet = { x: 0, ct: 2.2, label: 'both arrive' };
+
+    drawWorldLine(0, 0, 0, maxCt, originX, originY, graphScale, '#c79bff', 5);
+    drawWorldLine(-2.2, 0, -2.2, maxCt, originX, originY, graphScale, 'rgba(199,155,255,0.35)', 2, [6, 6]);
+    drawWorldLine(2.2, 0, 2.2, maxCt, originX, originY, graphScale, 'rgba(199,155,255,0.35)', 2, [6, 6]);
+
+    // Light rays at 45°.
+    drawWorldLine(A.x, A.ct, meet.x, meet.ct, originX, originY, graphScale, '#ffe66d', 4);
+    drawWorldLine(B.x, B.ct, meet.x, meet.ct, originX, originY, graphScale, '#79c7ff', 4);
+
+    drawEventPoint(A.x, A.ct, originX, originY, graphScale, 'A', '#ffe66d');
+    drawEventPoint(B.x, B.ct, originX, originY, graphScale, 'B', '#79c7ff');
+    drawEventPoint(meet.x, meet.ct, originX, originY, graphScale, 'arrival together', '#ffffff');
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 22px system-ui';
+    ctx.fillText('Train frame: A and B are simultaneous.', 110, 505);
+  } else {
+    // Platform frame coordinates.
+    // A and B are simultaneous platform events at fixed positions.
+    // The train observer worldline tilts right.
+    // B ray hits first; A ray catches later.
+    const A = { x: -2.2, ct: 0, label: 'A strike' };
+    const B = { x: 2.2, ct: 0, label: 'B strike' };
+    const v = Math.min(0.65, beta * 0.9);
+    const meetBct = Math.max(0.4, 2.2 / (1 + v));
+    const meetBx = v * meetBct;
+    const meetAct = 2.2 / (1 - v);
+    const meetAx = v * meetAct;
+
+    drawWorldLine(0, 0, v * maxCt, maxCt, originX, originY, graphScale, '#c79bff', 5);
+    drawWorldLine(-2.2, 0, -2.2, maxCt, originX, originY, graphScale, 'rgba(155,231,199,0.28)', 2, [6, 6]);
+    drawWorldLine(2.2, 0, 2.2, maxCt, originX, originY, graphScale, 'rgba(155,231,199,0.28)', 2, [6, 6]);
+
+    // Light rays at 45° from fixed platform events.
+    drawWorldLine(A.x, A.ct, meetAx, meetAct, originX, originY, graphScale, '#ffe66d', 4);
+    drawWorldLine(B.x, B.ct, meetBx, meetBct, originX, originY, graphScale, '#79c7ff', 4);
+
+    drawEventPoint(A.x, A.ct, originX, originY, graphScale, 'A', '#ffe66d');
+    drawEventPoint(B.x, B.ct, originX, originY, graphScale, 'B', '#79c7ff');
+    drawEventPoint(meetBx, meetBct, originX, originY, graphScale, 'B arrives first', '#79c7ff');
+    drawEventPoint(meetAx, Math.min(meetAct, maxCt), originX, originY, graphScale, 'A later', '#ffe66d');
+
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 22px system-ui';
+    ctx.fillText('Platform frame: B reaches the moving observer first.', 95, 505);
+  }
+}
+
+function drawAnimationPanel() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const beta = Number(speedSlider.value);
+  const state = computeState(t, beta);
+  const backgroundShift = observer === 'train' ? (t * beta * trainSpeedScale) % 50 : 0;
+
+  // Background track.
+  ctx.strokeStyle = '#47516f';
+  ctx.lineWidth = 6;
+  ctx.beginPath();
+  ctx.moveTo(40, groundY);
+  ctx.lineTo(940, groundY);
+  ctx.stroke();
+
+  ctx.lineWidth = 2;
+  for (let x = 40 - backgroundShift; x < 980; x += 50) {
+    ctx.beginPath();
+    ctx.moveTo(x, groundY + 18);
+    ctx.lineTo(x + 24, groundY - 6);
+    ctx.stroke();
+  }
+
+  // Train.
+  ctx.fillStyle = 'rgba(199,155,255,0.16)';
+  ctx.strokeStyle = 'rgba(199,155,255,0.9)';
+  ctx.lineWidth = 3;
+  drawRoundedRect(state.trainX, trainY, trainWidth, trainHeight, 24);
+
+  // Lightning strike symbols.
+  const strikeY = trainY - 60;
+  drawFlash(state.leftStrikeX, strikeY);
+  drawFlash(state.rightStrikeX, strikeY);
+
+  ctx.fillStyle = '#ffe66d';
+  ctx.font = 'bold 18px Arial';
+  ctx.fillText('A', state.leftStrikeX - 8, strikeY - 36);
+  ctx.fillText('B', state.rightStrikeX - 8, strikeY - 36);
+
+  // Observers.
+  drawPerson(state.trainObserverX, trainY + trainHeight - 10, '#c79bff', 'train observer');
+
+  const platformObserverX = observer === 'train' ? 840 - t * beta * trainSpeedScale : 120;
+  drawPerson(platformObserverX, groundY - 6, '#9be7c7', 'platform observer');
+
+  // Light pulses. In the platform frame the observer moves right, so the meeting point shifts right.
+  if (!state.leftArrived) drawPulse(state.leftPulseX, trainY + 30, '#ffe66d');
+  if (!state.rightArrived) drawPulse(state.rightPulseX, trainY + 30, '#79c7ff');
+
+  // Arrival glow at the moving observer.
+  if (state.leftArrived) drawPulse(state.trainObserverX - 10, trainY + 30, 'rgba(255,230,109,0.75)');
+  if (state.rightArrived) drawPulse(state.trainObserverX + 10, trainY + 30, 'rgba(121,199,255,0.75)');
+
+  // Center/moving observer guide.
+  ctx.setLineDash([8, 8]);
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.beginPath();
+  ctx.moveTo(state.trainObserverX, 120);
+  ctx.lineTo(state.trainObserverX, 540);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Main overlay.
+  ctx.fillStyle = 'rgba(0,0,0,0.42)';
+  ctx.fillRect(34, 24, 620, 88);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 30px system-ui';
+  ctx.fillText(observer === 'train' ? 'TRAIN FRAME' : 'PLATFORM FRAME', 54, 62);
+
+  ctx.fillStyle = '#dbe7ff';
+  ctx.font = '800 18px system-ui';
+  if (observer === 'train') {
+    ctx.fillText('The train observer remains midway between the flashes.', 54, 94);
+  } else {
+    ctx.fillText('Lightning points stay fixed; the train observer moves right.', 54, 94);
+  }
+
+  // Arrival conclusion.
+  if (observer === 'train' && state.leftArrived && state.rightArrived) {
+    ctx.fillStyle = 'rgba(0,0,0,0.50)';
+    ctx.fillRect(210, 520, 570, 54);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 24px system-ui';
+    ctx.fillText('Both flashes reach the observer together.', 236, 556);
+  }
+
+  if (observer === 'platform' && state.rightArrived && !state.leftArrived) {
+    ctx.fillStyle = 'rgba(0,0,0,0.50)';
+    ctx.fillRect(145, 520, 715, 54);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 24px system-ui';
+    ctx.fillText('Flash B reaches the moving observer first.', 250, 556);
+  }
+
+  if (observer === 'platform' && state.leftArrived && state.rightArrived) {
+    ctx.fillStyle = 'rgba(0,0,0,0.50)';
+    ctx.fillRect(108, 520, 780, 54);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = '900 22px system-ui';
+    ctx.fillText('Both flashes eventually arrive, but not at the same time.', 134, 556);
+  }
+}
+
+function draw() {
+  if (viewMode === 'spacetime') {
+    drawSpacetimePanel();
+  } else {
+    drawAnimationPanel();
+  }
+}
+
+function tick(now) {
+  const dt = Math.min(0.05, (now - last) / 1000);
+  last = now;
+
+  if (!paused) {
+    t += dt;
+    if (t > 2.4) t = 0;
+  }
+
+  draw();
+  requestAnimationFrame(tick);
+}
+
+function runSelfTests() {
+  console.assert(trainWidth > 0, 'train width must be positive');
+  console.assert(flashSpeed > 0, 'flash speed must be positive');
+
+  const previousObserver = observer;
+  observer = 'train';
+  const trainState = computeState(0.93, 0.55);
+  console.assert(Math.abs((trainState.leftPulseX + trainState.rightPulseX) / 2 - trainState.trainObserverX) < 1e-9,
+    'train frame pulses should remain symmetric about the train observer');
+
+  observer = 'platform';
+  const platformState = computeState(0.93, 0.55);
+  console.assert(platformState.trainObserverX > baseX + trainWidth / 2,
+    'platform frame train observer should move to the right');
+  console.assert(platformState.leftStrikeX === baseX && platformState.rightStrikeX === baseX + trainWidth,
+    'platform frame lightning strike positions should stay fixed on the platform');
+  console.assert(platformState.rightPulseX < platformState.trainObserverX || !platformState.rightArrived,
+    'platform frame right pulse should approach the moving observer from the right');
+
+  observer = previousObserver;
+}
+
+runSelfTests();
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
