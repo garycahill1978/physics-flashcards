@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Blackbody Radiation Curve</title>
+  <style>
+    :root {
+      --bg: #f7f7fb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --grid: #e5e7eb;
+      --axis: #374151;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      display: flex;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .wrap {
+      width: min(1100px, 100%);
+      background: var(--card);
+      border-radius: 18px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+      padding: 24px;
+    }
+
+    h1 {
+      margin: 0 0 6px;
+      font-size: clamp(1.4rem, 2.5vw, 2.1rem);
+    }
+
+    .subtitle {
+      margin: 0 0 18px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+    }
+
+    .readout {
+      min-width: 190px;
+      background: #f3f4f6;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-weight: 650;
+      text-align: center;
+    }
+
+    .equation {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin: 12px 0 18px;
+      font-family: "Times New Roman", serif;
+      font-size: 1.05rem;
+      overflow-x: auto;
+    }
+
+    canvas {
+      width: 100%;
+      height: 620px;
+      display: block;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid #e5e7eb;
+    }
+
+    .footer {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.45;
+    }
+
+    @media (max-width: 700px) {
+      .controls {
+        grid-template-columns: 1fr;
+      }
+      .readout {
+        min-width: unset;
+      }
+      canvas {
+        height: 500px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="wrap">
+    <h1>Interactive Blackbody Radiation Curve</h1>
+    <p class="subtitle">
+      Adjust the temperature and watch the Planck spectrum shift. The visible band is shown from
+      <strong>700 nm red</strong> to <strong>400 nm blue</strong>.
+    </p>
+
+    <div class="controls">
+      <label>
+        Mode:
+        <select id="modeSelect">
+          <option value="absolute">Absolute intensity</option>
+          <option value="normalized">Normalized (0–1)</option>
+        </select>
+      </label>
+      <label>
+        Temperature:
+        <input id="tempSlider" type="range" min="300" max="12000" step="50" value="5800" />
+      </label>
+      <div class="readout">
+        <span id="tempText">5800 K</span><br />
+        <small id="peakText">Peak: 500 nm</small>
+      </div>
+    </div>
+
+    <div class="equation">
+      B<sub>λ</sub>(λ,T) =
+      <span style="white-space:nowrap;">(2hc² / λ⁵)</span>
+      <span style="white-space:nowrap;">× 1 / [exp(hc / λk<sub>B</sub>T) − 1]</span>
+    </div>
+
+    <canvas id="plot"></canvas>
+
+    <p class="footer">
+      The y-axis auto-scales for each temperature. The x-axis is wavelength in nanometres.
+      Curve is spectral radiance in arbitrary relative units. EM labels are approximate teaching regions.
+    </p>
+  </main>
+
+  <script>
+    const canvas = document.getElementById("plot");
+    const ctx = canvas.getContext("2d");
+    const slider = document.getElementById("tempSlider");
+    const tempText = document.getElementById("tempText");
+    const peakText = document.getElementById("peakText");
+    const modeSelect = document.getElementById("modeSelect");
+
+    const h = 6.62607015e-34;
+    const c = 2.99792458e8;
+    const kB = 1.380649e-23;
+    const bWien = 2.897771955e-3;
+
+    const lambdaMin = 100;
+
+    function computeLambdaMax(T) {
+      const peak = (bWien / T) * 1e9;
+      return Math.max(1000, peak * 3); // show ~3× peak wavelength
+    }
+
+    function planck(lambdaNm, T) {
+      const lambda = lambdaNm * 1e-9;
+      const exponent = h * c / (lambda * kB * T);
+      return (2 * h * c * c) / Math.pow(lambda, 5) / (Math.exp(exponent) - 1);
+    }
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function wavelengthToRGB(wavelength) {
+      let r = 0, g = 0, b = 0;
+
+      if (wavelength >= 380 && wavelength < 440) {
+        r = -(wavelength - 440) / (440 - 380);
+        g = 0;
+        b = 1;
+      } else if (wavelength >= 440 && wavelength < 490) {
+        r = 0;
+        g = (wavelength - 440) / (490 - 440);
+        b = 1;
+      } else if (wavelength >= 490 && wavelength < 510) {
+        r = 0;
+        g = 1;
+        b = -(wavelength - 510) / (510 - 490);
+      } else if (wavelength >= 510 && wavelength < 580) {
+        r = (wavelength - 510) / (580 - 510);
+        g = 1;
+        b = 0;
+      } else if (wavelength >= 580 && wavelength < 645) {
+        r = 1;
+        g = -(wavelength - 645) / (645 - 580);
+        b = 0;
+      } else if (wavelength >= 645 && wavelength <= 700) {
+        r = 1;
+        g = 0;
+        b = 0;
+      }
+
+      const gamma = 0.8;
+      r = Math.round(255 * Math.pow(r, gamma));
+      g = Math.round(255 * Math.pow(g, gamma));
+      b = Math.round(255 * Math.pow(b, gamma));
+      return `rgb(${r},${g},${b})`;
+    }
+
+    function draw() {
+      resizeCanvas();
+      const W = canvas.getBoundingClientRect().width;
+      const H = canvas.getBoundingClientRect().height;
+      ctx.clearRect(0, 0, W, H);
+
+      const T = Number(slider.value);
+      tempText.textContent = `${T.toLocaleString()} K`;
+      const peakNm = (bWien / T) * 1e9;
+      peakText.textContent = `Peak: ${Math.round(peakNm).toLocaleString()} nm`;
+
+      const margin = { left: 76, right: 30, top: 58, bottom: 82 };
+      const pw = W - margin.left - margin.right;
+      const ph = H - margin.top - margin.bottom;
+
+      const xs = [];
+      const ys = [];
+      const lambdaMaxDynamic = computeLambdaMax(T);
+      for (let nm = lambdaMin; nm <= lambdaMaxDynamic; nm += 2) {
+        xs.push(nm);
+        ys.push(planck(nm, T));
+      }
+      let yMax;
+      let ysPlot = [...ys];
+
+      if (modeSelect.value === "normalized") {
+        const maxVal = Math.max(...ys);
+        ysPlot = ys.map(v => v / maxVal);
+        yMax = 1.0;
+      } else {
+        yMax = Math.max(...ys) * 1.08;
+      }
+
+      const xMap = nm => margin.left + ((nm - lambdaMin) / (lambdaMaxDynamic - lambdaMin)) * pw;
+      const yMap = y => margin.top + ph - (y / yMax) * ph;
+
+      // Plot area
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(margin.left, margin.top, pw, ph);
+
+      // Visible spectrum background: 700 red to 400 blue
+      for (let nm = 400; nm <= 700; nm += 2) {
+        ctx.fillStyle = wavelengthToRGB(nm);
+        ctx.globalAlpha = 0.28;
+        ctx.fillRect(xMap(nm), margin.top, xMap(nm + 2) - xMap(nm) + 1, ph);
+      }
+      ctx.globalAlpha = 1;
+
+      // EM region bands and labels
+      const regions = [
+        { label: "UV", start: 100, end: 400 },
+        { label: "Visible", start: 400, end: 700 },
+        { label: "Infrared", start: 700, end: lambdaMaxDynamic }
+      ];
+
+      ctx.font = "600 14px system-ui";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      regions.forEach(r => {
+        const x1 = xMap(r.start);
+        const x2 = xMap(r.end);
+        ctx.fillStyle = "rgba(17,24,39,0.055)";
+        ctx.fillRect(x1, margin.top - 38, x2 - x1, 28);
+        ctx.strokeStyle = "rgba(17,24,39,0.12)";
+        ctx.strokeRect(x1, margin.top - 38, x2 - x1, 28);
+        ctx.fillStyle = "#374151";
+        ctx.fillText(r.label, (x1 + x2) / 2, margin.top - 24);
+      });
+
+      // Grid + axes
+      ctx.strokeStyle = "#e5e7eb";
+      ctx.lineWidth = 1;
+      ctx.font = "12px system-ui";
+      ctx.fillStyle = "#6b7280";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+
+      const xTicks = [100, 400, 700];
+      const step = lambdaMaxDynamic / 5;
+      for (let i = 1; i <= 5; i++) {
+        xTicks.push(Math.round(step * i));
+      }
+      xTicks.forEach(t => {
+        const x = xMap(t);
+        ctx.beginPath();
+        ctx.moveTo(x, margin.top);
+        ctx.lineTo(x, margin.top + ph);
+        ctx.stroke();
+        ctx.fillText(`${t}`, x, margin.top + ph + 10);
+      });
+
+      ctx.textAlign = "right";
+      ctx.textBaseline = "middle";
+      for (let i = 0; i <= 5; i++) {
+        const y = margin.top + (i / 5) * ph;
+        ctx.beginPath();
+        ctx.moveTo(margin.left, y);
+        ctx.lineTo(margin.left + pw, y);
+        ctx.stroke();
+
+        let label;
+        if (modeSelect.value === "normalized") {
+          label = (1 - i / 5).toFixed(2);
+        } else {
+          const value = yMax * (1 - i / 5);
+          label = value === 0 ? "0" : value.toExponential(2);
+        }
+        ctx.fillText(label, margin.left - 10, y);
+      }
+
+      // Axes
+      ctx.strokeStyle = "#374151";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(margin.left, margin.top);
+      ctx.lineTo(margin.left, margin.top + ph);
+      ctx.lineTo(margin.left + pw, margin.top + ph);
+      ctx.stroke();
+
+      // Blackbody curve, normalized to current max for clear autoscaling
+      ctx.beginPath();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#111827";
+      xs.forEach((nm, i) => {
+        const x = xMap(nm);
+        const y = yMap(ysPlot[i]);
+        if (i === 0) ctx.moveTo(x, y);
+        else ctx.lineTo(x, y);
+      });
+      ctx.stroke();
+
+      // Peak marker
+      if (peakNm >= lambdaMin && peakNm <= lambdaMaxDynamic) {
+        let peakY = planck(peakNm, T);
+        if (modeSelect.value === "normalized") {
+          const maxVal = Math.max(...ys);
+          peakY = peakY / maxVal;
+        }
+        const px = xMap(peakNm);
+        const py = yMap(peakY);
+        ctx.setLineDash([5, 5]);
+        ctx.strokeStyle = "#4b5563";
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(px, margin.top + ph);
+        ctx.lineTo(px, py);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        ctx.fillStyle = "#111827";
+        ctx.beginPath();
+        ctx.arc(px, py, 4.5, 0, 2 * Math.PI);
+        ctx.fill();
+
+        ctx.font = "600 13px system-ui";
+        ctx.textAlign = "left";
+        ctx.textBaseline = "bottom";
+        ctx.fillText(`λmax ≈ ${Math.round(peakNm)} nm`, px + 8, py - 8);
+      }
+
+      // Visible boundary labels
+      ctx.font = "700 13px system-ui";
+      ctx.textBaseline = "bottom";
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#1e3a8a";
+      ctx.fillText("400 nm blue", xMap(400), margin.top + ph - 10);
+      ctx.fillStyle = "#991b1b";
+      ctx.fillText("700 nm red", xMap(700), margin.top + ph - 10);
+
+      // Axis labels
+      ctx.fillStyle = "#111827";
+      ctx.font = "600 15px system-ui";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "bottom";
+      ctx.fillText("Wavelength λ / nm", margin.left + pw / 2, H - 22);
+
+      ctx.save();
+      ctx.translate(22, margin.top + ph / 2);
+      ctx.rotate(-Math.PI / 2);
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(modeSelect.value === "normalized" ? "Normalized intensity" : "Spectral radiance Bλ (arb. units)", 0, 0);
+      ctx.restore();
+
+      ctx.font = "600 16px system-ui";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "top";
+      ctx.fillText(`Blackbody spectrum at T = ${T.toLocaleString()} K`, margin.left, 14);
+    }
+
+    slider.addEventListener("input", draw);
+    modeSelect.addEventListener("change", draw);
+    window.addEventListener("resize", draw);
+    draw();
+  </script>
+</body>
+</html>
