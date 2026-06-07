@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Thermal Motion → Distributions</title>
+<style>
+body {
+  font-family: system-ui;
+  background:#f5f7fb;
+  display:flex;
+  justify-content:center;
+  padding:20px;
+  color:#111;
+}
+.wrap {
+  background:#ffffff;
+  padding:20px;
+  border-radius:18px;
+  width:1200px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+canvas {
+  border-radius:14px;
+  width:100%;
+  height:520px;
+  background:#ffffff;
+  border:1px solid #ddd;
+}
+.controls {
+  margin-bottom:12px;
+  display:flex;
+  gap:15px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+button { padding:6px 10px; border-radius:8px; border:none; cursor:pointer; }
+</style>
+</head>
+<body>
+<div class="wrap">
+<h2>Thermal Motion → Distributions</h2>
+<div class="controls">
+Temperature: <input type="range" id="temp" min="300" max="8000" value="3000" step="50">
+<span id="tval">3000 K</span>
+
+Speed: <input type="range" id="speed" min="0.2" max="3" value="1" step="0.1">
+<span id="sval">1x</span>
+
+Particles: <input type="range" id="npart" min="50" max="1000" value="400" step="50">
+<span id="nval">400</span>
+
+<button id="pauseBtn">Pause</button>
+</div>
+<canvas id="c"></canvas>
+</div>
+<script>
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+const slider = document.getElementById('temp');
+const tval = document.getElementById('tval');
+const speedSlider = document.getElementById('speed');
+const sval = document.getElementById('sval');
+const npartSlider = document.getElementById('npart');
+const nval = document.getElementById('nval');
+const pauseBtn = document.getElementById('pauseBtn');
+
+let particles = [];
+let paused = false;
+let lastCanvasWidth = 0;
+let lastCanvasHeight = 0;
+
+function resize(){
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const nextW = Math.round(rect.width * dpr);
+  const nextH = Math.round(rect.height * dpr);
+
+  if (nextW === lastCanvasWidth && nextH === lastCanvasHeight) return;
+
+  lastCanvasWidth = nextW;
+  lastCanvasHeight = nextH;
+  canvas.width = nextW;
+  canvas.height = nextH;
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+
+function randn() {
+  let u = 0;
+  let v = 0;
+  while (u === 0) u = Math.random();
+  while (v === 0) v = Math.random();
+  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+}
+
+function init(){
+  particles = [];
+  const N = Number(npartSlider.value);
+  nval.textContent = N;
+
+  const T = Number(slider.value);
+  const sigma = velocitySigma(T);
+
+  for(let i = 0; i < N; i++){
+    particles.push({
+      x: Math.random(),
+      y: Math.random(),
+      vx: sigma * randn(),
+      vy: sigma * randn()
+    });
+  }
+}
+
+function velocitySigma(T) {
+  return 0.006 * Math.sqrt(T / 300);
+}
+
+function stepParticles(T){
+  if (paused) return;
+
+  const speedFactor = Number(speedSlider.value);
+  sval.textContent = speedFactor.toFixed(1) + "x";
+
+  // Ornstein-Uhlenbeck velocity update.
+  // This gives Gaussian vx, vy and therefore a Maxwell/Rayleigh speed distribution in 2D.
+  const dt = 0.25;
+  const gamma = 0.08;
+  const sigma = velocitySigma(T);
+  const noiseStrength = sigma * Math.sqrt(2 * gamma * dt);
+
+  particles.forEach(p => {
+    p.vx += -gamma * p.vx * dt + noiseStrength * randn();
+    p.vy += -gamma * p.vy * dt + noiseStrength * randn();
+
+    p.x += p.vx * dt * speedFactor;
+    p.y += p.vy * dt * speedFactor;
+
+    if (p.x < 0 || p.x > 1) p.vx *= -1;
+    if (p.y < 0 || p.y > 1) p.vy *= -1;
+
+    p.x = Math.max(0, Math.min(1, p.x));
+    p.y = Math.max(0, Math.min(1, p.y));
+  });
+}
+
+function draw(){
+  resize();
+  const rect = canvas.getBoundingClientRect();
+  const W = rect.width;
+  const H = rect.height;
+  ctx.fillStyle = "#ffffff";
+  ctx.fillRect(0, 0, W, H);
+
+  const T = Number(slider.value);
+  tval.textContent = T + " K";
+  sval.textContent = Number(speedSlider.value).toFixed(1) + "x";
+
+  const leftW = W * 0.33;
+  const midW = W * 0.33;
+  const rightX = leftW + midW;
+  const rightW = W - rightX;
+
+  stepParticles(T);
+
+  // --- Brownian particles ---
+  const particleColorScale = velocitySigma(T) * 4;
+
+  particles.forEach(p => {
+    const v = Math.hypot(p.vx, p.vy);
+    const speedNorm = Math.min(1, v / particleColorScale);
+    const hue = 240 * Math.pow(speedNorm, 1.4); // red low speed → blue high speed
+    const radius = 2.2;
+
+    ctx.fillStyle = `hsla(${hue},100%,55%,0.75)`;
+    ctx.beginPath();
+    ctx.arc(p.x * leftW, p.y * H, radius, 0, 2 * Math.PI);
+    ctx.fill();
+  });
+
+  // --- Speed distribution panel ---
+  const bins = 90;
+  const hist = new Array(bins).fill(0);
+  const sigma = velocitySigma(T);
+  // FIX: use fixed axis so peak shifts with temperature
+  const vMax = 0.05; // shows low-speed region clearly and still includes the tail
+
+  particles.forEach(p => {
+    const v = Math.hypot(p.vx, p.vy);
+    const idx = Math.min(bins - 1, Math.floor((v / vMax) * bins));
+    if (idx >= 0) hist[idx]++;
+  });
+
+  const N = particles.length || 1;
+  const binWidth = vMax / bins;
+  const smooth = new Array(bins).fill(0);
+  for(let i = 0; i < bins; i++){
+    let sum = 0;
+    let count = 0;
+    for(let j = -2; j <= 2; j++){
+      if(i + j >= 0 && i + j < bins){
+        sum += hist[i + j];
+        count++;
+      }
+    }
+    smooth[i] = sum / count;
+  }
+
+  // Rayleigh/2D Maxwell speed distribution: p(v)=v/sigma² exp(-v²/(2sigma²))
+  const theory = new Array(bins).fill(0).map((_, i) => {
+    const v = (i / (bins - 1)) * vMax;
+    return (v / (sigma * sigma)) * Math.exp(-(v * v) / (2 * sigma * sigma));
+  });
+
+  const empiricalDensity = smooth.map(count => count / (N * binWidth));
+  // FIX: keep peak height visually stable by normalizing to theoretical peak
+  const theoryMax = Math.max(...theory);
+  const yMax = theoryMax * 1.2;
+
+  const graphTop = H * 0.12;
+  const graphBottom = H * 0.92;
+  const graphHeight = graphBottom - graphTop;
+  const xMap = i => leftW + i * (midW / (bins - 1));
+  const yMap = value => graphBottom - (value / yMax) * graphHeight;
+
+  ctx.fillStyle = "#f8fafc";
+  ctx.fillRect(leftW, graphTop, midW, graphHeight);
+
+  ctx.strokeStyle = "rgba(0,0,0,0.08)";
+  ctx.lineWidth = 1;
+  for(let i = 0; i <= 5; i++){
+    const y = graphBottom - i * (graphHeight / 5);
+    ctx.beginPath();
+    ctx.moveTo(leftW, y);
+    ctx.lineTo(leftW + midW, y);
+    ctx.stroke();
+  }
+
+  ctx.strokeStyle = "#333";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(leftW, graphTop);
+  ctx.lineTo(leftW, graphBottom);
+  ctx.lineTo(leftW + midW, graphBottom);
+  ctx.stroke();
+
+  // Theoretical curve that should generate the speed distribution.
+  ctx.beginPath();
+  ctx.strokeStyle = "rgba(0,0,0,0.55)";
+  ctx.lineWidth = 2;
+  for(let i = 0; i < bins; i++){
+    const x = xMap(i);
+    const y = yMap(theory[i]);
+    if(i === 0) ctx.moveTo(x, graphBottom); // physically p(0)=0
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Empirical curve.
+  ctx.beginPath();
+  ctx.strokeStyle = "#0066cc";
+  ctx.lineWidth = 3;
+  for(let i = 0; i < bins; i++){
+    const x = xMap(i);
+    const y = yMap(empiricalDensity[i]);
+    if(i === 0) ctx.moveTo(x, graphBottom);
+    else ctx.lineTo(x, y);
+  }
+  ctx.stroke();
+
+  // Vertical line at most probable speed: v_mp = sigma for 2D Rayleigh distribution.
+  const vMostProbable = sigma;
+  const peakX = leftW + (vMostProbable / vMax) * midW;
+  ctx.beginPath();
+  ctx.strokeStyle = "#cc0000";
+  ctx.lineWidth = 2;
+  ctx.moveTo(peakX, graphBottom);
+  ctx.lineTo(peakX, graphTop);
+  ctx.stroke();
+
+  // Labels.
+  ctx.fillStyle = "#222";
+  ctx.font = "14px system-ui";
+  ctx.fillText("speed distribution", leftW + 10, graphTop + 18);
+  ctx.fillStyle = "#0066cc";
+  ctx.fillText("blue: simulated particles", leftW + 10, graphTop + 38);
+  ctx.fillStyle = "#333";
+  ctx.fillText("black: Maxwell-Boltzmann/Rayleigh", leftW + 10, graphTop + 58);
+  ctx.fillStyle = "#cc0000";
+  ctx.fillText("red: most probable speed", leftW + 10, graphTop + 78);
+  ctx.fillStyle = "#222";
+  ctx.fillText("low speed", leftW + 5, graphBottom - 8);
+  ctx.fillText("high speed", leftW + midW - 75, graphBottom - 8);
+
+  // --- Blackbody-like wave modes (linked to speed distribution) ---
+  const modes = 10;
+  const time = Date.now() * 0.004;
+
+  for(let i = 0; i < modes; i++){
+    const f = i / (modes - 1); // 0 = red (low), 1 = blue (high)
+    const yCenter = 60 + i * (H - 120) / (modes - 1);
+
+    // wavelength ratio ~2x (red ≈ 2× blue)
+    const base = 120;
+    const wavelength = base * (1 + (1 - f)); // red=240, blue=120
+
+    const hue = 240 * f;
+
+    // link prominence to Maxwell distribution
+    const v = f * vMax;
+    const prob = (v / (sigma * sigma)) * Math.exp(-(v * v) / (2 * sigma * sigma));
+    const alpha = Math.min(1, prob / theoryMax);
+
+    // link wave speed to particle speed distribution
+    const phaseSpeed = 0.5 + 2 * (v / (vMax || 1));
+
+    ctx.beginPath();
+    for(let x = 0; x <= rightW; x += 2){
+      const y = yCenter + 14 * Math.sin((x / wavelength) * 2 * Math.PI + time * phaseSpeed);
+      if (x === 0) ctx.moveTo(rightX + x, y);
+      else ctx.lineTo(rightX + x, y);
+    }
+
+    ctx.strokeStyle = `hsla(${hue},100%,50%,${0.2 + 0.8 * alpha})`;
+    ctx.lineWidth = 2 + 2 * alpha;
+    ctx.stroke();
+  }
+}
+
+slider.addEventListener('input', () => { init(); draw(); });
+speedSlider.addEventListener('input', draw);
+npartSlider.addEventListener('input', () => { init(); draw(); });
+pauseBtn.addEventListener('click', () => {
+  paused = !paused;
+  pauseBtn.textContent = paused ? 'Resume' : 'Pause';
+});
+window.addEventListener('resize', draw);
+
+function runTests(){
+  console.assert(typeof randn === 'function', 'randn exists');
+  console.assert(typeof velocitySigma === 'function', 'velocitySigma exists');
+  console.assert(velocitySigma(1200) > velocitySigma(300), 'velocity spread increases with temperature');
+  init();
+  console.assert(particles.length === Number(npartSlider.value), 'init creates selected number of particles');
+  stepParticles(3000);
+  console.assert(particles.every(p => Number.isFinite(p.x) && Number.isFinite(p.y)), 'particle positions remain finite');
+  console.assert(particles.every(p => p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1), 'particles stay inside bounds');
+  paused = true;
+  const frozen = particles.map(p => ({x:p.x, y:p.y}));
+  stepParticles(3000);
+  console.assert(particles.every((p, i) => p.x === frozen[i].x && p.y === frozen[i].y), 'pause freezes particle positions');
+  paused = false;
+}
+
+function loop(){
+  draw();
+  requestAnimationFrame(loop);
+}
+
+runTests();
+init();
+loop();
+</script>
+</body>
+</html>
