@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Magnetism as Relativistic Electrostatics</title>
+<style>
+  :root {
+    --bg: #0b1020;
+    --panel: #121a33;
+    --text: #eef3ff;
+    --muted: #b7c3e0;
+    --positive: #ff7b7b;
+    --electron: #79c7ff;
+    --field: #ffe66d;
+    --test: #9be7c7;
+    --accent: #c79bff;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, sans-serif;
+    background: radial-gradient(circle at top, #1b2a55 0%, var(--bg) 60%);
+    color: var(--text);
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 20px;
+  }
+
+  .app {
+    width: min(1320px, 100%);
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 18px;
+  }
+
+  .panel {
+    background: rgba(18,26,51,0.95);
+    border-radius: 22px;
+    border: 1px solid rgba(255,255,255,0.08);
+    overflow: hidden;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+  }
+
+  .header { padding: 18px 22px 0; }
+  h1 { margin: 0 0 10px; font-size: clamp(26px, 4vw, 40px); }
+  .subtitle { color: var(--muted); line-height: 1.5; margin: 0 0 12px; }
+
+  canvas {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: linear-gradient(#111936, #0d142b 72%, #0a0e1d);
+  }
+
+  .controls { padding: 18px; display: flex; flex-direction: column; gap: 16px; }
+
+  .group {
+    background: rgba(255,255,255,0.045);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 14px;
+  }
+
+  .group h2 { margin: 0 0 10px; font-size: 15px; }
+
+  .segmented {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  button {
+    border: 0;
+    border-radius: 12px;
+    padding: 11px;
+    font-weight: 700;
+    background: #172244;
+    color: white;
+    cursor: pointer;
+  }
+
+  button.active { background: linear-gradient(135deg, #2d8cff, #7f5cff); }
+  input[type="range"] { width: 100%; accent-color: var(--accent); }
+
+  .equation {
+    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    background: rgba(0,0,0,0.25);
+    font-family: ui-monospace, monospace;
+    line-height: 1.65;
+    font-size: 13px;
+    color: #dbe7ff;
+  }
+
+  .highlight { font-size: 18px; font-weight: 900; text-align: center; }
+  @media (max-width: 950px) { .app { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="app">
+  <section class="panel">
+    <div class="header">
+      <h1>Magnetism as Relativistic Electrostatics</h1>
+      <p class="subtitle">
+        A current-carrying wire looks neutral in the lab frame. In the moving charge's frame, length contraction changes charge density, so an electric field appears.
+      </p>
+    </div>
+    <canvas id="canvas" width="1000" height="660"></canvas>
+  </section>
+
+  <aside class="panel controls">
+    <div class="group">
+      <h2>Reference frame</h2>
+      <div class="segmented">
+        <button id="labBtn" class="active">Lab frame</button>
+        <button id="chargeBtn">Charge frame</button>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Drift speed exaggeration</h2>
+      <input id="speedSlider" type="range" min="0" max="0.90" step="0.01" value="0.55">
+      <div class="equation" id="speedBox">
+        β = 0.55<br>
+        γ = 1.20<br>
+        spacing factor = 1/γ
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Show</h2>
+      <div class="equation">
+        
+        <label style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+          <input id="fieldToggle" type="checkbox" checked>
+          Show force/field arrows
+        </label>
+        <label style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+          <input id="negativeToggle" type="checkbox">
+          Negative test charge
+        </label>
+        <label style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
+          <input id="magneticFieldToggle" type="checkbox" checked>
+          Magnetic field lines
+        </label>
+        <label style="display:flex;gap:10px;align-items:center;">
+          <input id="electricFieldToggle" type="checkbox" checked>
+          Electric field lines
+        </label>
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Core idea</h2>
+      <div class="highlight">
+        Same force.<br>
+        Different explanation.
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Lab frame</h2>
+      <div class="equation">
+        Positive ions are stationary.<br>
+        Electrons drift through the wire.<br><br>
+        Wire is neutral overall.<br><br>
+        Positive moving test charge feels magnetic force away from the wire.
+      </div>
+    </div>
+
+    <div class="group">
+      <h2>Moving charge frame</h2>
+      <div class="equation">
+        Test charge is stationary.<br>
+        Wire charges move relative to it.<br><br>
+        Length contraction changes charge density.<br><br>
+        Net positive charge density appears, so a positive test charge is repelled electrically.
+      </div>
+    </div>
+  </aside>
+</div>
+
+<script>
+'use strict';
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+const labBtn = document.getElementById('labBtn');
+const chargeBtn = document.getElementById('chargeBtn');
+const speedSlider = document.getElementById('speedSlider');
+const speedBox = document.getElementById('speedBox');
+const fieldToggle = document.getElementById('fieldToggle');
+const negativeToggle = document.getElementById('negativeToggle');
+const magneticFieldToggle = document.getElementById('magneticFieldToggle');
+const electricFieldToggle = document.getElementById('electricFieldToggle');
+
+let frame = 'lab';
+let time = 0;
+let lastTime = performance.now();
+
+const wireY = 360;
+const wireX1 = 90;
+const wireX2 = 910;
+const ionY = wireY - 28;
+const electronY = wireY + 28;
+let testChargeX = 500;
+const testChargeY = 165;
+const baseSpacing = 58;
+
+function gamma(beta) {
+  return 1 / Math.sqrt(1 - beta * beta);
+}
+
+function setFrame(next) {
+  frame = next;
+  labBtn.classList.toggle('active', frame === 'lab');
+  chargeBtn.classList.toggle('active', frame === 'charge');
+}
+
+labBtn.addEventListener('click', () => setFrame('lab'));
+chargeBtn.addEventListener('click', () => setFrame('charge'));
+speedSlider.addEventListener('input', draw);
+fieldToggle.addEventListener('change', draw);
+negativeToggle.addEventListener('change', draw);
+magneticFieldToggle.addEventListener('change', draw);
+electricFieldToggle.addEventListener('change', draw);
+
+function drawArrow(x1, y1, x2, y2, color, width = 4) {
+  ctx.save();
+  ctx.strokeStyle = color;
+  ctx.fillStyle = color;
+  ctx.lineWidth = width;
+  ctx.beginPath();
+  ctx.moveTo(x1, y1);
+  ctx.lineTo(x2, y2);
+  ctx.stroke();
+
+  const angle = Math.atan2(y2 - y1, x2 - x1);
+  ctx.beginPath();
+  ctx.moveTo(x2, y2);
+  ctx.lineTo(x2 - 12 * Math.cos(angle - 0.45), y2 - 12 * Math.sin(angle - 0.45));
+  ctx.lineTo(x2 - 12 * Math.cos(angle + 0.45), y2 - 12 * Math.sin(angle + 0.45));
+  ctx.closePath();
+  ctx.fill();
+  ctx.restore();
+}
+
+function drawCharge(x, y, sign, color, radius = 13) {
+  ctx.save();
+  ctx.fillStyle = color;
+  ctx.shadowColor = color;
+  ctx.shadowBlur = 10;
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.shadowBlur = 0;
+  ctx.fillStyle = '#07101f';
+  ctx.font = '900 20px system-ui';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(sign, x, y - 1);
+  ctx.restore();
+}
+
+function drawMagneticFieldLines() {
+  if (!magneticFieldToggle.checked || frame !== 'lab') return;
+
+  ctx.save();
+  ctx.font = '900 28px monospace';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+
+  // Magnetic field symbols around the wire.
+  // × means field INTO the page.
+  // • means field OUT of the page.
+
+  const topRowY = wireY - 115;
+  const bottomRowY = wireY + 115;
+
+  for (let x = 180; x <= 820; x += 70) {
+    ctx.fillStyle = '#79c7ff';
+
+    // Above the wire.
+    ctx.fillText('×', x, topRowY);
+
+    // Below the wire.
+    ctx.fillText('•', x, bottomRowY);
+  }
+
+  ctx.font = '900 18px system-ui';
+  ctx.fillStyle = '#79c7ff';
+  ctx.fillText('B field: × into page above wire, • out below', 700, 280);
+
+  ctx.restore();
+}
+
+function drawElectricFieldLines(beta) {
+  if (!electricFieldToggle.checked || frame !== 'charge') return;
+
+  const negativeCharge = negativeToggle.checked;
+  const outward = !negativeCharge;
+
+  ctx.save();
+  ctx.strokeStyle = 'rgba(255,230,109,0.75)';
+  ctx.lineWidth = 2.5;
+
+  for (let x = 180; x <= 820; x += 90) {
+
+    // Upper field lines.
+    ctx.beginPath();
+    ctx.moveTo(x, wireY - 20);
+    ctx.quadraticCurveTo(
+      x,
+      wireY - 90,
+      x,
+      outward ? wireY - 155 : wireY - 55
+    );
+    ctx.stroke();
+
+    drawArrow(
+      x,
+      outward ? wireY - 135 : wireY - 75,
+      x,
+      outward ? wireY - 155 : wireY - 55,
+      '#ffe66d',
+      3
+    );
+
+    // Lower field lines.
+    ctx.beginPath();
+    ctx.moveTo(x, wireY + 20);
+    ctx.quadraticCurveTo(
+      x,
+      wireY + 90,
+      x,
+      outward ? wireY + 155 : wireY + 55
+    );
+    ctx.stroke();
+
+    drawArrow(
+      x,
+      outward ? wireY + 135 : wireY + 75,
+      x,
+      outward ? wireY + 155 : wireY + 55,
+      '#ffe66d',
+      3
+    );
+  }
+
+  ctx.fillStyle = '#ffe66d';
+  ctx.font = '900 18px system-ui';
+
+  ctx.fillText(
+    outward
+      ? 'electric field radiating away from wire'
+      : 'electric field toward wire',
+    735,
+    250
+  );
+
+  ctx.restore();
+}
+
+function drawWire() {
+  ctx.save();
+  ctx.strokeStyle = 'rgba(219,231,255,0.35)';
+  ctx.lineWidth = 70;
+  ctx.lineCap = 'round';
+  ctx.beginPath();
+  ctx.moveTo(wireX1, wireY);
+  ctx.lineTo(wireX2, wireY);
+  ctx.stroke();
+
+  ctx.strokeStyle = 'rgba(255,255,255,0.25)';
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(wireX1, wireY - 35);
+  ctx.lineTo(wireX2, wireY - 35);
+  ctx.moveTo(wireX1, wireY + 35);
+  ctx.lineTo(wireX2, wireY + 35);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawCharges(beta) {
+  const g = gamma(beta);
+  const contraction = 1 / g;
+
+  let ionSpacing = baseSpacing;
+  let electronSpacing = baseSpacing;
+  let ionShift = 0;
+  let electronShift = 0;
+
+  if (frame === 'lab') {
+    // Lab: positive ions are stationary; electrons drift.
+    electronShift = (time * beta * 120) % electronSpacing;
+  } else {
+    // Charge frame: test charge is stationary. Electrons are drawn as the reference row.
+    // Positive ion lattice moves and is length contracted, so there are more + charges per length.
+    ionSpacing = baseSpacing * contraction;
+    ionShift = -(time * beta * 120) % ionSpacing;
+  }
+
+  const drawRow = (spacing, y, sign, color, shift) => {
+    for (let x = wireX1 - 80 + shift; x <= wireX2 + 80; x += spacing) {
+      drawCharge(x, y, sign, color);
+    }
+  };
+
+  drawRow(ionSpacing, ionY, '+', '#ff7b7b', ionShift);
+  drawRow(electronSpacing, electronY, '−', '#79c7ff', electronShift);
+}
+
+function drawTestCharge(beta) {
+  const negativeCharge = negativeToggle.checked;
+  const chargeSign = negativeCharge ? '−' : '+';
+  const chargeLabel = negativeCharge ? 'negative' : 'positive';
+
+  // Force magnitude scales strongly with beta.
+  const forceScale = 55 + beta * 110;
+  // In the lab frame the positive test charge moves with the electron drift.
+  // In the charge frame the test charge is stationary.
+  if (frame === 'lab') {
+    testChargeX += beta * 1.6;
+
+    if (testChargeX > wireX2 + 80) {
+      testChargeX = wireX1 - 80;
+    }
+  } else {
+    testChargeX = 500;
+  }
+
+  drawCharge(testChargeX, testChargeY, chargeSign, '#9be7c7', 18);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 17px system-ui';
+  ctx.textAlign = 'center';
+
+  ctx.fillText(
+    frame === 'lab' ? `moving ${chargeLabel} test charge` : `${chargeLabel} test charge at rest`,
+    testChargeX,
+    testChargeY + 44
+  );
+
+  if (!fieldToggle.checked) return;
+
+  if (frame === 'lab') {
+    // Velocity arrow.
+    drawArrow(testChargeX - 70, testChargeY, testChargeX - 12, testChargeY, '#9be7c7', 4);
+
+    ctx.fillStyle = '#9be7c7';
+    ctx.font = '900 15px system-ui';
+    ctx.fillText('v', testChargeX - 42, testChargeY - 18);
+
+    // Magnetic force direction depends on charge sign.
+    const labForceDirection = negativeCharge ? 1 : -1;
+
+    drawArrow(
+      testChargeX,
+      testChargeY + 30,
+      testChargeX,
+      testChargeY + 30 + labForceDirection * forceScale,
+      '#ffe66d',
+      5
+    );
+
+    ctx.fillStyle = '#ffe66d';
+    ctx.font = '900 16px system-ui';
+    ctx.fillText(
+      negativeCharge
+        ? 'magnetic attraction toward wire'
+        : 'magnetic repulsion away from wire',
+      testChargeX,
+      testChargeY + 140
+    );
+  } else {
+    // Electric force from relativistic charge density imbalance.
+    const electricForceDirection = negativeCharge ? 1 : -1;
+
+    drawArrow(
+      testChargeX,
+      testChargeY + 30,
+      testChargeX,
+      testChargeY + 30 + electricForceDirection * forceScale,
+      '#ffe66d',
+      5
+    );
+
+    ctx.fillStyle = '#ffe66d';
+    ctx.font = '900 16px system-ui';
+    ctx.fillText(
+      negativeCharge
+        ? 'electric attraction toward wire'
+        : 'electric repulsion away from wire',
+      testChargeX,
+      testChargeY + 140
+    );
+  }
+}
+
+function drawHeader(beta) {
+  const g = gamma(beta);
+  const contraction = 1 / g;
+
+  speedBox.innerHTML = `
+    β = ${beta.toFixed(2)}<br>
+    γ = ${g.toFixed(2)}<br>
+    moving spacing factor = ${contraction.toFixed(2)}
+  `;
+
+  ctx.fillStyle = 'rgba(0,0,0,0.42)';
+  ctx.fillRect(28, 24, 940, 138);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 31px system-ui';
+  ctx.textAlign = 'left';
+  ctx.fillText(
+    frame === 'lab'
+      ? 'LAB FRAME: neutral wire + magnetic force'
+      : 'MOVING CHARGE FRAME: electric explanation',
+    50,
+    64
+  );
+
+  ctx.fillStyle = '#dbe7ff';
+  ctx.font = '800 15px system-ui';
+
+  if (frame === 'lab') {
+    ctx.fillText(
+      'The wire is constructed to remain neutral in the lab frame, even though electrons are moving.',
+      50,
+      96
+    );
+    ctx.font = '800 15px system-ui';
+    ctx.fillText(
+      'The moving test charge therefore experiences the interaction primarily as a magnetic force.',
+      50,
+      118
+    );
+  } else {
+    ctx.fillText(
+      'In the moving-charge frame the positive ion lattice is length contracted.',
+      50,
+      96
+    );
+    ctx.font = '800 15px system-ui';
+    ctx.fillText(
+      'This changes the charge density balance, so an electric field appears.',
+      50,
+      118
+    );
+  }
+}
+
+function drawExplanation(beta) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(0,0,0,0.42)';
+  ctx.fillRect(70, 535, 860, 80);
+
+  ctx.fillStyle = '#ffffff';
+  ctx.font = '900 22px system-ui';
+  ctx.textAlign = 'center';
+
+  if (frame === 'lab') {
+    ctx.fillText('Neutral wire + moving charge → magnetic description of the force.', 500, 570);
+    ctx.font = '800 15px system-ui';
+    ctx.fillStyle = '#dbe7ff';
+    ctx.fillText('This is the standard current-and-magnetic-field description.', 500, 596);
+  } else {
+    ctx.fillText('Changed charge density → electric description of the same force.', 500, 570);
+    ctx.font = '800 15px system-ui';
+    ctx.fillStyle = '#dbe7ff';
+    ctx.fillText('Same physical deflection, but explained using electric field instead of magnetic field.', 500, 596);
+  }
+
+  ctx.restore();
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  const beta = Number(speedSlider.value);
+
+  drawHeader(beta);
+  drawWire();
+  drawMagneticFieldLines();
+  drawCharges(beta);
+  drawElectricFieldLines(beta);
+  drawTestCharge(beta);
+  drawExplanation(beta);
+}
+
+function tick(now) {
+  const dt = Math.min(0.05, (now - lastTime) / 1000);
+  lastTime = now;
+  time += dt;
+  draw();
+  requestAnimationFrame(tick);
+}
+
+function runSelfTests() {
+  console.assert(Math.abs(gamma(0) - 1) < 1e-12, 'gamma(0) should equal 1');
+  console.assert(gamma(0.6) > 1, 'gamma should increase with speed');
+  console.assert(baseSpacing > 0, 'base spacing must be positive');
+  console.assert(wireX2 > wireX1, 'wire must have positive length');
+  console.assert(testChargeY < wireY, 'test charge should be above the wire so away-from-wire points upward');
+  console.assert(typeof negativeToggle.checked === 'boolean', 'negative charge toggle should exist');
+  console.assert(typeof magneticFieldToggle.checked === 'boolean', 'magnetic field toggle should exist');
+  console.assert(typeof electricFieldToggle.checked === 'boolean', 'electric field toggle should exist');
+}
+
+runSelfTests();
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
