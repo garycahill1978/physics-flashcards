@@ -4984,7 +4984,1404 @@ svg: `
   <text x="260" y="286" text-anchor="middle" font-size="12" fill="#374151">The 4th, 5th and 6th harmonics correspond to the notes of a major chord.</text>
 </svg>
 `
+},
+
+
+
+
+
+
+
+
+
+
+
+
+
+{
+  topic: "Light",
+  term: "What causes a diffraction pattern at a double slit or diffraction grating?",
+  answer: "Each slit acts like a coherent wave source. A bright fringe forms when the waves arrive in phase. Here the lower wave has travelled one extra wavelength, so it still arrives in phase.",
+  equation: "Bright fringe: path difference = mλ",
+  svg: `
+<svg viewBox="0 0 420 220" width="100%" height="210" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowD1big" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- barrier -->
+  <line x1="75" y1="25" x2="75" y2="195" stroke="#2563eb" stroke-width="7"/>
+  <line x1="75" y1="70" x2="75" y2="92" stroke="#ffffff" stroke-width="10"/>
+  <line x1="75" y1="128" x2="75" y2="150" stroke="#ffffff" stroke-width="10"/>
+
+  <!-- slit labels -->
+  <text x="51" y="84" font-size="14">S₁</text>
+  <text x="51" y="143" font-size="14">S₂</text>
+
+  <!-- incident plane waves -->
+  <g stroke="#111827" stroke-width="2">
+    <line x1="18" y1="65" x2="55" y2="65" marker-end="url(#arrowD1big)"/>
+    <line x1="18" y1="98" x2="55" y2="98" marker-end="url(#arrowD1big)"/>
+    <line x1="18" y1="131" x2="55" y2="131" marker-end="url(#arrowD1big)"/>
+    <line x1="18" y1="164" x2="55" y2="164" marker-end="url(#arrowD1big)"/>
+  </g>
+
+  <text x="12" y="30" font-size="12">incident</text>
+  <text x="12" y="44" font-size="12">plane wave</text>
+
+  <!-- outgoing ray paths at larger angle -->
+  <line x1="80" y1="81" x2="345" y2="-105" stroke="#9ca3af" stroke-width="2"/>
+  <line x1="80" y1="139" x2="345" y2="-47" stroke="#9ca3af" stroke-width="2"/>
+
+  <!-- sine waves along rays -->
+  <g transform="translate(82 81) rotate(-35)">
+    <path d="M0 0 Q8 -9 16 0 T32 0 T48 0 T64 0 T80 0 T96 0 T112 0 T128 0 T144 0 T160 0 T176 0 T192 0 T208 0"
+          fill="none" stroke="#111827" stroke-width="3"/>
+    <line x1="208" y1="0" x2="228" y2="0" stroke="#111827" stroke-width="3" marker-end="url(#arrowD1big)"/>
+  </g>
+
+  <g transform="translate(82 139) rotate(-35)">
+    <path d="M0 0 Q8 -9 16 0 T32 0 T48 0 T64 0 T80 0 T96 0 T112 0 T128 0 T144 0 T160 0 T176 0 T192 0 T208 0"
+          fill="none" stroke="#111827" stroke-width="3"/>
+    <line x1="208" y1="0" x2="228" y2="0" stroke="#111827" stroke-width="3" marker-end="url(#arrowD1big)"/>
+  </g>
+
+  <!-- horizontal reference lines -->
+  <line x1="82" y1="81" x2="140" y2="81" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4,4"/>
+  <line x1="82" y1="139" x2="140" y2="139" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+  <!-- angle labels -->
+  <path d="M115 81 A36 36 0 0 0 111 61" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <text x="122" y="68" font-size="16" fill="#2563eb">θ</text>
+
+  <path d="M115 139 A36 36 0 0 0 111 119" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <text x="122" y="126" font-size="16" fill="#2563eb">θ</text>
+
+  <!-- path difference construction: one wavelength -->
+  <line x1="82" y1="81" x2="115" y2="128"
+        stroke="#f59e0b" stroke-width="5" opacity="0.85"/>
+
+  <!-- right-angle marker -->
+  <path d="M104 113 L115 106 L122 117"
+        fill="none" stroke="#111827" stroke-width="2"/>
+
+  <text x="133" y="107" font-size="13" fill="#f59e0b" font-weight="700">extra path</text>
+  <text x="151" y="124" font-size="15" fill="#f59e0b" font-weight="700">= λ</text>
+
+  <!-- one wavelength marker kept with lower wave -->
+  <g transform="translate(154 160) rotate(-35)">
+    <line x1="0" y1="0" x2="32" y2="0" stroke="#f59e0b" stroke-width="3"/>
+    <line x1="0" y1="-6" x2="0" y2="6" stroke="#f59e0b" stroke-width="3"/>
+    <line x1="32" y1="-6" x2="32" y2="6" stroke="#f59e0b" stroke-width="3"/>
+    <text x="10" y="21" font-size="15" fill="#f59e0b">λ</text>
+  </g>
+
+  <text x="128" y="199" font-size="14" fill="#111827">Path difference = one wavelength</text>
+
+</svg>
+`
+},
+
+
+
+{
+  topic: "Light",
+  term: "How is the diffraction grating equation derived?",
+  answer: "For light leaving adjacent slits at angle θ, the lower ray travels an extra distance. The orange construction shows triangle that gives sinθ= λ/d . For the first bright fringe, this extra distance is one wavelength, λ. In general, bright fringes occur when the path difference equals mλ.",
+  equation: "mλ = d sinθ",
+  svg: `
+<svg viewBox="0 0 420 220" width="100%" height="210"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowDG" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- Grating -->
+  <line x1="70" y1="25" x2="70" y2="195" stroke="#2563eb" stroke-width="8"/>
+  <line x1="70" y1="66" x2="70" y2="90" stroke="white" stroke-width="10"/>
+  <line x1="70" y1="130" x2="70" y2="154" stroke="white" stroke-width="10"/>
+
+  <!-- Slits -->
+  <circle cx="72" cy="78" r="3" fill="black"/>
+  <circle cx="72" cy="142" r="3" fill="black"/>
+  <text x="42" y="82" font-size="14">S₁</text>
+  <text x="42" y="146" font-size="14">S₂</text>
+
+  <!-- Separation d -->
+  <line x1="42" y1="78" x2="42" y2="142" stroke="black" stroke-width="2"/>
+  <line x1="37" y1="78" x2="47" y2="78" stroke="black" stroke-width="2"/>
+  <line x1="37" y1="142" x2="47" y2="142" stroke="black" stroke-width="2"/>
+  <text x="24" y="114" font-size="16" font-weight="700">d</text>
+
+  <!-- Rays at larger angle, about 35 degrees -->
+  <line x1="72" y1="78" x2="350" y2="-112" stroke="#9ca3af" stroke-width="2"/>
+  <line x1="72" y1="142" x2="350" y2="-48" stroke="#9ca3af" stroke-width="2"/>
+
+  <!-- Sine waves along the rays -->
+  <g transform="translate(78 78) rotate(-34)">
+    <path d="M0 0 Q8 -8 16 0 T32 0 T48 0 T64 0 T80 0 T96 0 T112 0 T128 0 T144 0 T160 0 T176 0 T192 0"
+          fill="none" stroke="black" stroke-width="3"/>
+    <line x1="192" y1="0" x2="212" y2="0" stroke="black" stroke-width="3" marker-end="url(#arrowDG)"/>
+  </g>
+
+  <g transform="translate(78 142) rotate(-34)">
+    <path d="M0 0 Q8 -8 16 0 T32 0 T48 0 T64 0 T80 0 T96 0 T112 0 T128 0 T144 0 T160 0 T176 0 T192 0"
+          fill="none" stroke="black" stroke-width="3"/>
+    <line x1="192" y1="0" x2="212" y2="0" stroke="black" stroke-width="3" marker-end="url(#arrowDG)"/>
+  </g>
+
+  <!-- Horizontal reference for theta -->
+  <line x1="72" y1="142" x2="135" y2="142"
+        stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+  <!-- Theta angle -->
+  <path d="M112 142 A40 40 0 0 0 105 120"
+        fill="none" stroke="#2563eb" stroke-width="3"/>
+  <text x="118" y="126" font-size="16" fill="#2563eb">θ</text>
+
+  <!-- Orange path difference construction: perpendicular to rays -->
+  <line x1="72" y1="78" x2="108" y2="131"
+        stroke="#f59e0b" stroke-width="5" opacity="0.85"/>
+
+  <!-- Right angle marker -->
+  <path d="M98 117 L109 110 L116 121"
+        fill="none" stroke="black" stroke-width="2"/>
+
+  <!-- Path difference label -->
+  <text x="122" y="108" fill="#f59e0b" font-size="14" font-weight="700">
+    path difference
+  </text>
+  <text x="145" y="126" fill="#f59e0b" font-size="15" font-weight="700">
+    = λ
+  </text>
+
+  <!-- Wavelength marker kept separate -->
+  <g transform="translate(255 150)">
+    <path d="M0 0 Q8 -8 16 0 T32 0" fill="none" stroke="black" stroke-width="3"/>
+    <line x1="0" y1="18" x2="32" y2="18" stroke="#f59e0b" stroke-width="3"/>
+    <line x1="0" y1="13" x2="0" y2="23" stroke="#f59e0b" stroke-width="3"/>
+    <line x1="32" y1="13" x2="32" y2="23" stroke="#f59e0b" stroke-width="3"/>
+    <text x="12" y="38" font-size="15" fill="#f59e0b">λ</text>
+  </g>
+
+  <!-- Derivation text -->
+  <text x="235" y="178" font-size="14">sinθ = λ/d</text>
+  <text x="235" y="197" font-size="14">λ = d sinθ</text>
+  <text x="205" y="216" font-size="17" font-weight="700">mλ = d sinθ</text>
+
+</svg>
+`
+},
+
+
+
+{
+  topic: "Light",
+  term: "What is the diffraction grating equation?",
+  answer: "Bright fringes occur when the path difference between waves from neighbouring slits is a whole number of wavelengths. The central maximum is m = 0. For the same grating spacing d, red light has a larger wavelength than blue light, so red appears at a larger angle.",
+  equation: "mλ = d sinθ",
+  svg: `
+<svg viewBox="0 0 420 240" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowG" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- grating -->
+  <line x1="70" y1="35" x2="70" y2="205"
+        stroke="#2563eb" stroke-width="7"/>
+
+  <!-- small slit marks -->
+  <line x1="70" y1="58" x2="70" y2="70" stroke="white" stroke-width="9"/>
+  <line x1="70" y1="86" x2="70" y2="98" stroke="white" stroke-width="9"/>
+  <line x1="70" y1="114" x2="70" y2="126" stroke="white" stroke-width="9"/>
+  <line x1="70" y1="142" x2="70" y2="154" stroke="white" stroke-width="9"/>
+  <line x1="70" y1="170" x2="70" y2="182" stroke="white" stroke-width="9"/>
+
+  <!-- central maximum m = 0 -->
+  <line x1="72" y1="120" x2="370" y2="120"
+        stroke="#111827" stroke-width="3"
+        marker-end="url(#arrowG)"/>
+  <text x="300" y="112" font-size="14" fill="#111827">m = 0</text>
+
+  <!-- blue first order, smaller angle -->
+  <line x1="72" y1="120" x2="350" y2="82"
+        stroke="#2563eb" stroke-width="2"/>
+  <line x1="72" y1="120" x2="350" y2="158"
+        stroke="#2563eb" stroke-width="2"/>
+
+  <g transform="translate(95 117) rotate(-8)">
+    <path d="M0 0 Q7 -7 14 0 T28 0 T42 0 T56 0 T70 0 T84 0 T98 0 T112 0 T126 0 T140 0 T154 0 T168 0 T182 0 T196 0 T210 0 T224 0 T238 0"
+          fill="none" stroke="#2563eb" stroke-width="2.5"/>
+    <line x1="238" y1="0" x2="258" y2="0" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrowG)"/>
+  </g>
+
+  <g transform="translate(95 123) rotate(8)">
+    <path d="M0 0 Q7 -7 14 0 T28 0 T42 0 T56 0 T70 0 T84 0 T98 0 T112 0 T126 0 T140 0 T154 0 T168 0 T182 0 T196 0 T210 0 T224 0 T238 0"
+          fill="none" stroke="#2563eb" stroke-width="2.5"/>
+    <line x1="238" y1="0" x2="258" y2="0" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrowG)"/>
+  </g>
+
+  <!-- red first order, larger angle -->
+  <line x1="72" y1="120" x2="340" y2="48"
+        stroke="#dc2626" stroke-width="2"/>
+  <line x1="72" y1="120" x2="340" y2="192"
+        stroke="#dc2626" stroke-width="2"/>
+
+  <g transform="translate(92 115) rotate(-15)">
+    <path d="M0 0 Q11 -8 22 0 T44 0 T66 0 T88 0 T110 0 T132 0 T154 0 T176 0 T198 0 T220 0 T242 0"
+          fill="none" stroke="#dc2626" stroke-width="2.5"/>
+    <line x1="242" y1="0" x2="262" y2="0" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowG)"/>
+  </g>
+
+  <g transform="translate(92 125) rotate(15)">
+    <path d="M0 0 Q11 -8 22 0 T44 0 T66 0 T88 0 T110 0 T132 0 T154 0 T176 0 T198 0 T220 0 T242 0"
+          fill="none" stroke="#dc2626" stroke-width="2.5"/>
+    <line x1="242" y1="0" x2="262" y2="0" stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowG)"/>
+  </g>
+
+  <!-- labels -->
+  <text x="355" y="85" font-size="14" fill="#2563eb">blue m = 1</text>
+  <text x="355" y="164" font-size="14" fill="#2563eb">blue m = 1</text>
+
+  <text x="340" y="42" font-size="14" fill="#dc2626">red m = 1</text>
+  <text x="340" y="208" font-size="14" fill="#dc2626">red m = 1</text>
+
+  <text x="130" y="224" font-size="14" fill="#111827">
+    larger λ → larger θ
+  </text>
+
+</svg>
+`
+},	
+
+
+
+
+{
+  topic: "Light",
+  term: "What is the single-slit diffraction condition for dark fringes?",
+  answer: "For a dark fringe, waves from different parts of the slit cancel. For the first dark fringe, light from the top half of the slit cancels light from the bottom half. The path difference across the full slit is one wavelength.",
+  equation: "a sinθ = mλ",
+  svg: `
+<svg viewBox="0 0 420 250" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowSS" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <!-- screen / barrier with single slit -->
+  <line x1="75" y1="30" x2="75" y2="220" stroke="#2563eb" stroke-width="8"/>
+  <line x1="75" y1="75" x2="75" y2="175" stroke="white" stroke-width="12"/>
+
+  <!-- aperture size a -->
+  <line x1="45" y1="75" x2="45" y2="175" stroke="#111827" stroke-width="2"/>
+  <line x1="40" y1="75" x2="50" y2="75" stroke="#111827" stroke-width="2"/>
+  <line x1="40" y1="175" x2="50" y2="175" stroke="#111827" stroke-width="2"/>
+  <text x="28" y="129" font-size="17" font-weight="700">a</text>
+
+  <!-- source points -->
+  <circle cx="78" cy="75" r="3" fill="#111827"/>
+  <circle cx="78" cy="125" r="3" fill="#dc2626"/>
+  <circle cx="78" cy="175" r="3" fill="#111827"/>
+
+  <text x="86" y="78" font-size="12">top</text>
+  <text x="86" y="128" font-size="12" fill="#dc2626">centre</text>
+  <text x="86" y="178" font-size="12">bottom</text>
+
+  <!-- outgoing rays, large angle -->
+  <line x1="78" y1="75" x2="350" y2="-55" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="78" y1="125" x2="350" y2="-5" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="78" y1="175" x2="350" y2="45" stroke="#9ca3af" stroke-width="1.5"/>
+
+  <!-- sine waves along the three paths -->
+  <g transform="translate(82 75) rotate(-25.5)">
+    <path d="M0 0 Q9 -9 18 0 T36 0 T54 0 T72 0 T90 0 T108 0 T126 0 T144 0 T162 0 T180 0 T198 0 T216 0"
+          fill="none" stroke="#111827" stroke-width="3"/>
+    <line x1="216" y1="0" x2="236" y2="0" stroke="#111827" stroke-width="3" marker-end="url(#arrowSS)"/>
+  </g>
+
+  <!-- centre wave shifted half a wavelength: starts opposite -->
+  <g transform="translate(82 125) rotate(-25.5)">
+    <path d="M0 0 Q9 9 18 0 T36 0 T54 0 T72 0 T90 0 T108 0 T126 0 T144 0 T162 0 T180 0 T198 0 T216 0"
+          fill="none" stroke="#dc2626" stroke-width="3"/>
+    <line x1="216" y1="0" x2="236" y2="0" stroke="#dc2626" stroke-width="3" marker-end="url(#arrowSS)"/>
+  </g>
+
+  <g transform="translate(82 175) rotate(-25.5)">
+    <path d="M0 0 Q9 -9 18 0 T36 0 T54 0 T72 0 T90 0 T108 0 T126 0 T144 0 T162 0 T180 0 T198 0 T216 0"
+          fill="none" stroke="#111827" stroke-width="3"/>
+    <line x1="216" y1="0" x2="236" y2="0" stroke="#111827" stroke-width="3" marker-end="url(#arrowSS)"/>
+  </g>
+
+  <!-- angle theta -->
+  <line x1="78" y1="175" x2="138" y2="175" stroke="#9ca3af" stroke-dasharray="4,4"/>
+  <path d="M118 175 A38 38 0 0 0 112 154"
+        fill="none" stroke="#2563eb" stroke-width="3"/>
+  <text x="126" y="161" font-size="16" fill="#2563eb">θ</text>
+
+  <!-- path difference construction -->
+  <line x1="78" y1="75" x2="120" y2="160"
+        stroke="#f59e0b" stroke-width="5" opacity="0.8"/>
+
+  <text x="138" y="143" font-size="13" fill="#f59e0b" font-weight="700">path difference</text>
+  <text x="165" y="161" font-size="15" fill="#f59e0b" font-weight="700">= λ</text>
+
+  <!-- cancellation note -->
+  <text x="130" y="207" font-size="13" fill="#111827">centre wave is ½λ out of phase</text>
+  <text x="185" y="232" font-size="18" font-weight="700">a sinθ = λ</text>
+
+</svg>
+`
+},
+
+
+{
+  topic: "Light",
+  term: "What determines the width of the central maximum in single-slit diffraction?",
+  answer: "The first dark fringes mark the edges of the central maximum. Since a sinθ = λ, a smaller slit width a gives a larger angle θ. So a narrower slit produces a wider central maximum.",
+  equation: "first minimum: a sinθ = λ, so θ ≈ λ/a",
+  svg: `
+<svg viewBox="0 0 450 250" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- headings -->
+  <text x="115" y="24" text-anchor="middle" font-size="14" font-weight="700">wide slit</text>
+  <text x="335" y="24" text-anchor="middle" font-size="14" font-weight="700">narrow slit</text>
+
+  <!-- wide slit barrier -->
+  <line x1="55" y1="45" x2="55" y2="205" stroke="#2563eb" stroke-width="7"/>
+  <line x1="55" y1="90" x2="55" y2="160" stroke="white" stroke-width="11"/>
+
+  <!-- narrow slit barrier -->
+  <line x1="275" y1="45" x2="275" y2="205" stroke="#2563eb" stroke-width="7"/>
+  <line x1="275" y1="113" x2="275" y2="137" stroke="white" stroke-width="11"/>
+
+  <!-- central axes -->
+  <line x1="58" y1="125" x2="190" y2="125" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,5"/>
+  <line x1="278" y1="125" x2="420" y2="125" stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,5"/>
+
+  <!-- first minima boundaries: wide slit, small angle -->
+  <line x1="58" y1="125" x2="190" y2="92" stroke="#111827" stroke-width="2"/>
+  <line x1="58" y1="125" x2="190" y2="158" stroke="#111827" stroke-width="2"/>
+
+  <!-- first minima boundaries: narrow slit, large angle -->
+  <line x1="278" y1="125" x2="420" y2="55" stroke="#111827" stroke-width="2"/>
+  <line x1="278" y1="125" x2="420" y2="195" stroke="#111827" stroke-width="2"/>
+
+  <!-- central maximum shading -->
+  <path d="M58 125 L190 92 L190 158 Z" fill="#93c5fd" opacity="0.45"/>
+  <path d="M278 125 L420 55 L420 195 Z" fill="#93c5fd" opacity="0.45"/>
+
+  <!-- screen marks -->
+  <line x1="190" y1="75" x2="190" y2="175" stroke="#111827" stroke-width="2"/>
+  <line x1="420" y1="40" x2="420" y2="210" stroke="#111827" stroke-width="2"/>
+
+  <!-- labels -->
+  <text x="118" y="178" text-anchor="middle" font-size="12">small θ</text>
+  <text x="348" y="215" text-anchor="middle" font-size="12">large θ</text>
+
+  <text x="118" y="222" text-anchor="middle" font-size="13">narrow pattern</text>
+  <text x="348" y="238" text-anchor="middle" font-size="13">wide pattern</text>
+
+  <!-- formula -->
+  <text x="225" y="122" text-anchor="middle" font-size="13" fill="#111827">
+    a sinθ = λ
+  </text>
+  <text x="225" y="142" text-anchor="middle" font-size="13" fill="#111827">
+    smaller a → bigger θ
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Light",
+  term: "What is the diffraction limit of an aperture?",
+  answer: "A circular aperture does not make a perfect point image. It makes an Airy disk: a bright central spot with rings. Two point sources can only be resolved if their angular separation is large enough. A larger aperture gives a smaller Airy disk and better resolution.",
+  equation: "θ = 1.22 λ / D",
+  svg: `
+<svg viewBox="0 0 420 250" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- aperture -->
+  <text x="70" y="28" text-anchor="middle" font-size="14" font-weight="700">aperture</text>
+
+  <line x1="70" y1="45" x2="70" y2="205"
+        stroke="#2563eb" stroke-width="7"/>
+
+  <line x1="70" y1="90" x2="70" y2="160"
+        stroke="white" stroke-width="12"/>
+
+  <!-- aperture diameter D -->
+  <line x1="42" y1="90" x2="42" y2="160"
+        stroke="#111827" stroke-width="2"/>
+  <line x1="36" y1="90" x2="48" y2="90"
+        stroke="#111827" stroke-width="2"/>
+  <line x1="36" y1="160" x2="48" y2="160"
+        stroke="#111827" stroke-width="2"/>
+
+  <text x="24" y="130" font-size="17" font-weight="700">D</text>
+
+  <!-- incoming rays from two close stars -->
+  <line x1="15" y1="95" x2="70" y2="115"
+        stroke="#111827" stroke-width="2"/>
+  <line x1="15" y1="155" x2="70" y2="135"
+        stroke="#111827" stroke-width="2"/>
+
+  <circle cx="14" cy="95" r="3" fill="#111827"/>
+  <circle cx="14" cy="155" r="3" fill="#111827"/>
+
+  <text x="8" y="78" font-size="12">two</text>
+  <text x="2" y="92" font-size="12">stars</text>
+
+  <!-- optical axis / direction to image -->
+  <line x1="75" y1="125" x2="185" y2="125"
+        stroke="#9ca3af" stroke-width="1.5" stroke-dasharray="5,5"/>
+
+  <!-- screen / detector -->
+  <line x1="205" y1="55" x2="205" y2="205"
+        stroke="#111827" stroke-width="2"/>
+  <text x="182" y="45" font-size="12">image</text>
+
+  <!-- overlapping Airy disks -->
+  <g transform="translate(250 95)">
+    <circle cx="0" cy="0" r="17" fill="#93c5fd" opacity="0.75"/>
+    <circle cx="0" cy="0" r="31" fill="none" stroke="#93c5fd" stroke-width="2" opacity="0.75"/>
+    <circle cx="0" cy="0" r="45" fill="none" stroke="#93c5fd" stroke-width="1.5" opacity="0.55"/>
+  </g>
+
+  <g transform="translate(285 135)">
+    <circle cx="0" cy="0" r="17" fill="#93c5fd" opacity="0.75"/>
+    <circle cx="0" cy="0" r="31" fill="none" stroke="#93c5fd" stroke-width="2" opacity="0.75"/>
+    <circle cx="0" cy="0" r="45" fill="none" stroke="#93c5fd" stroke-width="1.5" opacity="0.55"/>
+  </g>
+
+  <text x="306" y="82" font-size="12">Airy disks</text>
+  <text x="305" y="100" font-size="12">overlap</text>
+
+  <!-- angle theta -->
+  <line x1="75" y1="125" x2="140" y2="105"
+        stroke="#111827" stroke-width="1.5"/>
+  <line x1="75" y1="125" x2="140" y2="145"
+        stroke="#111827" stroke-width="1.5"/>
+
+  <path d="M107 115 A24 24 0 0 1 107 135"
+        fill="none" stroke="#f59e0b" stroke-width="3"/>
+
+  <text x="116" y="130" font-size="16" fill="#f59e0b">θ</text>
+
+  <!-- formula -->
+  <text x="198" y="228" font-size="18" font-weight="700">
+    θ = 1.22 λ/D
+  </text>
+
+  <text x="22" y="230" font-size="12">
+    larger D → smaller θ
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Light",
+  term: "Why are the diffraction equations different?",
+  answer: "They are all based on path difference, but they answer different questions. A diffraction grating predicts bright fringes. A single slit predicts dark fringes. A circular aperture predicts the first dark ring around the Airy disk.",
+  equation: "Grating: bright fringes\nSingle slit: dark fringes\nCircular aperture: first dark ring",
+  svg: `
+<svg viewBox="0 0 420 250" width="100%" height="220"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Header -->
+  <text x="210" y="24" text-anchor="middle"
+        font-size="15" font-weight="700">
+    Same idea: path difference
+  </text>
+
+  <!-- column headings -->
+  <text x="80" y="52" text-anchor="middle" font-size="13" font-weight="700">
+    Grating
+  </text>
+  <text x="210" y="52" text-anchor="middle" font-size="13" font-weight="700">
+    Single slit
+  </text>
+  <text x="340" y="52" text-anchor="middle" font-size="13" font-weight="700">
+    Aperture
+  </text>
+
+  <!-- grating pattern -->
+  <line x1="28" y1="76" x2="132" y2="76" stroke="#9ca3af" stroke-width="2"/>
+
+  <circle cx="80" cy="76" r="6" fill="#111827"/>
+  <circle cx="55" cy="76" r="4" fill="#111827"/>
+  <circle cx="105" cy="76" r="4" fill="#111827"/>
+  <circle cx="35" cy="76" r="3" fill="#111827"/>
+  <circle cx="125" cy="76" r="3" fill="#111827"/>
+
+  <text x="80" y="104" text-anchor="middle" font-size="12">
+    bright fringes
+  </text>
+  <text x="80" y="124" text-anchor="middle" font-size="13" font-weight="700">
+    mλ = d sinθ
+  </text>
+
+  <!-- single slit pattern -->
+  <line x1="158" y1="76" x2="262" y2="76" stroke="#9ca3af" stroke-width="2"/>
+
+  <ellipse cx="210" cy="76" rx="26" ry="9" fill="#93c5fd" opacity="0.9"/>
+  <ellipse cx="168" cy="76" rx="8" ry="4" fill="#93c5fd" opacity="0.45"/>
+  <ellipse cx="252" cy="76" rx="8" ry="4" fill="#93c5fd" opacity="0.45"/>
+
+  <!-- dark lines -->
+  <line x1="182" y1="62" x2="182" y2="91" stroke="#111827" stroke-width="2"/>
+  <line x1="238" y1="62" x2="238" y2="91" stroke="#111827" stroke-width="2"/>
+
+  <text x="210" y="104" text-anchor="middle" font-size="12">
+    first dark fringe
+  </text>
+  <text x="210" y="124" text-anchor="middle" font-size="13" font-weight="700">
+    a sinθ = λ
+  </text>
+
+  <!-- aperture airy disk -->
+  <circle cx="340" cy="76" r="13" fill="#93c5fd" opacity="0.9"/>
+  <circle cx="340" cy="76" r="26" fill="none" stroke="#93c5fd" stroke-width="2" opacity="0.7"/>
+  <circle cx="340" cy="76" r="39" fill="none" stroke="#93c5fd" stroke-width="1.5" opacity="0.5"/>
+
+  <!-- first dark ring label marker -->
+  <circle cx="340" cy="76" r="26" fill="none" stroke="#111827" stroke-width="1.5" stroke-dasharray="4,4"/>
+
+  <text x="340" y="124" text-anchor="middle" font-size="12">
+    first dark ring
+  </text>
+  <text x="340" y="144" text-anchor="middle" font-size="13" font-weight="700">
+    θ = 1.22λ/D
+  </text>
+
+  <!-- comparison box -->
+  <rect x="35" y="162" width="350" height="65" rx="10"
+        fill="#eef6ff" stroke="#93c5fd"/>
+
+  <text x="210" y="184" text-anchor="middle"
+        font-size="13" font-weight="700">
+    The difference is the geometry:
+  </text>
+
+  <text x="210" y="204" text-anchor="middle" font-size="12">
+    d = slit spacing, a = slit width, D = circular aperture diameter
+  </text>
+
+  <text x="210" y="221" text-anchor="middle" font-size="12">
+    larger opening → smaller diffraction angle
+  </text>
+
+</svg>
+`
+},
+
+
+{
+  topic: "Light",
+  term: "When does a reflected wave undergo a phase flip?",
+  answer: "A reflected wave flips phase when it reflects from a lower refractive index to a higher refractive index. A crest reflects as a trough. If it reflects from higher index to lower index, there is no phase flip.",
+  equation: "low n → high n : phase flip\nhigh n → low n : no phase flip",
+  svg: `
+<svg viewBox="0 0 420 240" width="100%" height="220" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowTF2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#111827"/>
+    </marker>
+    <marker id="arrowRedTF2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#dc2626"/>
+    </marker>
+    <marker id="arrowBlueTF2" markerWidth="8" markerHeight="8" refX="6" refY="4" orient="auto">
+      <path d="M0 0 L8 4 L0 8 Z" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <!-- TOP: AIR TO GLASS, LOW TO HIGH -->
+
+  <text x="18" y="18" font-size="13" font-weight="700">
+    low n → high n
+  </text>
+
+  <text x="245" y="18" font-size="13" fill="#dc2626" font-weight="700">
+    phase flip: crest → trough
+  </text>
+
+  <!-- glass below -->
+  <rect x="25" y="72" width="370" height="36" fill="#dbeafe"/>
+  <line x1="25" y1="72" x2="395" y2="72" stroke="#111827" stroke-width="1.5"/>
+
+  <text x="35" y="60" font-size="11">air, low n</text>
+  <text x="35" y="96" font-size="11">glass, high n</text>
+
+  <!-- normal -->
+  <line x1="205" y1="36" x2="205" y2="112"
+        stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,5"/>
+
+  <!-- incident ray and larger wave -->
+  <line x1="105" y1="28" x2="205" y2="72"
+        stroke="#111827" stroke-width="2.5" marker-end="url(#arrowTF2)"/>
+
+  <g transform="translate(104 29) rotate(24)">
+    <path d="M0 0 Q8 -15 16 0 T32 0 T48 0 T64 0 T80 0"
+          fill="none" stroke="#111827" stroke-width="2.7"/>
+  </g>
+
+  <!-- reflected ray: same side, inverted wave -->
+  <line x1="205" y1="72" x2="310" y2="26"
+        stroke="#dc2626" stroke-width="2.5" marker-end="url(#arrowRedTF2)"/>
+
+  <g transform="translate(214 68) rotate(-24)">
+    <path d="M0 0 Q8 15 16 0 T32 0 T48 0 T64 0 T80 0"
+          fill="none" stroke="#dc2626" stroke-width="2.7"/>
+  </g>
+
+  <text x="315" y="67" font-size="11" fill="#dc2626">π shift</text>
+
+  <!-- BOTTOM: GLASS TO AIR, HIGH TO LOW -->
+
+  <text x="18" y="132" font-size="13" font-weight="700">
+    high n → low n
+  </text>
+
+  <text x="245" y="132" font-size="13" fill="#2563eb" font-weight="700">
+    no phase flip: crest → crest
+  </text>
+
+  <!-- glass above, air below -->
+  <rect x="25" y="144" width="370" height="38" fill="#dbeafe"/>
+  <line x1="25" y1="182" x2="395" y2="182" stroke="#111827" stroke-width="1.5"/>
+
+  <text x="35" y="158" font-size="11">air, low n</text>
+  <text x="35" y="200" font-size="11">glass, high n</text>
+
+  <!-- normal -->
+  <line x1="205" y1="136" x2="205" y2="220"
+        stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,5"/>
+
+  <!-- incident ray inside glass, approaching glass-air boundary -->
+  <line x1="105" y1="222" x2="205" y2="182"
+        stroke="#111827" stroke-width="2.5" marker-end="url(#arrowTF2)"/>
+
+  <g transform="translate(104 222) rotate(-22)">
+    <path d="M0 0 Q8 -15 16 0 T32 0 T48 0 T64 0 T80 0"
+          fill="none" stroke="#111827" stroke-width="2.7"/>
+  </g>
+
+  <!-- reflected ray remains in glass, no inversion -->
+  <line x1="205" y1="182" x2="310" y2="224"
+        stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrowBlueTF2)"/>
+
+  <g transform="translate(214 186) rotate(22)">
+    <path d="M0 0 Q8 -15 16 0 T32 0 T48 0 T64 0 T80 0"
+          fill="none" stroke="#2563eb" stroke-width="2.7"/>
+  </g>
+
+  <text x="315" y="190" font-size="11" fill="#2563eb">no shift</text>
+
+</svg>
+`
+},
+
+{
+  topic: "Light",
+  term: "How can I remember the thin-film interference equations?",
+  answer: "Count the relative phase flips between the two reflected rays. If there is one phase flip, the reflected-light equations are reversed. If there are zero or two phase flips, there is no extra relative phase flip.",
+  equation: "1 flip: bright 2nt=(m+½)λ, dark 2nt=mλ\n0 or 2 flips: bright 2nt=mλ, dark 2nt=(m+½)λ",
+  svg: `
+<svg viewBox="0 0 420 240" width="100%" height="220">
+
+  <rect x="35" y="35" width="160" height="145" rx="10"
+        fill="#fef3c7" stroke="#f59e0b"/>
+
+  <rect x="225" y="35" width="160" height="145" rx="10"
+        fill="#dcfce7" stroke="#22c55e"/>
+
+  <text x="115" y="62" text-anchor="middle" font-size="14" font-weight="700">
+    1 phase flip
+  </text>
+
+  <text x="115" y="90" text-anchor="middle" font-size="12">
+    soap bubble
+  </text>
+
+  <text x="115" y="108" text-anchor="middle" font-size="12">
+    oil on water*
+  </text>
+
+  <text x="115" y="140" text-anchor="middle" font-size="13" font-weight="700">
+    bright:
+  </text>
+
+  <text x="115" y="158" text-anchor="middle" font-size="13">
+    2nt=(m+½)λ
+  </text>
+
+  <text x="305" y="62" text-anchor="middle" font-size="14" font-weight="700">
+    0 or 2 flips
+  </text>
+
+  <text x="305" y="90" text-anchor="middle" font-size="12">
+    AR coating
+  </text>
+
+  <text x="305" y="140" text-anchor="middle" font-size="13" font-weight="700">
+    bright:
+  </text>
+
+  <text x="305" y="158" text-anchor="middle" font-size="13">
+    2nt=mλ
+  </text>
+
+  <text x="210" y="215" text-anchor="middle" font-size="12">
+    *assuming n_air &lt; n_oil &gt; n_water
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Light",
+  term: "Why do soap bubbles and oil films use the same equations?",
+  answer: "Soap bubbles and many oil films have one phase flip. The reflection at the top surface (low n → high n) flips phase, while the reflection at the lower surface (high n → low n) does not. Therefore the two reflected rays differ by one extra half-wavelength.",
+  equation: "1 phase flip\nBright: 2nt=(m+½)λ\nDark: 2nt=mλ",
+  svg: `
+<svg viewBox="0 0 420 240" width="100%" height="220"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!-- labels -->
+
+  <text x="30" y="25" font-size="13">air</text>
+
+  <rect x="40" y="50" width="320" height="50"
+        fill="#fde68a"/>
+
+  <text x="370" y="80" font-size="13">film</text>
+
+  <text x="30" y="130" font-size="13">
+    air / water
+  </text>
+
+  <!-- incident wave -->
+
+  <g transform="translate(95 20) rotate(35)">
+    <path d="M0 0
+             Q8 -12 16 0
+             T32 0
+             T48 0
+             T64 0"
+          fill="none"
+          stroke="#111827"
+          stroke-width="3"/>
+  </g>
+
+  <!-- top reflected wave : flipped -->
+
+  <g transform="translate(185 42) rotate(-35)">
+    <path d="M0 0
+             Q8 12 16 0
+             T32 0
+             T48 0"
+          fill="none"
+          stroke="#dc2626"
+          stroke-width="3"/>
+  </g>
+
+  <text x="245" y="32"
+        fill="#dc2626"
+        font-size="12">
+    phase flip
+  </text>
+
+  <!-- transmitted path -->
+
+  <line x1="150" y1="60"
+        x2="215" y2="100"
+        stroke="#111827"
+        stroke-width="2"/>
+
+  <!-- lower reflection -->
+
+  <line x1="215" y1="100"
+        x2="275" y2="60"
+        stroke="#111827"
+        stroke-width="2"/>
+
+  <!-- reflected wave : NOT flipped -->
+
+  <g transform="translate(255 58) rotate(-35)">
+    <path d="M0 0
+             Q8 -12 16 0
+             T32 0
+             T48 0"
+          fill="none"
+          stroke="#2563eb"
+          stroke-width="3"/>
+  </g>
+
+  <text x="300" y="108"
+        fill="#2563eb"
+        font-size="12">
+    no flip
+  </text>
+
+  <!-- interfaces -->
+
+  <line x1="40" y1="50"
+        x2="360" y2="50"
+        stroke="#111827"
+        stroke-width="1.5"/>
+
+  <line x1="40" y1="100"
+        x2="360" y2="100"
+        stroke="#111827"
+        stroke-width="1.5"/>
+
+  <!-- summary box -->
+
+  <rect x="85" y="155"
+        width="250"
+        height="55"
+        rx="8"
+        fill="#fef3c7"
+        stroke="#f59e0b"/>
+
+  <text x="210" y="178"
+        text-anchor="middle"
+        font-size="14"
+        font-weight="700">
+    One phase flip
+  </text>
+
+  <text x="210" y="198"
+        text-anchor="middle"
+        font-size="13">
+    reflected-light equations reversed
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Light",
+  term: "Why are anti-reflection coating equations reversed?",
+  answer: "In an anti-reflection coating, both reflected rays undergo a phase flip: one at the air–coating boundary and one at the coating–glass boundary. Two phase flips cancel as a relative effect, so destructive reflected light occurs when the extra path 2nt is half a wavelength.",
+  equation: "2 phase flips\nBright: 2nt=mλ\nDark: 2nt=(m+½)λ",
+  svg: `
+<svg viewBox="0 0 420 240" width="100%" height="220"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!-- layers -->
+  <text x="30" y="25" font-size="13">air</text>
+
+  <rect x="40" y="50" width="320" height="45"
+        fill="#bbf7d0"/>
+
+  <text x="365" y="78" font-size="13">AR coat</text>
+
+  <rect x="40" y="95" width="320" height="55"
+        fill="#dbeafe"/>
+
+  <text x="365" y="128" font-size="13">glass</text>
+
+  <!-- interfaces -->
+  <line x1="40" y1="50" x2="360" y2="50" stroke="#111827" stroke-width="1.5"/>
+  <line x1="40" y1="95" x2="360" y2="95" stroke="#111827" stroke-width="1.5"/>
+
+  <!-- incident wave -->
+  <g transform="translate(95 20) rotate(35)">
+    <path d="M0 0 Q8 -12 16 0 T32 0 T48 0 T64 0"
+          fill="none" stroke="#111827" stroke-width="3"/>
+  </g>
+
+  <!-- top reflected wave: flip -->
+  <g transform="translate(185 42) rotate(-35)">
+    <path d="M0 0 Q8 12 16 0 T32 0 T48 0"
+          fill="none" stroke="#dc2626" stroke-width="3"/>
+  </g>
+
+  <text x="245" y="32" fill="#dc2626" font-size="12">
+    flip
+  </text>
+
+  <!-- transmitted then lower reflected path -->
+  <line x1="150" y1="50" x2="215" y2="95"
+        stroke="#111827" stroke-width="2"/>
+
+  <line x1="215" y1="95" x2="275" y2="50"
+        stroke="#111827" stroke-width="2"/>
+
+  <!-- lower reflected wave: also flip -->
+  <g transform="translate(255 50) rotate(-35)">
+    <path d="M0 0 Q8 12 16 0 T32 0 T48 0"
+          fill="none" stroke="#dc2626" stroke-width="3"/>
+  </g>
+
+  <text x="300" y="105" fill="#dc2626" font-size="12">
+    also flip
+  </text>
+
+  <!-- optical path label -->
+  <line x1="178" y1="55" x2="178" y2="92"
+        stroke="#f59e0b" stroke-width="4" opacity="0.85"/>
+  <line x1="188" y1="92" x2="188" y2="55"
+        stroke="#f59e0b" stroke-width="4" opacity="0.85"/>
+
+  <text x="195" y="78" fill="#f59e0b" font-size="13" font-weight="700">
+    2nt
+  </text>
+
+  <!-- summary box -->
+  <rect x="75" y="165" width="270" height="55" rx="8"
+        fill="#dcfce7" stroke="#22c55e"/>
+
+  <text x="210" y="188" text-anchor="middle" font-size="14" font-weight="700">
+    Two phase flips
+  </text>
+
+  <text x="210" y="207" text-anchor="middle" font-size="13">
+    reflected-light dark condition: 2nt=(m+½)λ
+  </text>
+
+</svg>
+`
+},
+
+
+
+
+{
+  topic: "Light",
+  term: "What is Malus's Law?",
+  answer: "When polarized light passes through an analyser, the transmitted intensity depends on the angle θ between the light's polarization direction and the analyser axis.",
+  equation: "I = I₀ cos²θ",
+  svg: `
+<svg viewBox="0 0 420 240" width="100%" height="220"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <!-- incoming polarized light -->
+
+  <g stroke="#111827" stroke-width="2.5">
+    <line x1="20" y1="70" x2="90" y2="70"/>
+    <line x1="20" y1="95" x2="90" y2="95"/>
+    <line x1="20" y1="120" x2="90" y2="120"/>
+  </g>
+
+  <g stroke="#2563eb" stroke-width="3">
+    <line x1="45" y1="55" x2="45" y2="135"/>
+    <line x1="65" y1="55" x2="65" y2="135"/>
+  </g>
+
+  <text x="15" y="30" font-size="12">
+    vertically polarized
+  </text>
+
+  <!-- analyser -->
+
+  <circle cx="190" cy="95" r="42"
+          fill="#eef6ff"
+          stroke="#2563eb"
+          stroke-width="3"/>
+
+  <!-- analyser axis -->
+  <line x1="165" y1="125"
+        x2="215" y2="65"
+        stroke="#dc2626"
+        stroke-width="4"/>
+
+  <!-- vertical reference -->
+  <line x1="190" y1="55"
+        x2="190" y2="135"
+        stroke="#9ca3af"
+        stroke-width="2"
+        stroke-dasharray="4,4"/>
+
+  <!-- theta arc -->
+  <path d="M190 70
+           A25 25 0 0 1 206 78"
+        fill="none"
+        stroke="#f59e0b"
+        stroke-width="3"/>
+
+  <text x="208" y="72"
+        fill="#f59e0b"
+        font-size="15"
+        font-weight="700">
+        θ
+  </text>
+
+  <text x="150" y="155"
+        font-size="12">
+        analyser
+  </text>
+
+  <!-- transmitted light -->
+
+  <g stroke="#111827" stroke-width="2.5">
+    <line x1="235" y1="70" x2="330" y2="70"/>
+    <line x1="235" y1="95" x2="330" y2="95"/>
+    <line x1="235" y1="120" x2="330" y2="120"/>
+  </g>
+
+  <!-- reduced amplitude -->
+  <g stroke="#dc2626" stroke-width="3">
+    <line x1="270" y1="80" x2="295" y2="60"/>
+    <line x1="270" y1="95" x2="295" y2="75"/>
+    <line x1="270" y1="110" x2="295" y2="90"/>
+  </g>
+
+  <text x="250" y="30" font-size="12">
+    transmitted intensity
+  </text>
+
+  <!-- special cases -->
+
+  <text x="25" y="205" font-size="12">
+    θ = 0°  →  I = I₀
+  </text>
+
+  <text x="150" y="205" font-size="12">
+    θ = 45° → I = ½I₀
+  </text>
+
+  <text x="295" y="205" font-size="12">
+    θ = 90° → I = 0
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Light",
+  term: "Why does Malus's Law contain cos²θ?",
+  answer: "The analyser only transmits the component of the electric field parallel to its transmission axis. The field amplitude becomes E₀cosθ. Since intensity is proportional to E², the transmitted intensity becomes I₀cos²θ.",
+  equation: "E = E₀cosθ\nI ∝ E²\nI = I₀cos²θ",
+  svg: `
+<svg viewBox="0 0 420 240">
+
+  <!-- analyser axis -->
+
+  <line x1="100" y1="40"
+        x2="100" y2="180"
+        stroke="#dc2626"
+        stroke-width="4"/>
+
+  <text x="115" y="55"
+        fill="#dc2626"
+        font-size="13">
+        analyser axis
+  </text>
+
+  <!-- electric field -->
+
+  <line x1="100" y1="110"
+        x2="180" y2="60"
+        stroke="#111827"
+        stroke-width="4"/>
+
+  <text x="185" y="65"
+        font-size="14">
+        E₀
+  </text>
+
+  <!-- projection -->
+
+  <line x1="180" y1="60"
+        x2="100" y2="60"
+        stroke="#f59e0b"
+        stroke-width="3"
+        stroke-dasharray="5,4"/>
+
+  <line x1="100" y1="110"
+        x2="100" y2="60"
+        stroke="#f59e0b"
+        stroke-width="5"/>
+
+  <text x="112" y="88"
+        fill="#f59e0b"
+        font-size="13">
+        E₀cosθ
+  </text>
+
+  <!-- angle -->
+
+  <path d="M100 88
+           A25 25 0 0 1 120 97"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"/>
+
+  <text x="125" y="100"
+        fill="#2563eb"
+        font-size="15">
+        θ
+  </text>
+
+  <!-- flow -->
+
+  <rect x="230" y="40"
+        width="150"
+        height="40"
+        rx="6"
+        fill="#eef6ff"/>
+
+  <text x="305" y="65"
+        text-anchor="middle"
+        font-size="14">
+        E = E₀cosθ
+  </text>
+
+  <text x="305" y="105"
+        text-anchor="middle"
+        font-size="20">
+        ↓
+  </text>
+
+  <rect x="230" y="120"
+        width="150"
+        height="40"
+        rx="6"
+        fill="#eef6ff"/>
+
+  <text x="305" y="145"
+        text-anchor="middle"
+        font-size="14">
+        I ∝ E²
+  </text>
+
+  <text x="305" y="185"
+        text-anchor="middle"
+        font-size="20">
+        ↓
+  </text>
+
+  <text x="305" y="220"
+        text-anchor="middle"
+        font-size="17"
+        font-weight="700">
+        I = I₀cos²θ
+  </text>
+
+</svg>
+`
+},
+
+
+
+{
+  topic: "Light",
+  term: "How large is the Sun's image formed by a small aperture?",
+  answer: "The Sun subtends an angle of about 0.53°. The image diameter increases linearly with distance from the aperture.",
+  equation: "image diameter ≈ 0.0093L",
+  svg: `
+<svg viewBox="0 0 420 240">
+
+  <circle cx="40" cy="120" r="18"
+          fill="#fbbf24"/>
+
+  <rect x="110" y="105"
+        width="6"
+        height="30"
+        fill="#111827"/>
+
+  <line x1="58" y1="105" x2="113" y2="110"
+        stroke="#111827" stroke-width="2"/>
+
+  <line x1="58" y1="135" x2="113" y2="130"
+        stroke="#111827" stroke-width="2"/>
+
+  <line x1="113" y1="110" x2="350" y2="150"
+        stroke="#111827" stroke-width="2"/>
+
+  <line x1="113" y1="130" x2="350" y2="90"
+        stroke="#111827" stroke-width="2"/>
+
+  <line x1="350" y1="60"
+        x2="350" y2="180"
+        stroke="#2563eb"
+        stroke-width="3"/>
+
+  <circle cx="350" cy="120"
+          r="30"
+          fill="#fde68a"/>
+
+  <text x="210" y="215"
+        text-anchor="middle">
+    image diameter ≈ 0.0093L
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Light",
+  term: "What is a useful rule for the size of the Sun's image?",
+  answer: "Because the Sun's angular diameter is about 0.53°, the projected image is approximately 1 cm wide for every metre between the aperture and screen.",
+  equation: "Sun image ≈ 1 cm per metre",
+  svg: `
+<svg viewBox="0 0 420 240">
+
+  <line x1="90" y1="40" x2="90" y2="180"
+        stroke="#111827"
+        stroke-width="4"/>
+
+  <line x1="300" y1="40" x2="300" y2="180"
+        stroke="#2563eb"
+        stroke-width="4"/>
+
+  <circle cx="300" cy="110"
+          r="10"
+          fill="#fde68a"/>
+
+  <line x1="90" y1="200"
+        x2="300" y2="200"
+        stroke="#111827"
+        stroke-width="2"/>
+
+  <text x="195" y="220"
+        text-anchor="middle">
+        1 m
+  </text>
+
+  <text x="300" y="25"
+        text-anchor="middle"
+        font-size="16"
+        font-weight="700">
+        ≈ 1 cm
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Light",
+  term: "How does aperture size affect diffraction?",
+  answer: "A smaller aperture produces a larger diffraction pattern. A larger aperture produces a sharper image.",
+  equation: "θ = 1.22 λ/D",
+  svg: `
+<svg viewBox="0 0 420 240">
+
+  <text x="105" y="30"
+        text-anchor="middle"
+        font-size="14"
+        font-weight="700">
+        small aperture
+  </text>
+
+  <line x1="70" y1="50" x2="70" y2="180"
+        stroke="#111827"
+        stroke-width="5"/>
+
+  <line x1="70" y1="112" x2="70" y2="118"
+        stroke="white"
+        stroke-width="10"/>
+
+  <circle cx="180" cy="115"
+          r="38"
+          fill="#93c5fd"
+          opacity="0.4"/>
+
+  <text x="315" y="30"
+        text-anchor="middle"
+        font-size="14"
+        font-weight="700">
+        large aperture
+  </text>
+
+  <line x1="280" y1="50" x2="280" y2="180"
+        stroke="#111827"
+        stroke-width="5"/>
+
+  <line x1="280" y1="90" x2="280" y2="140"
+        stroke="white"
+        stroke-width="10"/>
+
+  <circle cx="370" cy="115"
+          r="15"
+          fill="#93c5fd"
+          opacity="0.4"/>
+
+  <text x="210" y="220"
+        text-anchor="middle">
+        larger D → smaller diffraction angle
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Light",
+  term: "What determines the optimum pinhole size?",
+  answer: "A very large hole gives a blurry geometric image. A very small hole gives a blurry diffraction pattern. The sharpest image occurs between these extremes.",
+  equation: "large hole → geometric blur\nsmall hole → diffraction blur",
+  svg: `
+<svg viewBox="0 0 420 240">
+
+  <text x="70" y="35"
+        text-anchor="middle">
+        large hole
+  </text>
+
+  <circle cx="70" cy="120"
+          r="35"
+          fill="#fde68a"
+          opacity="0.4"/>
+
+  <text x="210" y="35"
+        text-anchor="middle">
+        optimum
+  </text>
+
+  <circle cx="210" cy="120"
+          r="15"
+          fill="#fde68a"/>
+
+  <text x="350" y="35"
+        text-anchor="middle">
+        tiny hole
+  </text>
+
+  <circle cx="350" cy="120"
+          r="8"
+          fill="#fde68a"/>
+
+  <circle cx="350" cy="120"
+          r="35"
+          fill="none"
+          stroke="#93c5fd"
+          stroke-width="2"/>
+
+  <text x="210" y="220"
+        text-anchor="middle">
+        Best image = balance between geometric and diffraction blur
+  </text>
+
+</svg>
+`
 }
+
+
+
+
+
+
 
 
 ];
@@ -5128,7 +6525,7 @@ function frontBlock(card, showTermFirst) {
     return `
       <div class="topic-tag">Topic: ${card.topic}</div>
       <div class="term">${card.term}</div>
-      <div class="small-note">Hover or tap to reveal the answer.</div>
+      <div class="small-note"> </div>
     `;
   } else {
     // Answer first: front shows answer + equation + image
