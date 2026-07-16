@@ -54,11 +54,39 @@
     .answer { font-size:.96em; line-height:1.25em; }
 
     .equation {
-      margin-top:6px; padding:6px 8px; border-radius:10px;
-      background:rgba(255,255,255,.6); border:1px dashed rgba(17,24,39,.25);
-      font-family:"Courier New", monospace; font-size:.9em;
-    }
+  margin-top:6px;
+  padding:6px 8px;
+  border-radius:10px;
+  background:rgba(255,255,255,.6);
+  border:1px dashed rgba(17,24,39,.25);
+  font-family:"Courier New", monospace;
+  font-size:.82em;
+  line-height:1.35;
 
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+
+  overflow:visible;
+  white-space:normal;
+  text-align:center;
+}
+
+/* Safer MathJax display inside flashcards */
+.equation mjx-container {
+  display:block !important;
+  margin:0 !important;
+  padding:2px 0 !important;
+  max-width:100% !important;
+  overflow:visible !important;
+  text-align:center !important;
+}
+
+.equation mjx-container svg {
+  max-width:100% !important;
+  height:auto !important;
+  overflow:visible !important;
+}
     .diagram {
       width:100%; max-height:140px; overflow:hidden;
       display:flex; justify-content:center; align-items:center;
@@ -12227,6 +12255,4214 @@ Reflected light is mostly horizontally polarised.
 </svg>
 `
 }
+,
+
+{
+  topic: "Magnetism",
+
+  term: "What happens when a charged particle enters a magnetic field at an angle?",
+
+  equation: "v^2=v_\\parallel^2+v_\\perp^2,\\qquad r=\\frac{mv_\\perp}{|q|B}",
+
+  answer: "If a charged particle enters a uniform magnetic field at an angle, split its velocity into two components. The component perpendicular to the magnetic field, v⊥, causes circular motion. The component parallel to the magnetic field, v∥, is unaffected because the magnetic force is zero for motion parallel to B. The combined motion is a helix or spiral around the magnetic field lines.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowHelixBlue" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowHelixGreen" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#16a34a"/>
+    </marker>
+
+    <marker id="arrowHelixRed" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowHelixBlack" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12.5px; }
+    .small { font-family: Arial, sans-serif; font-size: 11.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .sub { font-size: 9px; baseline-shift: sub; }
+    .perp { font-size: 9px; baseline-shift: sub; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Charged particle entering B at an angle
+  </text>
+
+  <text x="210" y="45" text-anchor="middle" class="label" fill="#111827" font-weight="700">
+    v has a parallel part and a perpendicular part
+  </text>
+
+  <!-- Magnetic field direction -->
+  <line x1="80" y1="130" x2="355" y2="130"
+        stroke="#2563eb"
+        stroke-width="3.5"
+        marker-end="url(#arrowHelixBlue)"/>
+
+  <text x="354" y="118" text-anchor="middle" class="small" fill="#2563eb" font-weight="700">
+    B
+  </text>
+
+  <text x="218" y="148" text-anchor="middle" class="tiny" fill="#2563eb">
+    uniform magnetic field direction
+  </text>
+
+  <!-- Helical path -->
+  <path d="M75 130
+           C95 85, 115 85, 135 130
+           C155 175, 175 175, 195 130
+           C215 85, 235 85, 255 130
+           C275 175, 295 175, 315 130
+           C335 85, 355 85, 375 130"
+        fill="none"
+        stroke="#111827"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <!-- faint back half of helix -->
+  <path d="M75 130
+           C95 175, 115 175, 135 130
+           C155 85, 175 85, 195 130
+           C215 175, 235 175, 255 130
+           C275 85, 295 85, 315 130
+           C335 175, 355 175, 375 130"
+        fill="none"
+        stroke="#9ca3af"
+        stroke-width="2"
+        stroke-dasharray="5 5"
+        stroke-linecap="round"/>
+
+  <!-- moving charge -->
+  <circle cx="135" cy="130" r="16"
+          fill="#2563eb"
+          stroke="#111827"
+          stroke-width="2"/>
+
+  <text x="135" y="136" text-anchor="middle"
+        font-size="20" fill="white" font-weight="700">
+    +
+  </text>
+
+  <!-- velocity vector at angle -->
+  <line x1="135" y1="130" x2="197" y2="82"
+        stroke="#16a34a"
+        stroke-width="4"
+        stroke-linecap="round"
+        marker-end="url(#arrowHelixGreen)"/>
+
+  <text x="177" y="83" class="small" fill="#16a34a" font-weight="700">
+    v
+  </text>
+
+  <!-- velocity components -->
+  <line x1="135" y1="130" x2="198" y2="130"
+        stroke="#16a34a"
+        stroke-width="2.8"
+        stroke-dasharray="5 4"
+        marker-end="url(#arrowHelixGreen)"/>
+
+  <text x="171" y="124" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    v<tspan class="sub">∥</tspan>
+  </text>
+
+  <line x1="198" y1="130" x2="198" y2="84"
+        stroke="#dc2626"
+        stroke-width="2.8"
+        stroke-dasharray="5 4"
+        marker-end="url(#arrowHelixRed)"/>
+
+  <text x="210" y="108" class="tiny" fill="#dc2626" font-weight="700">
+    v<tspan class="sub">⊥</tspan>
+  </text>
+
+  <!-- Angle marker -->
+  <path d="M158 130 A23 23 0 0 1 153 113"
+        fill="none"
+        stroke="#111827"
+        stroke-width="1.8"/>
+
+  <text x="164" y="113" class="tiny" fill="#111827" font-weight="700">
+    angle
+  </text>
+
+  <!-- Explanatory boxes -->
+  <rect x="30" y="178" width="160" height="44" rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"
+        stroke-width="1.5"/>
+
+  <text x="110" y="195" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    parallel component
+  </text>
+
+  <text x="110" y="211" text-anchor="middle" class="tiny" fill="#4b5563">
+    v∥ moves along B unchanged
+  </text>
+
+  <rect x="230" y="178" width="160" height="44" rx="8"
+        fill="#fef2f2"
+        stroke="#fecaca"
+        stroke-width="1.5"/>
+
+  <text x="310" y="195" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    perpendicular component
+  </text>
+
+  <text x="310" y="211" text-anchor="middle" class="tiny" fill="#4b5563">
+    v⊥ gives circular motion
+  </text>
+
+  <!-- Bottom summary -->
+  <text x="210" y="235" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    circle + forward motion = helix
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Magnetism",
+
+  term: "How does Earth's magnetic field affect cosmic rays?",
+
+  equation: "r=\\frac{p}{|q|B}\\qquad \\text{or, non-relativistically, } r=\\frac{mv}{|q|B}",
+
+  answer: "Cosmic rays are high-energy charged particles, mostly protons and atomic nuclei, arriving from space. Because they are charged, Earth's magnetic field exerts a force on them and bends their paths. Lower-energy particles are deflected more strongly, while very high-energy particles are harder to bend. Some particles spiral along magnetic field lines towards the polar regions, where they can collide with atmospheric atoms and contribute to auroras. This is one reason Earth's magnetic field helps shield the atmosphere and surface from charged particles.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowCosmicRed" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowCosmicBlue" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowCosmicGreen" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12.5px; }
+    .small { font-family: Arial, sans-serif; font-size: 11.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .sub { font-size: 9px; baseline-shift: sub; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Cosmic rays and Earth's magnetic field
+  </text>
+
+  <text x="210" y="44" text-anchor="middle" class="label" fill="#111827" font-weight="700">
+    charged particles are bent by magnetic fields
+  </text>
+
+  <!-- Earth -->
+  <circle cx="255" cy="128" r="42"
+          fill="#dbeafe"
+          stroke="#1d4ed8"
+          stroke-width="2.5"/>
+
+  <!-- Simple continents -->
+  <path d="M238 105 C250 99, 260 106, 254 117
+           C248 126, 260 132, 252 143
+           C240 139, 230 127, 232 116 Z"
+        fill="#86efac"
+        opacity="0.85"/>
+
+  <path d="M270 118 C286 120, 288 137, 276 149
+           C266 143, 265 130, 270 118 Z"
+        fill="#86efac"
+        opacity="0.85"/>
+
+  <text x="255" y="184" text-anchor="middle" class="small" fill="#1d4ed8" font-weight="700">
+    Earth
+  </text>
+
+  <!-- Magnetic axis -->
+  <line x1="255" y1="72" x2="255" y2="184"
+        stroke="#111827"
+        stroke-width="2"
+        stroke-dasharray="5 5"/>
+
+  <text x="265" y="82" class="tiny" fill="#111827" font-weight="700">
+    magnetic axis
+  </text>
+
+  <!-- Magnetic field lines -->
+  <path d="M255 85
+           C185 70, 145 105, 155 128
+           C145 151, 185 186, 255 171"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="2.2"
+        marker-end="url(#arrowCosmicBlue)"/>
+
+  <path d="M255 75
+           C155 55, 95 95, 105 128
+           C95 161, 155 201, 255 181"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="1.9"
+        opacity="0.85"
+        marker-end="url(#arrowCosmicBlue)"/>
+
+  <path d="M255 85
+           C325 70, 365 105, 355 128
+           C365 151, 325 186, 255 171"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="2.2"
+        marker-end="url(#arrowCosmicBlue)"/>
+
+  <path d="M255 75
+           C355 55, 415 95, 405 128
+           C415 161, 355 201, 255 181"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="1.9"
+        opacity="0.85"
+        marker-end="url(#arrowCosmicBlue)"/>
+
+  <text x="340" y="205" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    magnetic field lines
+  </text>
+
+  <!-- Incoming cosmic ray -->
+  <line x1="28" y1="74" x2="102" y2="95"
+        stroke="#dc2626"
+        stroke-width="4"
+        stroke-linecap="round"
+        marker-end="url(#arrowCosmicRed)"/>
+
+  <text x="72" y="59" text-anchor="middle" class="small" fill="#dc2626" font-weight="700">
+    cosmic ray
+  </text>
+
+  <text x="72" y="73" text-anchor="middle" class="tiny" fill="#dc2626">
+    charged particle
+  </text>
+
+  <!-- Deflected/helical path -->
+  <path d="M102 95
+           C124 102, 133 119, 120 132
+           C107 145, 128 158, 150 150
+           C174 141, 176 116, 198 101
+           C216 89, 236 83, 255 86"
+        fill="none"
+        stroke="#dc2626"
+        stroke-width="3"
+        stroke-linecap="round"
+        marker-end="url(#arrowCosmicRed)"/>
+
+  <!-- Small loops suggesting spiral motion -->
+  <ellipse cx="130" cy="126" rx="17" ry="8"
+           fill="none"
+           stroke="#dc2626"
+           stroke-width="1.8"
+           transform="rotate(28 130 126)"
+           opacity="0.75"/>
+
+  <ellipse cx="163" cy="134" rx="17" ry="8"
+           fill="none"
+           stroke="#dc2626"
+           stroke-width="1.8"
+           transform="rotate(-18 163 134)"
+           opacity="0.75"/>
+
+  <text x="153" y="174" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    path bends or spirals
+  </text>
+
+  <!-- Aurora near pole -->
+  <path d="M232 83
+           C242 65, 268 65, 278 83"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="4"
+        stroke-linecap="round"
+        opacity="0.9"/>
+
+  <path d="M238 90
+           C246 77, 264 77, 272 90"
+        fill="none"
+        stroke="#22c55e"
+        stroke-width="3"
+        stroke-linecap="round"
+        opacity="0.9"/>
+
+  <text x="300" y="74" class="tiny" fill="#16a34a" font-weight="700">
+    aurora near poles
+  </text>
+
+  <!-- Formula box -->
+  <rect x="38" y="196" width="344" height="32" rx="8"
+        fill="#f9fafb"
+        stroke="#d1d5db"
+        stroke-width="1.5"/>
+
+  <text x="210" y="211" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    stronger B or smaller momentum → tighter bending
+  </text>
+
+  <text x="210" y="224" text-anchor="middle" class="tiny" fill="#4b5563">
+    high-energy cosmic rays are harder for Earth's field to deflect
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Magnetism",
+
+  term: "What is the period of circular motion for a charged particle in a magnetic field?",
+
+  equation: "T=\\frac{2\\pi m}{|q|B},\\qquad \\omega=\\frac{|q|B}{m}",
+
+  answer: "When a charged particle moves perpendicular to a uniform magnetic field, the magnetic force provides the centripetal force. The radius depends on speed, r = mv/(|q|B), but the period does not depend on speed. A faster particle moves in a larger circle, but also travels faster, so the time for one full circle stays the same. The period is T = 2πm/(|q|B).",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowPeriodGreen" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#16a34a"/>
+    </marker>
+
+    <marker id="arrowPeriodRed" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12.5px; }
+    .small { font-family: Arial, sans-serif; font-size: 11.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .sub { font-size: 9px; baseline-shift: sub; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Period of circular motion in a magnetic field
+  </text>
+
+  <text x="210" y="45" text-anchor="middle" class="label" fill="#111827" font-weight="700">
+    T = 2πm / |q|B
+  </text>
+
+  <!-- Field region -->
+  <rect x="38" y="58" width="225" height="135" rx="12"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="2"/>
+
+  <!-- B into page crosses -->
+  <g stroke="#2563eb" stroke-width="2.2" stroke-linecap="round">
+    <line x1="65" y1="78" x2="78" y2="91"/>
+    <line x1="78" y1="78" x2="65" y2="91"/>
+
+    <line x1="125" y1="78" x2="138" y2="91"/>
+    <line x1="138" y1="78" x2="125" y2="91"/>
+
+    <line x1="185" y1="78" x2="198" y2="91"/>
+    <line x1="198" y1="78" x2="185" y2="91"/>
+
+    <line x1="65" y1="132" x2="78" y2="145"/>
+    <line x1="78" y1="132" x2="65" y2="145"/>
+
+    <line x1="185" y1="132" x2="198" y2="145"/>
+    <line x1="198" y1="132" x2="185" y2="145"/>
+
+    <line x1="65" y1="168" x2="78" y2="181"/>
+    <line x1="78" y1="168" x2="65" y2="181"/>
+
+    <line x1="125" y1="168" x2="138" y2="181"/>
+    <line x1="138" y1="168" x2="125" y2="181"/>
+
+    <line x1="185" y1="168" x2="198" y2="181"/>
+    <line x1="198" y1="168" x2="185" y2="181"/>
+  </g>
+
+  <text x="150" y="206" text-anchor="middle" class="small" fill="#2563eb" font-weight="700">
+    B into page
+  </text>
+
+  <!-- Circular path -->
+  <circle cx="150" cy="128" r="52"
+          fill="none"
+          stroke="#9ca3af"
+          stroke-width="2.6"
+          stroke-dasharray="6 5"/>
+
+  <!-- Centre -->
+  <circle cx="150" cy="128" r="4" fill="#111827"/>
+
+  <!-- Radius line -->
+  <line x1="150" y1="128" x2="202" y2="128"
+        stroke="#6b7280"
+        stroke-width="2"/>
+
+  <text x="176" y="121" text-anchor="middle" class="small" fill="#6b7280" font-weight="700">
+    r
+  </text>
+
+  <!-- Particle -->
+  <circle cx="202" cy="128" r="16"
+          fill="#2563eb"
+          stroke="#111827"
+          stroke-width="2"/>
+
+  <text x="202" y="134" text-anchor="middle"
+        font-size="20" fill="white" font-weight="700">
+    +
+  </text>
+
+  <!-- Velocity tangent -->
+  <line x1="202" y1="112" x2="202" y2="72"
+        stroke="#16a34a"
+        stroke-width="4"
+        stroke-linecap="round"
+        marker-end="url(#arrowPeriodGreen)"/>
+
+  <text x="215" y="93" class="small" fill="#16a34a" font-weight="700">
+    v
+  </text>
+
+  <!-- Force inward -->
+  <line x1="186" y1="128" x2="158" y2="128"
+        stroke="#dc2626"
+        stroke-width="4"
+        stroke-linecap="round"
+        marker-end="url(#arrowPeriodRed)"/>
+
+  <text x="170" y="117" text-anchor="middle" class="small" fill="#dc2626" font-weight="700">
+    F
+  </text>
+
+  <!-- Right explanation panel -->
+  <rect x="282" y="68" width="110" height="112" rx="10"
+        fill="#f9fafb"
+        stroke="#d1d5db"
+        stroke-width="1.5"/>
+
+  <text x="337" y="89" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    one full circle
+  </text>
+
+  <!-- Stopwatch -->
+  <circle cx="337" cy="124" r="26"
+          fill="#ffffff"
+          stroke="#111827"
+          stroke-width="2"/>
+
+  <rect x="328" y="91" width="18" height="8" rx="2"
+        fill="#111827"/>
+
+  <line x1="337" y1="124" x2="337" y2="105"
+        stroke="#111827"
+        stroke-width="2.4"
+        stroke-linecap="round"/>
+
+  <line x1="337" y1="124" x2="350" y2="132"
+        stroke="#111827"
+        stroke-width="2.4"
+        stroke-linecap="round"/>
+
+  <text x="337" y="164" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    time = T
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="60" y="213" width="300" height="22" rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"
+        stroke-width="1.4"/>
+
+  <text x="210" y="228" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Faster particle → larger radius, but same period for fixed m, q and B.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Induction & AC",
+
+  term: "How do you decide the direction of induced current using Lenz's law?",
+
+  equation: "\\mathcal{E}=-N\\frac{d\\Phi_B}{dt},\\qquad \\Phi_B=BA\\cos\\theta",
+
+  answer: "Lenz's law says the induced current produces a magnetic field that opposes the change in magnetic flux. First decide whether the external magnetic field through the loop is increasing or decreasing. Then choose the induced magnetic field that opposes that change. Finally use the right-hand rule for a current loop: anticlockwise current gives B out of the page, and clockwise current gives B into the page.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowLenzBlack" markerWidth="7" markerHeight="7"
+            refX="6" refY="3.5" orient="auto">
+      <polygon points="0,0 7,3.5 0,7" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowLenzRed" markerWidth="7" markerHeight="7"
+            refX="6" refY="3.5" orient="auto">
+      <polygon points="0,0 7,3.5 0,7" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowLenzBlue" markerWidth="7" markerHeight="7"
+            refX="6" refY="3.5" orient="auto">
+      <polygon points="0,0 7,3.5 0,7" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="22" text-anchor="middle" class="title" fill="#111827">
+    Lenz's law: induced current direction
+  </text>
+
+  <text x="210" y="42" text-anchor="middle" class="label" fill="#111827" font-weight="700">
+    induced current opposes the change in magnetic flux
+  </text>
+
+  <!-- Panel boxes -->
+  <rect x="20" y="55" width="180" height="72" rx="9"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.4"/>
+
+  <rect x="220" y="55" width="180" height="72" rx="9"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.4"/>
+
+  <rect x="20" y="143" width="180" height="72" rx="9"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.4"/>
+
+  <rect x="220" y="143" width="180" height="72" rx="9"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.4"/>
+
+  <!-- Helper symbols definitions by drawing directly -->
+
+  <!-- Panel 1: B into page increasing -->
+  <text x="110" y="70" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    B into page increasing
+  </text>
+
+  <g stroke="#2563eb" stroke-width="2" stroke-linecap="round">
+    <line x1="45" y1="82" x2="55" y2="92"/>
+    <line x1="55" y1="82" x2="45" y2="92"/>
+    <line x1="72" y1="82" x2="82" y2="92"/>
+    <line x1="82" y1="82" x2="72" y2="92"/>
+  </g>
+
+  <text x="99" y="91" class="small" fill="#2563eb" font-weight="700">
+    external B ↑
+  </text>
+
+  <circle cx="105" cy="103" r="18"
+          fill="none" stroke="#111827" stroke-width="2"/>
+
+  <!-- CCW arrows -->
+  <line x1="118" y1="85" x2="92" y2="85"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="87" y1="90" x2="87" y2="116"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="92" y1="121" x2="118" y2="121"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="123" y1="116" x2="123" y2="90"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+
+  <text x="160" y="105" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    induced B out
+  </text>
+
+  <text x="160" y="119" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    anticlockwise
+  </text>
+
+  <!-- Panel 2: B into page decreasing -->
+  <text x="310" y="70" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    B into page decreasing
+  </text>
+
+  <g stroke="#2563eb" stroke-width="2" stroke-linecap="round">
+    <line x1="245" y1="82" x2="255" y2="92"/>
+    <line x1="255" y1="82" x2="245" y2="92"/>
+    <line x1="272" y1="82" x2="282" y2="92"/>
+    <line x1="282" y1="82" x2="272" y2="92"/>
+  </g>
+
+  <text x="299" y="91" class="small" fill="#2563eb" font-weight="700">
+    external B ↓
+  </text>
+
+  <circle cx="305" cy="103" r="18"
+          fill="none" stroke="#111827" stroke-width="2"/>
+
+  <!-- CW arrows -->
+  <line x1="292" y1="85" x2="318" y2="85"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="323" y1="90" x2="323" y2="116"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="318" y1="121" x2="292" y2="121"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="287" y1="116" x2="287" y2="90"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+
+  <text x="360" y="105" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    induced B in
+  </text>
+
+  <text x="360" y="119" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    clockwise
+  </text>
+
+  <!-- Panel 3: B out of page increasing -->
+  <text x="110" y="158" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    B out of page increasing
+  </text>
+
+  <g fill="#2563eb">
+    <circle cx="50" cy="174" r="4"/>
+    <circle cx="77" cy="174" r="4"/>
+  </g>
+
+  <text x="99" y="179" class="small" fill="#2563eb" font-weight="700">
+    external B ↑
+  </text>
+
+  <circle cx="105" cy="191" r="18"
+          fill="none" stroke="#111827" stroke-width="2"/>
+
+  <!-- CW arrows -->
+  <line x1="92" y1="173" x2="118" y2="173"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="123" y1="178" x2="123" y2="204"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="118" y1="209" x2="92" y2="209"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="87" y1="204" x2="87" y2="178"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+
+  <text x="160" y="193" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    induced B in
+  </text>
+
+  <text x="160" y="207" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    clockwise
+  </text>
+
+  <!-- Panel 4: B out of page decreasing -->
+  <text x="310" y="158" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    B out of page decreasing
+  </text>
+
+  <g fill="#2563eb">
+    <circle cx="250" cy="174" r="4"/>
+    <circle cx="277" cy="174" r="4"/>
+  </g>
+
+  <text x="299" y="179" class="small" fill="#2563eb" font-weight="700">
+    external B ↓
+  </text>
+
+  <circle cx="305" cy="191" r="18"
+          fill="none" stroke="#111827" stroke-width="2"/>
+
+  <!-- CCW arrows -->
+  <line x1="318" y1="173" x2="292" y2="173"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="287" y1="178" x2="287" y2="204"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="292" y1="209" x2="318" y2="209"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+  <line x1="323" y1="204" x2="323" y2="178"
+        stroke="#dc2626" stroke-width="2.4" marker-end="url(#arrowLenzRed)"/>
+
+  <text x="360" y="193" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    induced B out
+  </text>
+
+  <text x="360" y="207" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    anticlockwise
+  </text>
+
+  <!-- Bottom note -->
+  <text x="210" y="233" text-anchor="middle" class="tiny" fill="#4b5563" font-weight="700">
+    Loop rule: anticlockwise → B out of page; clockwise → B into page.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Induction & AC",
+
+  term: "How do you calculate the induced EMF in a coil when the magnetic field changes?",
+
+  equation: "\\left|\\mathcal{E}\\right|=N\\left|\\frac{\\Delta\\Phi_B}{\\Delta t}\\right|=NA\\left|\\frac{\\Delta B}{\\Delta t}\\right|",
+
+  answer: "For a coil in a changing magnetic field, first find the area of one loop. If the radius is given, use A = πr². Then find the change in magnetic field, ΔB, and the time interval, Δt. The magnitude of the average induced EMF is |E| = NA|ΔB/Δt|, assuming the coil area and angle stay fixed. The minus sign in Faraday's law gives the direction: use Lenz's law to decide whether the induced current is clockwise or anticlockwise.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowFaradayBlue" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowFaradayRed" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowFaradayBlack" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12.5px; }
+    .small { font-family: Arial, sans-serif; font-size: 11.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .sub { font-size: 9px; baseline-shift: sub; }
+    .sup { font-size: 9px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Faraday calculation method
+  </text>
+
+  <text x="210" y="45" text-anchor="middle" class="label" fill="#111827" font-weight="700">
+    |ε| = N A |ΔB/Δt|
+  </text>
+
+  <!-- Left panel: changing flux through coil -->
+  <rect x="24" y="62" width="176" height="118" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="112" y="80" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    changing B through coil
+  </text>
+
+  <!-- Magnetic field into page: crosses, increasing -->
+  <g stroke="#2563eb" stroke-width="2.1" stroke-linecap="round">
+    <line x1="52" y1="96" x2="62" y2="106"/>
+    <line x1="62" y1="96" x2="52" y2="106"/>
+
+    <line x1="88" y1="96" x2="98" y2="106"/>
+    <line x1="98" y1="96" x2="88" y2="106"/>
+
+    <line x1="124" y1="96" x2="134" y2="106"/>
+    <line x1="134" y1="96" x2="124" y2="106"/>
+
+    <line x1="160" y1="96" x2="170" y2="106"/>
+    <line x1="170" y1="96" x2="160" y2="106"/>
+
+    <line x1="70" y1="132" x2="80" y2="142"/>
+    <line x1="80" y1="132" x2="70" y2="142"/>
+
+    <line x1="112" y1="132" x2="122" y2="142"/>
+    <line x1="122" y1="132" x2="112" y2="142"/>
+
+    <line x1="154" y1="132" x2="164" y2="142"/>
+    <line x1="164" y1="132" x2="154" y2="142"/>
+  </g>
+
+  <text x="112" y="165" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    external B into page is increasing
+  </text>
+
+  <!-- Coil -->
+  <ellipse cx="112" cy="122" rx="58" ry="33"
+           fill="none"
+           stroke="#111827"
+           stroke-width="3"/>
+
+  <ellipse cx="112" cy="122" rx="49" ry="27"
+           fill="none"
+           stroke="#111827"
+           stroke-width="1.8"
+           opacity="0.7"/>
+
+  <text x="112" y="122" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    area A
+  </text>
+
+  <!-- radius line -->
+  <line x1="112" y1="122" x2="170" y2="122"
+        stroke="#6b7280" stroke-width="2"
+        marker-end="url(#arrowFaradayBlack)"/>
+
+  <text x="145" y="116" text-anchor="middle" class="tiny" fill="#6b7280" font-weight="700">
+    r
+  </text>
+
+  <!-- B increasing arrow -->
+  <line x1="45" y1="155" x2="45" y2="105"
+        stroke="#2563eb"
+        stroke-width="2.5"
+        marker-end="url(#arrowFaradayBlue)"/>
+
+  <text x="37" y="135" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    B ↑
+  </text>
+
+  <!-- Right panel: steps -->
+  <rect x="220" y="62" width="176" height="118" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="308" y="80" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    calculation steps
+  </text>
+
+  <!-- Step 1 -->
+  <circle cx="240" cy="101" r="10" fill="#2563eb"/>
+  <text x="240" y="105" text-anchor="middle" class="tiny" fill="white" font-weight="700">
+    1
+  </text>
+
+  <text x="255" y="105" class="tiny" fill="#111827" font-weight="700">
+    Find A
+  </text>
+
+  <text x="315" y="105" class="tiny" fill="#4b5563">
+    A = πr<tspan class="sup">2</tspan>
+  </text>
+
+  <!-- Step 2 -->
+  <circle cx="240" cy="124" r="10" fill="#2563eb"/>
+  <text x="240" y="128" text-anchor="middle" class="tiny" fill="white" font-weight="700">
+    2
+  </text>
+
+  <text x="255" y="128" class="tiny" fill="#111827" font-weight="700">
+    Find ΔB
+  </text>
+
+  <text x="320" y="128" class="tiny" fill="#4b5563">
+    B<tspan class="sub">f</tspan> − B<tspan class="sub">i</tspan>
+  </text>
+
+  <!-- Step 3 -->
+  <circle cx="240" cy="147" r="10" fill="#2563eb"/>
+  <text x="240" y="151" text-anchor="middle" class="tiny" fill="white" font-weight="700">
+    3
+  </text>
+
+  <text x="255" y="151" class="tiny" fill="#111827" font-weight="700">
+    Use |ε| = NA|ΔB/Δt|
+  </text>
+
+  <!-- Step 4 -->
+  <circle cx="240" cy="170" r="10" fill="#dc2626"/>
+  <text x="240" y="174" text-anchor="middle" class="tiny" fill="white" font-weight="700">
+    4
+  </text>
+
+  <text x="255" y="174" class="tiny" fill="#111827" font-weight="700">
+    Direction from Lenz
+  </text>
+
+  <!-- Bottom worked-style formula box -->
+  <rect x="36" y="196" width="348" height="32" rx="8"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.5"/>
+
+  <text x="210" y="210" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    If the coil has N turns, multiply the EMF of one loop by N.
+  </text>
+
+  <text x="210" y="224" text-anchor="middle" class="tiny" fill="#4b5563">
+    Magnitude from Faraday's law; sign/direction from Lenz's law.
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Induction & AC",
+
+  term: "How do you analyse a series RL circuit in AC?",
+
+  equation: "X_L=2\\pi fL,\\qquad Z=\\sqrt{R^2+X_L^2}",
+  answer: "In a series RL circuit, the resistor dissipates energy but the inductor stores and returns energy. First calculate the inductive reactance XL = 2πfL. Then find the impedance Z = √(R² + XL²). The RMS current is Irms = Vrms/Z. The average power is only dissipated in the resistor, so Pavg = Irms²R. The power factor is cos(phi) = R/Z, and the current lags the voltage.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowRLBlack" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowRLRed" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowRLBlue" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowRLGreen" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12.5px; }
+    .small { font-family: Arial, sans-serif; font-size: 11.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .sub { font-size: 9px; baseline-shift: sub; }
+    .sup { font-size: 9px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Series RL circuit in AC
+  </text>
+
+  <text x="210" y="45" text-anchor="middle" class="label" fill="#111827" font-weight="700">
+    X<tspan class="sub">L</tspan> = 2πfL,     Z = √(R² + X<tspan class="sub">L</tspan>²)
+  </text>
+
+  <!-- Left panel: circuit -->
+  <rect x="24" y="60" width="180" height="120" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="114" y="78" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    series RL circuit
+  </text>
+
+  <!-- AC source -->
+  <circle cx="58" cy="124" r="20"
+          fill="#ffffff"
+          stroke="#111827"
+          stroke-width="2"/>
+
+  <path d="M45 124
+           C49 114, 55 114, 58 124
+           C62 134, 68 134, 72 124"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="2.3"/>
+
+  <text x="58" y="156" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    AC source
+  </text>
+
+  <!-- Circuit wires -->
+  <line x1="78" y1="124" x2="96" y2="124"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- Resistor -->
+  <polyline points="96,124 102,112 110,136 118,112 126,136 134,112 142,124"
+            fill="none"
+            stroke="#111827"
+            stroke-width="3"
+            stroke-linejoin="round"/>
+
+  <text x="119" y="104" text-anchor="middle" class="small" fill="#dc2626" font-weight="700">
+    R
+  </text>
+
+  <line x1="142" y1="124" x2="154" y2="124"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- Inductor -->
+  <path d="M154 124
+           Q160 106 166 124
+           Q172 106 178 124
+           Q184 106 190 124"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <text x="174" y="104" text-anchor="middle" class="small" fill="#2563eb" font-weight="700">
+    L
+  </text>
+
+  <!-- Return wire -->
+  <line x1="190" y1="124" x2="190" y2="162"
+        stroke="#111827" stroke-width="3"/>
+
+  <line x1="190" y1="162" x2="58" y2="162"
+        stroke="#111827" stroke-width="3"/>
+
+  <line x1="58" y1="162" x2="58" y2="144"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- Current arrow -->
+  <line x1="87" y1="92" x2="152" y2="92"
+        stroke="#16a34a"
+        stroke-width="3"
+        marker-end="url(#arrowRLGreen)"/>
+
+  <text x="120" y="88" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    current I
+  </text>
+
+  <!-- Right panel: impedance triangle -->
+  <rect x="224" y="60" width="172" height="120" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="310" y="78" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    impedance triangle
+  </text>
+
+  <!-- Triangle -->
+  <line x1="258" y1="150" x2="350" y2="150"
+        stroke="#dc2626"
+        stroke-width="4"
+        marker-end="url(#arrowRLRed)"/>
+
+  <line x1="350" y1="150" x2="350" y2="94"
+        stroke="#2563eb"
+        stroke-width="4"
+        marker-end="url(#arrowRLBlue)"/>
+
+  <line x1="258" y1="150" x2="350" y2="94"
+        stroke="#111827"
+        stroke-width="4"
+        marker-end="url(#arrowRLBlack)"/>
+
+  <text x="304" y="166" text-anchor="middle" class="small" fill="#dc2626" font-weight="700">
+    R
+  </text>
+
+  <text x="365" y="123" class="small" fill="#2563eb" font-weight="700">
+    X<tspan class="sub">L</tspan>
+  </text>
+
+  <text x="305" y="112" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    Z
+  </text>
+
+  <!-- phi angle -->
+  <path d="M279 150 A21 21 0 0 1 276 137"
+        fill="none"
+        stroke="#111827"
+        stroke-width="1.8"/>
+
+  <text x="284" y="139" class="tiny" fill="#111827" font-weight="700">
+    φ
+  </text>
+
+  <text x="310" y="190" text-anchor="middle" class="tiny" fill="#4b5563">
+    cos φ = R/Z
+  </text>
+
+  <!-- Bottom steps -->
+  <rect x="28" y="197" width="364" height="34" rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"
+        stroke-width="1.5"/>
+
+  <text x="210" y="211" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Steps: calculate X<tspan class="sub">L</tspan>, then Z, then I<tspan class="sub">rms</tspan> = V<tspan class="sub">rms</tspan>/Z, then P<tspan class="sub">avg</tspan> = I<tspan class="sub">rms</tspan>²R
+  </text>
+
+  <text x="210" y="225" text-anchor="middle" class="tiny" fill="#4b5563">
+    In an RL circuit, current lags voltage because the inductor resists changes in current.
+  </text>
+
+</svg>
+`
+},
+
+
+{
+  topic: "Induction & AC",
+
+  term: "What factors increase the inductance of a coil?",
+
+  equation: "L\\approx \\mu\\frac{N^2A}{\\ell}",
+
+  answer: "For a long solenoid, the inductance is approximately L = μN²A/ℓ. The inductance increases if the coil has more turns, a larger cross-sectional area, or a magnetic core with larger permeability μ. The inductance decreases if the coil is made longer. The N² dependence is important: doubling the number of turns gives about four times the inductance.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowInductanceBlack" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowInductanceBlue" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowInductanceGreen" markerWidth="8" markerHeight="8"
+            refX="7" refY="4" orient="auto">
+      <polygon points="0,0 8,4 0,8" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12.5px; }
+    .small { font-family: Arial, sans-serif; font-size: 11.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .sup { font-size: 9px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    What increases the inductance of a coil?
+  </text>
+
+  <text x="210" y="45" text-anchor="middle" class="label" fill="#111827" font-weight="700">
+    L ≈ μN²A / ℓ
+  </text>
+
+  <!-- Main solenoid panel -->
+  <rect x="32" y="60" width="356" height="100" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <!-- Magnetic core -->
+  <rect x="88" y="98" width="240" height="28" rx="14"
+        fill="#e5e7eb" stroke="#6b7280" stroke-width="1.5"/>
+
+  <text x="208" y="117" text-anchor="middle" class="tiny" fill="#374151" font-weight="700">
+    magnetic core: permeability μ
+  </text>
+
+  <!-- Solenoid coils -->
+  <path d="M70 112
+           Q78 82 86 112
+           Q94 142 102 112
+           Q110 82 118 112
+           Q126 142 134 112
+           Q142 82 150 112
+           Q158 142 166 112
+           Q174 82 182 112
+           Q190 142 198 112
+           Q206 82 214 112
+           Q222 142 230 112
+           Q238 82 246 112
+           Q254 142 262 112
+           Q270 82 278 112
+           Q286 142 294 112
+           Q302 82 310 112
+           Q318 142 326 112
+           Q334 82 342 112"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+
+  <text x="208" y="78" text-anchor="middle" class="small" fill="#2563eb" font-weight="700">
+    N turns
+  </text>
+
+  <!-- Length bracket -->
+  <line x1="70" y1="150" x2="342" y2="150"
+        stroke="#111827"
+        stroke-width="2"
+        marker-start="url(#arrowInductanceBlack)"
+        marker-end="url(#arrowInductanceBlack)"/>
+
+  <text x="206" y="146" text-anchor="middle" class="small" fill="#111827" font-weight="700">
+    length ℓ
+  </text>
+
+  <!-- Area circle / cross-section -->
+  <circle cx="357" cy="112" r="20"
+          fill="#eff6ff"
+          stroke="#2563eb"
+          stroke-width="2"/>
+
+  <line x1="357" y1="112" x2="377" y2="112"
+        stroke="#2563eb"
+        stroke-width="2"
+        marker-end="url(#arrowInductanceBlue)"/>
+
+  <text x="357" y="118" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    A
+  </text>
+
+  <text x="357" y="85" text-anchor="middle" class="tiny" fill="#2563eb">
+    cross-section
+  </text>
+
+  <!-- Factors boxes -->
+  <rect x="26" y="176" width="86" height="42" rx="8"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.4"/>
+
+  <text x="69" y="193" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    more turns
+  </text>
+
+  <text x="69" y="209" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    N ↑ → L ↑↑
+  </text>
+
+  <rect x="124" y="176" width="86" height="42" rx="8"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.4"/>
+
+  <text x="167" y="193" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    larger area
+  </text>
+
+  <text x="167" y="209" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    A ↑ → L ↑
+  </text>
+
+  <rect x="222" y="176" width="86" height="42" rx="8"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.4"/>
+
+  <text x="265" y="193" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    iron core
+  </text>
+
+  <text x="265" y="209" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    μ ↑ → L ↑
+  </text>
+
+  <rect x="320" y="176" width="76" height="42" rx="8"
+        fill="#fef2f2" stroke="#fecaca" stroke-width="1.4"/>
+
+  <text x="358" y="193" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    longer coil
+  </text>
+
+  <text x="358" y="209" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    ℓ ↑ → L ↓
+  </text>
+
+  <!-- Bottom note -->
+  <text x="210" y="234" text-anchor="middle" class="tiny" fill="#4b5563" font-weight="700">
+   Increasing the number of turns increases inductance strongly because L ∝ N².
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Maxwell's Equations",
+
+  term: "What are Maxwell's equations in differential form?",
+
+  equation: "\\nabla\\cdot\\vec{E}=\\frac{\\rho}{\\varepsilon_0},\\quad \\nabla\\cdot\\vec{B}=0,\\quad \\nabla\\times\\vec{E}=-\\frac{\\partial\\vec{B}}{\\partial t},\\quad \\nabla\\times\\vec{B}=\\mu_0\\vec{J}+\\mu_0\\varepsilon_0\\frac{\\partial\\vec{E}}{\\partial t}",
+
+
+  answer: "Maxwell's equations summarise classical electromagnetism. Gauss's law says electric charges are sources or sinks of electric field. Gauss's law for magnetism says there are no magnetic monopoles, so magnetic field lines form closed loops. Faraday's law says a changing magnetic field creates a circulating electric field. The Ampère-Maxwell law says currents and changing electric fields create magnetic fields.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .header { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .eq { font-family: Arial, sans-serif; font-size: 11.2px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="22" text-anchor="middle" class="title" fill="#111827">
+    Maxwell's equations: differential form
+  </text>
+
+  <text x="210" y="41" text-anchor="middle" class="small" fill="#4b5563">
+    Four local laws for electric and magnetic fields
+  </text>
+
+  <!-- Table background -->
+  <rect x="18" y="54" width="384" height="150" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <!-- Header row -->
+  <rect x="18" y="54" width="384" height="24" rx="10"
+        fill="#e5e7eb"/>
+
+  <text x="58" y="70" text-anchor="middle" class="header" fill="#111827">
+    Law
+  </text>
+
+  <text x="170" y="70" text-anchor="middle" class="header" fill="#111827">
+    Equation
+  </text>
+
+  <text x="310" y="70" text-anchor="middle" class="header" fill="#111827">
+    Meaning
+  </text>
+
+  <!-- Row dividers -->
+  <line x1="18" y1="78" x2="402" y2="78" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="18" y1="110" x2="402" y2="110" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="18" y1="142" x2="402" y2="142" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="18" y1="174" x2="402" y2="174" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Column dividers -->
+  <line x1="98" y1="54" x2="98" y2="204" stroke="#d1d5db" stroke-width="1"/>
+  <line x1="238" y1="54" x2="238" y2="204" stroke="#d1d5db" stroke-width="1"/>
+
+  <!-- Row 1: Gauss E -->
+  <text x="58" y="96" text-anchor="middle" class="small" fill="#2563eb" font-weight="700">
+    Gauss E
+  </text>
+
+  <text x="168" y="96" text-anchor="middle" class="eq" fill="#111827">
+    ∇ · E = ρ / ε<tspan class="sub">0</tspan>
+  </text>
+
+  <text x="310" y="91" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    charge creates E-field
+  </text>
+
+  <text x="310" y="104" text-anchor="middle" class="tiny" fill="#4b5563">
+    electric field has sources/sinks
+  </text>
+
+  <!-- Row 2: Gauss B -->
+  <text x="58" y="128" text-anchor="middle" class="small" fill="#7c3aed" font-weight="700">
+    Gauss B
+  </text>
+
+  <text x="168" y="128" text-anchor="middle" class="eq" fill="#111827">
+    ∇ · B = 0
+  </text>
+
+  <text x="310" y="123" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    no magnetic monopoles
+  </text>
+
+  <text x="310" y="136" text-anchor="middle" class="tiny" fill="#4b5563">
+    B-field lines are closed loops
+  </text>
+
+  <!-- Row 3: Faraday -->
+  <text x="58" y="160" text-anchor="middle" class="small" fill="#dc2626" font-weight="700">
+    Faraday
+  </text>
+
+  <text x="168" y="160" text-anchor="middle" class="eq" fill="#111827">
+    ∇ × E = − ∂B / ∂t
+  </text>
+
+  <text x="310" y="155" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    changing B creates curling E
+  </text>
+
+  <text x="310" y="168" text-anchor="middle" class="tiny" fill="#4b5563">
+    basis of induction
+  </text>
+
+  <!-- Row 4: Ampere-Maxwell -->
+  <text x="58" y="192" text-anchor="middle" class="small" fill="#16a34a" font-weight="700">
+    Ampère-
+  </text>
+
+  <text x="58" y="202" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    Maxwell
+  </text>
+
+  <text x="168" y="188" text-anchor="middle" class="eq" fill="#111827">
+    ∇ × B = μ<tspan class="sub">0</tspan>J
+  </text>
+
+  <text x="168" y="201" text-anchor="middle" class="eq" fill="#111827">
+    + μ<tspan class="sub">0</tspan>ε<tspan class="sub">0</tspan> ∂E / ∂t
+  </text>
+
+  <text x="310" y="187" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    current or changing E
+  </text>
+
+  <text x="310" y="200" text-anchor="middle" class="tiny" fill="#4b5563">
+    creates curling B
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="38" y="213" width="344" height="22" rx="8"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.4"/>
+
+  <text x="210" y="228" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Together: changing E and B fields can sustain an electromagnetic wave.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Maxwell's Equations",
+
+  term: "What do divergence and curl mean in Maxwell's equations?",
+
+  equation: "\\nabla\\cdot\\vec{F}\\text{ measures sources},\\qquad \\nabla\\times\\vec{F}\\text{ measures rotation}",
+
+  answer: "Divergence measures whether a vector field spreads out from a point or flows into a point. Positive divergence means a source; negative divergence means a sink. Curl measures how much a vector field circulates around a point. In Maxwell's equations, divergence describes sources of fields, while curl describes fields that loop around because of changing fields or currents.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowDivCurlBlue" markerWidth="5" markerHeight="5"
+            refX="4.5" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowDivCurlRed" markerWidth="5" markerHeight="5"
+            refX="4.5" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowDivCurlGreen" markerWidth="5" markerHeight="5"
+            refX="4.5" refY="2.5" orient="auto">
+      <polygon points="0,0 5,2.5 0,5" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Divergence and curl of a vector field
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    Divergence asks: source or sink? Curl asks: does it rotate?
+  </text>
+
+  <!-- Left panel: divergence -->
+  <rect x="22" y="60" width="180" height="132" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="112" y="78" text-anchor="middle" class="label" fill="#2563eb">
+    divergence: ∇ · F
+  </text>
+
+  <!-- Source diagram -->
+  <circle cx="72" cy="125" r="8" fill="#2563eb"/>
+
+  <line x1="72" y1="125" x2="72" y2="96"
+        stroke="#2563eb" stroke-width="1.9" marker-end="url(#arrowDivCurlBlue)"/>
+  <line x1="72" y1="125" x2="72" y2="154"
+        stroke="#2563eb" stroke-width="1.9" marker-end="url(#arrowDivCurlBlue)"/>
+  <line x1="72" y1="125" x2="43" y2="125"
+        stroke="#2563eb" stroke-width="1.9" marker-end="url(#arrowDivCurlBlue)"/>
+  <line x1="72" y1="125" x2="101" y2="125"
+        stroke="#2563eb" stroke-width="1.9" marker-end="url(#arrowDivCurlBlue)"/>
+
+  <line x1="72" y1="125" x2="52" y2="105"
+        stroke="#2563eb" stroke-width="1.7" marker-end="url(#arrowDivCurlBlue)"/>
+  <line x1="72" y1="125" x2="92" y2="105"
+        stroke="#2563eb" stroke-width="1.7" marker-end="url(#arrowDivCurlBlue)"/>
+  <line x1="72" y1="125" x2="52" y2="145"
+        stroke="#2563eb" stroke-width="1.7" marker-end="url(#arrowDivCurlBlue)"/>
+  <line x1="72" y1="125" x2="92" y2="145"
+        stroke="#2563eb" stroke-width="1.7" marker-end="url(#arrowDivCurlBlue)"/>
+
+  <text x="72" y="178" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    source
+  </text>
+
+  <text x="72" y="190" text-anchor="middle" class="tiny" fill="#4b5563">
+    positive divergence
+  </text>
+
+  <!-- Sink diagram -->
+  <circle cx="155" cy="125" r="8" fill="#dc2626"/>
+
+  <line x1="155" y1="96" x2="155" y2="119"
+        stroke="#dc2626" stroke-width="1.9" marker-end="url(#arrowDivCurlRed)"/>
+  <line x1="155" y1="154" x2="155" y2="131"
+        stroke="#dc2626" stroke-width="1.9" marker-end="url(#arrowDivCurlRed)"/>
+  <line x1="126" y1="125" x2="149" y2="125"
+        stroke="#dc2626" stroke-width="1.9" marker-end="url(#arrowDivCurlRed)"/>
+  <line x1="184" y1="125" x2="161" y2="125"
+        stroke="#dc2626" stroke-width="1.9" marker-end="url(#arrowDivCurlRed)"/>
+
+  <line x1="135" y1="105" x2="150" y2="120"
+        stroke="#dc2626" stroke-width="1.7" marker-end="url(#arrowDivCurlRed)"/>
+  <line x1="175" y1="105" x2="160" y2="120"
+        stroke="#dc2626" stroke-width="1.7" marker-end="url(#arrowDivCurlRed)"/>
+  <line x1="135" y1="145" x2="150" y2="130"
+        stroke="#dc2626" stroke-width="1.7" marker-end="url(#arrowDivCurlRed)"/>
+  <line x1="175" y1="145" x2="160" y2="130"
+        stroke="#dc2626" stroke-width="1.7" marker-end="url(#arrowDivCurlRed)"/>
+
+  <text x="155" y="178" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    sink
+  </text>
+
+  <text x="155" y="190" text-anchor="middle" class="tiny" fill="#4b5563">
+    negative divergence
+  </text>
+
+  <!-- Right panel: curl -->
+  <rect x="218" y="60" width="180" height="132" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="308" y="78" text-anchor="middle" class="label" fill="#16a34a">
+    curl: ∇ × F
+  </text>
+
+  <circle cx="308" cy="125" r="48"
+          fill="none" stroke="#d1d5db" stroke-width="1.5" stroke-dasharray="5 5"/>
+
+  <path d="M308 77
+           A48 48 0 0 1 356 125"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="2.3"
+        marker-end="url(#arrowDivCurlGreen)"/>
+
+  <path d="M356 125
+           A48 48 0 0 1 308 173"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="2.3"
+        marker-end="url(#arrowDivCurlGreen)"/>
+
+  <path d="M308 173
+           A48 48 0 0 1 260 125"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="2.3"
+        marker-end="url(#arrowDivCurlGreen)"/>
+
+  <path d="M260 125
+           A48 48 0 0 1 308 77"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="2.3"
+        marker-end="url(#arrowDivCurlGreen)"/>
+
+  <!-- Paddle wheel -->
+  <circle cx="308" cy="125" r="13"
+          fill="#ecfdf5" stroke="#16a34a" stroke-width="2"/>
+
+  <line x1="308" y1="112" x2="308" y2="138"
+        stroke="#16a34a" stroke-width="2"/>
+  <line x1="295" y1="125" x2="321" y2="125"
+        stroke="#16a34a" stroke-width="2"/>
+
+  <circle cx="308" cy="125" r="3" fill="#16a34a"/>
+
+  <text x="308" y="178" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    circulation / rotation
+  </text>
+
+  <text x="308" y="190" text-anchor="middle" class="tiny" fill="#4b5563">
+    curl points by right-hand rule
+  </text>
+
+  <!-- Bottom Maxwell link -->
+  <rect x="34" y="210" width="352" height="22" rx="8"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.3"/>
+
+  <text x="210" y="225" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Maxwell link: charges give divergence; changing fields/currents give curl.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Maxwell's Equations",
+
+  term: "How do Maxwell's equations predict electromagnetic waves?",
+
+  equation: "c=\\frac{1}{\\sqrt{\\mu_0\\varepsilon_0}},\\qquad \\omega=ck",
+
+  answer: "In empty space, there are no charges and no conduction currents. A changing magnetic field creates a curling electric field, and a changing electric field creates a curling magnetic field. These two effects sustain each other and travel as an electromagnetic wave. Maxwell's equations predict the wave speed c = 1/√(μ0ε0), which is the speed of light.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowWaveBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowWaveGreen" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#16a34a"/>
+    </marker>
+
+    <marker id="arrowWaveBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Maxwell predicts electromagnetic waves
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    changing E creates B; changing B creates E
+  </text>
+
+  <!-- Left coupling panel -->
+  <rect x="24" y="62" width="150" height="118" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="99" y="80" text-anchor="middle" class="label" fill="#111827">
+    self-sustaining fields
+  </text>
+
+  <!-- E box -->
+  <rect x="50" y="98" width="38" height="28" rx="7"
+        fill="#dbeafe" stroke="#2563eb" stroke-width="1.5"/>
+
+  <text x="69" y="117" text-anchor="middle" class="label" fill="#2563eb">
+    E
+  </text>
+
+  <!-- B box -->
+  <rect x="110" y="98" width="38" height="28" rx="7"
+        fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+
+  <text x="129" y="117" text-anchor="middle" class="label" fill="#16a34a">
+    B
+  </text>
+
+  <!-- Coupling arrows -->
+  <path d="M88 104 C98 88, 118 88, 128 104"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="2.2"
+        marker-end="url(#arrowWaveBlue)"/>
+
+  <path d="M110 122 C100 142, 78 142, 68 122"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="2.2"
+        marker-end="url(#arrowWaveGreen)"/>
+
+  <text x="99" y="151" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    changing B → curling E
+  </text>
+
+  <text x="99" y="166" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    changing E → curling B
+  </text>
+
+  <!-- Right wave panel -->
+  <rect x="196" y="62" width="200" height="118" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="296" y="80" text-anchor="middle" class="label" fill="#111827">
+    travelling EM wave
+  </text>
+
+  <!-- x axis -->
+  <line x1="220" y1="125" x2="378" y2="125"
+        stroke="#111827" stroke-width="1.8"
+        marker-end="url(#arrowWaveBlack)"/>
+
+  <text x="382" y="129" class="tiny" fill="#111827" font-weight="700">
+    x
+  </text>
+
+  <!-- E sine wave -->
+  <path d="M220 125
+           C235 83, 250 83, 265 125
+           C280 167, 295 167, 310 125
+           C325 83, 340 83, 355 125
+           C365 150, 372 155, 378 145"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="242" y="91" class="tiny" fill="#2563eb" font-weight="700">
+    E field
+  </text>
+
+  <!-- B sine wave, phase matched but drawn lower/smaller -->
+  <path d="M220 145
+           C235 120, 250 120, 265 145
+           C280 170, 295 170, 310 145
+           C325 120, 340 120, 355 145
+           C365 160, 372 162, 378 155"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="336" y="167" class="tiny" fill="#16a34a" font-weight="700">
+    B field
+  </text>
+
+  <!-- propagation arrow -->
+  <line x1="244" y1="102" x2="295" y2="102"
+        stroke="#111827"
+        stroke-width="2"
+        marker-end="url(#arrowWaveBlack)"/>
+
+  <text x="270" y="98" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    speed c
+  </text>
+
+  <!-- Bottom equation box -->
+  <rect x="34" y="195" width="352" height="34" rx="8"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.3"/>
+
+  <text x="210" y="210" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    In free space: ∂²E/∂x² = (1/c²) ∂²E/∂t²
+  </text>
+
+  <text x="210" y="224" text-anchor="middle" class="tiny" fill="#4b5563">
+    The same wave equation also holds for B.
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Maxwell's Equations",
+
+  term: "How do Maxwell's equations predict electromagnetic waves?",
+
+  equation: "c=\\frac{1}{\\sqrt{\\mu_0\\varepsilon_0}},\\qquad \\omega=ck",
+
+  answer: "In empty space, there are no charges and no conduction currents. A changing magnetic field creates a curling electric field, and a changing electric field creates a curling magnetic field. These two effects sustain each other and travel as an electromagnetic wave. Maxwell's equations predict the wave speed c = 1/√(μ0ε0), which is the speed of light.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowWaveBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowWaveGreen" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#16a34a"/>
+    </marker>
+
+    <marker id="arrowWaveBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <clipPath id="waveClip">
+      <rect x="196" y="62" width="200" height="118" rx="10"/>
+    </clipPath>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Maxwell predicts electromagnetic waves
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    changing E creates B; changing B creates E
+  </text>
+
+  <!-- Left coupling panel -->
+  <rect x="24" y="62" width="150" height="118" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="99" y="80" text-anchor="middle" class="label" fill="#111827">
+    self-sustaining fields
+  </text>
+
+  <!-- E box -->
+  <rect x="50" y="98" width="38" height="28" rx="7"
+        fill="#dbeafe" stroke="#2563eb" stroke-width="1.5">
+    <animate attributeName="opacity"
+             values="0.55;1;0.55"
+             dur="1.6s"
+             repeatCount="indefinite"/>
+  </rect>
+
+  <text x="69" y="117" text-anchor="middle" class="label" fill="#2563eb">
+    E
+    <animate attributeName="opacity"
+             values="0.55;1;0.55"
+             dur="1.6s"
+             repeatCount="indefinite"/>
+  </text>
+
+  <!-- B box -->
+  <rect x="110" y="98" width="38" height="28" rx="7"
+        fill="#dcfce7" stroke="#16a34a" stroke-width="1.5">
+    <animate attributeName="opacity"
+             values="1;0.55;1"
+             dur="1.6s"
+             repeatCount="indefinite"/>
+  </rect>
+
+  <text x="129" y="117" text-anchor="middle" class="label" fill="#16a34a">
+    B
+    <animate attributeName="opacity"
+             values="1;0.55;1"
+             dur="1.6s"
+             repeatCount="indefinite"/>
+  </text>
+
+  <!-- Coupling arrows -->
+  <path d="M88 104 C98 88, 118 88, 128 104"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="2.2"
+        marker-end="url(#arrowWaveBlue)">
+    <animate attributeName="opacity"
+             values="0.35;1;0.35"
+             dur="1.6s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <path d="M110 122 C100 142, 78 142, 68 122"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="2.2"
+        marker-end="url(#arrowWaveGreen)">
+    <animate attributeName="opacity"
+             values="1;0.35;1"
+             dur="1.6s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <text x="99" y="151" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    changing B → curling E
+  </text>
+
+  <text x="99" y="166" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    changing E → curling B
+  </text>
+
+  <!-- Right wave panel -->
+  <rect x="196" y="62" width="200" height="118" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="296" y="80" text-anchor="middle" class="label" fill="#111827">
+    travelling EM wave
+  </text>
+
+  <!-- Clipped animated waves -->
+  <g clip-path="url(#waveClip)">
+
+    <!-- x axis -->
+    <line x1="210" y1="125" x2="382" y2="125"
+          stroke="#111827" stroke-width="1.8"
+          marker-end="url(#arrowWaveBlack)"/>
+
+    <text x="382" y="138" class="tiny" fill="#111827" font-weight="700">
+      x
+    </text>
+
+    <!-- Moving wave group -->
+    <g>
+      <animateTransform attributeName="transform"
+                        type="translate"
+                        values="-70 0; 0 0"
+                        dur="2.2s"
+                        repeatCount="indefinite"/>
+
+      <!-- E wave, repeated so animation loops smoothly -->
+      <path d="M200 125
+               C215 83, 230 83, 245 125
+               C260 167, 275 167, 290 125
+               C305 83, 320 83, 335 125
+               C350 167, 365 167, 380 125
+               C395 83, 410 83, 425 125
+               C440 167, 455 167, 470 125"
+            fill="none"
+            stroke="#2563eb"
+            stroke-width="3"
+            stroke-linecap="round"/>
+
+      <!-- B wave, in phase but drawn lower/smaller -->
+      <path d="M200 145
+               C215 120, 230 120, 245 145
+               C260 170, 275 170, 290 145
+               C305 120, 320 120, 335 145
+               C350 170, 365 170, 380 145
+               C395 120, 410 120, 425 145
+               C440 170, 455 170, 470 145"
+            fill="none"
+            stroke="#16a34a"
+            stroke-width="3"
+            stroke-linecap="round"/>
+    </g>
+
+    <!-- Propagation arrow -->
+    <line x1="244" y1="102" x2="295" y2="102"
+          stroke="#111827"
+          stroke-width="2"
+          marker-end="url(#arrowWaveBlack)"/>
+
+    <text x="270" y="98" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+      speed c
+    </text>
+
+    <text x="235" y="91" class="tiny" fill="#2563eb" font-weight="700">
+      E field
+    </text>
+
+    <text x="338" y="166" class="tiny" fill="#16a34a" font-weight="700">
+      B field
+    </text>
+
+  </g>
+
+  <!-- Bottom equation box -->
+  <rect x="34" y="195" width="352" height="34" rx="8"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.3"/>
+
+  <text x="210" y="210" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    In free space: ∂²E/∂x² = (1/c²) ∂²E/∂t²
+  </text>
+
+  <text x="210" y="224" text-anchor="middle" class="tiny" fill="#4b5563">
+    The same wave equation also holds for B.
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Maxwell's Equations",
+
+  term: "How do you check that a sinusoidal electromagnetic wave satisfies the wave equation?",
+
+  equation: "E=E_0\\sin(kx-\\omega t),\\qquad c=\\frac{\\omega}{k}",
+
+  answer: "For a travelling wave E = E0 sin(kx − ωt), take the second derivative with respect to position and the second derivative with respect to time. The position derivative gives ∂²E/∂x² = −k²E. The time derivative gives ∂²E/∂t² = −ω²E. Substituting into the wave equation works if c = ω/k. The same idea applies to the magnetic field B.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowWaveEqBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowWaveEqBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Checking a sinusoidal wave solution
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    A wave equation links curvature in space to curvature in time
+  </text>
+
+  <!-- Left wave panel -->
+  <rect x="24" y="60" width="176" height="118" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="112" y="78" text-anchor="middle" class="label" fill="#2563eb">
+    travelling wave
+  </text>
+
+  <!-- Axes -->
+  <line x1="44" y1="126" x2="180" y2="126"
+        stroke="#111827" stroke-width="1.5"
+        marker-end="url(#arrowWaveEqBlack)"/>
+
+  <line x1="50" y1="158" x2="50" y2="92"
+        stroke="#111827" stroke-width="1.5"
+        marker-end="url(#arrowWaveEqBlack)"/>
+
+  <text x="184" y="130" class="tiny" fill="#111827" font-weight="700">
+    x
+  </text>
+
+  <text x="39" y="95" class="tiny" fill="#111827" font-weight="700">
+    E
+  </text>
+
+  <!-- Sine wave -->
+  <path d="M50 126
+           C62 92, 74 92, 86 126
+           C98 160, 110 160, 122 126
+           C134 92, 146 92, 158 126
+           C168 154, 176 150, 180 136"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="112" y="166" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    E = E₀ sin(kx − ωt)
+  </text>
+
+  <!-- Right derivative panel -->
+  <rect x="220" y="60" width="176" height="118" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="308" y="78" text-anchor="middle" class="label" fill="#111827">
+    second derivatives
+  </text>
+
+  <!-- Derivative boxes -->
+  <rect x="238" y="92" width="140" height="28" rx="7"
+        fill="#dbeafe" stroke="#93c5fd" stroke-width="1.3"/>
+
+  <text x="308" y="111" text-anchor="middle" class="eq" fill="#111827">
+    ∂²E/∂x² = −k²E
+  </text>
+
+  <rect x="238" y="132" width="140" height="28" rx="7"
+        fill="#dcfce7" stroke="#86efac" stroke-width="1.3"/>
+
+  <text x="308" y="151" text-anchor="middle" class="eq" fill="#111827">
+    ∂²E/∂t² = −ω²E
+  </text>
+
+  <!-- Arrows from wave to derivative panel -->
+  <line x1="200" y1="119" x2="220" y2="119"
+        stroke="#111827"
+        stroke-width="2"
+        marker-end="url(#arrowWaveEqBlack)"/>
+
+  <!-- Bottom wave equation box -->
+  <rect x="34" y="195" width="352" height="34" rx="8"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.3"/>
+
+  <text x="210" y="210" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Wave equation: ∂²E/∂x² = (1/c²) ∂²E/∂t²
+  </text>
+
+  <text x="210" y="224" text-anchor="middle" class="tiny" fill="#4b5563">
+    This works when k² = ω²/c², so c = ω/k.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Maxwell's Equations",
+
+  term: "What are Maxwell's equations in integral form?",
+
+  equation: "\\text{flux laws and circulation laws}",
+
+  answer: "The integral form of Maxwell's equations describes fields over a whole surface or around a closed path. Gauss's law for electricity relates electric flux through a closed surface to enclosed charge. Gauss's law for magnetism says the total magnetic flux through a closed surface is zero. Faraday's law says a changing magnetic flux creates circulating electric field. The Ampère-Maxwell law says current and changing electric flux create circulating magnetic field.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq { font-family: Arial, sans-serif; font-size: 10.2px; font-weight: 700; }
+    .head { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="22" text-anchor="middle" class="title" fill="#111827">
+    Maxwell's equations: integral form
+  </text>
+
+  <text x="210" y="40" text-anchor="middle" class="small" fill="#4b5563">
+    Closed surfaces measure flux; closed loops measure circulation
+  </text>
+
+  <!-- Table -->
+  <rect x="14" y="54" width="392" height="154" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <rect x="14" y="54" width="392" height="24" rx="10"
+        fill="#e5e7eb"/>
+
+  <text x="57" y="70" text-anchor="middle" class="head" fill="#111827">
+    Law
+  </text>
+
+  <text x="184" y="70" text-anchor="middle" class="head" fill="#111827">
+    Integral form
+  </text>
+
+  <text x="322" y="70" text-anchor="middle" class="head" fill="#111827">
+    Meaning
+  </text>
+
+  <!-- Row dividers -->
+  <line x1="14" y1="78" x2="406" y2="78" stroke="#d1d5db"/>
+  <line x1="14" y1="110" x2="406" y2="110" stroke="#d1d5db"/>
+  <line x1="14" y1="142" x2="406" y2="142" stroke="#d1d5db"/>
+  <line x1="14" y1="174" x2="406" y2="174" stroke="#d1d5db"/>
+
+  <!-- Column dividers -->
+  <line x1="100" y1="54" x2="100" y2="208" stroke="#d1d5db"/>
+  <line x1="258" y1="54" x2="258" y2="208" stroke="#d1d5db"/>
+
+  <!-- Row 1 -->
+  <text x="57" y="96" text-anchor="middle" class="small" fill="#2563eb" font-weight="700">
+    Gauss E
+  </text>
+
+  <text x="184" y="96" text-anchor="middle" class="eq" fill="#111827">
+    ∮ E · dA = Q<tspan class="sub">enc</tspan> / ε<tspan class="sub">0</tspan>
+  </text>
+
+  <text x="322" y="91" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    electric flux
+  </text>
+  <text x="322" y="104" text-anchor="middle" class="tiny" fill="#4b5563">
+    comes from charge
+  </text>
+
+  <!-- Row 2 -->
+  <text x="57" y="128" text-anchor="middle" class="small" fill="#7c3aed" font-weight="700">
+    Gauss B
+  </text>
+
+  <text x="184" y="128" text-anchor="middle" class="eq" fill="#111827">
+    ∮ B · dA = 0
+  </text>
+
+  <text x="322" y="123" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    no net B flux
+  </text>
+  <text x="322" y="136" text-anchor="middle" class="tiny" fill="#4b5563">
+    no magnetic monopoles
+  </text>
+
+  <!-- Row 3 -->
+  <text x="57" y="160" text-anchor="middle" class="small" fill="#dc2626" font-weight="700">
+    Faraday
+  </text>
+
+  <text x="184" y="160" text-anchor="middle" class="eq" fill="#111827">
+    ∮ E · dl = − dΦ<tspan class="sub">B</tspan>/dt
+  </text>
+
+  <text x="322" y="155" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    changing B flux
+  </text>
+  <text x="322" y="168" text-anchor="middle" class="tiny" fill="#4b5563">
+    creates curling E
+  </text>
+
+  <!-- Row 4 -->
+  <text x="57" y="190" text-anchor="middle" class="small" fill="#16a34a" font-weight="700">
+    Ampère-
+  </text>
+  <text x="57" y="201" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    Maxwell
+  </text>
+
+  <text x="184" y="188" text-anchor="middle" class="eq" fill="#111827">
+    ∮ B · dl = μ<tspan class="sub">0</tspan>I<tspan class="sub">enc</tspan>
+  </text>
+  <text x="184" y="201" text-anchor="middle" class="eq" fill="#111827">
+    + μ<tspan class="sub">0</tspan>ε<tspan class="sub">0</tspan>dΦ<tspan class="sub">E</tspan>/dt
+  </text>
+
+  <text x="322" y="187" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    current or changing E
+  </text>
+  <text x="322" y="200" text-anchor="middle" class="tiny" fill="#4b5563">
+    creates curling B
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="216" width="352" height="18" rx="8"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.2"/>
+
+  <text x="210" y="229" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Surface integral: flux through a surface. Line integral: circulation around a loop.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Electromagnetic Waves",
+
+  term: "How are the electric field, magnetic field, and direction of travel related in an electromagnetic wave?",
+
+  equation: "\\vec{S}=\\frac{1}{\\mu_0}\\vec{E}\\times\\vec{B},\\qquad E=cB",
+
+  answer: "In an electromagnetic wave, the electric field, magnetic field, and direction of travel are all perpendicular to each other. The wave travels in the direction of E × B. The Poynting vector S points in the direction of energy transfer. For a wave in vacuum, the field magnitudes are related by E = cB.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowEMBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowEMBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowEMGreen" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Direction of an electromagnetic wave
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    E, B and direction of travel are mutually perpendicular
+  </text>
+
+  <!-- Left panel: vector rule -->
+  <rect x="24" y="60" width="170" height="128" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="109" y="79" text-anchor="middle" class="label" fill="#111827">
+    right-hand rule
+  </text>
+
+  <!-- Origin point -->
+  <circle cx="98" cy="130" r="4" fill="#111827"/>
+
+  <!-- E up -->
+  <line x1="98" y1="130" x2="98" y2="88"
+        stroke="#2563eb" stroke-width="3"
+        marker-end="url(#arrowEMBlue)"/>
+
+  <text x="88" y="94" text-anchor="end" class="label" fill="#2563eb">
+    E
+  </text>
+
+  <!-- S right -->
+  <line x1="98" y1="130" x2="160" y2="130"
+        stroke="#111827" stroke-width="3"
+        marker-end="url(#arrowEMBlack)"/>
+
+  <text x="159" y="121" text-anchor="middle" class="label" fill="#111827">
+    S
+  </text>
+
+  <!-- B out of page -->
+  <circle cx="98" cy="130" r="18"
+          fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+
+  <circle cx="98" cy="130" r="5" fill="#16a34a"/>
+
+  <text x="98" y="164" text-anchor="middle" class="label" fill="#16a34a">
+    B out of page
+  </text>
+
+  <text x="109" y="181" text-anchor="middle" class="tiny" fill="#4b5563">
+    E × B gives wave direction
+  </text>
+
+  <!-- Right panel: wave diagram -->
+  <rect x="214" y="60" width="182" height="128" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="305" y="79" text-anchor="middle" class="label" fill="#111827">
+    travelling wave
+  </text>
+
+  <!-- propagation axis -->
+  <line x1="235" y1="130" x2="375" y2="130"
+        stroke="#111827" stroke-width="1.8"
+        marker-end="url(#arrowEMBlack)"/>
+
+  <text x="371" y="145" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    direction
+  </text>
+
+  <!-- E sine wave vertical -->
+  <path d="M235 130
+           C247 88, 259 88, 271 130
+           C283 172, 295 172, 307 130
+           C319 88, 331 88, 343 130
+           C355 172, 367 172, 379 130"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="254" y="94" class="tiny" fill="#2563eb" font-weight="700">
+    E oscillates up/down
+  </text>
+
+  <!-- B represented by out/in page symbols along wave -->
+  <g>
+    <!-- B out of page dots -->
+    <circle cx="253" cy="154" r="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <circle cx="253" cy="154" r="3" fill="#16a34a"/>
+
+    <circle cx="307" cy="154" r="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <circle cx="307" cy="154" r="3" fill="#16a34a"/>
+
+    <circle cx="361" cy="154" r="8" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+    <circle cx="361" cy="154" r="3" fill="#16a34a"/>
+
+    <!-- B into page crosses -->
+    <circle cx="280" cy="154" r="8" fill="#ecfdf5" stroke="#16a34a" stroke-width="1.5"/>
+    <line x1="275" y1="149" x2="285" y2="159" stroke="#16a34a" stroke-width="1.7"/>
+    <line x1="285" y1="149" x2="275" y2="159" stroke="#16a34a" stroke-width="1.7"/>
+
+    <circle cx="334" cy="154" r="8" fill="#ecfdf5" stroke="#16a34a" stroke-width="1.5"/>
+    <line x1="329" y1="149" x2="339" y2="159" stroke="#16a34a" stroke-width="1.7"/>
+    <line x1="339" y1="149" x2="329" y2="159" stroke="#16a34a" stroke-width="1.7"/>
+  </g>
+
+  <text x="305" y="177" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    B oscillates perpendicular to E
+  </text>
+
+  <!-- Bottom equation box -->
+  <rect x="36" y="204" width="348" height="24" rx="8"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.3"/>
+
+  <text x="210" y="220" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Energy flow: S = (1/μ₀) E × B, so S points in the direction of travel.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Electromagnetic Waves",
+
+  term: "How is the intensity of an electromagnetic wave related to its field amplitude?",
+
+  equation: "I=\\langle S\\rangle=\\frac{1}{2}\\varepsilon_0 cE_0^2",
+
+  answer: "The intensity of an electromagnetic wave is the average power transferred per unit area. It is the time average of the Poynting vector. For a sinusoidal wave in vacuum, I = ½ε0cE0², where E0 is the peak electric-field amplitude. Equivalently, I = cB0²/(2μ0). A larger field amplitude means a much larger intensity because intensity is proportional to amplitude squared.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowIntensityBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowIntensityBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowIntensityRed" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Intensity of an electromagnetic wave
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    intensity is average power per unit area
+  </text>
+
+  <!-- Wave panel -->
+  <rect x="24" y="60" width="210" height="130" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="129" y="78" text-anchor="middle" class="label" fill="#111827">
+    field amplitude
+  </text>
+
+  <!-- axis -->
+  <line x1="48" y1="128" x2="214" y2="128"
+        stroke="#111827" stroke-width="1.5"
+        marker-end="url(#arrowIntensityBlack)"/>
+
+  <text x="216" y="132" class="tiny" fill="#111827" font-weight="700">
+    x
+  </text>
+
+  <!-- E wave -->
+  <path d="M48 128
+           C62 84, 76 84, 90 128
+           C104 172, 118 172, 132 128
+           C146 84, 160 84, 174 128
+           C188 172, 202 172, 216 128"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="73" y="91" class="tiny" fill="#2563eb" font-weight="700">
+    E field
+  </text>
+
+  <!-- amplitude marker -->
+  <line x1="132" y1="128" x2="132" y2="84"
+        stroke="#dc2626"
+        stroke-width="2"
+        stroke-dasharray="4 4"
+        marker-end="url(#arrowIntensityRed)"/>
+
+  <text x="140" y="106" class="tiny" fill="#dc2626" font-weight="700">
+    E<tspan class="sub">0</tspan>
+  </text>
+
+  <!-- Energy flow arrow -->
+  <line x1="74" y1="176" x2="190" y2="176"
+        stroke="#111827"
+        stroke-width="2.5"
+        marker-end="url(#arrowIntensityBlack)"/>
+
+  <text x="132" y="168" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    energy flow
+  </text>
+
+  <text x="132" y="185" text-anchor="middle" class="tiny" fill="#4b5563">
+    average Poynting vector
+  </text>
+
+  <!-- Formula panel -->
+  <rect x="252" y="60" width="144" height="130" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="324" y="79" text-anchor="middle" class="label" fill="#111827">
+    intensity
+  </text>
+
+  <rect x="268" y="94" width="112" height="30" rx="7"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.2"/>
+
+  <text x="324" y="113" text-anchor="middle" class="eq" fill="#111827">
+    I = &lt;S&gt;
+  </text>
+
+  <rect x="268" y="134" width="112" height="38" rx="7"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.2"/>
+
+  <text x="324" y="149" text-anchor="middle" class="eq" fill="#111827">
+    I = ½ ε<tspan class="sub">0</tspan>cE<tspan class="sub">0</tspan><tspan class="sup">2</tspan>
+  </text>
+
+  <text x="324" y="164" text-anchor="middle" class="tiny" fill="#4b5563">
+    peak field amplitude
+  </text>
+
+  <text x="324" y="184" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    amplitude doubled → intensity ×4
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="36" y="206" width="348" height="24" rx="8"
+        fill="#fefce8" stroke="#fde68a" stroke-width="1.3"/>
+
+  <text x="210" y="222" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Key idea: intensity is proportional to the square of the field amplitude.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Electromagnetic Waves",
+
+  term: "Can light exert pressure?",
+
+  equation: "P_{rad}=\\frac{I}{c}\\text{ absorbing},\\qquad P_{rad}=\\frac{2I}{c}\\text{ reflecting}",
+
+  answer: "Yes. Electromagnetic waves carry energy and momentum, so light can exert a pressure when it hits a surface. If the light is absorbed, the radiation pressure is I/c. If the light is perfectly reflected, the momentum change is twice as large, so the radiation pressure is 2I/c. This effect is small in everyday life, but it is important for solar sails, comet tails, and precise laser experiments.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowRadBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowRadBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowRadRed" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Radiation pressure
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    Light carries momentum, so it can push on a surface
+  </text>
+
+  <!-- Incoming EM wave -->
+  <path d="M38 110
+           C52 78, 66 78, 80 110
+           C94 142, 108 142, 122 110
+           C136 78, 150 78, 164 110"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <path d="M38 133
+           C52 115, 66 115, 80 133
+           C94 151, 108 151, 122 133
+           C136 115, 150 115, 164 133"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <line x1="50" y1="172" x2="158" y2="172"
+        stroke="#111827"
+        stroke-width="2.5"
+        marker-end="url(#arrowRadBlack)"/>
+
+  <text x="104" y="164" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    energy and momentum
+  </text>
+
+  <text x="102" y="194" text-anchor="middle" class="tiny" fill="#4b5563">
+    incoming light intensity I
+  </text>
+
+  <!-- Surface -->
+  <rect x="190" y="70" width="18" height="118" rx="4"
+        fill="#e5e7eb"
+        stroke="#6b7280"
+        stroke-width="2"/>
+
+  <line x1="208" y1="80" x2="226" y2="70" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="208" y1="100" x2="226" y2="90" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="208" y1="120" x2="226" y2="110" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="208" y1="140" x2="226" y2="130" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="208" y1="160" x2="226" y2="150" stroke="#9ca3af" stroke-width="1.5"/>
+  <line x1="208" y1="180" x2="226" y2="170" stroke="#9ca3af" stroke-width="1.5"/>
+
+  <text x="199" y="62" text-anchor="middle" class="tiny" fill="#6b7280" font-weight="700">
+    surface
+  </text>
+
+  <!-- Pressure arrow on surface -->
+  <line x1="214" y1="130" x2="268" y2="130"
+        stroke="#dc2626"
+        stroke-width="4"
+        marker-end="url(#arrowRadRed)"/>
+
+  <text x="244" y="119" text-anchor="middle" class="label" fill="#dc2626">
+    push
+  </text>
+
+  <!-- Absorb vs reflect panel -->
+  <rect x="285" y="66" width="110" height="112" rx="10"
+        fill="#f9fafb"
+        stroke="#d1d5db"
+        stroke-width="1.5"/>
+
+  <text x="340" y="84" text-anchor="middle" class="label" fill="#111827">
+    pressure
+  </text>
+
+  <rect x="298" y="98" width="84" height="30" rx="7"
+        fill="#eef2ff"
+        stroke="#c7d2fe"
+        stroke-width="1.2"/>
+
+  <text x="340" y="112" text-anchor="middle" class="eq" fill="#111827">
+    absorb:
+  </text>
+
+  <text x="340" y="124" text-anchor="middle" class="eq" fill="#2563eb">
+    P = I/c
+  </text>
+
+  <rect x="298" y="138" width="84" height="30" rx="7"
+        fill="#ecfdf5"
+        stroke="#86efac"
+        stroke-width="1.2"/>
+
+  <text x="340" y="152" text-anchor="middle" class="eq" fill="#111827">
+    reflect:
+  </text>
+
+  <text x="340" y="164" text-anchor="middle" class="eq" fill="#16a34a">
+    P = 2I/c
+  </text>
+
+  <!-- Reflected ray hint -->
+  <path d="M208 98 C240 70, 264 62, 290 58"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="2.3"
+        stroke-dasharray="5 4"
+        marker-end="url(#arrowRadBlue)"/>
+
+  <text x="270" y="52" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    reflected light gives twice the momentum change
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="207" width="352" height="22" rx="8"
+        fill="#fefce8"
+        stroke="#fde68a"
+        stroke-width="1.3"/>
+
+  <text x="210" y="222" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Radiation pressure is tiny, but over large areas it can move objects in space.
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Electromagnetic Waves",
+
+  term: "Where is the energy stored in an electromagnetic wave?",
+
+  equation: "u=\\frac{1}{2}\\varepsilon_0E^2+\\frac{1}{2\\mu_0}B^2",
+
+  answer: "The energy in an electromagnetic wave is stored in its electric and magnetic fields. The electric-field energy density is ½ε0E², and the magnetic-field energy density is B²/(2μ0). For an electromagnetic wave in vacuum, the electric and magnetic parts contribute equally to the total energy. The wave carries this energy through space at speed c.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowEnergyBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowEnergyBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowEnergyGreen" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Energy density of an electromagnetic wave
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    energy is stored in both the electric and magnetic fields
+  </text>
+
+  <!-- Wave panel -->
+  <rect x="24" y="60" width="220" height="128" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="134" y="78" text-anchor="middle" class="label" fill="#111827">
+    travelling wave
+  </text>
+
+  <!-- propagation axis -->
+  <line x1="48" y1="126" x2="224" y2="126"
+        stroke="#111827" stroke-width="1.6"
+        marker-end="url(#arrowEnergyBlack)"/>
+
+  <text x="224" y="140" class="tiny" fill="#111827" font-weight="700">
+    direction
+  </text>
+
+  <!-- E wave -->
+  <path d="M48 126
+           C62 84, 76 84, 90 126
+           C104 168, 118 168, 132 126
+           C146 84, 160 84, 174 126
+           C188 168, 202 168, 216 126"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="78" y="91" class="tiny" fill="#2563eb" font-weight="700">
+    electric field E
+  </text>
+
+  <!-- B wave -->
+  <path d="M48 146
+           C62 121, 76 121, 90 146
+           C104 171, 118 171, 132 146
+           C146 121, 160 121, 174 146
+           C188 171, 202 171, 216 146"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="148" y="174" class="tiny" fill="#16a34a" font-weight="700">
+    magnetic field B
+  </text>
+
+  <!-- Energy flow -->
+  <line x1="72" y1="102" x2="164" y2="102"
+        stroke="#111827"
+        stroke-width="2.4"
+        marker-end="url(#arrowEnergyBlack)"/>
+
+  <text x="118" y="96" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    energy carried forward
+  </text>
+
+  <!-- Formula panel -->
+  <rect x="262" y="60" width="134" height="128" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="329" y="79" text-anchor="middle" class="label" fill="#111827">
+    energy density
+  </text>
+
+  <!-- Electric part -->
+  <rect x="276" y="94" width="106" height="34" rx="7"
+        fill="#dbeafe"
+        stroke="#93c5fd"
+        stroke-width="1.3"/>
+
+  <text x="329" y="108" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    electric part
+  </text>
+
+  <text x="329" y="123" text-anchor="middle" class="eq" fill="#111827">
+    ½ ε<tspan class="sub">0</tspan>E<tspan class="sup">2</tspan>
+  </text>
+
+  <!-- Magnetic part -->
+  <rect x="276" y="138" width="106" height="34" rx="7"
+        fill="#dcfce7"
+        stroke="#86efac"
+        stroke-width="1.3"/>
+
+  <text x="329" y="152" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    magnetic part
+  </text>
+
+  <text x="329" y="167" text-anchor="middle" class="eq" fill="#111827">
+    B<tspan class="sup">2</tspan> / 2μ<tspan class="sub">0</tspan>
+  </text>
+
+  <!-- Equal contribution note -->
+  <text x="329" y="184" text-anchor="middle" class="tiny" fill="#4b5563" font-weight="700">
+    equal in vacuum
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="207" width="352" height="22" rx="8"
+        fill="#eef2ff"
+        stroke="#c7d2fe"
+        stroke-width="1.3"/>
+
+  <text x="210" y="222" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Intensity connects to energy density: I = c × average energy density.
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Induction & AC",
+
+  term: "Why are real transformers not perfectly efficient?",
+
+  equation: "P_{out}<P_{in},\\qquad \\eta=\\frac{P_{out}}{P_{in}}\\times100\\%",
+
+  answer: "An ideal transformer transfers energy perfectly from the primary coil to the secondary coil, but real transformers have losses. Energy is lost as heat in the coil resistance, eddy currents in the iron core, hysteresis losses as the core is repeatedly magnetised and demagnetised, and flux leakage when not all magnetic field lines link both coils. Laminated cores reduce eddy current losses.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowTransBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowTransRed" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowTransBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Losses in a real transformer
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    real transformers are efficient, but not perfect
+  </text>
+
+  <!-- Transformer panel -->
+  <rect x="22" y="60" width="226" height="134" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <!-- Iron core -->
+  <rect x="88" y="78" width="96" height="94" rx="8"
+        fill="#e5e7eb" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="106" y="96" width="60" height="58" rx="5"
+        fill="#f9fafb" stroke="#6b7280" stroke-width="1.5"/>
+
+  <!-- Laminations -->
+  <line x1="96" y1="82" x2="96" y2="168" stroke="#9ca3af" stroke-width="1"/>
+  <line x1="116" y1="82" x2="116" y2="96" stroke="#9ca3af" stroke-width="1"/>
+  <line x1="156" y1="82" x2="156" y2="96" stroke="#9ca3af" stroke-width="1"/>
+  <line x1="176" y1="82" x2="176" y2="168" stroke="#9ca3af" stroke-width="1"/>
+
+  <text x="136" y="184" text-anchor="middle" class="tiny" fill="#6b7280" font-weight="700">
+    laminated iron core
+  </text>
+
+  <!-- Primary coil -->
+  <path d="M64 95
+           Q72 82 80 95
+           Q88 108 96 95
+           Q104 82 112 95"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <path d="M64 120
+           Q72 107 80 120
+           Q88 133 96 120
+           Q104 107 112 120"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <path d="M64 145
+           Q72 132 80 145
+           Q88 158 96 145
+           Q104 132 112 145"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="58" y="84" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    primary
+  </text>
+
+  <!-- Secondary coil -->
+  <path d="M160 95
+           Q168 82 176 95
+           Q184 108 192 95
+           Q200 82 208 95"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <path d="M160 120
+           Q168 107 176 120
+           Q184 133 192 120
+           Q200 107 208 120"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <path d="M160 145
+           Q168 132 176 145
+           Q184 158 192 145
+           Q200 132 208 145"
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="214" y="84" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    secondary
+  </text>
+
+  <!-- Power arrows -->
+  <line x1="34" y1="124" x2="62" y2="124"
+        stroke="#111827"
+        stroke-width="2.5"
+        marker-end="url(#arrowTransBlack)"/>
+
+  <text x="48" y="115" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    P<tspan class="sub">in</tspan>
+  </text>
+
+  <line x1="210" y1="124" x2="236" y2="124"
+        stroke="#111827"
+        stroke-width="2.5"
+        marker-end="url(#arrowTransBlack)"/>
+
+  <text x="224" y="115" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    P<tspan class="sub">out</tspan>
+  </text>
+
+  <!-- Loss arrows -->
+  <line x1="136" y1="128" x2="136" y2="62"
+        stroke="#dc2626"
+        stroke-width="2.4"
+        stroke-dasharray="5 4"
+        marker-end="url(#arrowTransRed)"/>
+
+  <text x="148" y="69" class="tiny" fill="#dc2626" font-weight="700">
+    heat losses
+  </text>
+
+  <path d="M126 133
+           C138 122, 152 122, 160 136
+           C150 148, 135 148, 126 133"
+        fill="none"
+        stroke="#dc2626"
+        stroke-width="2"
+        marker-end="url(#arrowTransRed)"/>
+
+  <text x="144" y="154" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    eddy currents
+  </text>
+
+  <!-- Loss list panel -->
+  <rect x="264" y="60" width="132" height="134" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="330" y="79" text-anchor="middle" class="label" fill="#111827">
+    main losses
+  </text>
+
+  <circle cx="282" cy="99" r="4" fill="#dc2626"/>
+  <text x="292" y="103" class="tiny" fill="#111827" font-weight="700">
+    coil resistance
+  </text>
+
+  <circle cx="282" cy="121" r="4" fill="#dc2626"/>
+  <text x="292" y="125" class="tiny" fill="#111827" font-weight="700">
+    eddy currents
+  </text>
+
+  <circle cx="282" cy="143" r="4" fill="#dc2626"/>
+  <text x="292" y="147" class="tiny" fill="#111827" font-weight="700">
+    hysteresis
+  </text>
+
+  <circle cx="282" cy="165" r="4" fill="#dc2626"/>
+  <text x="292" y="169" class="tiny" fill="#111827" font-weight="700">
+    flux leakage
+  </text>
+
+  <text x="330" y="187" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    laminations reduce eddy currents
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="210" width="352" height="22" rx="8"
+        fill="#fefce8" stroke="#fde68a" stroke-width="1.3"/>
+
+  <text x="210" y="225" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Ideal: P<tspan class="sub">in</tspan> = P<tspan class="sub">out</tspan>. Real: some energy becomes heat.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Induction & AC",
+
+  term: "How do you analyse a series RLC circuit in AC?",
+
+  equation: "Z=\\sqrt{R^2+(X_L-X_C)^2},\\qquad f_0=\\frac{1}{2\\pi\\sqrt{LC}}",
+
+  answer: "In a series RLC circuit, first calculate the reactances: XL = 2πfL and XC = 1/(2πfC). Then find the impedance Z = √(R² + (XL − XC)²). The RMS current is Irms = Vrms/Z. At resonance, XL = XC, so the reactances cancel and the impedance is minimum: Z = R. The current is maximum at the resonant frequency f0 = 1/(2π√LC).",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowRLCBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowRLCBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowRLCGreen" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#16a34a"/>
+    </marker>
+
+    <marker id="arrowRLCRed" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#dc2626"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Series RLC circuit in AC
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    resistance plus two opposing reactances
+  </text>
+
+  <!-- Circuit panel -->
+  <rect x="22" y="60" width="188" height="124" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="116" y="78" text-anchor="middle" class="label" fill="#111827">
+    circuit
+  </text>
+
+  <!-- AC source -->
+  <circle cx="50" cy="124" r="18"
+          fill="#ffffff" stroke="#111827" stroke-width="2"/>
+
+  <path d="M39 124
+           C42 115, 48 115, 50 124
+           C53 133, 59 133, 62 124"
+        fill="none" stroke="#2563eb" stroke-width="2"/>
+
+  <!-- wire -->
+  <line x1="68" y1="124" x2="82" y2="124"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- resistor -->
+  <polyline points="82,124 88,112 96,136 104,112 112,136 120,112 128,124"
+            fill="none" stroke="#dc2626" stroke-width="3"
+            stroke-linejoin="round"/>
+
+  <text x="105" y="103" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    R
+  </text>
+
+  <line x1="128" y1="124" x2="140" y2="124"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- inductor -->
+  <path d="M140 124
+           Q146 108 152 124
+           Q158 108 164 124
+           Q170 108 176 124"
+        fill="none" stroke="#2563eb" stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="158" y="103" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    L
+  </text>
+
+  <line x1="176" y1="124" x2="188" y2="124"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- capacitor -->
+  <line x1="188" y1="108" x2="188" y2="140"
+        stroke="#16a34a" stroke-width="3"/>
+  <line x1="198" y1="108" x2="198" y2="140"
+        stroke="#16a34a" stroke-width="3"/>
+
+  <text x="193" y="103" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    C
+  </text>
+
+  <!-- return path -->
+  <line x1="198" y1="124" x2="198" y2="164"
+        stroke="#111827" stroke-width="3"/>
+  <line x1="198" y1="164" x2="50" y2="164"
+        stroke="#111827" stroke-width="3"/>
+  <line x1="50" y1="164" x2="50" y2="142"
+        stroke="#111827" stroke-width="3"/>
+
+  <line x1="72" y1="92" x2="150" y2="92"
+        stroke="#111827" stroke-width="2.4"
+        marker-end="url(#arrowRLCBlack)"/>
+
+  <text x="111" y="87" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    same current through all
+  </text>
+
+  <!-- Formula panel -->
+  <rect x="230" y="60" width="168" height="124" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="314" y="78" text-anchor="middle" class="label" fill="#111827">
+    calculation steps
+  </text>
+
+  <rect x="246" y="92" width="136" height="22" rx="6"
+        fill="#dbeafe" stroke="#93c5fd" stroke-width="1.2"/>
+
+  <text x="314" y="107" text-anchor="middle" class="eq" fill="#111827">
+    X<tspan class="sub">L</tspan> = 2πfL
+  </text>
+
+  <rect x="246" y="120" width="136" height="22" rx="6"
+        fill="#dcfce7" stroke="#86efac" stroke-width="1.2"/>
+
+  <text x="314" y="135" text-anchor="middle" class="eq" fill="#111827">
+    X<tspan class="sub">C</tspan> = 1 / 2πfC
+  </text>
+
+  <rect x="246" y="148" width="136" height="26" rx="6"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.2"/>
+
+  <text x="314" y="164" text-anchor="middle" class="eq" fill="#111827">
+    I<tspan class="sub">rms</tspan> = V<tspan class="sub">rms</tspan> / Z
+  </text>
+
+  <!-- Resonance bottom panel -->
+  <rect x="34" y="202" width="352" height="28" rx="8"
+        fill="#fefce8" stroke="#fde68a" stroke-width="1.3"/>
+
+  <text x="210" y="215" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Resonance: X<tspan class="sub">L</tspan> = X<tspan class="sub">C</tspan>, so Z = R and current is maximum.
+  </text>
+
+  <text x="210" y="227" text-anchor="middle" class="tiny" fill="#4b5563">
+    Below resonance: capacitive. Above resonance: inductive.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Induction & AC",
+
+  term: "What are common exam traps in induction and AC circuits?",
+
+  equation: "\\text{direction, RMS values, reactance, resonance}",
+
+  answer: "Common traps are mixing up the direction of induced current, forgetting that Lenz's law opposes the change in flux, using peak voltage instead of RMS voltage in AC power calculations, forgetting that only resistance dissipates average power, and assuming resonance means zero impedance. In a series RLC circuit at resonance, XL = XC, so the impedance is minimum, but Z = R, not zero.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .head { font-family: Arial, sans-serif; font-size: 11px; font-weight: 700; }
+    .eq { font-family: Arial, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Induction and AC: common exam traps
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    Good questions often test the sign, the phase, or the value being used
+  </text>
+
+  <!-- Table background -->
+  <rect x="18" y="58" width="384" height="142" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <!-- Header -->
+  <rect x="18" y="58" width="384" height="24" rx="10"
+        fill="#e5e7eb"/>
+
+  <text x="68" y="74" text-anchor="middle" class="head" fill="#111827">
+    Topic
+  </text>
+
+  <text x="198" y="74" text-anchor="middle" class="head" fill="#111827">
+    Trap
+  </text>
+
+  <text x="328" y="74" text-anchor="middle" class="head" fill="#111827">
+    Correct idea
+  </text>
+
+  <!-- Column dividers -->
+  <line x1="118" y1="58" x2="118" y2="200" stroke="#d1d5db"/>
+  <line x1="270" y1="58" x2="270" y2="200" stroke="#d1d5db"/>
+
+  <!-- Row dividers -->
+  <line x1="18" y1="82" x2="402" y2="82" stroke="#d1d5db"/>
+  <line x1="18" y1="111" x2="402" y2="111" stroke="#d1d5db"/>
+  <line x1="18" y1="140" x2="402" y2="140" stroke="#d1d5db"/>
+  <line x1="18" y1="169" x2="402" y2="169" stroke="#d1d5db"/>
+
+  <!-- Row 1 -->
+  <text x="68" y="100" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    Lenz's law
+  </text>
+
+  <text x="198" y="95" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    opposes field?
+  </text>
+  <text x="198" y="107" text-anchor="middle" class="tiny" fill="#4b5563">
+    not always
+  </text>
+
+  <text x="328" y="95" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    opposes change
+  </text>
+  <text x="328" y="107" text-anchor="middle" class="tiny" fill="#4b5563">
+    in magnetic flux
+  </text>
+
+  <!-- Row 2 -->
+  <text x="68" y="129" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    AC power
+  </text>
+
+  <text x="198" y="124" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    using peak V
+  </text>
+  <text x="198" y="136" text-anchor="middle" class="tiny" fill="#4b5563">
+    in P = VI
+  </text>
+
+  <text x="328" y="124" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    use RMS values
+  </text>
+  <text x="328" y="136" text-anchor="middle" class="tiny" fill="#4b5563">
+    P<tspan class="sub">avg</tspan> = V<tspan class="sub">rms</tspan>I<tspan class="sub">rms</tspan>cosφ
+  </text>
+
+  <!-- Row 3 -->
+  <text x="68" y="158" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    Reactance
+  </text>
+
+  <text x="198" y="153" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    L and C dissipate
+  </text>
+  <text x="198" y="165" text-anchor="middle" class="tiny" fill="#4b5563">
+    average power?
+  </text>
+
+  <text x="328" y="153" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    only R dissipates
+  </text>
+  <text x="328" y="165" text-anchor="middle" class="tiny" fill="#4b5563">
+    L and C store/return energy
+  </text>
+
+  <!-- Row 4 -->
+  <text x="68" y="187" text-anchor="middle" class="tiny" fill="#7c3aed" font-weight="700">
+    Resonance
+  </text>
+
+  <text x="198" y="182" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    thinking Z = 0
+  </text>
+  <text x="198" y="194" text-anchor="middle" class="tiny" fill="#4b5563">
+    at resonance
+  </text>
+
+  <text x="328" y="182" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    X<tspan class="sub">L</tspan> = X<tspan class="sub">C</tspan>, so Z = R
+  </text>
+  <text x="328" y="194" text-anchor="middle" class="tiny" fill="#4b5563">
+    current is maximum, not infinite
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="211" width="352" height="20" rx="8"
+        fill="#fefce8" stroke="#fde68a" stroke-width="1.3"/>
+
+  <text x="210" y="225" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Exam habit: write the physical idea first, then choose the formula.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Induction & AC",
+
+  term: "Worked example: What EMF is induced in a coil when the magnetic field changes?",
+
+  equation: "|\\mathcal{E}|=NA\\left|\\frac{\\Delta B}{\\Delta t}\\right|",
+
+  answer: "Example: A 50-turn circular coil has radius 4.0 cm. A magnetic field into the page increases from 0.20 T to 0.80 T in 0.10 s. First find the area: A = πr² = π(0.040)² = 5.03 × 10⁻³ m². The field changes by ΔB = 0.60 T, so ΔB/Δt = 6.0 T/s. The induced EMF is |ε| = NA|ΔB/Δt| = 50(5.03 × 10⁻³)(6.0) = 1.51 V. Since the field into the page is increasing, the induced current creates a field out of the page, so the current is anticlockwise.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowFaradayExRed" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowFaradayExBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.5px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Faraday's law worked example
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    magnitude from Faraday; direction from Lenz
+  </text>
+
+  <!-- Coil panel -->
+  <rect x="22" y="60" width="176" height="132" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="110" y="78" text-anchor="middle" class="label" fill="#111827">
+    50-turn coil
+  </text>
+
+  <!-- Magnetic field crosses into page -->
+  <g stroke="#2563eb" stroke-width="1.8" stroke-linecap="round">
+    <line x1="52" y1="98" x2="62" y2="108"/>
+    <line x1="62" y1="98" x2="52" y2="108"/>
+
+    <line x1="88" y1="98" x2="98" y2="108"/>
+    <line x1="98" y1="98" x2="88" y2="108"/>
+
+    <line x1="124" y1="98" x2="134" y2="108"/>
+    <line x1="134" y1="98" x2="124" y2="108"/>
+
+    <line x1="160" y1="98" x2="170" y2="108"/>
+    <line x1="170" y1="98" x2="160" y2="108"/>
+
+    <line x1="70" y1="134" x2="80" y2="144"/>
+    <line x1="80" y1="134" x2="70" y2="144"/>
+
+    <line x1="112" y1="134" x2="122" y2="144"/>
+    <line x1="122" y1="134" x2="112" y2="144"/>
+
+    <line x1="154" y1="134" x2="164" y2="144"/>
+    <line x1="164" y1="134" x2="154" y2="144"/>
+  </g>
+
+  <ellipse cx="110" cy="124" rx="58" ry="36"
+           fill="none"
+           stroke="#111827"
+           stroke-width="3"/>
+
+  <ellipse cx="110" cy="124" rx="49" ry="30"
+           fill="none"
+           stroke="#111827"
+           stroke-width="1.7"
+           opacity="0.7"/>
+
+  <text x="110" y="121" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    r = 4.0 cm
+  </text>
+
+  <text x="110" y="136" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    B into page increases
+  </text>
+
+  <!-- Induced current anticlockwise -->
+  <path d="M131 91 A36 36 0 0 0 81 97"
+        fill="none"
+        stroke="#dc2626"
+        stroke-width="2.4"
+        marker-end="url(#arrowFaradayExRed)"/>
+
+  <path d="M82 151 A36 36 0 0 0 136 153"
+        fill="none"
+        stroke="#dc2626"
+        stroke-width="2.4"
+        marker-end="url(#arrowFaradayExRed)"/>
+
+  <text x="110" y="176" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    induced current anticlockwise
+  </text>
+
+  <!-- Calculation panel -->
+  <rect x="218" y="60" width="180" height="132" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="308" y="78" text-anchor="middle" class="label" fill="#111827">
+    calculation
+  </text>
+
+  <rect x="235" y="92" width="146" height="22" rx="6"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.2"/>
+
+  <text x="308" y="107" text-anchor="middle" class="eq" fill="#111827">
+    A = π(0.040)<tspan class="sup">2</tspan>
+  </text>
+
+  <rect x="235" y="120" width="146" height="22" rx="6"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.2"/>
+
+  <text x="308" y="135" text-anchor="middle" class="eq" fill="#111827">
+    ΔB/Δt = 0.60/0.10
+  </text>
+
+  <rect x="235" y="148" width="146" height="30" rx="6"
+        fill="#fefce8" stroke="#fde68a" stroke-width="1.2"/>
+
+  <text x="308" y="162" text-anchor="middle" class="eq" fill="#111827">
+    |ε| = 50 A (6.0)
+  </text>
+
+  <text x="308" y="175" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    |ε| = 1.51 V
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="209" width="352" height="22" rx="8"
+        fill="#fef2f2" stroke="#fecaca" stroke-width="1.3"/>
+
+  <text x="210" y="224" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    B into page increasing → induced B out of page → anticlockwise current.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Induction & AC",
+
+  term: "Worked example: How do you find current and power in a series RLC circuit?",
+
+  equation: "Z=\\sqrt{R^2+(X_L-X_C)^2},\\qquad I_{rms}=\\frac{V_{rms}}{Z}",
+
+  answer: "Example: A series RLC circuit has R = 40 Ω, L = 0.20 H, C = 50 μF, f = 50 Hz, and Vrms = 120 V. First calculate XL = 2πfL = 62.8 Ω. Then calculate XC = 1/(2πfC) = 63.7 Ω. Since XL and XC are almost equal, the circuit is close to resonance. The impedance is Z = √(40² + (62.8 − 63.7)²) ≈ 40.0 Ω. The RMS current is Irms = 120/40.0 = 3.0 A. The average power is dissipated only in the resistor: Pavg = Irms²R = 360 W.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowRLCExBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.2px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Series RLC worked example
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    calculate reactances, impedance, current and power
+  </text>
+
+  <!-- Left circuit panel -->
+  <rect x="22" y="60" width="176" height="130" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="110" y="78" text-anchor="middle" class="label" fill="#111827">
+    given circuit
+  </text>
+
+  <!-- AC source -->
+  <circle cx="50" cy="124" r="17"
+          fill="#ffffff" stroke="#111827" stroke-width="2"/>
+
+  <path d="M40 124
+           C43 116, 48 116, 50 124
+           C53 132, 58 132, 61 124"
+        fill="none" stroke="#2563eb" stroke-width="2"/>
+
+  <!-- wire -->
+  <line x1="67" y1="124" x2="78" y2="124"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- resistor -->
+  <polyline points="78,124 84,112 92,136 100,112 108,136 116,112 124,124"
+            fill="none" stroke="#dc2626" stroke-width="3"
+            stroke-linejoin="round"/>
+
+  <text x="101" y="104" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    R = 40 Ω
+  </text>
+
+  <line x1="124" y1="124" x2="136" y2="124"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- inductor -->
+  <path d="M136 124
+           Q142 108 148 124
+           Q154 108 160 124
+           Q166 108 172 124"
+        fill="none" stroke="#2563eb" stroke-width="3"
+        stroke-linecap="round"/>
+
+  <text x="154" y="104" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    L = 0.20 H
+  </text>
+
+  <line x1="172" y1="124" x2="184" y2="124"
+        stroke="#111827" stroke-width="3"/>
+
+  <!-- capacitor -->
+  <line x1="184" y1="109" x2="184" y2="139"
+        stroke="#16a34a" stroke-width="3"/>
+  <line x1="194" y1="109" x2="194" y2="139"
+        stroke="#16a34a" stroke-width="3"/>
+
+  <text x="149" y="157" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    C = 50 μF
+  </text>
+
+  <!-- return path -->
+  <line x1="194" y1="124" x2="194" y2="168"
+        stroke="#111827" stroke-width="3"/>
+  <line x1="194" y1="168" x2="50" y2="168"
+        stroke="#111827" stroke-width="3"/>
+  <line x1="50" y1="168" x2="50" y2="141"
+        stroke="#111827" stroke-width="3"/>
+
+  <text x="72" y="187" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    V<tspan class="sub">rms</tspan> = 120 V
+  </text>
+
+  <text x="144" y="187" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    f = 50 Hz
+  </text>
+
+  <!-- Current arrow -->
+  <line x1="72" y1="90" x2="150" y2="90"
+        stroke="#111827" stroke-width="2.2"
+        marker-end="url(#arrowRLCExBlack)"/>
+
+  <text x="111" y="85" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    same I through all
+  </text>
+
+  <!-- Right calculation panel -->
+  <rect x="218" y="60" width="180" height="130" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="308" y="78" text-anchor="middle" class="label" fill="#111827">
+    calculation
+  </text>
+
+  <rect x="235" y="90" width="146" height="22" rx="6"
+        fill="#dbeafe" stroke="#93c5fd" stroke-width="1.2"/>
+
+  <text x="308" y="105" text-anchor="middle" class="eq" fill="#111827">
+    X<tspan class="sub">L</tspan> = 2πfL = 62.8 Ω
+  </text>
+
+  <rect x="235" y="117" width="146" height="22" rx="6"
+        fill="#dcfce7" stroke="#86efac" stroke-width="1.2"/>
+
+  <text x="308" y="132" text-anchor="middle" class="eq" fill="#111827">
+    X<tspan class="sub">C</tspan> = 1/2πfC = 63.7 Ω
+  </text>
+
+  <rect x="235" y="144" width="146" height="22" rx="6"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.2"/>
+
+  <text x="308" y="159" text-anchor="middle" class="eq" fill="#111827">
+    Z ≈ 40.0 Ω
+  </text>
+
+  <rect x="235" y="171" width="146" height="16" rx="6"
+        fill="#fefce8" stroke="#fde68a" stroke-width="1.2"/>
+
+  <text x="308" y="183" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    I<tspan class="sub">rms</tspan> = 3.0 A, P<tspan class="sub">avg</tspan> = 360 W
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="208" width="352" height="23" rx="8"
+        fill="#fef2f2" stroke="#fecaca" stroke-width="1.3"/>
+
+  <text x="210" y="223" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Since X<tspan class="sub">L</tspan> ≈ X<tspan class="sub">C</tspan>, the circuit is close to resonance and Z ≈ R.
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Induction & AC",
+
+  term: "Worked example: How do you calculate voltage and current in an ideal transformer?",
+
+  equation: "\\frac{V_s}{V_p}=\\frac{N_s}{N_p},\\qquad V_pI_p\\approx V_sI_s",
+
+  answer: "Example: An ideal transformer has 1200 turns on the primary coil and 6000 turns on the secondary coil. The primary voltage is 240 V, and the secondary current is 0.50 A. Since Ns/Np = 6000/1200 = 5, the secondary voltage is Vs = 5Vp = 1200 V. For an ideal transformer, input power equals output power, so VpIp = VsIs. Therefore Ip = VsIs/Vp = (1200)(0.50)/240 = 2.5 A. The transformer steps voltage up, but current down.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowTransExBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+
+    <marker id="arrowTransExBlue" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowTransExGreen" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#16a34a"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.2px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Ideal transformer worked example
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    voltage ratio follows turns ratio; power is approximately conserved
+  </text>
+
+  <!-- Transformer diagram panel -->
+  <rect x="22" y="60" width="206" height="132" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <!-- Core -->
+  <rect x="82" y="80" width="86" height="88" rx="8"
+        fill="#e5e7eb" stroke="#6b7280" stroke-width="2"/>
+
+  <rect x="100" y="98" width="50" height="52" rx="5"
+        fill="#f9fafb" stroke="#6b7280" stroke-width="1.4"/>
+
+  <text x="125" y="182" text-anchor="middle" class="tiny" fill="#6b7280" font-weight="700">
+    iron core links flux
+  </text>
+
+  <!-- Primary coil: fewer turns -->
+  <path d="M58 98
+           Q66 86 74 98
+           Q82 110 90 98"
+        fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+
+  <path d="M58 123
+           Q66 111 74 123
+           Q82 135 90 123"
+        fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+
+  <path d="M58 148
+           Q66 136 74 148
+           Q82 160 90 148"
+        fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+
+  <text x="56" y="84" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    primary
+  </text>
+
+  <text x="56" y="197" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    N<tspan class="sub">p</tspan> = 1200
+  </text>
+
+  <!-- Secondary coil: more turns -->
+  <path d="M150 91
+           Q156 82 162 91
+           Q168 100 174 91
+           Q180 82 186 91"
+        fill="none" stroke="#16a34a" stroke-width="2.7" stroke-linecap="round"/>
+
+  <path d="M150 111
+           Q156 102 162 111
+           Q168 120 174 111
+           Q180 102 186 111"
+        fill="none" stroke="#16a34a" stroke-width="2.7" stroke-linecap="round"/>
+
+  <path d="M150 131
+           Q156 122 162 131
+           Q168 140 174 131
+           Q180 122 186 131"
+        fill="none" stroke="#16a34a" stroke-width="2.7" stroke-linecap="round"/>
+
+  <path d="M150 151
+           Q156 142 162 151
+           Q168 160 174 151
+           Q180 142 186 151"
+        fill="none" stroke="#16a34a" stroke-width="2.7" stroke-linecap="round"/>
+
+  <text x="194" y="84" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    secondary
+  </text>
+
+  <text x="194" y="197" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    N<tspan class="sub">s</tspan> = 6000
+  </text>
+
+  <!-- Voltage arrows -->
+  <line x1="38" y1="122" x2="56" y2="122"
+        stroke="#2563eb" stroke-width="2.4"
+        marker-end="url(#arrowTransExBlue)"/>
+
+  <text x="39" y="113" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    240 V
+  </text>
+
+  <line x1="188" y1="122" x2="218" y2="122"
+        stroke="#16a34a" stroke-width="2.4"
+        marker-end="url(#arrowTransExGreen)"/>
+
+  <text x="205" y="113" text-anchor="middle" class="tiny" fill="#16a34a" font-weight="700">
+    1200 V
+  </text>
+
+  <!-- Calculation panel -->
+  <rect x="246" y="60" width="152" height="132" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="322" y="78" text-anchor="middle" class="label" fill="#111827">
+    calculation
+  </text>
+
+  <rect x="262" y="92" width="120" height="24" rx="6"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.2"/>
+
+  <text x="322" y="108" text-anchor="middle" class="eq" fill="#111827">
+    N<tspan class="sub">s</tspan>/N<tspan class="sub">p</tspan> = 5
+  </text>
+
+  <rect x="262" y="123" width="120" height="24" rx="6"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.2"/>
+
+  <text x="322" y="139" text-anchor="middle" class="eq" fill="#111827">
+    V<tspan class="sub">s</tspan> = 5V<tspan class="sub">p</tspan> = 1200 V
+  </text>
+
+  <rect x="262" y="154" width="120" height="24" rx="6"
+        fill="#fefce8" stroke="#fde68a" stroke-width="1.2"/>
+
+  <text x="322" y="170" text-anchor="middle" class="eq" fill="#111827">
+    I<tspan class="sub">p</tspan> = 2.5 A
+  </text>
+
+  <text x="322" y="188" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    step-up voltage, step-down current
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="210" width="352" height="22" rx="8"
+        fill="#fef2f2" stroke="#fecaca" stroke-width="1.3"/>
+
+  <text x="210" y="225" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Ideal transformer: if voltage increases, current decreases so power stays the same.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Magnetism",
+
+  term: "Worked example: How do you find the radius of a charged particle moving in a magnetic field?",
+
+  equation: "r=\\frac{mv}{|q|B},\\qquad F_B=|q|vB",
+
+  answer: "Example: A proton enters a uniform magnetic field of 0.50 T at right angles with speed 2.0 × 10⁶ m/s. Since the velocity is perpendicular to the magnetic field, the magnetic force provides the centripetal force. Using r = mv/(qB), with m = 1.67 × 10⁻²⁷ kg and q = 1.60 × 10⁻¹⁹ C, gives r = (1.67 × 10⁻²⁷)(2.0 × 10⁶)/[(1.60 × 10⁻¹⁹)(0.50)] = 0.0418 m. So the proton moves in a circle of radius about 4.2 cm.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowParticleGreen" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#16a34a"/>
+    </marker>
+
+    <marker id="arrowParticleRed" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowParticleBlack" markerWidth="6" markerHeight="6"
+            refX="5.5" refY="3" orient="auto">
+      <polygon points="0,0 6,3 0,6" fill="#111827"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: Arial, sans-serif; font-size: 15px; font-weight: 700; }
+    .label { font-family: Arial, sans-serif; font-size: 12px; font-weight: 700; }
+    .small { font-family: Arial, sans-serif; font-size: 10.5px; }
+    .tiny  { font-family: Arial, sans-serif; font-size: 9.5px; }
+    .eq    { font-family: Arial, sans-serif; font-size: 10.2px; font-weight: 700; }
+    .sub { font-size: 8px; baseline-shift: sub; }
+    .sup { font-size: 8px; baseline-shift: super; }
+  </style>
+
+  <rect x="0" y="0" width="420" height="240" fill="white"/>
+
+  <!-- Title -->
+  <text x="210" y="23" text-anchor="middle" class="title" fill="#111827">
+    Charged particle in a magnetic field
+  </text>
+
+  <text x="210" y="43" text-anchor="middle" class="small" fill="#4b5563">
+    magnetic force provides the centripetal force
+  </text>
+
+  <!-- Field panel -->
+  <rect x="22" y="60" width="190" height="132" rx="10"
+        fill="#f9fafb" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="117" y="78" text-anchor="middle" class="label" fill="#111827">
+    B into page
+  </text>
+
+  <!-- B crosses -->
+  <g stroke="#2563eb" stroke-width="1.8" stroke-linecap="round">
+    <line x1="48" y1="96" x2="58" y2="106"/>
+    <line x1="58" y1="96" x2="48" y2="106"/>
+
+    <line x1="95" y1="96" x2="105" y2="106"/>
+    <line x1="105" y1="96" x2="95" y2="106"/>
+
+    <line x1="142" y1="96" x2="152" y2="106"/>
+    <line x1="152" y1="96" x2="142" y2="106"/>
+
+    <line x1="48" y1="148" x2="58" y2="158"/>
+    <line x1="58" y1="148" x2="48" y2="158"/>
+
+    <line x1="95" y1="148" x2="105" y2="158"/>
+    <line x1="105" y1="148" x2="95" y2="158"/>
+
+    <line x1="142" y1="148" x2="152" y2="158"/>
+    <line x1="152" y1="148" x2="142" y2="158"/>
+  </g>
+
+  <!-- Circular path -->
+  <circle cx="117" cy="128" r="46"
+          fill="none"
+          stroke="#9ca3af"
+          stroke-width="2.4"
+          stroke-dasharray="6 5"/>
+
+  <!-- centre -->
+  <circle cx="117" cy="128" r="3.5" fill="#111827"/>
+
+  <!-- particle -->
+  <circle cx="163" cy="128" r="14"
+          fill="#2563eb"
+          stroke="#111827"
+          stroke-width="2"/>
+
+  <text x="163" y="134" text-anchor="middle"
+        font-size="18" fill="white" font-weight="700">
+    +
+  </text>
+
+  <!-- velocity upward -->
+  <line x1="163" y1="114" x2="163" y2="82"
+        stroke="#16a34a"
+        stroke-width="3"
+        marker-end="url(#arrowParticleGreen)"/>
+
+  <text x="174" y="99" class="tiny" fill="#16a34a" font-weight="700">
+    v
+  </text>
+
+  <!-- force inward -->
+  <line x1="149" y1="128" x2="122" y2="128"
+        stroke="#dc2626"
+        stroke-width="3"
+        marker-end="url(#arrowParticleRed)"/>
+
+  <text x="136" y="118" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    F<tspan class="sub">B</tspan>
+  </text>
+
+  <!-- radius -->
+  <line x1="117" y1="128" x2="163" y2="128"
+        stroke="#111827"
+        stroke-width="1.8"/>
+
+  <text x="140" y="142" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    r
+  </text>
+
+  <text x="117" y="184" text-anchor="middle" class="tiny" fill="#2563eb" font-weight="700">
+    proton moves in a circle
+  </text>
+
+  <!-- Calculation panel -->
+  <rect x="232" y="60" width="166" height="132" rx="10"
+        fill="#ffffff" stroke="#d1d5db" stroke-width="1.5"/>
+
+  <text x="315" y="78" text-anchor="middle" class="label" fill="#111827">
+    calculation
+  </text>
+
+  <rect x="246" y="92" width="138" height="24" rx="6"
+        fill="#eef2ff" stroke="#c7d2fe" stroke-width="1.2"/>
+
+  <text x="315" y="108" text-anchor="middle" class="eq" fill="#111827">
+    F<tspan class="sub">B</tspan> = qvB
+  </text>
+
+  <rect x="246" y="122" width="138" height="24" rx="6"
+        fill="#ecfdf5" stroke="#86efac" stroke-width="1.2"/>
+
+  <text x="315" y="138" text-anchor="middle" class="eq" fill="#111827">
+    qvB = mv²/r
+  </text>
+
+  <rect x="246" y="152" width="138" height="28" rx="6"
+        fill="#fefce8" stroke="#fde68a" stroke-width="1.2"/>
+
+  <text x="315" y="166" text-anchor="middle" class="eq" fill="#111827">
+    r = mv/qB
+  </text>
+
+  <text x="315" y="178" text-anchor="middle" class="tiny" fill="#dc2626" font-weight="700">
+    r = 0.0418 m ≈ 4.2 cm
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="34" y="209" width="352" height="22" rx="8"
+        fill="#fef2f2" stroke="#fecaca" stroke-width="1.3"/>
+
+  <text x="210" y="224" text-anchor="middle" class="tiny" fill="#111827" font-weight="700">
+    Faster particle → larger radius. Stronger magnetic field → smaller radius.
+  </text>
+
+</svg>
+`
+}
+
+
 
 
 
