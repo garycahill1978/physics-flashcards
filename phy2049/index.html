@@ -96,11 +96,16 @@
       box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
     }
 
+    .resource-card:focus-visible {
+      outline: 3px solid #93c5fd;
+      outline-offset: 3px;
+    }
+
     .resource-title {
       display: block;
-      font-weight: bold;
-      font-size: 1.05rem;
       margin-bottom: 0.35rem;
+      font-size: 1.05rem;
+      font-weight: bold;
       color: #111827;
     }
 
@@ -117,8 +122,8 @@
     }
 
     .back-navigation a {
-      text-decoration: none;
       font-weight: bold;
+      text-decoration: none;
       color: #1d4ed8;
     }
 
@@ -127,37 +132,64 @@
     }
   </style>
 </head>
+
 <body>
 
   <main class="course-page">
 
     <header class="course-header">
       <p class="course-code">PHY2049</p>
+
       <h1>Physics II with Calculus</h1>
 
       <p class="course-intro">
-        Welcome to the PHY2049 course resources page. Use the links below to access
-        the course notebook, revision flashcards and exam revision sets.
+        Welcome to the PHY2049 course resources page. Use the links below to
+        access the course notebook, general course materials, revision
+        flashcards and exam revision sets.
       </p>
 
       <div class="wave-banner" aria-hidden="true">
-        <svg viewBox="0 0 1000 220" xmlns="http://www.w3.org/2000/svg" role="img">
-          <rect x="0" y="0" width="1000" height="220" rx="12" fill="#ffffff"/>
-          <line x1="40" y1="110" x2="960" y2="110" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="6 6"/>
+        <svg
+          viewBox="0 0 1000 220"
+          xmlns="http://www.w3.org/2000/svg"
+          role="img"
+        >
+          <rect
+            x="0"
+            y="0"
+            width="1000"
+            height="220"
+            rx="12"
+            fill="#ffffff"
+          />
+
+          <line
+            x1="40"
+            y1="110"
+            x2="960"
+            y2="110"
+            stroke="#cbd5e1"
+            stroke-width="2"
+            stroke-dasharray="6 6"
+          />
+
           <path
-            d="M 40 110
-               C 80 60, 120 60, 160 110
-               S 240 160, 280 110
-               S 360 60, 400 110
-               S 480 160, 520 110
-               S 600 60, 640 110
-               S 720 160, 760 110
-               S 840 60, 880 110
-               S 920 160, 960 110"
+            d="
+              M 40 110
+              C 80 60, 120 60, 160 110
+              S 240 160, 280 110
+              S 360 60, 400 110
+              S 480 160, 520 110
+              S 600 60, 640 110
+              S 720 160, 760 110
+              S 840 60, 880 110
+              S 920 160, 960 110
+            "
             fill="none"
             stroke="#2563eb"
             stroke-width="5"
-            stroke-linecap="round"/>
+            stroke-linecap="round"
+          />
         </svg>
       </div>
     </header>
@@ -166,15 +198,33 @@
       <h2 id="course-resources">Course Resources</h2>
 
       <div class="resource-grid">
-        <a class="resource-card"
-           href="https://setuo365-my.sharepoint.com/:o:/g/personal/gary_cahill_setu_ie/IgBrANfiP7_vSJ8m4UB1JRsVAUvmHVCtvV23pUA-9k7yu1o?e=H8b0Hr"
-           target="_blank"
-           rel="noopener noreferrer">
-          <span class="resource-title">📘 OneNote Notebook</span>
+
+        <a
+          class="resource-card"
+          href="https://setuo365-my.sharepoint.com/:o:/g/personal/gary_cahill_setu_ie/IgBrANfiP7_vSJ8m4UB1JRsVAUvmHVCtvV23pUA-9k7yu1o?e=H8b0Hr"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span class="resource-title">
+            📘 OneNote Notebook
+          </span>
+
           <span class="resource-description">
-            Lecture notes, worked examples, class materials and additional course resources.
+            Lecture notes, worked examples, class materials and additional
+            course resources.
           </span>
         </a>
+
+        <a class="resource-card" href="generalstuff.html">
+          <span class="resource-title">
+            🔧 General Resources
+          </span>
+
+          <span class="resource-description">
+            General information, useful links and additional course materials.
+          </span>
+        </a>
+
       </div>
     </section>
 
@@ -182,12 +232,18 @@
       <h2 id="flashcards">Flashcard Sets</h2>
 
       <div class="resource-grid">
+
         <a class="resource-card" href="../PhysicsSet1.html">
-          <span class="resource-title">🃏 Physics Set 1</span>
+          <span class="resource-title">
+            🃏 Physics Set 1
+          </span>
+
           <span class="resource-description">
-            Topic-based flashcards for reviewing key ideas, equations and diagrams.
+            Topic-based flashcards for reviewing key ideas, equations and
+            diagrams.
           </span>
         </a>
+
       </div>
     </section>
 
@@ -195,26 +251,37 @@
       <h2 id="exam-flashcards">Exam Flashcards</h2>
 
       <div class="resource-grid">
+
         <a class="resource-card" href="../PHY2049Exam1.html">
-          <span class="resource-title">📝 Exam 1</span>
+          <span class="resource-title">
+            📝 Exam 1
+          </span>
+
           <span class="resource-description">
             Revision flashcards for the material covered in Exam 1.
           </span>
         </a>
 
         <a class="resource-card" href="../PHY2049Exam2.html">
-          <span class="resource-title">📝 Exam 2</span>
+          <span class="resource-title">
+            📝 Exam 2
+          </span>
+
           <span class="resource-description">
             Revision flashcards for the material covered in Exam 2.
           </span>
         </a>
 
         <a class="resource-card" href="../PHY2049Exam3.html">
-          <span class="resource-title">📝 Exam 3</span>
+          <span class="resource-title">
+            📝 Exam 3
+          </span>
+
           <span class="resource-description">
             Revision flashcards for the material covered in Exam 3.
           </span>
         </a>
+
       </div>
     </section>
 
