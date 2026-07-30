@@ -107,9 +107,125 @@
       .controls { position:static; }
     }
   
-/* ---------- Compact print / PDF version: 8 cards per A4 page ---------- */
+/* ---------- Reliable print / PDF version: 6 cards per A4 page ---------- */
 #print-area {
   display: none;
+}
+
+/* These rules also apply while the print area is being prepared off-screen.
+   This means MathJax and the SVGs are measured at their real print size. */
+#print-area .print-page {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-rows: repeat(3, minmax(0, 1fr));
+  gap: 4mm;
+  width: 194mm;
+  height: 279mm; /* 2 mm safety allowance inside the printable height */
+  box-sizing: border-box;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+}
+
+#print-area .print-page:last-child {
+  page-break-after: auto;
+  break-after: auto;
+}
+
+#print-area .print-card {
+  min-width: 0;
+  min-height: 0;
+  border: 1.1px solid #d1d5db;
+  border-radius: 7px;
+  padding: 3.2mm;
+  background: white;
+  font-family: Arial, sans-serif;
+  box-sizing: border-box;
+  overflow: hidden;
+  break-inside: avoid;
+  page-break-inside: avoid;
+  display: flex;
+  flex-direction: column;
+}
+
+#print-area .print-topic {
+  align-self: flex-start;
+  display: inline-block;
+  flex: 0 0 auto;
+  font-size: 8px;
+  color: #374151;
+  background: #eef2ff;
+  border: 1px solid #c7d2fe;
+  border-radius: 999px;
+  padding: 1px 5px;
+  margin-bottom: 2px;
+  line-height: 1.05;
+}
+
+#print-area .print-term {
+  flex: 0 0 auto;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1.12;
+  margin-bottom: 2px;
+  overflow-wrap: anywhere;
+}
+
+#print-area .print-diagram {
+  width: 100%;
+  height: 28mm;
+  flex: 0 0 28mm;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 2px 0;
+}
+
+#print-area .print-diagram > svg {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  preserveAspectRatio: xMidYMid meet;
+}
+
+#print-area .print-equation {
+  flex: 0 0 auto;
+  font-size: 8px;
+  background: #f9fafb;
+  border: 1px dashed #d1d5db;
+  border-radius: 5px;
+  padding: 1.5px 2px;
+  margin: 2px 0;
+  text-align: center;
+  line-height: 1.08;
+  overflow: visible;
+}
+
+#print-area .print-answer {
+  flex: 1 1 auto;
+  min-height: 0;
+  font-size: 7.6px;
+  line-height: 1.12;
+  margin-top: 2px;
+  overflow-wrap: anywhere;
+}
+
+#print-area .print-card mjx-container {
+  display: block !important;
+  max-width: 100% !important;
+  overflow: visible !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  text-align: center !important;
+}
+
+#print-area .print-card mjx-container svg {
+  max-width: 100% !important;
+  height: auto !important;
+  overflow: visible !important;
 }
 
 @media print {
@@ -118,9 +234,15 @@
     margin: 8mm;
   }
 
+  html,
   body {
+    width: 210mm;
+    margin: 0 !important;
+    padding: 0 !important;
     background: white;
     color: #111827;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 
   .page-title,
@@ -131,103 +253,11 @@
 
   #print-area {
     display: block !important;
-  }
-
-  .print-page {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(4, 1fr);
-    gap: 4mm;
-    height: 281mm;
-    page-break-after: always;
-    break-after: page;
-    box-sizing: border-box;
-  }
-
-  .print-page:last-child {
-    page-break-after: auto;
-    break-after: auto;
-  }
-
-  .print-card {
-    border: 1.1px solid #d1d5db;
-    border-radius: 7px;
-    padding: 3.6mm;
-    background: white;
-    font-family: Arial, sans-serif;
-    box-sizing: border-box;
-    overflow: hidden;
-    break-inside: avoid;
-    page-break-inside: avoid;
-  }
-
-  .print-topic {
-    display: inline-block;
-    font-size: 8px;
-    color: #374151;
-    background: #eef2ff;
-    border: 1px solid #c7d2fe;
-    border-radius: 999px;
-    padding: 1px 5px;
-    margin-bottom: 2px;
-    line-height: 1.05;
-  }
-
-  .print-term {
-    font-size: 10px;
-    font-weight: 700;
-    line-height: 1.12;
-    margin-bottom: 2px;
-  }
-
-  .print-equation {
-    font-size: 8.2px;
-    background: #f9fafb;
-    border: 1px dashed #d1d5db;
-    border-radius: 5px;
-    padding: 1.8px;
-    margin: 2px 0;
-    text-align: center;
-    line-height: 1.1;
-    max-height: 10mm;
-    overflow: hidden;
-  }
-
-  .print-answer {
-    font-size: 7.9px;
-    line-height: 1.13;
-    margin-top: 2px;
-  }
-
-  .print-diagram {
-    width: 100%;
-    max-height: 25mm;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: 2px 0;
-  }
-
-  .print-diagram svg {
-    max-width: 100%;
-    max-height: 25mm;
-    height: auto;
-  }
-
-  .print-card mjx-container {
-    max-width: 100% !important;
-    overflow: visible !important;
+    width: 194mm !important;
     margin: 0 !important;
+    padding: 0 !important;
   }
 
-  .print-card mjx-container svg {
-    max-width: 100% !important;
-    height: auto !important;
-    overflow: visible !important;
-  }
-
-  /* Hide rating/local-storage UI and any animation/control clutter in print */
   .rating-buttons {
     display: none !important;
   }
@@ -286,7 +316,7 @@
 const flashcards = [
 
 {
-  topic: "Angles",
+   topic: "Earth & Space",
 
   term: "How can a ruler at arm’s length be used to estimate angular size?",
 
@@ -534,7 +564,7 @@ const flashcards = [
 },
 
 {
-  topic: "Rainbows",
+   topic: "Earth & Space",
 
   term: "Rainbows and Anti Solar Point",
 
@@ -1239,6 +1269,402 @@ const flashcards = [
         fill="#9ca3af">
     The Milky Way runs through Cassiopeia and Cygnus in the northern sky.
   </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "Which bright stars lie near the ecliptic?",
+
+  equation: "\\text{Regulus} \\rightarrow \\text{Spica} \\rightarrow \\text{Antares}",
+
+  answer: "The ecliptic passes near Regulus, Spica and Antares, so the Moon and bright planets are often found close to these stars. The dashed line shows the approximate path of the ecliptic. The Plough, Vega, Altair and Arcturus are useful bright reference stars, but they lie well away from the ecliptic.",
+
+  svg: `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <filter id="softGlow" x="-100%" y="-100%" width="300%" height="300%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="420" height="240" fill="#020617"/>
+
+  <!-- approximate ecliptic -->
+  <path
+    d="M 10 178
+       C 55 184, 90 191, 135 198
+       C 175 204, 210 209, 224 210
+       C 270 214, 330 210, 400 202"
+    fill="none"
+    stroke="#fbbf24"
+    stroke-width="2.5"
+    stroke-dasharray="7 5"/>
+
+  <text x="290" y="206"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#fbbf24">
+    ecliptic
+  </text>
+
+  <!-- Plough lines -->
+  <polyline
+    points="281,82 298,70 311,70 328,68 337,78 363,69 359,54"
+    fill="none"
+    stroke="#cbd5e1"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-linejoin="round"/>
+
+  <!-- stars -->
+  <g filter="url(#softGlow)">
+    <!-- Plough -->
+    <g fill="#ffffff">
+      <circle cx="281" cy="82" r="3.5"/>
+      <circle cx="298" cy="70" r="3.5"/>
+      <circle cx="311" cy="70" r="3.5"/>
+      <circle cx="328" cy="68" r="3.5"/>
+      <circle cx="337" cy="78" r="3.5"/>
+      <circle cx="363" cy="69" r="3.5"/>
+      <circle cx="359" cy="54" r="3.5"/>
+    </g>
+
+    <!-- Altair -->
+    <circle cx="20" cy="35" r="4.6" fill="#e0f2fe"/>
+    <circle cx="20" cy="35" r="8" fill="#93c5fd" opacity="0.15"/>
+
+    <!-- Vega -->
+    <circle cx="143" cy="20" r="5.2" fill="#f8fafc"/>
+    <circle cx="143" cy="20" r="9" fill="#bfdbfe" opacity="0.15"/>
+
+    <!-- Arcturus -->
+    <circle cx="231" cy="138" r="5.3" fill="#fdba74"/>
+    <circle cx="231" cy="138" r="9" fill="#fb923c" opacity="0.14"/>
+
+    <!-- Antares -->
+    <circle cx="90" cy="191" r="5.4" fill="#fca5a5"/>
+    <circle cx="90" cy="191" r="10" fill="#ef4444" opacity="0.16"/>
+
+    <!-- Spica -->
+    <circle cx="224" cy="210" r="4.8" fill="#dbeafe"/>
+    <circle cx="224" cy="210" r="8" fill="#93c5fd" opacity="0.14"/>
+
+    <!-- Regulus -->
+    <circle cx="400" cy="202" r="4.8" fill="#f8fafc"/>
+    <circle cx="400" cy="202" r="8" fill="#fde68a" opacity="0.12"/>
+  </g>
+
+  <!-- highlight stars close to ecliptic -->
+  <g fill="none" stroke="#fbbf24" stroke-width="1.2" opacity="0.9">
+    <circle cx="90" cy="191" r="8"/>
+    <circle cx="224" cy="210" r="8"/>
+    <circle cx="400" cy="202" r="8"/>
+  </g>
+
+  <!-- labels -->
+  <g font-family="Arial, sans-serif" font-weight="700">
+    <text x="314" y="48" font-size="12" fill="#ffffff">Plough</text>
+
+    <text x="28" y="31" font-size="12" fill="#bfdbfe">Altair</text>
+
+    <text x="150" y="18" font-size="12" fill="#e2e8f0">Vega</text>
+
+    <text x="238" y="136" font-size="12" fill="#fdba74">Arcturus</text>
+
+    <text x="54" y="198" font-size="12" fill="#fca5a5">Antares</text>
+
+    <text x="232" y="226" font-size="12" fill="#bfdbfe">Spica</text>
+
+    <text x="344" y="208" font-size="12" fill="#fde68a">Regulus</text>
+  </g>
+
+  <!-- small background stars -->
+  <g fill="#ffffff" opacity="0.45">
+    <circle cx="48" cy="18" r="1"/>
+    <circle cx="82" cy="40" r="1"/>
+    <circle cx="118" cy="52" r="1"/>
+    <circle cx="168" cy="45" r="1"/>
+    <circle cx="202" cy="28" r="1"/>
+    <circle cx="258" cy="24" r="1"/>
+    <circle cx="391" cy="28" r="1"/>
+    <circle cx="44" cy="98" r="1"/>
+    <circle cx="152" cy="92" r="1"/>
+    <circle cx="188" cy="156" r="1"/>
+    <circle cx="286" cy="154" r="1"/>
+    <circle cx="340" cy="128" r="1"/>
+  </g>
+
+</svg>
+`
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "What bright stars and star patterns can you find around Orion?",
+
+  equation: "\\text{Sirius}+\\text{Procyon}+\\text{Betelgeuse}=\\text{Winter Triangle}",
+
+  answer: "Orion is a useful guide to the winter sky. Betelgeuse, Sirius and Procyon form the Winter Triangle. Orion’s three belt stars make the constellation easy to recognise, and the Orion Nebula appears as a faint fuzzy patch in the sword below the belt. Extending the belt in one direction leads towards Sirius; in the opposite direction it leads towards the reddish star Aldebaran and then the Pleiades. Castor and Pollux mark the constellation Gemini. The dashed line shows the approximate position of the ecliptic, close to Aldebaran and the Pleiades.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <filter id="winterGlowCorrected"
+            x="-100%" y="-100%"
+            width="300%" height="300%">
+      <feGaussianBlur stdDeviation="1.8" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <radialGradient id="orionNebulaCorrected">
+      <stop offset="0%"
+            stop-color="#f5d0fe"
+            stop-opacity="0.85"/>
+      <stop offset="50%"
+            stop-color="#c084fc"
+            stop-opacity="0.35"/>
+      <stop offset="100%"
+            stop-color="#7e22ce"
+            stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Night sky -->
+  <rect width="420" height="240" fill="#020617"/>
+
+  <!-- Approximate ecliptic -->
+  <path d="
+    M 129.9 73.1
+    Q 185 68 242.8 68.6
+    Q 280 68 314.2 70.9"
+    fill="none"
+    stroke="#fbbf24"
+    stroke-width="2.2"
+    stroke-dasharray="7 5"
+    stroke-linecap="round"/>
+
+  <text x="258" y="60"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#fbbf24">
+    ecliptic
+  </text>
+
+  <!-- Winter Triangle -->
+  <path d="
+    M 197.5 129.5
+    L 88.5 123.7
+    L 131.9 225
+    Z"
+    fill="none"
+    stroke="#60a5fa"
+    stroke-width="1.4"
+    stroke-dasharray="5 5"
+    opacity="0.75"/>
+
+  <text x="113" y="164"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        fill="#60a5fa">
+    Winter Triangle
+  </text>
+
+  <!-- Orion constellation lines -->
+  <g fill="none"
+     stroke="#cbd5e1"
+     stroke-width="1.6"
+     stroke-linecap="round"
+     stroke-linejoin="round"
+     opacity="0.8">
+
+    <!-- Shoulders -->
+    <line x1="197.5" y1="129.5"
+          x2="227.4" y2="137.2"/>
+
+    <!-- Shoulders to belt -->
+    <line x1="197.5" y1="129.5"
+          x2="208.1" y2="170.0"/>
+
+    <line x1="227.4" y1="137.2"
+          x2="217.7" y2="164.2"/>
+
+    <!-- Orion's Belt -->
+    <polyline points="
+      208.1,170.0
+      211.9,167.1
+      217.7,164.2"
+      stroke="#f8fafc"
+      stroke-width="2"/>
+
+    <!-- Sword -->
+    <line x1="211.9" y1="167.1"
+          x2="211.9" y2="185.5"/>
+
+    <!-- Legs -->
+    <line x1="208.1" y1="170.0"
+          x2="196.5" y2="201.8"/>
+
+    <line x1="217.7" y1="164.2"
+          x2="232.2" y2="199.9"/>
+  </g>
+
+  <!-- Main stars -->
+  <g filter="url(#winterGlowCorrected)">
+
+    <!-- Betelgeuse -->
+    <circle cx="197.5" cy="129.5" r="5.2"
+            fill="#fb923c"/>
+
+    <!-- Bellatrix -->
+    <circle cx="227.4" cy="137.2" r="4"
+            fill="#f8fafc"/>
+
+    <!-- Orion's Belt -->
+    <circle cx="208.1" cy="170.0" r="3.2"
+            fill="#ffffff"/>
+
+    <circle cx="211.9" cy="167.1" r="3.2"
+            fill="#ffffff"/>
+
+    <circle cx="217.7" cy="164.2" r="3.2"
+            fill="#ffffff"/>
+
+    <!-- Orion Nebula -->
+    <circle cx="211.9" cy="185.5" r="9"
+            fill="url(#orionNebulaCorrected)"/>
+
+    <circle cx="211.9" cy="185.5" r="2.3"
+            fill="#f5d0fe"/>
+
+    <!-- Lower-left Orion star -->
+    <circle cx="196.5" cy="201.8" r="3.8"
+            fill="#e0f2fe"/>
+
+    <!-- Rigel -->
+    <circle cx="232.2" cy="199.9" r="5"
+            fill="#dbeafe"/>
+
+    <!-- Sirius glow -->
+    <circle cx="131.9" cy="225" r="10"
+            fill="#93c5fd"
+            opacity="0.18"/>
+
+    <circle cx="131.9" cy="225" r="5.8"
+            fill="#ffffff"
+            stroke="#bfdbfe"
+            stroke-width="1.2"/>
+
+    <!-- Procyon -->
+    <circle cx="88.5" cy="123.7" r="4.8"
+            fill="#f8fafc"/>
+
+    <!-- Aldebaran -->
+    <circle cx="280.4" cy="96.4" r="5.2"
+            fill="#fdba74"/>
+
+    <!-- Pollux -->
+    <circle cx="103.9" cy="28.3" r="4.6"
+            fill="#fde68a"/>
+
+    <!-- Castor -->
+    <circle cx="118.4" cy="15" r="4.4"
+            fill="#f8fafc"/>
+  </g>
+
+  <!-- Castor and Pollux -->
+  <line x1="103.9" y1="28.3"
+        x2="118.4" y2="15"
+        stroke="#cbd5e1"
+        stroke-width="1.3"
+        opacity="0.65"/>
+
+  <!-- Pleiades -->
+  <g fill="#ffffff"
+     filter="url(#winterGlowCorrected)">
+    <circle cx="327.7" cy="60.2" r="1.7"/>
+    <circle cx="329.6" cy="60.1" r="1.6"/>
+    <circle cx="330.6" cy="60.8" r="1.5"/>
+    <circle cx="331.5" cy="59.8" r="1.5"/>
+    <circle cx="330.6" cy="58.6" r="1.4"/>
+    <circle cx="331.5" cy="58.0" r="1.4"/>
+  </g>
+
+  <ellipse cx="329.9" cy="59.5"
+           rx="9" ry="7"
+           fill="#93c5fd"
+           fill-opacity="0.08"
+           stroke="#93c5fd"
+           stroke-width="0.8"/>
+
+  <!-- Labels -->
+  <g font-family="Arial, sans-serif"
+     font-size="10"
+     font-weight="700">
+
+    <text x="204" y="124" fill="#fdba74">
+      Betelgeuse
+    </text>
+
+    <text x="234" y="137" fill="#e2e8f0">
+      Bellatrix
+    </text>
+
+    <text x="207" y="157"
+          text-anchor="middle"
+          fill="#f8fafc">
+      Orion’s Belt
+    </text>
+
+    <text x="220" y="187" fill="#e9d5ff">
+      Orion Nebula
+    </text>
+
+    <text x="239" y="204" fill="#bfdbfe">
+      Rigel
+    </text>
+
+    <text x="139" y="229" fill="#bfdbfe">
+      Sirius
+    </text>
+
+    <text x="50" y="121" fill="#e2e8f0">
+      Procyon
+    </text>
+
+    <text x="288" y="98" fill="#fdba74">
+      Aldebaran
+    </text>
+
+    <text x="339" y="62" fill="#bfdbfe">
+      Pleiades
+    </text>
+
+    <text x="73" y="30" fill="#fde68a">
+      Pollux
+    </text>
+
+    <text x="123" y="17" fill="#e2e8f0">
+      Castor
+    </text>
+  </g>
 
 </svg>
 `
@@ -2267,15 +2693,15 @@ async function printFlashcards() {
   const printArea = document.createElement('div');
   printArea.id = 'print-area';
 
-  // Make it visible off-screen while MathJax lays out equations.
-  // The @media print rules then take over for the actual printout.
+  // Use the actual A4 printable width while MathJax and SVGs are measured.
   printArea.style.display = 'block';
   printArea.style.position = 'absolute';
   printArea.style.left = '-10000px';
   printArea.style.top = '0';
-  printArea.style.width = '210mm';
+  printArea.style.width = '194mm';
 
-  const cardsPerPage = 8;
+  // Six cards give enough vertical space for the longer answers and equations.
+  const cardsPerPage = 6;
 
   for (let i = 0; i < flashcards.length; i += cardsPerPage) {
     const page = document.createElement('div');
@@ -2308,12 +2734,23 @@ async function printFlashcards() {
     await MathJax.typesetPromise([printArea]);
   }
 
-  // Remove off-screen styling so print CSS can place pages normally.
-  printArea.removeAttribute('style');
+  if (document.fonts && document.fonts.ready) {
+    await document.fonts.ready;
+  }
 
-  setTimeout(() => {
-    window.print();
-  }, 300);
+  // Give the browser two complete layout frames before opening print preview.
+  await new Promise(resolve =>
+    requestAnimationFrame(() => requestAnimationFrame(resolve))
+  );
+
+  // Remove only the off-screen positioning. The shared print rules remain active.
+  printArea.style.position = '';
+  printArea.style.left = '';
+  printArea.style.top = '';
+  printArea.style.width = '';
+  printArea.style.display = '';
+
+  window.print();
 }
 
 renderTopicButtons();
