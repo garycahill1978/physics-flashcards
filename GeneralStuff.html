@@ -429,6 +429,669 @@ const flashcards = [
 {
   topic: "Earth & Space",
 
+  term: "How was Earth’s circumference estimated by Eratosthenes?",
+
+  equation: "\\begin{aligned}\\frac{7.2^\\circ}{360^\\circ}&=\\frac{1}{50}\\\\[3pt]C&\\approx50d\\\\[3pt]C&\\approx50(800\\ \\text{km})\\\\[3pt]C&\\approx40{,}000\\ \\text{km}\\end{aligned}",
+
+  answer: "Earth’s circumference is approximately 40,000 km. Around 240 BCE, Eratosthenes compared the midday Sun at Syene, where the Sun was nearly overhead, with the shadow cast by a vertical stick at Alexandria. The shadow angle was about 7.2°, which is 1/50 of a full circle. He therefore multiplied the distance between the cities, about 800 km, by 50 and obtained a value close to 40,000 km. The angle in the diagram is exaggerated for clarity.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="earthRayArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#f59e0b"/>
+    </marker>
+
+    <radialGradient id="earthGradient"
+                    cx="38%" cy="32%" r="70%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="420" height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Parallel sunlight -->
+  <g stroke="#f59e0b"
+     stroke-width="2"
+     marker-end="url(#earthRayArrow)">
+    <line x1="92" y1="8"
+          x2="92" y2="38"/>
+    <line x1="108" y1="8"
+          x2="108" y2="38"/>
+    <line x1="124" y1="8"
+          x2="124" y2="38"/>
+  </g>
+
+  <text x="34" y="17"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#b45309">
+    parallel rays from the Sun
+  </text>
+
+  <!-- Earth -->
+  <circle cx="119" cy="133" r="89"
+          fill="url(#earthGradient)"
+          stroke="#1e3a8a"
+          stroke-width="2"/>
+
+  <!-- Simple continents -->
+  <path d="
+    M 61 94
+    C 75 75, 92 76, 99 88
+    C 106 99, 95 110, 81 109
+    C 70 108, 67 121, 56 118
+    C 48 112, 50 102, 61 94 Z"
+    fill="#86efac"
+    opacity="0.9"/>
+
+  <path d="
+    M 142 91
+    C 157 78, 179 84, 185 99
+    C 189 110, 176 117, 166 115
+    C 158 113, 155 126, 144 128
+    C 133 123, 132 104, 142 91 Z"
+    fill="#86efac"
+    opacity="0.9"/>
+
+  <path d="
+    M 132 156
+    C 146 149, 159 157, 158 170
+    C 156 184, 143 194, 133 188
+    C 126 182, 121 163, 132 156 Z"
+    fill="#86efac"
+    opacity="0.9"/>
+
+  <!-- Centre -->
+  <circle cx="119" cy="133" r="2.5"
+          fill="#0f172a"/>
+
+  <!-- Radii to the two cities -->
+  <line x1="119" y1="133"
+        x2="119" y2="44"
+        stroke="#ffffff"
+        stroke-width="1.7"
+        opacity="0.9"/>
+
+  <line x1="119" y1="133"
+        x2="95" y2="47"
+        stroke="#ffffff"
+        stroke-width="1.7"
+        opacity="0.9"/>
+
+  <!-- Central angle (exaggerated for clarity) -->
+  <path d="
+    M 119 104
+    A 29 29 0 0 0 111 105"
+    fill="none"
+    stroke="#fde047"
+    stroke-width="3"/>
+
+  <text x="82" y="116"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#ffffff">
+    7.2°
+  </text>
+
+  <!-- Syene stick -->
+  <line x1="119" y1="44"
+        x2="119" y2="30"
+        stroke="#111827"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <!-- Alexandria stick -->
+  <line x1="95" y1="47"
+        x2="91" y2="34"
+        stroke="#111827"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <!-- City points -->
+  <circle cx="119" cy="44" r="3.5"
+          fill="#ef4444"
+          stroke="#ffffff"
+          stroke-width="1"/>
+
+  <circle cx="95" cy="47" r="3.5"
+          fill="#ef4444"
+          stroke="#ffffff"
+          stroke-width="1"/>
+
+  <!-- Labels -->
+  <line x1="119" y1="37"
+        x2="154" y2="26"
+        stroke="#64748b"
+        stroke-width="1"/>
+
+  <text x="158" y="25"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#0f172a">
+    Syene
+  </text>
+
+  <text x="158" y="37"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#475569">
+    Sun nearly overhead
+  </text>
+
+  <line x1="95" y1="40"
+        x2="50" y2="31"
+        stroke="#64748b"
+        stroke-width="1"/>
+
+  <text x="8" y="27"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#0f172a">
+    Alexandria
+  </text>
+
+  <text x="8" y="39"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#475569">
+    shadow angle 7.2°
+  </text>
+
+  <!-- Surface distance -->
+  <path d="
+    M 95 50
+    Q 107 41 119 50"
+    fill="none"
+    stroke="#ef4444"
+    stroke-width="2"
+    stroke-dasharray="3 2"/>
+
+  <text x="50" y="66"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#7f1d1d">
+    distance ≈ 800 km
+  </text>
+
+  <text x="119" y="220"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        fill="#e0f2fe">
+    Earth shown in cross-section — angle exaggerated for clarity
+  </text>
+
+  <!-- Calculation panel -->
+  <rect x="230" y="32"
+        width="176" height="170"
+        rx="12"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.5"/>
+
+  <text x="318" y="56"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Eratosthenes’ calculation
+  </text>
+
+  <line x1="247" y1="66"
+        x2="389" y2="66"
+        stroke="#e2e8f0"
+        stroke-width="1"/>
+
+  <text x="318" y="88"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        fill="#334155">
+    7.2° is 1/50 of 360°
+  </text>
+
+  <text x="318" y="116"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        fill="#334155">
+    C ≈ 50 × distance
+  </text>
+
+  <text x="318" y="142"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        fill="#334155">
+    C ≈ 50 × 800 km
+  </text>
+
+  <rect x="253" y="156"
+        width="130" height="31"
+        rx="8"
+        fill="#dbeafe"
+        stroke="#60a5fa"/>
+
+  <text x="318" y="177"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="16"
+        font-weight="700"
+        fill="#1d4ed8">
+    C ≈ 40,000 km
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "How can the North Star be used to estimate Earth’s circumference?",
+
+  equation: "\\begin{aligned}\\Delta\\theta&=\\theta_2-\\theta_1\\\\[3pt]\\frac{\\Delta\\theta}{360^\\circ}&=\\frac{d}{C}\\\\[3pt]C&=\\frac{360^\\circ d}{\\Delta\\theta}\\\\[5pt]1^\\circ&\\approx111\\ \\text{km}\\\\[3pt]C&\\approx360(111\\ \\text{km})\\approx40{,}000\\ \\text{km}\\end{aligned}",
+
+  answer: "The altitude of the north celestial pole above the horizon is approximately equal to the observer’s latitude. Measure its altitude at two places separated by a known north–south distance d. The change in altitude, Δθ, equals the angle between the two places at Earth’s centre. A change of about 1° after travelling 111 km therefore gives an Earth circumference of approximately 360 × 111 km, or 40,000 km. Today Polaris provides a convenient marker for the north celestial pole. Aristotle did not perform this calculation, but he used changes in the visible stars with latitude as evidence that Earth is spherical.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <radialGradient id="northEarthGradient"
+                    cx="38%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </radialGradient>
+
+    <filter id="northStarGlow"
+            x="-100%" y="-100%"
+            width="300%" height="300%">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <marker id="northDistanceArrow"
+            viewBox="0 0 10 10"
+            refX="5"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#ef4444"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- LEFT PANEL: Earth geometry -->
+  <text x="100" y="19"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Earth viewed in cross-section
+  </text>
+
+  <!-- Earth -->
+  <circle cx="100"
+          cy="145"
+          r="74"
+          fill="url(#northEarthGradient)"
+          stroke="#1e3a8a"
+          stroke-width="2"/>
+
+  <!-- Simple continents -->
+  <path d="
+    M 48 125
+    C 57 106, 75 102, 85 113
+    C 95 124, 86 137, 72 136
+    C 61 135, 58 147, 47 143
+    C 40 139, 40 131, 48 125 Z"
+    fill="#86efac"
+    opacity="0.9"/>
+
+  <path d="
+    M 116 112
+    C 129 101, 146 106, 151 119
+    C 156 132, 143 138, 134 136
+    C 126 134, 123 146, 114 148
+    C 104 142, 106 121, 116 112 Z"
+    fill="#86efac"
+    opacity="0.9"/>
+
+  <!-- Centre of Earth -->
+  <circle cx="100"
+          cy="145"
+          r="2.7"
+          fill="#0f172a"/>
+
+  <text x="106" y="159"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#e0f2fe">
+    centre
+  </text>
+
+  <!-- Radii to the two observation points -->
+  <line x1="100" y1="145"
+        x2="65.3" y2="79.7"
+        stroke="#ffffff"
+        stroke-width="1.8"/>
+
+  <line x1="100" y1="145"
+        x2="112.9" y2="72.2"
+        stroke="#ffffff"
+        stroke-width="1.8"/>
+
+  <!-- Central angle, exaggerated -->
+  <path d="
+    M 86.8 120.3
+    A 28 28 0 0 1 104.9 117.4"
+    fill="none"
+    stroke="#fde047"
+    stroke-width="3"
+    stroke-linecap="round"/>
+
+  <text x="92" y="112"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#ffffff">
+    Δθ
+  </text>
+
+  <!-- Surface arc between the locations -->
+  <path d="
+    M 65.3 79.7
+    A 74 74 0 0 1 112.9 72.2"
+    fill="none"
+    stroke="#ef4444"
+    stroke-width="2.4"
+    marker-start="url(#northDistanceArrow)"
+    marker-end="url(#northDistanceArrow)"/>
+
+  <text x="87" y="55"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#b91c1c">
+    known distance d
+  </text>
+
+  <!-- Observation points -->
+  <circle cx="65.3"
+          cy="79.7"
+          r="4"
+          fill="#ef4444"
+          stroke="#ffffff"
+          stroke-width="1.2"/>
+
+  <circle cx="112.9"
+          cy="72.2"
+          r="4"
+          fill="#ef4444"
+          stroke="#ffffff"
+          stroke-width="1.2"/>
+
+  <text x="38" y="76"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#0f172a">
+    Place 1
+  </text>
+
+  <text x="119" y="70"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#0f172a">
+    Place 2
+  </text>
+
+  <!-- Exaggeration note -->
+  <text x="100" y="231"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#475569">
+    Angle exaggerated for clarity
+  </text>
+
+  <!-- Divider -->
+  <line x1="196" y1="18"
+        x2="196" y2="224"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <!-- RIGHT PANEL: Polaris altitude observations -->
+  <text x="307" y="19"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Measure the northern sky
+  </text>
+
+  <!-- Place 1 horizon -->
+  <text x="208" y="52"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#475569">
+    Place 1
+  </text>
+
+  <line x1="235" y1="84"
+        x2="390" y2="84"
+        stroke="#64748b"
+        stroke-width="1.6"/>
+
+  <text x="350" y="80"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    horizon
+  </text>
+
+  <!-- Observer 1 -->
+  <circle cx="257" cy="76"
+          r="4"
+          fill="#111827"/>
+
+  <line x1="257" y1="80"
+        x2="257" y2="91"
+        stroke="#111827"
+        stroke-width="2"/>
+
+  <!-- Sight line 1 -->
+  <line x1="257" y1="84"
+        x2="334" y2="40"
+        stroke="#2563eb"
+        stroke-width="2"/>
+
+  <path d="
+    M 278 84
+    A 21 21 0 0 0 275 73"
+    fill="none"
+    stroke="#f59e0b"
+    stroke-width="2"/>
+
+  <text x="281" y="71"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#b45309">
+    θ₁
+  </text>
+
+  <!-- Polaris 1 -->
+  <g filter="url(#northStarGlow)"
+     transform="translate(334 40)">
+    <path d="
+      M 0 -7
+      L 2 -2
+      L 7 0
+      L 2 2
+      L 0 7
+      L -2 2
+      L -7 0
+      L -2 -2 Z"
+      fill="#fde047"/>
+  </g>
+
+  <!-- Place 2 horizon -->
+  <text x="208" y="115"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#475569">
+    Place 2
+  </text>
+
+  <line x1="235" y1="151"
+        x2="390" y2="151"
+        stroke="#64748b"
+        stroke-width="1.6"/>
+
+  <text x="350" y="147"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    horizon
+  </text>
+
+  <!-- Observer 2 -->
+  <circle cx="257" cy="143"
+          r="4"
+          fill="#111827"/>
+
+  <line x1="257" y1="147"
+        x2="257" y2="158"
+        stroke="#111827"
+        stroke-width="2"/>
+
+  <!-- Sight line 2 -->
+  <line x1="257" y1="151"
+        x2="315" y2="91"
+        stroke="#2563eb"
+        stroke-width="2"/>
+
+  <path d="
+    M 278 151
+    A 21 21 0 0 0 272 136"
+    fill="none"
+    stroke="#f59e0b"
+    stroke-width="2"/>
+
+  <text x="278" y="133"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#b45309">
+    θ₂
+  </text>
+
+  <!-- Polaris 2 -->
+  <g filter="url(#northStarGlow)"
+     transform="translate(315 91)">
+    <path d="
+      M 0 -7
+      L 2 -2
+      L 7 0
+      L 2 2
+      L 0 7
+      L -2 2
+      L -7 0
+      L -2 -2 Z"
+      fill="#fde047"/>
+  </g>
+
+  <text x="365" y="38"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#854d0e">
+    Polaris
+  </text>
+
+  <!-- Calculation box -->
+  <rect x="211" y="169"
+        width="194" height="56"
+        rx="9"
+        fill="#ffffff"
+        stroke="#93c5fd"
+        stroke-width="1.4"/>
+
+  <text x="308" y="187"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Example
+  </text>
+
+  <text x="308" y="203"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        fill="#334155">
+    111 km produces a change of about 1°
+  </text>
+
+  <text x="308" y="219"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#1d4ed8">
+    C ≈ 360 × 111 km ≈ 40,000 km
+  </text>
+
+</svg>
+`
+},
+
+
+{
+  topic: "Earth & Space",
+
   term: "How large is the Sun’s image when projected through a small aperture?",
 
   equation: "\\begin{aligned}\\theta_{\\text{Sun}}&\\approx0.5^\\circ\\approx0.01\\ \\text{rad}\\\\[3pt]\\frac{D}{L}&\\approx\\theta_{\\text{Sun}}\\\\[3pt]D_{\\text{cm}}&\\approx L_{\\text{m}}\\end{aligned}",
@@ -2444,9 +3107,9 @@ height="297mm"
 
   term: "How can Polaris be used to find your latitude?",
 
-  equation: "h_{\\text{Polaris}}\\approx\\phi",
+  equation: "\\begin{aligned}h_{\\text{Polaris}}&\\approx\\phi\\\\[4pt]111\\ \\text{km north}&\\Rightarrow\\Delta h_{\\text{Polaris}}\\approx1^\\circ\\end{aligned}",
 
-  answer: "In the Northern Hemisphere, the angular height of Polaris above the northern horizon is approximately equal to the observer’s latitude. Face north and measure the angle from the horizon up to Polaris. For example, from Ireland at a latitude of about 53° north, Polaris appears roughly 53° above the horizon. At the equator it would be close to the horizon, while at the North Pole it would be almost directly overhead.",
+  answer: "In the Northern Hemisphere, the angular height of Polaris above the northern horizon is approximately equal to the observer’s latitude. Face north and measure the angle from the horizon up to Polaris. For example, from Ireland at a latitude of about 53° north, Polaris appears roughly 53° above the horizon. At the equator it would be close to the horizon, while at the North Pole it would be almost directly overhead. For every 111 km due North or South, you get a change of 1 ° latitude.",
 
   svg: `
   <svg viewBox="0 0 1801 901"
@@ -2535,6 +3198,3004 @@ height="297mm"
 
   `
 },
+
+{
+  topic: "Earth & Space",
+
+  term: "How is Earth’s 23.45° tilt related to the ecliptic?",
+
+  equation: "\\begin{aligned}\\varepsilon&\\approx23.45^\\circ\\\\[3pt]1\\ \\text{orbit}&\\approx365.25\\ \\text{daily rotations}\\end{aligned}",
+
+  answer: "Earth’s orbit defines a plane called the ecliptic plane. Earth’s rotation axis is tilted by about 23.45° from the direction perpendicular to this plane. As Earth travels around the Sun, its axis remains pointed in nearly the same direction in space while Earth rotates once each day. There are about 365.25 daily rotations during one orbit. Viewed from above the North Pole, both Earth’s rotation and its orbit are anticlockwise. In this diagram, the Northern Hemisphere is tilted towards the Sun when Earth is on the left, producing summer, and away from the Sun when Earth is on the right, producing winter. The animation speeds are not to scale.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="tilt365SunGradient"
+                    cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="68%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </radialGradient>
+
+    <radialGradient id="tilt365EarthGradient"
+                    cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#bfdbfe"/>
+      <stop offset="60%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+
+    <filter id="tilt365SunGlow"
+            x="-100%" y="-100%"
+            width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Anticlockwise orbital path -->
+    <path id="tilt365OrbitPath"
+          d="
+            M 320 120
+            A 110 60 0 1 0 100 120
+            A 110 60 0 1 0 320 120
+          "/>
+
+    <!-- Anticlockwise path around Earth's equator -->
+    <path id="tilt365SpinPath"
+          d="
+            M 11 0
+            A 11 4 0 1 0 -11 0
+            A 11 4 0 1 0 11 0
+          "/>
+
+    <marker id="tilt365OrbitArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#fbbf24"/>
+    </marker>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#020617"/>
+
+  <!-- Background stars -->
+  <g fill="#ffffff" opacity="0.4">
+    <circle cx="24" cy="22" r="1"/>
+    <circle cx="55" cy="78" r="1"/>
+    <circle cx="91" cy="22" r="1"/>
+    <circle cx="144" cy="35" r="1"/>
+    <circle cx="176" cy="17" r="1"/>
+    <circle cx="239" cy="28" r="1"/>
+    <circle cx="274" cy="18" r="1"/>
+    <circle cx="328" cy="21" r="1"/>
+    <circle cx="383" cy="77" r="1"/>
+    <circle cx="400" cy="29" r="1"/>
+    <circle cx="29" cy="202" r="1"/>
+    <circle cx="79" cy="216" r="1"/>
+    <circle cx="145" cy="205" r="1"/>
+    <circle cx="231" cy="213" r="1"/>
+    <circle cx="292" cy="204" r="1"/>
+    <circle cx="357" cy="216" r="1"/>
+    <circle cx="398" cy="193" r="1"/>
+  </g>
+
+  <!-- Title -->
+  <text x="210" y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#e5e7eb">
+    Earth’s axial tilt and the ecliptic
+  </text>
+
+  <!-- Northern Hemisphere summer -->
+  <rect x="10" y="29"
+        width="126" height="34"
+        rx="8"
+        fill="#78350f"
+        fill-opacity="0.38"
+        stroke="#fbbf24"/>
+
+  <text x="73" y="43"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#fde68a">
+    Earth on the left
+  </text>
+
+  <text x="73" y="57"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#fbbf24">
+    NH SUMMER
+  </text>
+
+  <!-- Northern Hemisphere winter -->
+  <rect x="284" y="29"
+        width="126" height="34"
+        rx="8"
+        fill="#172554"
+        fill-opacity="0.55"
+        stroke="#93c5fd"/>
+
+  <text x="347" y="43"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#bfdbfe">
+    Earth on the right
+  </text>
+
+  <text x="347" y="57"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#93c5fd">
+    NH WINTER
+  </text>
+
+  <!-- Orbit in the ecliptic plane -->
+  <ellipse cx="210" cy="120"
+           rx="110" ry="60"
+           fill="#fbbf24"
+           fill-opacity="0.045"
+           stroke="#fbbf24"
+           stroke-width="2"
+           stroke-dasharray="7 5"/>
+
+  <text x="252" y="188"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#fbbf24">
+    orbit in the ecliptic plane
+  </text>
+
+  <!-- Anticlockwise orbital-direction arrow -->
+  <path d="
+    M 308 89
+    A 110 60 0 0 0 239 62
+  "
+        fill="none"
+        stroke="#fbbf24"
+        stroke-width="2"
+        marker-end="url(#tilt365OrbitArrow)"/>
+
+  <text x="286" y="77"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#fde68a">
+    yearly orbit
+  </text>
+
+  <!-- Sun -->
+  <g filter="url(#tilt365SunGlow)">
+    <circle cx="210" cy="120"
+            r="20"
+            fill="url(#tilt365SunGradient)"/>
+  </g>
+
+  <text x="210" y="151"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#fde68a">
+    Sun
+  </text>
+
+  <!-- Moving Earth system -->
+  <g>
+
+    <!-- Earth moves around the Sun without rotating its axis -->
+    <animateMotion dur="14s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#tilt365OrbitPath"/>
+    </animateMotion>
+
+    <!-- Perpendicular to the ecliptic -->
+    <line x1="0" y1="21"
+          x2="0" y2="-21"
+          stroke="#94a3b8"
+          stroke-width="1.2"
+          stroke-dasharray="3 2"/>
+
+    <!-- Simplified Earth -->
+    <circle cx="0" cy="0"
+            r="14"
+            fill="url(#tilt365EarthGradient)"
+            stroke="#dbeafe"
+            stroke-width="1.2"/>
+
+    <!-- Equator and daily-rotation animation -->
+    <g transform="rotate(23.45)">
+
+      <!-- Equator -->
+      <ellipse cx="0" cy="0"
+               rx="11" ry="4"
+               fill="none"
+               stroke="#dbeafe"
+               stroke-width="1.1"
+               opacity="0.85"/>
+
+      <!-- Animated dashes reinforce the direction of spin -->
+      <ellipse cx="0" cy="0"
+               rx="11" ry="4"
+               fill="none"
+               stroke="#ffffff"
+               stroke-width="1.5"
+               stroke-dasharray="8 5"
+               opacity="0.8">
+        <animate attributeName="stroke-dashoffset"
+                 from="0"
+                 to="26"
+                 dur="1.4s"
+                 repeatCount="indefinite"/>
+      </ellipse>
+
+      <!-- Arrowhead travelling anticlockwise around the equator -->
+      <path d="M -3 -2 L 3 0 L -3 2 Z"
+            fill="#ffffff"
+            stroke="#020617"
+            stroke-width="0.4">
+        <animateMotion dur="2.4s"
+                       repeatCount="indefinite"
+                       rotate="auto">
+          <mpath href="#tilt365SpinPath"/>
+        </animateMotion>
+      </path>
+
+    </g>
+
+    <!-- Fixed rotation axis -->
+    <line x1="-8.5" y1="19.5"
+          x2="8.5" y2="-19.5"
+          stroke="#f472b6"
+          stroke-width="2.6"
+          stroke-linecap="round"/>
+
+    <!-- North end of axis -->
+    <text x="11" y="-19"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#f9a8d4">
+      N
+    </text>
+
+    <!-- Fixed tilt marker -->
+    <path d="
+      M 0 -16
+      A 16 16 0 0 1 6.4 -14.7
+    "
+          fill="none"
+          stroke="#f59e0b"
+          stroke-width="1.8"
+          stroke-linecap="round"/>
+
+    <text x="13" y="-10"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#fbbf24">
+      23.45°
+    </text>
+
+    <text x="0" y="27"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#ffffff">
+      daily rotation
+    </text>
+
+  </g>
+
+  <!-- Key -->
+  <line x1="31" y1="180"
+        x2="46" y2="146"
+        stroke="#f472b6"
+        stroke-width="2.3"
+        stroke-linecap="round"/>
+
+  <text x="51" y="151"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#f9a8d4">
+    rotation axis
+  </text>
+
+  <line x1="38.5" y1="180"
+        x2="38.5" y2="145"
+        stroke="#94a3b8"
+        stroke-width="1.2"
+        stroke-dasharray="3 2"/>
+
+  <text x="51" y="166"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#cbd5e1">
+    perpendicular to ecliptic
+  </text>
+
+  <!-- Bottom note -->
+  <text x="210" y="226"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        fill="#cbd5e1">
+    About 365.25 daily rotations occur during one orbit; animation not to scale.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "How does the Moon orbit Earth while Earth orbits the Sun?",
+
+  equation: "\\begin{aligned}T_{\\text{sidereal orbit}}&\\approx27.3\\ \\text{days}\\\\[3pt]T_{\\text{rotation}}&\\approx27.3\\ \\text{days}\\\\[3pt]T_{\\text{lunar cycle}}&\\approx29.5\\ \\text{days}\\end{aligned}",
+
+  answer: "The Moon orbits Earth anticlockwise when viewed from above Earth’s North Pole, while the Earth–Moon system travels around the Sun. The Moon also rotates once during each 27.32-day orbit, so nearly the same side always faces Earth. This is tidal locking. The lunar phase cycle from new moon to new moon takes about 29.53 days because Earth moves along its orbit while the Moon is orbiting. The Moon must therefore travel slightly farther before it reaches the same alignment with the Sun.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="moonCardSunGradient"
+                    cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="68%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </radialGradient>
+
+    <radialGradient id="moonCardEarthGradient"
+                    cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#bfdbfe"/>
+      <stop offset="60%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+
+    <radialGradient id="moonCardMoonGradient"
+                    cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="62%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </radialGradient>
+
+    <filter id="moonCardSunGlow"
+            x="-100%" y="-100%"
+            width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Earth moves anticlockwise around the Sun -->
+    <path id="moonCardEarthOrbit"
+          d="
+            M 320 120
+            A 110 60 0 1 0 100 120
+            A 110 60 0 1 0 320 120
+          "/>
+
+    <!-- Moon moves anticlockwise around Earth.
+         The ellipse represents a circular orbit viewed in perspective. -->
+    <path id="moonCardLunarOrbit"
+          d="
+            M 50 0
+            A 50 18 0 1 0 -50 0
+            A 50 18 0 1 0 50 0
+          "/>
+
+    <!-- Earth's daily rotation -->
+    <path id="moonCardEarthSpin"
+          d="
+            M 11 0
+            A 11 4 0 1 0 -11 0
+            A 11 4 0 1 0 11 0
+          "/>
+
+    <!--
+      These stationary clipping regions divide the lunar orbit into:
+      upper half = visually behind Earth
+      lower half = visually in front of Earth
+    -->
+    <clipPath id="moonCardBackHalf"
+              clipPathUnits="userSpaceOnUse">
+      <rect x="-60" y="-30"
+            width="120" height="30"/>
+    </clipPath>
+
+    <clipPath id="moonCardFrontHalf"
+              clipPathUnits="userSpaceOnUse">
+      <rect x="-60" y="0"
+            width="120" height="30"/>
+    </clipPath>
+
+    <marker id="moonCardEarthOrbitArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#fbbf24"/>
+    </marker>
+
+    <marker id="moonCardLunarArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#e2e8f0"/>
+    </marker>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#020617"/>
+
+  <!-- Background stars -->
+  <g fill="#ffffff" opacity="0.4">
+    <circle cx="24" cy="22" r="1"/>
+    <circle cx="55" cy="76" r="1"/>
+    <circle cx="91" cy="22" r="1"/>
+    <circle cx="144" cy="35" r="1"/>
+    <circle cx="176" cy="17" r="1"/>
+    <circle cx="239" cy="28" r="1"/>
+    <circle cx="274" cy="18" r="1"/>
+    <circle cx="328" cy="21" r="1"/>
+    <circle cx="383" cy="77" r="1"/>
+    <circle cx="400" cy="29" r="1"/>
+    <circle cx="29" cy="202" r="1"/>
+    <circle cx="79" cy="216" r="1"/>
+    <circle cx="145" cy="205" r="1"/>
+    <circle cx="231" cy="213" r="1"/>
+    <circle cx="292" cy="204" r="1"/>
+    <circle cx="357" cy="216" r="1"/>
+    <circle cx="398" cy="193" r="1"/>
+  </g>
+
+  <!-- Title -->
+  <text x="210" y="18"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#e5e7eb">
+    The Moon’s orbit around Earth
+  </text>
+
+  <!-- Earth orbit / ecliptic -->
+  <ellipse cx="210" cy="120"
+           rx="110" ry="60"
+           fill="#fbbf24"
+           fill-opacity="0.04"
+           stroke="#fbbf24"
+           stroke-width="2"
+           stroke-dasharray="7 5"/>
+
+  <text x="286" y="184"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#fbbf24">
+    ecliptic plane
+  </text>
+
+  <!-- Earth orbital direction -->
+  <path d="
+    M 308 89
+    A 110 60 0 0 0 239 62
+  "
+        fill="none"
+        stroke="#fbbf24"
+        stroke-width="2"
+        marker-end="url(#moonCardEarthOrbitArrow)"/>
+
+  <!-- Sun -->
+  <g filter="url(#moonCardSunGlow)">
+    <circle cx="210" cy="120"
+            r="20"
+            fill="url(#moonCardSunGradient)"/>
+  </g>
+
+  <text x="210" y="151"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#fde68a">
+    Sun
+  </text>
+
+  <!-- Moving Earth–Moon system -->
+  <g>
+
+    <animateMotion dur="14s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#moonCardEarthOrbit"/>
+    </animateMotion>
+
+    <!-- Moon's visible orbital path -->
+    <ellipse cx="0" cy="0"
+             rx="50" ry="18"
+             fill="none"
+             stroke="#cbd5e1"
+             stroke-width="1"
+             stroke-dasharray="3 3"
+             opacity="0.72"/>
+
+    <!-- Lunar orbital direction -->
+    <path d="
+      M 44 -7
+      A 50 18 0 0 0 10 -18
+    "
+          fill="none"
+          stroke="#e2e8f0"
+          stroke-width="1.2"
+          marker-end="url(#moonCardLunarArrow)"/>
+
+    <!-- Moon on far half of orbit: drawn behind Earth -->
+    <g clip-path="url(#moonCardBackHalf)">
+      <g>
+        <animateMotion dur="3.6s"
+                       repeatCount="indefinite"
+                       rotate="0">
+          <mpath href="#moonCardLunarOrbit"/>
+        </animateMotion>
+
+        <circle cx="0" cy="0"
+                r="4.7"
+                fill="url(#moonCardMoonGradient)"
+                stroke="#ffffff"
+                stroke-width="0.8"/>
+      </g>
+    </g>
+
+    <!-- Perpendicular to ecliptic -->
+    <line x1="0" y1="22"
+          x2="0" y2="-22"
+          stroke="#94a3b8"
+          stroke-width="1.1"
+          stroke-dasharray="3 2"/>
+
+    <!-- Earth -->
+    <circle cx="0" cy="0"
+            r="14"
+            fill="url(#moonCardEarthGradient)"
+            stroke="#dbeafe"
+            stroke-width="1.2"/>
+
+    <!-- Earth equator and daily rotation -->
+    <g transform="rotate(23.45)">
+
+      <ellipse cx="0" cy="0"
+               rx="11" ry="4"
+               fill="none"
+               stroke="#dbeafe"
+               stroke-width="1"
+               opacity="0.8"/>
+
+      <path d="M -3 -2 L 3 0 L -3 2 Z"
+            fill="#ffffff"
+            stroke="#020617"
+            stroke-width="0.4">
+
+        <animateMotion dur="1.4s"
+                       repeatCount="indefinite"
+                       rotate="auto">
+          <mpath href="#moonCardEarthSpin"/>
+        </animateMotion>
+
+      </path>
+
+    </g>
+
+    <!-- Earth's tilted axis -->
+    <line x1="-8.5" y1="19.5"
+          x2="8.5" y2="-19.5"
+          stroke="#f472b6"
+          stroke-width="2.6"
+          stroke-linecap="round"/>
+
+    <text x="11" y="-19"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#f9a8d4">
+      N
+    </text>
+
+    <!-- Axial tilt -->
+    <path d="
+      M 0 -16
+      A 16 16 0 0 1 6.4 -14.7
+    "
+          fill="none"
+          stroke="#f59e0b"
+          stroke-width="1.8"
+          stroke-linecap="round"/>
+
+    <text x="13" y="-10"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#fbbf24">
+      23.45°
+    </text>
+
+    <!-- Moon on near half of orbit: drawn in front of Earth -->
+    <g clip-path="url(#moonCardFrontHalf)">
+      <g>
+        <animateMotion dur="3.6s"
+                       repeatCount="indefinite"
+                       rotate="0">
+          <mpath href="#moonCardLunarOrbit"/>
+        </animateMotion>
+
+        <circle cx="0" cy="0"
+                r="4.7"
+                fill="url(#moonCardMoonGradient)"
+                stroke="#ffffff"
+                stroke-width="0.8"/>
+      </g>
+    </g>
+
+  </g>
+
+  <!-- Minimal labels -->
+  <text x="34" y="48"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#e2e8f0">
+    Moon orbits Earth anticlockwise
+  </text>
+
+  <text x="34" y="62"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#cbd5e1">
+    and rotates once during each orbit
+  </text>
+
+  <!-- Bottom information -->
+  <text x="210" y="216"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#bfdbfe">
+    27.32-day orbit · 29.5-day phase cycle
+  </text>
+
+  <text x="210" y="231"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#94a3b8">
+    Moon orbit enlarged and shown in perspective; speeds and distances not to scale.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "Why does the Moon appear to change phase?",
+
+  equation: "\\begin{aligned}T_{\\text{sidereal orbit}}&\\approx27.32\\ \\text{days}\\\\[3pt]T_{\\text{phase cycle}}&\\approx29.53\\ \\text{days}\\\\[3pt]\\text{illuminated fraction of the Moon}&=\\frac{1}{2}\\end{aligned}",
+
+  answer: "The Sun always illuminates one half of the Moon. As the Moon orbits Earth anticlockwise, an observer on Earth sees different fractions of this illuminated half. This produces the sequence of new Moon, crescent, first quarter, gibbous, full Moon and the corresponding waning phases. The complete phase cycle from new Moon to new Moon takes about 29.53 days. Lunar phases are not caused by Earth’s shadow; Earth’s shadow reaches the Moon only during a lunar eclipse.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="phaseCardSunGradient"
+                    cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#fef9c3"/>
+      <stop offset="68%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </radialGradient>
+
+    <radialGradient id="phaseCardEarthGradient"
+                    cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#bfdbfe"/>
+      <stop offset="60%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+
+    <radialGradient id="phaseCardMoonDark"
+                    cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="70%" stop-color="#334155"/>
+      <stop offset="100%" stop-color="#0f172a"/>
+    </radialGradient>
+
+    <linearGradient id="phaseCardMoonLight"
+                    x1="0%" y1="0%"
+                    x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#cbd5e1"/>
+      <stop offset="65%" stop-color="#f8fafc"/>
+      <stop offset="100%" stop-color="#ffffff"/>
+    </linearGradient>
+
+    <filter id="phaseCardSunGlow"
+            x="-100%" y="-100%"
+            width="300%" height="300%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Earth travels anticlockwise around the Sun -->
+    <path id="phaseCardEarthOrbit"
+          d="
+            M 320 120
+            A 110 60 0 1 0 100 120
+            A 110 60 0 1 0 320 120
+          "/>
+
+    <!-- Moon travels anticlockwise around Earth -->
+    <path id="phaseCardMoonOrbit"
+          d="
+            M 50 0
+            A 50 18 0 1 0 -50 0
+            A 50 18 0 1 0 50 0
+          "/>
+
+    <!-- Earth's daily rotation -->
+    <path id="phaseCardEarthSpin"
+          d="
+            M 11 0
+            A 11 4 0 1 0 -11 0
+            A 11 4 0 1 0 11 0
+          "/>
+
+    <!-- Upper half of the lunar orbit appears behind Earth -->
+    <clipPath id="phaseCardBackHalf"
+              clipPathUnits="userSpaceOnUse">
+      <rect x="-60" y="-30"
+            width="120" height="30"/>
+    </clipPath>
+
+    <!-- Lower half of the lunar orbit appears in front of Earth -->
+    <clipPath id="phaseCardFrontHalf"
+              clipPathUnits="userSpaceOnUse">
+      <rect x="-60" y="0"
+            width="120" height="30"/>
+    </clipPath>
+
+    <marker id="phaseCardEarthOrbitArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#fbbf24"/>
+    </marker>
+
+    <marker id="phaseCardMoonOrbitArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#e2e8f0"/>
+    </marker>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#020617"/>
+
+  <!-- Background stars -->
+  <g fill="#ffffff" opacity="0.4">
+    <circle cx="24" cy="22" r="1"/>
+    <circle cx="55" cy="76" r="1"/>
+    <circle cx="91" cy="22" r="1"/>
+    <circle cx="144" cy="35" r="1"/>
+    <circle cx="176" cy="17" r="1"/>
+    <circle cx="239" cy="28" r="1"/>
+    <circle cx="274" cy="18" r="1"/>
+    <circle cx="328" cy="21" r="1"/>
+    <circle cx="383" cy="77" r="1"/>
+    <circle cx="400" cy="29" r="1"/>
+    <circle cx="29" cy="202" r="1"/>
+    <circle cx="79" cy="216" r="1"/>
+    <circle cx="145" cy="205" r="1"/>
+    <circle cx="231" cy="213" r="1"/>
+    <circle cx="292" cy="204" r="1"/>
+    <circle cx="357" cy="216" r="1"/>
+    <circle cx="398" cy="193" r="1"/>
+  </g>
+
+  <!-- Title -->
+  <text x="210" y="18"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#e5e7eb">
+    Sunlight and the phases of the Moon
+  </text>
+
+  <!-- Earth orbit / ecliptic -->
+  <ellipse cx="210" cy="120"
+           rx="110" ry="60"
+           fill="#fbbf24"
+           fill-opacity="0.04"
+           stroke="#fbbf24"
+           stroke-width="2"
+           stroke-dasharray="7 5"/>
+
+  <text x="286" y="184"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#fbbf24">
+    ecliptic plane
+  </text>
+
+  <!-- Earth orbital direction -->
+  <path d="
+    M 308 89
+    A 110 60 0 0 0 239 62
+  "
+        fill="none"
+        stroke="#fbbf24"
+        stroke-width="2"
+        marker-end="url(#phaseCardEarthOrbitArrow)"/>
+
+  <!-- Sun -->
+  <g filter="url(#phaseCardSunGlow)">
+    <circle cx="210" cy="120"
+            r="20"
+            fill="url(#phaseCardSunGradient)"/>
+  </g>
+
+  <text x="210" y="151"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#fde68a">
+    Sun
+  </text>
+
+  <!-- Moving Earth-Moon system -->
+  <g>
+
+    <animateMotion dur="14s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#phaseCardEarthOrbit"/>
+    </animateMotion>
+
+    <!-- Moon's enlarged orbital path -->
+    <ellipse cx="0" cy="0"
+             rx="50" ry="18"
+             fill="none"
+             stroke="#cbd5e1"
+             stroke-width="1"
+             stroke-dasharray="3 3"
+             opacity="0.72"/>
+
+    <!-- Lunar orbital direction -->
+    <path d="
+      M 44 -7
+      A 50 18 0 0 0 10 -18
+    "
+          fill="none"
+          stroke="#e2e8f0"
+          stroke-width="1.2"
+          marker-end="url(#phaseCardMoonOrbitArrow)"/>
+
+    <!-- Moon on far half of orbit, behind Earth -->
+    <g clip-path="url(#phaseCardBackHalf)">
+
+      <g>
+        <animateMotion dur="3.6s"
+                       repeatCount="indefinite"
+                       rotate="0">
+          <mpath href="#phaseCardMoonOrbit"/>
+        </animateMotion>
+
+        <!--
+          The sunlight direction changes as Earth travels around the Sun.
+          The bright hemisphere therefore rotates once during Earth's orbit.
+        -->
+        <g>
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="180;90;0;-90;-180"
+            keyTimes="0;0.25;0.5;0.75;1"
+            dur="14s"
+            repeatCount="indefinite"/>
+
+          <!-- Dark lunar hemisphere -->
+          <circle cx="0" cy="0"
+                  r="5.3"
+                  fill="url(#phaseCardMoonDark)"
+                  stroke="#ffffff"
+                  stroke-width="0.7"/>
+
+          <!-- Illuminated hemisphere, initially facing right -->
+          <path d="
+            M 0 -5.3
+            A 5.3 5.3 0 0 1 0 5.3
+            Z
+          "
+                fill="url(#phaseCardMoonLight)"/>
+
+          <circle cx="0" cy="0"
+                  r="5.3"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-width="0.7"/>
+        </g>
+
+      </g>
+    </g>
+
+    <!-- Perpendicular to ecliptic -->
+    <line x1="0" y1="22"
+          x2="0" y2="-22"
+          stroke="#94a3b8"
+          stroke-width="1.1"
+          stroke-dasharray="3 2"/>
+
+    <!-- Earth -->
+    <circle cx="0" cy="0"
+            r="14"
+            fill="url(#phaseCardEarthGradient)"
+            stroke="#dbeafe"
+            stroke-width="1.2"/>
+
+    <!-- Earth equator and daily rotation -->
+    <g transform="rotate(23.45)">
+
+      <ellipse cx="0" cy="0"
+               rx="11" ry="4"
+               fill="none"
+               stroke="#dbeafe"
+               stroke-width="1"
+               opacity="0.8"/>
+
+      <path d="M -3 -2 L 3 0 L -3 2 Z"
+            fill="#ffffff"
+            stroke="#020617"
+            stroke-width="0.4">
+
+        <animateMotion dur="1.4s"
+                       repeatCount="indefinite"
+                       rotate="auto">
+          <mpath href="#phaseCardEarthSpin"/>
+        </animateMotion>
+
+      </path>
+
+    </g>
+
+    <!-- Earth's fixed tilted axis -->
+    <line x1="-8.5" y1="19.5"
+          x2="8.5" y2="-19.5"
+          stroke="#f472b6"
+          stroke-width="2.6"
+          stroke-linecap="round"/>
+
+    <text x="11" y="-19"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#f9a8d4">
+      N
+    </text>
+
+    <!-- Axial tilt -->
+    <path d="
+      M 0 -16
+      A 16 16 0 0 1 6.4 -14.7
+    "
+          fill="none"
+          stroke="#f59e0b"
+          stroke-width="1.8"
+          stroke-linecap="round"/>
+
+    <text x="13" y="-10"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#fbbf24">
+      23.45°
+    </text>
+
+    <!-- Moon on near half of orbit, in front of Earth -->
+    <g clip-path="url(#phaseCardFrontHalf)">
+
+      <g>
+        <animateMotion dur="3.6s"
+                       repeatCount="indefinite"
+                       rotate="0">
+          <mpath href="#phaseCardMoonOrbit"/>
+        </animateMotion>
+
+        <g>
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="180;90;0;-90;-180"
+            keyTimes="0;0.25;0.5;0.75;1"
+            dur="14s"
+            repeatCount="indefinite"/>
+
+          <!-- Dark lunar hemisphere -->
+          <circle cx="0" cy="0"
+                  r="5.3"
+                  fill="url(#phaseCardMoonDark)"
+                  stroke="#ffffff"
+                  stroke-width="0.7"/>
+
+          <!-- Illuminated hemisphere -->
+          <path d="
+            M 0 -5.3
+            A 5.3 5.3 0 0 1 0 5.3
+            Z
+          "
+                fill="url(#phaseCardMoonLight)"/>
+
+          <circle cx="0" cy="0"
+                  r="5.3"
+                  fill="none"
+                  stroke="#ffffff"
+                  stroke-width="0.7"/>
+        </g>
+
+      </g>
+    </g>
+
+  </g>
+
+  <!-- Explanation -->
+  <text x="28" y="47"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#f8fafc">
+    The bright half always faces the Sun
+  </text>
+
+  <text x="28" y="61"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#cbd5e1">
+    but the fraction visible from Earth changes.
+  </text>
+
+  <!-- Bottom information -->
+  <text x="210" y="216"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#bfdbfe">
+    27.32-day orbit · 29.53-day phase cycle
+  </text>
+
+  <text x="210" y="231"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#94a3b8">
+    Moon orbit enlarged; sizes, distances and animation speeds are not to scale.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "How did Newton use the Moon to test the inverse-square law of gravity?",
+
+  equation: "\\begin{aligned}a_{\\text{orbit}}&=\\frac{4\\pi^2 r}{T^2}\\\\[4pt]T^2&\\propto r^3\\ \\Rightarrow\\ a\\propto\\frac{1}{r^2}\\\\[4pt]a_{\\text{Moon}}&\\approx\\frac{g}{60^2}\\approx\\frac{9.8}{3600}\\approx0.0027\\ \\text{m s}^{-2}\\end{aligned}",
+
+  answer: "Newton combined circular motion with Kepler’s third law to show that the force keeping a planet or moon in orbit should decrease as 1/r². He then tested this using the Moon. The Moon is about 60 Earth radii from Earth’s centre, so if gravity follows an inverse-square law, the gravitational acceleration there should be g/60². That gives about 0.0027 m s⁻². Using the Moon’s distance and orbital period gives nearly the same centripetal acceleration, about 0.0027 m s⁻². This showed that the same gravity that makes objects fall on Earth also reaches the Moon and keeps it in orbit.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <radialGradient id="earthGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </radialGradient>
+
+    <radialGradient id="moonGrad" cx="35%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="70%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </radialGradient>
+
+    <marker id="arrowBlue" viewBox="0 0 10 10"
+            refX="8" refY="5"
+            markerWidth="5" markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#2563eb"/>
+    </marker>
+
+    <marker id="arrowRed" viewBox="0 0 10 10"
+            refX="8" refY="5"
+            markerWidth="5" markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#dc2626"/>
+    </marker>
+
+    <marker id="arrowGold" viewBox="0 0 10 10"
+            refX="8" refY="5"
+            markerWidth="5" markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z" fill="#ca8a04"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="420" height="240" rx="12" fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210" y="18"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Newton’s Moon test
+  </text>
+
+  <!-- Left panel: Earth and Moon geometry -->
+  <text x="98" y="34"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#1e3a8a">
+    Earth and Moon
+  </text>
+
+  <!-- Earth -->
+  <circle cx="92" cy="127" r="36"
+          fill="url(#earthGrad)"
+          stroke="#1e3a8a"
+          stroke-width="1.5"/>
+
+  <!-- Simple continents -->
+  <path d="
+    M 73 115
+    C 79 104, 91 103, 97 111
+    C 102 118, 97 126, 88 126
+    C 81 125, 80 133, 72 130
+    C 67 126, 68 120, 73 115 Z"
+    fill="#86efac"
+    opacity="0.9"/>
+
+  <path d="
+    M 102 132
+    C 109 127, 116 131, 115 138
+    C 114 144, 107 148, 102 144
+    C 99 141, 98 135, 102 132 Z"
+    fill="#86efac"
+    opacity="0.85"/>
+
+  <circle cx="92" cy="127" r="2.3" fill="#0f172a"/>
+
+  <text x="92" y="173"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#1e3a8a">
+    Earth
+  </text>
+
+  <!-- Moon orbit -->
+  <ellipse cx="92" cy="127"
+           rx="90" ry="34"
+           fill="none"
+           stroke="#cbd5e1"
+           stroke-width="1.2"
+           stroke-dasharray="5 4"/>
+
+  <!-- Moon -->
+  <circle cx="182" cy="127" r="8.5"
+          fill="url(#moonGrad)"
+          stroke="#475569"
+          stroke-width="1"/>
+
+  <circle cx="179" cy="124" r="1.2"
+          fill="#94a3b8" opacity="0.8"/>
+  <circle cx="184" cy="129" r="0.9"
+          fill="#94a3b8" opacity="0.8"/>
+
+  <text x="182" y="145"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#334155">
+    Moon
+  </text>
+
+  <!-- Radius line -->
+  <line x1="92" y1="127" x2="182" y2="127"
+        stroke="#2563eb"
+        stroke-width="2"
+        marker-end="url(#arrowBlue)"/>
+
+  <text x="138" y="118"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#2563eb">
+    r ≈ 60 Rₑ
+  </text>
+
+  <!-- Inward force arrow -->
+  <line x1="174" y1="112" x2="137" y2="112"
+        stroke="#dc2626"
+        stroke-width="2"
+        marker-end="url(#arrowRed)"/>
+
+  <text x="157" y="103"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    gravity
+  </text>
+
+  <text x="157" y="92"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#7f1d1d">
+    centripetal acceleration
+  </text>
+
+  <!-- Falling object near Earth -->
+  <circle cx="48" cy="83" r="4.3"
+          fill="#f59e0b"
+          stroke="#92400e"
+          stroke-width="0.8"/>
+
+  <line x1="48" y1="88" x2="48" y2="107"
+        stroke="#ca8a04"
+        stroke-width="2"
+        marker-end="url(#arrowGold)"/>
+
+  <text x="21" y="78"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#a16207">
+    surface gravity
+  </text>
+
+  <text x="24" y="90"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#a16207">
+    g ≈ 9.8 m s⁻²
+  </text>
+
+  <!-- Right panel -->
+  <rect x="220" y="30"
+        width="184" height="183"
+        rx="12"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.4"/>
+
+  <text x="312" y="48"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Two linked ideas
+  </text>
+
+  <line x1="235" y1="56" x2="389" y2="56"
+        stroke="#e2e8f0" stroke-width="1"/>
+
+  <!-- Idea 1 -->
+  <text x="235" y="74"
+        font-family="Arial, sans-serif"
+        font-size="10.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    1. Kepler + circular motion
+  </text>
+
+  <text x="243" y="92"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        fill="#334155">
+    T² ∝ r³
+  </text>
+
+  <text x="243" y="108"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        fill="#334155">
+    a = 4π²r / T²
+  </text>
+
+  <text x="243" y="124"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        fill="#334155">
+    so a ∝ r / r³ = 1 / r²
+  </text>
+
+  <rect x="238" y="132"
+        width="148" height="22"
+        rx="6"
+        fill="#dbeafe"
+        stroke="#93c5fd"/>
+
+  <text x="312" y="147"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#1d4ed8">
+    predicted force law: F ∝ 1/r²
+  </text>
+
+  <!-- Idea 2 -->
+  <text x="235" y="172"
+        font-family="Arial, sans-serif"
+        font-size="10.5"
+        font-weight="700"
+        fill="#b91c1c">
+    2. Newton’s Moon test
+  </text>
+
+  <text x="243" y="189"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        fill="#334155">
+    predicted at Moon:
+  </text>
+
+  <text x="324" y="189"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        fill="#334155">
+    g / 60² ≈ 0.0027
+  </text>
+
+  <text x="243" y="203"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        fill="#334155">
+    needed for orbit:
+  </text>
+
+  <text x="318" y="203"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        fill="#334155">
+    4π²r / T² ≈ 0.0027
+  </text>
+
+  <rect x="238" y="208"
+        width="148" height="18"
+        rx="6"
+        fill="#fee2e2"
+        stroke="#fca5a5"/>
+
+  <text x="312" y="221"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#b91c1c">
+    same value → same gravity reaches the Moon
+  </text>
+
+  <!-- Bottom summary -->
+  <rect x="24" y="194"
+        width="170" height="28"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="109" y="206"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    The Moon is constantly “falling”
+  </text>
+
+  <text x="109" y="218"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#1e40af">
+    around Earth under gravity.
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Earth & Space",
+
+  term: "How did Newton show that gravity reaches the Moon?",
+
+  equation: "\\begin{aligned}a_{\\text{gravity}}&\\approx\\frac{g}{60^2}\\\\[3pt]&\\approx\\frac{9.8}{3600}\\\\[3pt]&\\approx0.0027\\ \\text{m s}^{-2}\\\\[6pt]a_{\\text{orbit}}&=\\frac{4\\pi^2r}{T^2}\\\\[3pt]&\\approx0.0027\\ \\text{m s}^{-2}\\end{aligned}",
+
+  answer: "Newton tested whether ordinary gravity could provide the centripetal acceleration needed to keep the Moon in orbit. The Moon is about 60 Earth radii from Earth’s centre. If gravity decreases according to an inverse-square law, its acceleration there should be g/60², or about 0.0027 m s⁻². The centripetal acceleration calculated from the Moon’s orbital radius and period is also about 0.0027 m s⁻². The agreement showed that the same gravity that pulls objects towards Earth also keeps the Moon continually falling around Earth.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <radialGradient id="newtonMoonEarthGrad"
+                    cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#bfdbfe"/>
+      <stop offset="62%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+
+    <radialGradient id="newtonMoonMoonGrad"
+                    cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#f8fafc"/>
+      <stop offset="65%" stop-color="#cbd5e1"/>
+      <stop offset="100%" stop-color="#64748b"/>
+    </radialGradient>
+
+    <marker id="newtonMoonGravityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#dc2626"/>
+    </marker>
+
+    <marker id="newtonMoonOrbitArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210" y="18"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Newton’s Moon test
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10" y="29"
+        width="198" height="198"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- Circular lunar orbit -->
+  <circle cx="103" cy="124"
+          r="72"
+          fill="none"
+          stroke="#94a3b8"
+          stroke-width="1.5"
+          stroke-dasharray="6 4"/>
+
+  <!-- Orbital direction arrow -->
+  <path d="
+    M 166 89
+    A 72 72 0 0 0 133 58
+  "
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="2"
+        marker-end="url(#newtonMoonOrbitArrow)"/>
+
+  <text x="138" y="48"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#1d4ed8">
+    Moon’s orbit
+  </text>
+
+  <!-- Earth -->
+  <circle cx="103" cy="124"
+          r="29"
+          fill="url(#newtonMoonEarthGrad)"
+          stroke="#1e3a8a"
+          stroke-width="1.5"/>
+
+  <!-- Simple land -->
+  <path d="
+    M 85 115
+    C 91 105, 102 104, 108 111
+    C 114 118, 107 125, 99 124
+    C 92 123, 91 131, 84 128
+    C 79 125, 80 119, 85 115 Z
+  "
+        fill="#86efac"
+        opacity="0.9"/>
+
+  <path d="
+    M 110 132
+    C 117 128, 124 132, 122 139
+    C 120 145, 114 148, 110 144
+    C 107 141, 106 135, 110 132 Z
+  "
+        fill="#86efac"
+        opacity="0.85"/>
+
+  <text x="103" y="160"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#1e3a8a">
+    Earth
+  </text>
+
+  <!-- Moon and inward acceleration rotate together -->
+  <g>
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      from="0 103 124"
+      to="-360 103 124"
+      dur="8s"
+      repeatCount="indefinite"/>
+
+    <!-- Radius line -->
+    <line x1="132" y1="124"
+          x2="175" y2="124"
+          stroke="#60a5fa"
+          stroke-width="1.7"/>
+
+    <!-- Moon -->
+    <circle cx="175" cy="124"
+            r="8"
+            fill="url(#newtonMoonMoonGrad)"
+            stroke="#475569"
+            stroke-width="1"/>
+
+    <!-- Gravity / centripetal acceleration -->
+    <line x1="164" y1="111"
+          x2="135" y2="111"
+          stroke="#dc2626"
+          stroke-width="2.2"
+          marker-end="url(#newtonMoonGravityArrow)"/>
+  </g>
+
+  <!-- Distance label -->
+  <rect x="115" y="132"
+        width="76" height="20"
+        rx="6"
+        fill="#ffffff"
+        stroke="#93c5fd"/>
+
+  <text x="153" y="146"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#1d4ed8">
+    r ≈ 60 Rₑ
+  </text>
+
+  <!-- Inward acceleration label -->
+  <rect x="111" y="79"
+        width="84" height="26"
+        rx="6"
+        fill="#fff1f2"
+        stroke="#fca5a5"/>
+
+  <text x="153" y="90"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    gravity provides
+  </text>
+
+  <text x="153" y="101"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    inward acceleration
+  </text>
+
+  <!-- Surface gravity information -->
+  <rect x="24" y="181"
+        width="168" height="31"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="108" y="194"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        fill="#334155">
+    At Earth’s surface
+  </text>
+
+  <text x="108" y="207"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    g ≈ 9.8 m s⁻²
+  </text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="218" y="29"
+        width="192" height="198"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="314" y="49"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Inverse-square prediction
+  </text>
+
+  <line x1="235" y1="58"
+        x2="393" y2="58"
+        stroke="#e2e8f0"/>
+
+  <text x="314" y="78"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        fill="#334155">
+    Moon’s distance ≈ 60 Earth radii
+  </text>
+
+  <text x="314" y="101"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="14"
+        font-weight="700"
+        fill="#1d4ed8">
+    a = g / 60²
+  </text>
+
+  <text x="314" y="121"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        fill="#334155">
+    ≈ 9.8 / 3600
+  </text>
+
+  <rect x="246" y="131"
+        width="136" height="28"
+        rx="7"
+        fill="#dbeafe"
+        stroke="#60a5fa"/>
+
+  <text x="314" y="150"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#1d4ed8">
+    ≈ 0.0027 m s⁻²
+  </text>
+
+  <text x="314" y="178"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Required for the Moon’s orbit
+  </text>
+
+  <text x="314" y="198"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#b91c1c">
+    4π²r / T² ≈ 0.0027 m s⁻²
+  </text>
+
+  <rect x="239" y="207"
+        width="150" height="14"
+        rx="5"
+        fill="#dcfce7"
+        stroke="#86efac"/>
+
+  <text x="314" y="218"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#166534">
+    The two accelerations agree
+  </text>
+
+  <!-- Footer -->
+  <text x="210" y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    Diagram and animation are schematic and not to scale.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "Why is gravity slightly weaker at the equator than at the poles?",
+
+  equation: "g_{eq}\\approx9.780,\\quad g_{53^\\circ}\\approx9.813,\\quad g_{pole}\\approx9.832\\ \\mathrm{m\\,s^{-2}}",
+
+  answer: "Gravity is slightly weaker at the equator and stronger at the poles. At the equator, you travel about 40,000 km around Earth’s rotation axis each day. This circular motion requires centripetal acceleration and reduces your apparent weight. As you move towards a pole, your circular path becomes smaller and the rotational effect decreases. Earth is also slightly wider at the equator, placing you farther from its centre and reducing gravity further. Real normal gravity is approximately 9.780 m s⁻² at the equator, 9.813 m s⁻² at 53° latitude and 9.832 m s⁻² at a pole. Gravity at the equator is therefore about 0.53% lower than at a pole. Your mass does not change; only your weight or scale reading changes.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="gravityLatitudeEarthBlue"
+                    cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="65%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+
+    <!-- Equatorial circular path -->
+    <path id="gravityLatitudeEquatorPath"
+          d="
+            M 194 128
+            A 69 16 0 1 0 56 128
+            A 69 16 0 1 0 194 128
+          "/>
+
+    <!-- Circular path at approximately 53 degrees north -->
+    <path id="gravityLatitude53Path"
+          d="
+            M 166 80
+            A 41 10 0 1 0 84 80
+            A 41 10 0 1 0 166 80
+          "/>
+
+    <marker id="gravityLatitudeOutwardArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#64748b"/>
+    </marker>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210" y="18"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Gravity increases from the equator to the poles
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10" y="29"
+        width="238" height="198"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <text x="125" y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#334155">
+    Each latitude rotates once per day
+  </text>
+
+  <!-- Spherical reference -->
+  <circle cx="125" cy="128"
+          r="66"
+          fill="none"
+          stroke="#94a3b8"
+          stroke-width="1"
+          stroke-dasharray="4 4"
+          opacity="0.55"/>
+
+  <!-- Slightly oblate Earth; bulge exaggerated -->
+  <ellipse cx="125" cy="128"
+           rx="69" ry="66"
+           fill="url(#gravityLatitudeEarthBlue)"
+           stroke="#1e3a8a"
+           stroke-width="1.5"/>
+
+  <!-- Rotation axis -->
+  <line x1="125" y1="54"
+        x2="125" y2="202"
+        stroke="#dbeafe"
+        stroke-width="1.5"
+        stroke-dasharray="5 3"/>
+
+  <text x="132" y="67"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    N
+  </text>
+
+  <text x="132" y="196"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    S
+  </text>
+
+  <!-- Equatorial path -->
+  <ellipse cx="125" cy="128"
+           rx="69" ry="16"
+           fill="none"
+           stroke="#fef3c7"
+           stroke-width="1.8"
+           stroke-dasharray="6 4">
+
+    <animate attributeName="stroke-dashoffset"
+             from="0"
+             to="-20"
+             dur="1.5s"
+             repeatCount="indefinite"/>
+
+  </ellipse>
+
+  <text x="125" y="132"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    Equator
+  </text>
+
+  <!-- Moving point at equator -->
+  <circle cx="0" cy="0"
+          r="4.5"
+          fill="#fde68a"
+          stroke="#92400e"
+          stroke-width="1.1">
+
+    <animateMotion dur="4s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#gravityLatitudeEquatorPath"/>
+    </animateMotion>
+
+  </circle>
+
+  <!-- Larger outward rotational effect -->
+  <line x1="197" y1="128"
+        x2="225" y2="128"
+        stroke="#64748b"
+        stroke-width="2.4"
+        stroke-dasharray="4 3"
+        marker-end="url(#gravityLatitudeOutwardArrow)"/>
+
+  <!-- 53-degree path -->
+  <ellipse cx="125" cy="80"
+           rx="41" ry="10"
+           fill="none"
+           stroke="#dbeafe"
+           stroke-width="1.5"
+           stroke-dasharray="5 3">
+
+    <animate attributeName="stroke-dashoffset"
+             from="0"
+             to="-16"
+             dur="1.5s"
+             repeatCount="indefinite"/>
+
+  </ellipse>
+
+  <text x="125" y="84"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#ffffff">
+    53° N
+  </text>
+
+  <!-- Moving point at 53 degrees -->
+  <circle cx="0" cy="0"
+          r="4"
+          fill="#e0f2fe"
+          stroke="#1d4ed8"
+          stroke-width="1.1">
+
+    <animateMotion dur="4s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#gravityLatitude53Path"/>
+    </animateMotion>
+
+  </circle>
+
+  <!-- Smaller outward rotational effect -->
+  <line x1="169" y1="80"
+        x2="187" y2="80"
+        stroke="#64748b"
+        stroke-width="2"
+        stroke-dasharray="4 3"
+        marker-end="url(#gravityLatitudeOutwardArrow)"/>
+
+  <!-- Pole -->
+  <circle cx="125" cy="62"
+          r="4.5"
+          fill="#fee2e2"
+          stroke="#b91c1c"
+          stroke-width="1.2"/>
+
+  <text x="95" y="64"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#7f1d1d">
+    Pole
+  </text>
+
+  <!-- Simple explanation -->
+  <rect x="23" y="174"
+        width="204" height="41"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="125" y="188"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.7"
+        font-weight="700"
+        fill="#0f172a">
+    Towards a pole: smaller circular path
+  </text>
+
+  <text x="125" y="202"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#475569">
+    At the equator: rotation + greater Earth radius
+  </text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="258" y="29"
+        width="152" height="198"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="334" y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Normal gravity
+  </text>
+
+  <text x="334" y="60"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#64748b">
+    approximate sea-level values
+  </text>
+
+  <!-- Equator -->
+  <rect x="270" y="70"
+        width="128" height="39"
+        rx="7"
+        fill="#eff6ff"
+        stroke="#bfdbfe"/>
+
+  <text x="279" y="85"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#1e40af">
+    Equator
+  </text>
+
+  <text x="389" y="85"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="10.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    9.780 m s⁻²
+  </text>
+
+  <text x="334" y="101"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    ≈ 40,000 km travelled per day
+  </text>
+
+  <!-- 53 degrees -->
+  <rect x="270" y="116"
+        width="128" height="39"
+        rx="7"
+        fill="#f0f9ff"
+        stroke="#bae6fd"/>
+
+  <text x="279" y="131"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#0369a1">
+    53° N
+  </text>
+
+  <text x="389" y="131"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="10.5"
+        font-weight="700"
+        fill="#0369a1">
+    9.813 m s⁻²
+  </text>
+
+  <text x="334" y="147"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    ≈ 24,000 km travelled per day
+  </text>
+
+  <!-- Pole -->
+  <rect x="270" y="162"
+        width="128" height="28"
+        rx="7"
+        fill="#fff1f2"
+        stroke="#fecdd3"/>
+
+  <text x="279" y="180"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#991b1b">
+    Pole
+  </text>
+
+  <text x="389" y="180"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="10.5"
+        font-weight="700"
+        fill="#991b1b">
+    9.832 m s⁻²
+  </text>
+
+  <!-- Main result -->
+  <rect x="270" y="198"
+        width="128" height="21"
+        rx="7"
+        fill="#dbeafe"
+        stroke="#60a5fa"/>
+
+  <text x="334" y="212"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    Equator ≈ 0.53% lower
+  </text>
+
+  <!-- Footer -->
+  <text x="210" y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    Animation emphasises rotation; real values also include Earth’s oblate shape.
+  </text>
+
+</svg>
+`
+},
+{
+  topic: "Earth & Space",
+
+  term: "How was the Eötvös effect first observed?",
+
+ equation: "\\boxed{\\text{Eastbound: lower gravity reading}\\qquad\\text{Westbound: higher gravity reading}}",
+ answer: "The Eötvös effect was first recognised in gravity measurements made aboard moving ships in the early 1900s. Oskar Hecker measured gravity during long ocean voyages. Loránd Eötvös noticed a systematic pattern: the measured apparent gravity was slightly lower when a ship travelled east and slightly higher when it travelled west. He explained this as a consequence of motion on a rotating Earth. In 1908, measurements from ships travelling in opposite directions on the Black Sea confirmed the effect.",
+ 
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="eotvosHistoryEarthBlue"
+                    cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="65%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+
+    <!-- Eastbound ship path -->
+    <path id="eotvosHistoryEastPath"
+          d="
+            M 169 84
+            A 44 11 0 1 0 81 84
+            A 44 11 0 1 0 169 84
+          "/>
+
+    <!-- Westbound ship path: opposite direction -->
+    <path id="eotvosHistoryWestPath"
+          d="
+            M 81 84
+            A 44 11 0 1 1 169 84
+            A 44 11 0 1 1 81 84
+          "/>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210" y="18"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    The Eötvös effect was first observed at sea
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10" y="29"
+        width="238" height="198"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <text x="125" y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#334155">
+    Ships travelling east and west
+  </text>
+
+  <!-- Earth -->
+  <circle cx="125" cy="130"
+          r="66"
+          fill="url(#eotvosHistoryEarthBlue)"
+          stroke="#1e3a8a"
+          stroke-width="1.5"/>
+
+  <!-- Rotation axis -->
+  <line x1="125" y1="56"
+        x2="125" y2="204"
+        stroke="#dbeafe"
+        stroke-width="1.5"
+        stroke-dasharray="5 3"/>
+
+  <text x="132" y="68"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    N
+  </text>
+
+  <text x="132" y="198"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    S
+  </text>
+
+  <!-- Equator -->
+  <ellipse cx="125" cy="130"
+           rx="66" ry="16"
+           fill="none"
+           stroke="#fef3c7"
+           stroke-width="1.5"
+           stroke-dasharray="6 4"/>
+
+  <text x="125" y="134"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    Equator
+  </text>
+
+  <!-- Ship route at a northern latitude -->
+  <ellipse cx="125" cy="84"
+           rx="44" ry="11"
+           fill="none"
+           stroke="#dbeafe"
+           stroke-width="1.6"
+           stroke-dasharray="5 3"/>
+
+  <text x="125" y="88"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#ffffff">
+    same latitude
+  </text>
+
+  <!-- Eastbound ship -->
+  <g>
+
+    <rect x="-13" y="-7"
+          width="26" height="14"
+          rx="7"
+          fill="#dbeafe"
+          stroke="#1d4ed8"
+          stroke-width="1.2"/>
+
+    <text x="0" y="3.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#1d4ed8">
+      East
+    </text>
+
+    <animateMotion dur="4s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#eotvosHistoryEastPath"/>
+    </animateMotion>
+
+  </g>
+
+  <!-- Westbound ship -->
+  <g>
+
+    <rect x="-13" y="-7"
+          width="26" height="14"
+          rx="7"
+          fill="#fee2e2"
+          stroke="#b91c1c"
+          stroke-width="1.2"/>
+
+    <text x="0" y="3.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#b91c1c">
+      West
+    </text>
+
+    <animateMotion dur="4s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#eotvosHistoryWestPath"/>
+    </animateMotion>
+
+  </g>
+
+  <!-- Pole -->
+  <circle cx="125" cy="64"
+          r="4.5"
+          fill="#fee2e2"
+          stroke="#b91c1c"
+          stroke-width="1.2"/>
+
+  <text x="95" y="66"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#7f1d1d">
+    Pole
+  </text>
+
+  <!-- Main result -->
+  <rect x="24" y="174"
+        width="202" height="41"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="125" y="188"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    Eastbound → lower gravity reading
+  </text>
+
+  <text x="125" y="203"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.4"
+        font-weight="700"
+        fill="#b91c1c">
+    Westbound → higher gravity reading
+  </text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="258" y="29"
+        width="152" height="198"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="334" y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Shipboard measurements
+  </text>
+
+  <text x="334" y="60"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#64748b">
+    not a pendulum experiment
+  </text>
+
+  <!-- Hecker measurements -->
+  <rect x="270" y="70"
+        width="128" height="43"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#bfdbfe"/>
+
+  <text x="334" y="85"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#1e40af">
+    1901–1905
+  </text>
+
+  <text x="334" y="99"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        fill="#334155">
+    Hecker measured gravity
+  </text>
+
+  <text x="334" y="109"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        fill="#334155">
+    on long ocean voyages
+  </text>
+
+  <!-- Eötvös explanation -->
+  <rect x="270" y="121"
+        width="128" height="43"
+        rx="8"
+        fill="#f0f9ff"
+        stroke="#bae6fd"/>
+
+  <text x="334" y="136"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.8"
+        font-weight="700"
+        fill="#0369a1">
+    Eötvös noticed
+  </text>
+
+  <text x="334" y="150"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        fill="#334155">
+    the reading depended
+  </text>
+
+  <text x="334" y="160"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        fill="#334155">
+    on travel direction
+  </text>
+
+  <!-- Confirmation -->
+  <rect x="270" y="172"
+        width="128" height="43"
+        rx="8"
+        fill="#dbeafe"
+        stroke="#60a5fa"
+        stroke-width="1.2"/>
+
+  <text x="334" y="187"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#1d4ed8">
+    1908: Black Sea
+  </text>
+
+  <text x="334" y="201"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        fill="#334155">
+    opposite-direction ships
+  </text>
+
+  <text x="334" y="211"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        fill="#334155">
+    confirmed the effect
+  </text>
+
+  <!-- Footer -->
+  <text x="210" y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    Eastward motion adds to Earth’s rotation; westward motion subtracts from it.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "How does travelling east or west change your apparent weight? (Eötvös effect)",
+
+  equation: "\\boxed{\\Delta g_E\\approx-0.0029\\ \\mathrm{m\\,s^{-2}}}\\qquad\\boxed{\\Delta g_W\\approx+0.0029\\ \\mathrm{m\\,s^{-2}}}",
+
+answer: "At 53° N, Earth’s surface already moves eastward at about 1,000 km h⁻¹. Travelling east at 120 km h⁻¹ increases your speed around Earth’s axis to about 1,120 km h⁻¹, while travelling west reduces it to about 880 km h⁻¹. Viewed from space, both travellers still move eastward, but the eastbound traveller moves faster. The eastbound traveller is therefore slightly lighter and the westbound traveller slightly heavier. The difference in apparent gravity is about 0.0059 m s⁻². At an aircraft speed of 900 km h⁻¹, the east–west difference is about 0.044 m s⁻².",
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="eotvosSpeedEarthBlue"
+                    cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="65%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+
+    <!-- Equatorial path -->
+    <path id="eotvosSpeedEquatorPath"
+          d="
+            M 191 130
+            A 66 16 0 1 0 59 130
+            A 66 16 0 1 0 191 130
+          "/>
+
+    <!-- Eastbound path at 53 degrees north -->
+    <path id="eotvosSpeedEastPath"
+          d="
+            M 165 77
+            A 40 10 0 1 0 85 77
+            A 40 10 0 1 0 165 77
+          "/>
+
+    <!-- Same direction, starting on opposite side -->
+    <path id="eotvosSpeedWestPath"
+          d="
+            M 85 77
+            A 40 10 0 1 0 165 77
+            A 40 10 0 1 0 85 77
+          "/>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210" y="18"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    The Eötvös effect: east is lighter, west is heavier
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10" y="29"
+        width="238" height="198"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <text x="125" y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#334155">
+    Viewed from space: both still move eastward
+  </text>
+
+  <!-- Earth -->
+  <circle cx="125" cy="130"
+          r="66"
+          fill="url(#eotvosSpeedEarthBlue)"
+          stroke="#1e3a8a"
+          stroke-width="1.5"/>
+
+  <!-- Rotation axis -->
+  <line x1="125" y1="56"
+        x2="125" y2="204"
+        stroke="#dbeafe"
+        stroke-width="1.5"
+        stroke-dasharray="5 3"/>
+
+  <text x="132" y="68"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    N
+  </text>
+
+  <text x="132" y="198"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    S
+  </text>
+
+  <!-- Equatorial path -->
+  <ellipse cx="125" cy="130"
+           rx="66" ry="16"
+           fill="none"
+           stroke="#fef3c7"
+           stroke-width="1.8"
+           stroke-dasharray="6 4">
+
+    <animate attributeName="stroke-dashoffset"
+             from="0"
+             to="-20"
+             dur="1.5s"
+             repeatCount="indefinite"/>
+
+  </ellipse>
+
+  <text x="125" y="134"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#ffffff">
+    Equator
+  </text>
+
+  <!-- Reference point rotating with Earth -->
+  <circle cx="0" cy="0"
+          r="4.2"
+          fill="#fde68a"
+          stroke="#92400e"
+          stroke-width="1.1">
+
+    <animateMotion dur="4s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#eotvosSpeedEquatorPath"/>
+    </animateMotion>
+
+  </circle>
+
+  <!-- 53 degree path -->
+  <ellipse cx="125" cy="77"
+           rx="40" ry="10"
+           fill="none"
+           stroke="#dbeafe"
+           stroke-width="1.5"
+           stroke-dasharray="5 3">
+
+    <animate attributeName="stroke-dashoffset"
+             from="0"
+             to="-16"
+             dur="1.5s"
+             repeatCount="indefinite"/>
+
+  </ellipse>
+
+  <text x="125" y="81"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#ffffff">
+    53° N
+  </text>
+
+  <!-- Eastbound traveller: faster -->
+  <g>
+
+    <rect x="-18" y="-6"
+          width="36" height="12"
+          rx="6"
+          fill="#dbeafe"
+          stroke="#1d4ed8"
+          stroke-width="1.1"/>
+
+    <text x="0" y="3.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#1d4ed8">
+      E +120
+    </text>
+
+    <animateMotion dur="3.6s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#eotvosSpeedEastPath"/>
+    </animateMotion>
+
+  </g>
+
+  <!-- Westbound traveller: slower, but still eastward from space -->
+  <g>
+
+    <rect x="-18" y="-6"
+          width="36" height="12"
+          rx="6"
+          fill="#fee2e2"
+          stroke="#b91c1c"
+          stroke-width="1.1"/>
+
+    <text x="0" y="3.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#b91c1c">
+      W −120
+    </text>
+
+    <animateMotion dur="4.5s"
+                   repeatCount="indefinite"
+                   rotate="0">
+      <mpath href="#eotvosSpeedWestPath"/>
+    </animateMotion>
+
+  </g>
+
+
+
+  <!-- Explanation box -->
+  <rect x="24" y="174"
+        width="202" height="41"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="125" y="188"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    Eastbound moves faster → slightly lighter
+  </text>
+
+  <text x="125" y="203"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.2"
+        font-weight="700"
+        fill="#b91c1c">
+    Westbound moves slower → slightly heavier
+  </text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="258" y="29"
+        width="152" height="198"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="334" y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    At latitude 53° N
+  </text>
+
+  <text x="334" y="60"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#64748b">
+    approximate values
+  </text>
+
+  <!-- Existing speed around Earth's axis -->
+  <rect x="270" y="70"
+        width="128" height="34"
+        rx="7"
+        fill="#f1f5f9"
+        stroke="#cbd5e1"/>
+
+  <text x="334" y="83"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        fill="#475569">
+    Earth’s surface already moves
+  </text>
+
+  <text x="334" y="97"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#334155">
+    east at ≈ 1,000 km h⁻¹
+  </text>
+
+  <!-- 120 km/h example -->
+  <rect x="270" y="112"
+        width="128" height="67"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#bfdbfe"/>
+
+  <text x="334" y="127"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#1e40af">
+    Travel speed: 120 km h⁻¹
+  </text>
+
+  <text x="279" y="144"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#1d4ed8">
+    East:
+  </text>
+
+  <text x="390" y="144"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    Δg ≈ −0.0029
+  </text>
+
+  <text x="279" y="159"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    West:
+  </text>
+
+  <text x="390" y="159"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#b91c1c">
+    Δg ≈ +0.0029
+  </text>
+
+  <text x="334" y="174"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#334155">
+    Difference ≈ 0.0059 m s⁻²
+  </text>
+
+  <!-- Aircraft example -->
+  <rect x="270" y="187"
+        width="128" height="31"
+        rx="7"
+        fill="#f0f9ff"
+        stroke="#bae6fd"/>
+
+  <text x="334" y="200"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#0369a1">
+    Aircraft at 900 km h⁻¹
+  </text>
+
+  <text x="334" y="213"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#0369a1">
+    difference ≈ 0.044 m s⁻²
+  </text>
+
+  <!-- Footer -->
+  <text x="210" y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    Changes are relative to a stationary observer at the same latitude.
+  </text>
+
+</svg>
+`
+}
+
+
 
 
 ];
