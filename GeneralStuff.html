@@ -5649,6 +5649,4180 @@ answer: "At 53° N, Earth’s surface already moves eastward at about 1,000 km h
 
 </svg>
 `
+},
+{
+  topic: "Earth & Space",
+
+  term: "What did Newton’s cannonball thought experiment show?",
+
+  equation: "\\boxed{\\text{An orbit is continuous free fall around Earth}}",
+
+  answer: "Newton imagined firing a cannonball horizontally from a very high mountain. At a relatively low launch speed, gravity curves its path into Earth and it lands nearby. At a greater speed, it travels much farther before striking the surface. At the correct orbital speed, Earth’s surface curves away beneath the cannonball as quickly as the cannonball falls, so it continually misses the ground and remains in orbit. Newton used this thought experiment to show that falling objects, satellites and the Moon are governed by the same gravity. The mountain and trajectories are greatly exaggerated, and air resistance is ignored.",
+
+
+svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <radialGradient id="newtonCannonEarthGradient"
+                    cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="68%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </radialGradient>
+
+    <path id="newtonCannonShortPath"
+          d="
+            M 120 51
+            C 145 51, 169 69, 178.9 105
+          "/>
+
+    <path id="newtonCannonLongPath"
+          d="
+            M 120 51
+            C 164 50, 215 98, 178.9 173
+          "/>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210" y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Newton’s cannonball
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10" y="28"
+        width="235" height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- Earth -->
+  <circle cx="120" cy="139"
+          r="68"
+          fill="url(#newtonCannonEarthGradient)"
+          stroke="#1e3a8a"
+          stroke-width="1.7"/>
+
+  <!-- Simple continents -->
+  <path d="
+    M 82 112
+    C 92 101, 108 101, 116 110
+    C 123 118, 115 129, 103 130
+    C 91 130, 82 124, 82 112 Z
+  "
+        fill="#86efac"
+        opacity="0.88"/>
+
+  <path d="
+    M 139 104
+    C 151 99, 165 106, 167 118
+    C 169 129, 160 136, 151 134
+    C 141 131, 136 116, 139 104 Z
+  "
+        fill="#86efac"
+        opacity="0.88"/>
+
+  <path d="
+    M 119 157
+    C 131 151, 143 158, 141 171
+    C 138 184, 127 191, 118 184
+    C 111 177, 109 164, 119 157 Z
+  "
+        fill="#86efac"
+        opacity="0.88"/>
+
+  <!-- Exaggerated mountain -->
+  <path d="
+    M 101 76
+    L 120 54
+    L 138 76
+    Z
+  "
+        fill="#7f1d1d"
+        stroke="#450a0a"
+        stroke-width="1"/>
+
+  <path d="
+    M 112 63
+    L 120 54
+    L 128 63
+    L 124 61
+    L 120 65
+    L 116 61
+    Z
+  "
+        fill="#f8fafc"
+        opacity="0.95"/>
+
+  <!-- Cannon -->
+  <circle cx="102" cy="51"
+          r="9"
+          fill="#475569"
+          stroke="#111827"
+          stroke-width="1.2"/>
+
+  <rect x="102" y="45"
+        width="18" height="12"
+        rx="2"
+        fill="#64748b"
+        stroke="#111827"
+        stroke-width="1.2"/>
+
+  <line x1="120" y1="51"
+        x2="130" y2="51"
+        stroke="#111827"
+        stroke-width="4"
+        stroke-linecap="round"/>
+
+  <!-- Launch point -->
+  <circle cx="120" cy="51"
+          r="2.5"
+          fill="#111827"/>
+
+  <!-- First trajectory -->
+  <path d="
+    M 120 51
+    C 145 51, 169 69, 178.9 105
+  "
+        pathLength="100"
+        fill="none"
+        stroke="#ef4444"
+        stroke-width="2.8"
+        stroke-linecap="round"
+        stroke-dasharray="100"
+        stroke-dashoffset="100">
+
+    <animate attributeName="stroke-dashoffset"
+             values="100;100;0;0"
+             keyTimes="0;0.03;0.21;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.025;0.03;0.21;0.24;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- First cannonball -->
+  <circle r="4.2"
+          fill="#ef4444"
+          stroke="#7f1d1d"
+          stroke-width="1">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.025;0.03;0.21;0.24;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+
+    <animateMotion dur="15s"
+                   repeatCount="indefinite"
+                   calcMode="linear"
+                   keyTimes="0;0.03;0.21;1"
+                   keyPoints="0;0;1;1">
+      <mpath href="#newtonCannonShortPath"/>
+    </animateMotion>
+  </circle>
+
+  <!-- First impact flash -->
+  <circle cx="178.9" cy="105"
+          fill="none"
+          stroke="#ef4444"
+          stroke-width="2">
+
+    <animate attributeName="r"
+             values="2;2;9;2"
+             keyTimes="0;0.205;0.225;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;0;1;0"
+             keyTimes="0;0.205;0.22;0.25"
+             dur="15s"
+             repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Second trajectory -->
+  <path d="
+    M 120 51
+    C 164 50, 215 98, 178.9 173
+  "
+        pathLength="100"
+        fill="none"
+        stroke="#f59e0b"
+        stroke-width="2.8"
+        stroke-linecap="round"
+        stroke-dasharray="100"
+        stroke-dashoffset="100">
+
+    <animate attributeName="stroke-dashoffset"
+             values="100;100;0;0"
+             keyTimes="0;0.29;0.49;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.285;0.29;0.49;0.52;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- Second cannonball -->
+  <circle r="4.2"
+          fill="#f59e0b"
+          stroke="#92400e"
+          stroke-width="1">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.285;0.29;0.49;0.52;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+
+    <animateMotion dur="15s"
+                   repeatCount="indefinite"
+                   calcMode="linear"
+                   keyTimes="0;0.29;0.49;1"
+                   keyPoints="0;0;1;1">
+      <mpath href="#newtonCannonLongPath"/>
+    </animateMotion>
+  </circle>
+
+  <!-- Second impact flash -->
+  <circle cx="178.9" cy="173"
+          fill="none"
+          stroke="#f59e0b"
+          stroke-width="2">
+
+    <animate attributeName="r"
+             values="2;2;9;2"
+             keyTimes="0;0.485;0.505;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;0;1;0"
+             keyTimes="0;0.485;0.50;0.53"
+             dur="15s"
+             repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Circular orbital path -->
+  <circle cx="120" cy="139"
+          r="88"
+          fill="none"
+          stroke="#2563eb"
+          stroke-width="2.5"
+          stroke-dasharray="6 4">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.55;0.58;0.94;0.97;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="stroke-dashoffset"
+             values="0;0;-80;-160"
+             keyTimes="0;0.58;0.76;0.94"
+             dur="15s"
+             repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Orbiting cannonball -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.55;0.58;0.94;0.97;1"
+             dur="15s"
+             repeatCount="indefinite"/>
+
+    <animateTransform attributeName="transform"
+                      type="rotate"
+                      values="
+                        0 120 139;
+                        0 120 139;
+                        720 120 139;
+                        720 120 139
+                      "
+                      keyTimes="0;0.58;0.94;1"
+                      dur="15s"
+                      repeatCount="indefinite"/>
+
+    <circle cx="120" cy="51"
+            r="4.5"
+            fill="#2563eb"
+            stroke="#1e3a8a"
+            stroke-width="1.1"/>
+  </g>
+
+  <!-- Muzzle flashes -->
+  <g fill="#fde047">
+
+    <circle cx="124" cy="51" r="7">
+      <animate attributeName="opacity"
+               values="0;1;0;0"
+               keyTimes="0;0.03;0.055;1"
+               dur="15s"
+               repeatCount="indefinite"/>
+    </circle>
+
+    <circle cx="124" cy="51" r="7">
+      <animate attributeName="opacity"
+               values="0;0;1;0;0"
+               keyTimes="0;0.285;0.29;0.315;1"
+               dur="15s"
+               repeatCount="indefinite"/>
+    </circle>
+
+    <circle cx="124" cy="51" r="7">
+      <animate attributeName="opacity"
+               values="0;0;1;0;0"
+               keyTimes="0;0.55;0.58;0.605;1"
+               dur="15s"
+               repeatCount="indefinite"/>
+    </circle>
+
+  </g>
+
+  <!-- Bottom note -->
+  <rect x="24" y="192"
+        width="190" height="24"
+        rx="7"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="119" y="207"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.3"
+        font-weight="700"
+        fill="#0f172a">
+    More sideways speed → farther travel
+  </text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="255" y="28"
+        width="155" height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="332.5" y="48"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12.5"
+        font-weight="700"
+        fill="#0f172a">
+    Three outcomes
+  </text>
+
+  <line x1="272" y1="59"
+        x2="394" y2="59"
+        stroke="#e2e8f0"
+        stroke-width="1"/>
+
+  <!-- 1 -->
+  <circle cx="277" cy="79"
+          r="8"
+          fill="#fee2e2"
+          stroke="#ef4444"/>
+
+  <text x="277" y="82.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    1
+  </text>
+
+  <text x="290" y="77"
+        font-family="Arial, sans-serif"
+        font-size="9.7"
+        font-weight="700"
+        fill="#b91c1c">
+    Low speed
+  </text>
+
+  <text x="290" y="91"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#475569">
+    falls back quickly
+  </text>
+
+  <!-- 2 -->
+  <circle cx="277" cy="124"
+          r="8"
+          fill="#fef3c7"
+          stroke="#f59e0b"/>
+
+  <text x="277" y="127.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#92400e">
+    2
+  </text>
+
+  <text x="290" y="122"
+        font-family="Arial, sans-serif"
+        font-size="9.7"
+        font-weight="700"
+        fill="#92400e">
+    Faster
+  </text>
+
+  <text x="290" y="136"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#475569">
+    goes farther
+  </text>
+
+  <!-- 3 -->
+  <circle cx="277" cy="169"
+          r="8"
+          fill="#dbeafe"
+          stroke="#2563eb"/>
+
+  <text x="277" y="172.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#1d4ed8">
+    3
+  </text>
+
+  <text x="290" y="167"
+        font-family="Arial, sans-serif"
+        font-size="9.7"
+        font-weight="700"
+        fill="#1d4ed8">
+    Orbital speed
+  </text>
+
+  <text x="290" y="181"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        fill="#475569">
+    keeps missing Earth
+  </text>
+
+  <rect x="271" y="202"
+        width="123" height="16"
+        rx="7"
+        fill="#dbeafe"
+        stroke="#93c5fd"/>
+
+  <text x="332.5" y="213"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#1d4ed8">
+    orbit = continuous falling
+  </text>
+
+  <!-- Footer -->
+  <text x="210" y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    Schematic only: mountain exaggerated, air resistance ignored.
+  </text>
+
+</svg>
+`  
+},
+
+
+{
+  topic: "Mechanics",
+
+  term: "What is the difference between distance, displacement, average speed and average velocity?",
+
+  equation: "\\boxed{\\text{average speed}=\\frac{\\text{distance}}{\\Delta t}\\qquad \\vec v_{\\mathrm{avg}}=\\frac{\\Delta\\vec r}{\\Delta t}}",
+
+  answer: "Distance is the total length of the path travelled, while displacement is the straight-line change from the starting position to the finishing position. Distance is a scalar, while displacement includes direction. Average speed is distance divided by time and has no direction. Average velocity is displacement divided by time and includes direction. In this example, the car travels 10 m in 5 s but has a displacement of only 6 m east. Its average speed is therefore 2 m/s, while its average velocity is 1.2 m/s east.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker id="dispArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+    </marker>
+
+    <!-- Curved road from A to B -->
+    <path id="outRoute"
+          d="
+            M 38 158
+            C 61 98, 92 198, 126 132
+            C 157 73, 187 204, 220 158
+          "/>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    One journey from A to B
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10"
+        y="28"
+        width="235"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- Ground -->
+  <path d="
+    M 18 188
+    Q 48 169, 79 184
+    Q 110 199, 141 180
+    Q 179 158, 237 182
+    L 237 219
+    L 18 219 Z
+  "
+        fill="#dcfce7"/>
+
+  <!-- Base road -->
+  <path d="
+    M 38 158
+    C 61 98, 92 198, 126 132
+    C 157 73, 187 204, 220 158
+  "
+        fill="none"
+        stroke="#cbd5e1"
+        stroke-width="11"
+        stroke-linecap="round"/>
+
+  <!-- Road centre line -->
+  <path d="
+    M 38 158
+    C 61 98, 92 198, 126 132
+    C 157 73, 187 204, 220 158
+  "
+        fill="none"
+        stroke="#ffffff"
+        stroke-width="1.7"
+        stroke-dasharray="5 5"
+        stroke-linecap="round"/>
+
+  <!-- Start -->
+  <circle cx="38"
+          cy="158"
+          r="7"
+          fill="#ffffff"
+          stroke="#16a34a"
+          stroke-width="2"/>
+
+  <text x="38"
+        y="161.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#15803d">
+    A
+  </text>
+
+  <text x="24"
+        y="177"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        font-weight="700"
+        fill="#15803d">
+    start
+  </text>
+
+  <!-- Finish -->
+  <circle cx="220"
+          cy="158"
+          r="7"
+          fill="#ffffff"
+          stroke="#dc2626"
+          stroke-width="2"/>
+
+  <text x="220"
+        y="161.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    B
+  </text>
+
+  <text x="206"
+        y="177"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        font-weight="700"
+        fill="#b91c1c">
+    finish
+  </text>
+
+  <!-- BLUE TRAIL: animated directly on a real path -->
+  <path d="
+    M 38 158
+    C 61 98, 92 198, 126 132
+    C 157 73, 187 204, 220 158
+  "
+        pathLength="100"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-dasharray="100"
+        stroke-dashoffset="100">
+
+    <animate attributeName="stroke-dashoffset"
+             values="100;100;0;0"
+             keyTimes="0;0.08;0.66;1"
+             calcMode="linear"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;1;1;1"
+             keyTimes="0;0.08;0.09;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- Car -->
+  <g>
+    <animateMotion dur="10s"
+                   repeatCount="indefinite"
+                   rotate="auto"
+                   calcMode="linear"
+                   keyTimes="0;0.08;0.66;1"
+                   keyPoints="0;0;1;1">
+      <mpath href="#outRoute"/>
+    </animateMotion>
+
+    <rect x="-7"
+          y="-5"
+          width="14"
+          height="9"
+          rx="2"
+          fill="#2563eb"
+          stroke="#1e3a8a"
+          stroke-width="1"/>
+
+    <rect x="-3"
+          y="-8"
+          width="7"
+          height="4"
+          rx="1.5"
+          fill="#bfdbfe"
+          stroke="#1e3a8a"
+          stroke-width="0.7"/>
+
+    <circle cx="-4.5"
+            cy="5"
+            r="2"
+            fill="#1e293b"/>
+
+    <circle cx="4.5"
+            cy="5"
+            r="2"
+            fill="#1e293b"/>
+  </g>
+
+  <!-- Distance label -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.64;0.68;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <rect x="78"
+          y="84"
+          width="83"
+          height="18"
+          rx="7"
+          fill="#dbeafe"
+          stroke="#93c5fd"/>
+
+    <text x="119.5"
+          y="96.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.8"
+          font-weight="700"
+          fill="#1d4ed8">
+      distance = 10 m
+    </text>
+  </g>
+
+  <!-- Displacement arrow -->
+  <path d="M 48 158 L 210 158"
+        pathLength="100"
+        fill="none"
+        stroke="#7c3aed"
+        stroke-width="2.7"
+        stroke-dasharray="100"
+        stroke-dashoffset="100"
+        marker-end="url(#dispArrow)">
+
+    <animate attributeName="stroke-dashoffset"
+             values="100;100;0;0"
+             keyTimes="0;0.68;0.80;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.67;0.69;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- Displacement label -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.77;0.81;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <rect x="84"
+          y="166"
+          width="92"
+          height="18"
+          rx="7"
+          fill="#f3e8ff"
+          stroke="#c084fc"/>
+
+    <text x="130"
+          y="178.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.8"
+          font-weight="700"
+          fill="#6d28d9">
+      displacement = 6 m east
+    </text>
+  </g>
+
+  <!-- Time label -->
+  <rect x="84"
+        y="196"
+        width="73"
+        height="18"
+        rx="7"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="120.5"
+        y="208.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#334155">
+    time = 5 s
+  </text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="255"
+        y="28"
+        width="155"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="332.5"
+        y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Quantities
+  </text>
+
+  <line x1="272"
+        y1="57"
+        x2="394"
+        y2="57"
+        stroke="#e2e8f0"/>
+
+  <text x="270"
+        y="76"
+        font-family="Arial, sans-serif"
+        font-size="9.2"
+        font-weight="700"
+        fill="#1d4ed8">
+    Distance
+  </text>
+
+  <text x="270"
+        y="89"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    total path travelled
+  </text>
+
+  <text x="390"
+        y="89"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    10 m
+  </text>
+
+  <text x="270"
+        y="109"
+        font-family="Arial, sans-serif"
+        font-size="9.2"
+        font-weight="700"
+        fill="#6d28d9">
+    Displacement
+  </text>
+
+  <text x="270"
+        y="122"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    straight-line change
+  </text>
+
+  <text x="390"
+        y="122"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#6d28d9">
+    6 m east
+  </text>
+
+  <!-- Results -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.66;0.72;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <rect x="268"
+          y="137"
+          width="129"
+          height="33"
+          rx="8"
+          fill="#eff6ff"
+          stroke="#93c5fd"/>
+
+    <text x="276"
+          y="149"
+          font-family="Arial, sans-serif"
+          font-size="8.6"
+          font-weight="700"
+          fill="#1d4ed8">
+      Average speed
+    </text>
+
+    <text x="276"
+          y="162"
+          font-family="Arial, sans-serif"
+          font-size="8.4"
+          fill="#334155">
+      10 m ÷ 5 s =
+    </text>
+
+    <text x="389"
+          y="162"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          font-weight="700"
+          fill="#1d4ed8">
+      2 m/s
+    </text>
+
+    <rect x="268"
+          y="177"
+          width="129"
+          height="38"
+          rx="8"
+          fill="#faf5ff"
+          stroke="#c084fc"/>
+
+    <text x="276"
+          y="190"
+          font-family="Arial, sans-serif"
+          font-size="8.6"
+          font-weight="700"
+          fill="#6d28d9">
+      Average velocity
+    </text>
+
+    <text x="276"
+          y="203"
+          font-family="Arial, sans-serif"
+          font-size="8.4"
+          fill="#334155">
+      6 m ÷ 5 s =
+    </text>
+
+    <text x="389"
+          y="203"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="9.4"
+          font-weight="700"
+          fill="#6d28d9">
+      1.2 m/s
+    </text>
+
+    <text x="389"
+          y="212"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#6d28d9">
+      east
+    </text>
+  </g>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    The route is longer than the straight-line displacement.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "Can two journeys have the same average velocity but different average speeds?",
+
+  equation: "\\boxed{\\text{same displacement and time}\\Rightarrow\\text{same average velocity}}",
+
+  answer: "Yes. Both cars travel from A to B in 5 s, so they have the same displacement and the same average velocity. However, the orange car follows a longer route and must therefore have a greater average speed. Average speed depends on distance travelled, while average velocity depends on displacement.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker id="sameJourneyDisplacementArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+    </marker>
+
+    <!-- Direct route -->
+    <path id="sameJourneyDirectRoute"
+          pathLength="100"
+          d="M 40 150 L 220 150"/>
+
+    <!-- Longer winding route -->
+    <path id="sameJourneyWindingRoute"
+          pathLength="100"
+          d="
+            M 40 150
+            C 64 91, 91 181, 121 126
+            C 150 73, 182 91, 202 117
+            C 214 131, 219 143, 220 150
+          "/>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Same displacement, different speeds
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10"
+        y="28"
+        width="235"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- Ground -->
+  <path d="
+    M 18 185
+    Q 49 169, 78 183
+    Q 112 198, 145 178
+    Q 181 158, 237 181
+    L 237 219
+    L 18 219 Z
+  "
+        fill="#dcfce7"/>
+
+  <!-- Common time -->
+  <rect x="19"
+        y="37"
+        width="75"
+        height="18"
+        rx="7"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="56.5"
+        y="49.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#334155">
+    both take 5 s
+  </text>
+
+  <!-- Winding road -->
+  <use href="#sameJourneyWindingRoute"
+       fill="none"
+       stroke="#fed7aa"
+       stroke-width="11"
+       stroke-linecap="round"/>
+
+  <use href="#sameJourneyWindingRoute"
+       fill="none"
+       stroke="#ffffff"
+       stroke-width="1.5"
+       stroke-dasharray="5 5"
+       stroke-linecap="round"/>
+
+  <!-- Direct road -->
+  <use href="#sameJourneyDirectRoute"
+       fill="none"
+       stroke="#bfdbfe"
+       stroke-width="11"
+       stroke-linecap="round"/>
+
+  <use href="#sameJourneyDirectRoute"
+       fill="none"
+       stroke="#ffffff"
+       stroke-width="1.5"
+       stroke-dasharray="5 5"
+       stroke-linecap="round"/>
+
+  <!-- Route labels -->
+  <rect x="103"
+        y="39"
+        width="113"
+        height="18"
+        rx="7"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <text x="159.5"
+        y="51.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#c2410c">
+    winding route: 10 m
+  </text>
+
+  <rect x="82"
+        y="161"
+        width="93"
+        height="18"
+        rx="7"
+        fill="#dbeafe"
+        stroke="#93c5fd"/>
+
+  <text x="128.5"
+        y="173.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#1d4ed8">
+    direct route: 6 m
+  </text>
+
+  <!-- Start A -->
+  <circle cx="40"
+          cy="150"
+          r="7"
+          fill="#ffffff"
+          stroke="#16a34a"
+          stroke-width="2"/>
+
+  <text x="40"
+        y="153.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#15803d">
+    A
+  </text>
+
+  <!-- Finish B -->
+  <circle cx="220"
+          cy="150"
+          r="7"
+          fill="#ffffff"
+          stroke="#dc2626"
+          stroke-width="2"/>
+
+  <text x="220"
+        y="153.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    B
+  </text>
+
+  <!-- Blue trail follows the direct-route car -->
+  <path d="M 40 150 L 220 150"
+        pathLength="100"
+        fill="none"
+        stroke="#2563eb"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-dasharray="100 100"
+        stroke-dashoffset="100">
+
+    <animate attributeName="stroke-dashoffset"
+             values="100;100;0;0"
+             keyTimes="0;0.08;0.68;1"
+             calcMode="linear"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;1;1;1"
+             keyTimes="0;0.08;0.09;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- Orange trail follows the winding-route car -->
+  <path d="
+    M 40 150
+    C 64 91, 91 181, 121 126
+    C 150 73, 182 91, 202 117
+    C 214 131, 219 143, 220 150
+  "
+        pathLength="100"
+        fill="none"
+        stroke="#f59e0b"
+        stroke-width="4"
+        stroke-linecap="round"
+        stroke-dasharray="100 100"
+        stroke-dashoffset="100">
+
+    <animate attributeName="stroke-dashoffset"
+             values="100;100;0;0"
+             keyTimes="0;0.08;0.68;1"
+             calcMode="linear"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;1;1;1"
+             keyTimes="0;0.08;0.09;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- Blue car -->
+  <g>
+    <animateMotion dur="10s"
+                   repeatCount="indefinite"
+                   rotate="auto"
+                   calcMode="linear"
+                   keyTimes="0;0.08;0.68;1"
+                   keyPoints="0;0;1;1">
+      <mpath href="#sameJourneyDirectRoute"/>
+    </animateMotion>
+
+    <rect x="-7"
+          y="-5"
+          width="14"
+          height="9"
+          rx="2"
+          fill="#2563eb"
+          stroke="#1e3a8a"
+          stroke-width="1"/>
+
+    <rect x="-3"
+          y="-8"
+          width="7"
+          height="4"
+          rx="1.5"
+          fill="#bfdbfe"
+          stroke="#1e3a8a"
+          stroke-width="0.7"/>
+
+    <circle cx="-4.5"
+            cy="5"
+            r="2"
+            fill="#1e293b"/>
+
+    <circle cx="4.5"
+            cy="5"
+            r="2"
+            fill="#1e293b"/>
+  </g>
+
+  <!-- Orange car -->
+  <g>
+    <animateMotion dur="10s"
+                   repeatCount="indefinite"
+                   rotate="auto"
+                   calcMode="linear"
+                   keyTimes="0;0.08;0.68;1"
+                   keyPoints="0;0;1;1">
+      <mpath href="#sameJourneyWindingRoute"/>
+    </animateMotion>
+
+    <rect x="-7"
+          y="-5"
+          width="14"
+          height="9"
+          rx="2"
+          fill="#f59e0b"
+          stroke="#92400e"
+          stroke-width="1"/>
+
+    <rect x="-3"
+          y="-8"
+          width="7"
+          height="4"
+          rx="1.5"
+          fill="#fde68a"
+          stroke="#92400e"
+          stroke-width="0.7"/>
+
+    <circle cx="-4.5"
+            cy="5"
+            r="2"
+            fill="#1e293b"/>
+
+    <circle cx="4.5"
+            cy="5"
+            r="2"
+            fill="#1e293b"/>
+  </g>
+
+  <!-- Displacement appears after arrival -->
+  <path d="M 48 191 L 212 191"
+        pathLength="100"
+        fill="none"
+        stroke="#7c3aed"
+        stroke-width="2.6"
+        stroke-dasharray="100 100"
+        stroke-dashoffset="100"
+        marker-end="url(#sameJourneyDisplacementArrow)">
+
+    <animate attributeName="stroke-dashoffset"
+             values="100;100;0;0"
+             keyTimes="0;0.70;0.82;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.69;0.71;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <g>
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.79;0.83;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <rect x="77"
+          y="198"
+          width="127"
+          height="18"
+          rx="7"
+          fill="#f3e8ff"
+          stroke="#c084fc"/>
+
+    <text x="140.5"
+          y="210.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.6"
+          font-weight="700"
+          fill="#6d28d9">
+      same displacement: 6 m east
+    </text>
+  </g>
+
+  <!-- RIGHT PANEL -->
+  <rect x="255"
+        y="28"
+        width="155"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="332.5"
+        y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Compare
+  </text>
+
+  <line x1="272"
+        y1="57"
+        x2="394"
+        y2="57"
+        stroke="#e2e8f0"/>
+
+  <!-- Same for both -->
+  <rect x="267"
+        y="67"
+        width="131"
+        height="59"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#c084fc"/>
+
+  <text x="332.5"
+        y="81"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#6d28d9">
+    Same for both
+  </text>
+
+  <text x="276"
+        y="96"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    Time
+  </text>
+
+  <text x="389"
+        y="96"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#334155">
+    5 s
+  </text>
+
+  <text x="276"
+        y="109"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    Displacement
+  </text>
+
+  <text x="389"
+        y="109"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#6d28d9">
+    6 m east
+  </text>
+
+  <text x="276"
+        y="121"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    Average velocity
+  </text>
+
+  <text x="389"
+        y="121"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.4"
+        font-weight="700"
+        fill="#6d28d9">
+    1.2 m/s east
+  </text>
+
+  <!-- Direct route -->
+  <rect x="267"
+        y="137"
+        width="131"
+        height="34"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="276"
+        y="151"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#1d4ed8">
+    Direct route: 6 m
+  </text>
+
+  <text x="276"
+        y="164"
+        font-family="Arial, sans-serif"
+        font-size="8.4"
+        fill="#475569">
+    Average speed
+  </text>
+
+  <text x="389"
+        y="164"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="9.4"
+        font-weight="700"
+        fill="#1d4ed8">
+    1.2 m/s
+  </text>
+
+  <!-- Winding route -->
+  <rect x="267"
+        y="180"
+        width="131"
+        height="34"
+        rx="8"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <text x="276"
+        y="194"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#c2410c">
+    Winding route: 10 m
+  </text>
+
+  <text x="276"
+        y="207"
+        font-family="Arial, sans-serif"
+        font-size="8.4"
+        fill="#475569">
+    Average speed
+  </text>
+
+  <text x="389"
+        y="207"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="9.4"
+        font-weight="700"
+        fill="#c2410c">
+    2.0 m/s
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    Same displacement and time, but different distances travelled.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "What is instantaneous velocity, and why is it important?",
+
+  equation: "\\boxed{\\vec v=\\lim_{\\Delta t\\to0}\\frac{\\Delta\\vec r}{\\Delta t}=\\frac{d\\vec r}{dt}}",
+
+  answer: "Instantaneous velocity is an object's velocity at one particular moment. Its magnitude is the instantaneous speed, while its direction is tangent to the object's path. Average velocity describes motion over an entire time interval and can hide changes in speed or direction. Instantaneous velocity is important because braking, steering, collisions and acceleration depend on how an object is moving now, rather than only on its average motion over a complete journey.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker id="instantVelocityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <marker id="averageVelocityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5"
+            markerHeight="5"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+    </marker>
+
+    <!-- Curved road -->
+    <path id="instantVelocityRoute"
+          pathLength="100"
+          d="
+            M 40 160
+            C 68 75, 103 194, 143 120
+            C 173 64, 201 72, 220 100
+          "/>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Instantaneous velocity
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10"
+        y="28"
+        width="235"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- Ground -->
+  <path d="
+    M 18 185
+    Q 49 169, 81 183
+    Q 112 198, 145 179
+    Q 181 157, 237 181
+    L 237 219
+    L 18 219 Z
+  "
+        fill="#dcfce7"/>
+
+  <!-- Speedometer -->
+  <rect x="20"
+        y="38"
+        width="94"
+        height="34"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="67"
+        y="50"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.4"
+        font-weight="700"
+        fill="#475569">
+    instantaneous speed
+  </text>
+
+  <!-- Slow-speed reading -->
+  <text x="67"
+        y="65"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#2563eb">
+
+    <animate attributeName="opacity"
+             values="1;1;0;0;1;1;0;0"
+             keyTimes="0;0.24;0.25;0.41;0.42;0.64;0.65;1"
+             calcMode="discrete"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    1.0 m/s
+  </text>
+
+  <!-- Faster-speed reading -->
+  <text x="67"
+        y="65"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#2563eb">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.24;0.25;0.41;0.42;1"
+             calcMode="discrete"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    2.5 m/s
+  </text>
+
+  <!-- Stopped reading -->
+  <text x="67"
+        y="65"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#64748b">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.64;0.65;1"
+             calcMode="discrete"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    0 m/s
+  </text>
+
+  <!-- Road base -->
+  <use href="#instantVelocityRoute"
+       fill="none"
+       stroke="#cbd5e1"
+       stroke-width="11"
+       stroke-linecap="round"/>
+
+  <!-- Road centre line -->
+  <use href="#instantVelocityRoute"
+       fill="none"
+       stroke="#ffffff"
+       stroke-width="1.6"
+       stroke-dasharray="5 5"
+       stroke-linecap="round"/>
+
+  <!-- Start point -->
+  <circle cx="40"
+          cy="160"
+          r="7"
+          fill="#ffffff"
+          stroke="#16a34a"
+          stroke-width="2"/>
+
+  <text x="40"
+        y="163.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#15803d">
+    A
+  </text>
+
+  <!-- Finish point -->
+  <circle cx="220"
+          cy="100"
+          r="7"
+          fill="#ffffff"
+          stroke="#dc2626"
+          stroke-width="2"/>
+
+  <text x="220"
+        y="103.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    B
+  </text>
+
+  <!-- Moving car with tangent velocity arrow -->
+  <g>
+
+    <animateMotion dur="10s"
+                   repeatCount="indefinite"
+                   rotate="auto"
+                   calcMode="linear"
+                   keyTimes="0;0.25;0.42;0.65;1"
+                   keyPoints="0;0.25;0.75;1;1">
+
+      <mpath href="#instantVelocityRoute"/>
+    </animateMotion>
+
+    <!-- Instantaneous velocity arrow -->
+    <line x1="8"
+          y1="0"
+          x2="20"
+          y2="0"
+          stroke="#2563eb"
+          stroke-width="2.5"
+          marker-end="url(#instantVelocityArrow)">
+
+      <!-- Arrow is longer during the faster part -->
+      <animate attributeName="x2"
+               values="20;32;20;20;20"
+               keyTimes="0;0.25;0.42;0.65;1"
+               calcMode="discrete"
+               dur="10s"
+               repeatCount="indefinite"/>
+
+      <!-- Velocity becomes zero when the car stops -->
+      <animate attributeName="opacity"
+               values="1;1;1;0;0"
+               keyTimes="0;0.25;0.42;0.65;1"
+               calcMode="discrete"
+               dur="10s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <!-- Car body -->
+    <rect x="-7"
+          y="-5"
+          width="14"
+          height="9"
+          rx="2"
+          fill="#2563eb"
+          stroke="#1e3a8a"
+          stroke-width="1"/>
+
+    <!-- Car roof -->
+    <rect x="-3"
+          y="-8"
+          width="7"
+          height="4"
+          rx="1.5"
+          fill="#bfdbfe"
+          stroke="#1e3a8a"
+          stroke-width="0.7"/>
+
+    <!-- Wheels -->
+    <circle cx="-4.5"
+            cy="5"
+            r="2"
+            fill="#1e293b"/>
+
+    <circle cx="4.5"
+            cy="5"
+            r="2"
+            fill="#1e293b"/>
+  </g>
+
+  <!-- Instantaneous-velocity key -->
+  <line x1="23"
+        y1="207"
+        x2="47"
+        y2="207"
+        stroke="#2563eb"
+        stroke-width="2.5"
+        marker-end="url(#instantVelocityArrow)"/>
+
+  <text x="53"
+        y="210"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    velocity now: tangent to the path
+  </text>
+
+  <!-- Average velocity appears after arrival -->
+  <path d="M 48 157 L 212 103"
+        pathLength="100"
+        fill="none"
+        stroke="#7c3aed"
+        stroke-width="2.5"
+        stroke-dasharray="5 4"
+        stroke-dashoffset="100"
+        marker-end="url(#averageVelocityArrow)">
+
+    <animate attributeName="stroke-dashoffset"
+             values="100;100;0;0"
+             keyTimes="0;0.67;0.80;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.66;0.68;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- Average-velocity label -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.77;0.82;1"
+             dur="10s"
+             repeatCount="indefinite"/>
+
+    <rect x="97"
+          y="171"
+          width="125"
+          height="18"
+          rx="7"
+          fill="#f3e8ff"
+          stroke="#c084fc"/>
+
+    <text x="159.5"
+          y="183.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.5"
+          font-weight="700"
+          fill="#6d28d9">
+      average velocity: whole journey
+    </text>
+  </g>
+
+  <!-- RIGHT PANEL -->
+  <rect x="255"
+        y="28"
+        width="155"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="332.5"
+        y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Motion at one instant
+  </text>
+
+  <line x1="272"
+        y1="57"
+        x2="394"
+        y2="57"
+        stroke="#e2e8f0"/>
+
+  <!-- Instantaneous velocity -->
+  <rect x="267"
+        y="67"
+        width="131"
+        height="54"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="332.5"
+        y="81"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#1d4ed8">
+    Instantaneous velocity
+  </text>
+
+  <text x="276"
+        y="97"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    Magnitude
+  </text>
+
+  <text x="389"
+        y="97"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    current speed
+  </text>
+
+  <text x="276"
+        y="111"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    Direction
+  </text>
+
+  <text x="389"
+        y="111"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    tangent to path
+  </text>
+
+  <!-- Average velocity -->
+  <rect x="267"
+        y="130"
+        width="131"
+        height="39"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#c084fc"/>
+
+  <text x="332.5"
+        y="144"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#6d28d9">
+    Average velocity
+  </text>
+
+  <text x="332.5"
+        y="158"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    describes the whole interval
+  </text>
+
+  <!-- Why it matters -->
+  <rect x="267"
+        y="178"
+        width="131"
+        height="37"
+        rx="8"
+        fill="#f8fafc"
+        stroke="#cbd5e1"/>
+
+  <text x="332.5"
+        y="191"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#0f172a">
+    Why is it important?
+  </text>
+
+  <text x="332.5"
+        y="204"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        fill="#475569">
+    braking, turning and collisions
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    Acceleration measures how instantaneous velocity changes.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "What is acceleration?",
+
+  equation: "\\boxed{\\vec a=\\frac{\\Delta\\vec v}{\\Delta t}}",
+
+  answer: "Acceleration is the rate at which velocity changes. Because velocity includes both speed and direction, an object accelerates when it speeds up, slows down or changes direction. When an object speeds up, its acceleration is generally in the same direction as its velocity. When it slows down, acceleration points opposite to its velocity. An object travelling around a curve accelerates even if its speed remains constant, because the direction of its velocity is changing. Acceleration is measured in metres per second squared, m/s².",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Fixed-size arrowheads -->
+    <marker id="accelerationVelocityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <marker id="accelerationChangeArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Acceleration: changing velocity
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10"
+        y="28"
+        width="250"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- ================================================= -->
+  <!-- 1. SPEEDING UP                                   -->
+  <!-- ================================================= -->
+
+  <rect x="20"
+        y="38"
+        width="230"
+        height="52"
+        rx="8"
+        fill="#ffffff"
+        stroke="#93c5fd">
+
+    <animate attributeName="stroke-width"
+             values="2.4;2.4;1;1"
+             keyTimes="0;0.30;0.32;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+  </rect>
+
+  <text x="29"
+        y="52"
+        font-family="Arial, sans-serif"
+        font-size="9.3"
+        font-weight="700"
+        fill="#0f172a">
+    1. Speeding up
+  </text>
+
+  <text x="238"
+        y="52"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        fill="#475569">
+    speed increases
+  </text>
+
+  <!-- Road -->
+  <line x1="40"
+        y1="74"
+        x2="230"
+        y2="74"
+        stroke="#cbd5e1"
+        stroke-width="5"
+        stroke-linecap="round"/>
+
+  <line x1="40"
+        y1="74"
+        x2="230"
+        y2="74"
+        stroke="#ffffff"
+        stroke-width="1"
+        stroke-dasharray="5 5"/>
+
+  <!-- Moving object -->
+  <g transform="translate(48 74)">
+
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        48 74;
+                        48 74;
+                        215 74;
+                        215 74
+                      "
+                      keyTimes="0;0.05;0.30;1"
+                      calcMode="spline"
+                      keySplines="
+                        0 0 1 1;
+                        0.45 0 1 1;
+                        0 0 1 1
+                      "
+                      dur="12s"
+                      repeatCount="indefinite"/>
+
+    <!-- Velocity arrow grows -->
+    <line x1="7"
+          y1="-7"
+          x2="19"
+          y2="-7"
+          stroke="#2563eb"
+          stroke-width="2.1"
+          marker-end="url(#accelerationVelocityArrow)">
+
+      <animate attributeName="x2"
+               values="19;19;32;32"
+               keyTimes="0;0.05;0.30;1"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <text x="11"
+          y="-12"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#1d4ed8">
+      v
+    </text>
+
+    <!-- Acceleration in the same direction -->
+    <line x1="7"
+          y1="10"
+          x2="24"
+          y2="10"
+          stroke="#16a34a"
+          stroke-width="2.1"
+          marker-end="url(#accelerationChangeArrow)"/>
+
+    <text x="12"
+          y="21"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#15803d">
+      a
+    </text>
+
+    <circle cx="0"
+            cy="0"
+            r="5"
+            fill="#ef4444"
+            stroke="#991b1b"
+            stroke-width="1"/>
+  </g>
+
+  <!-- Relationship label -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.23;0.27;0.31;0.33;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="90"
+          y="58"
+          width="75"
+          height="16"
+          rx="7"
+          fill="#dcfce7"
+          stroke="#86efac"/>
+
+    <text x="127.5"
+          y="69"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.1"
+          font-weight="700"
+          fill="#15803d">
+      a points with v
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- 2. SLOWING DOWN                                  -->
+  <!-- ================================================= -->
+
+  <rect x="20"
+        y="98"
+        width="230"
+        height="52"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1">
+
+    <animate attributeName="stroke"
+             values="
+               #cbd5e1;
+               #cbd5e1;
+               #93c5fd;
+               #93c5fd;
+               #cbd5e1;
+               #cbd5e1
+             "
+             keyTimes="0;0.34;0.36;0.63;0.65;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="stroke-width"
+             values="1;1;2.4;2.4;1;1"
+             keyTimes="0;0.34;0.36;0.63;0.65;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+  </rect>
+
+  <text x="29"
+        y="112"
+        font-family="Arial, sans-serif"
+        font-size="9.3"
+        font-weight="700"
+        fill="#0f172a">
+    2. Slowing down
+  </text>
+
+  <text x="238"
+        y="112"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        fill="#475569">
+    speed decreases
+  </text>
+
+  <!-- Road -->
+  <line x1="40"
+        y1="134"
+        x2="230"
+        y2="134"
+        stroke="#cbd5e1"
+        stroke-width="5"
+        stroke-linecap="round"/>
+
+  <line x1="40"
+        y1="134"
+        x2="230"
+        y2="134"
+        stroke="#ffffff"
+        stroke-width="1"
+        stroke-dasharray="5 5"/>
+
+  <!-- Moving object -->
+  <g transform="translate(48 134)">
+
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        48 134;
+                        48 134;
+                        215 134;
+                        215 134
+                      "
+                      keyTimes="0;0.36;0.63;1"
+                      calcMode="spline"
+                      keySplines="
+                        0 0 1 1;
+                        0.05 0.7 0.2 1;
+                        0 0 1 1
+                      "
+                      dur="12s"
+                      repeatCount="indefinite"/>
+
+    <!-- Velocity arrow shrinks -->
+    <line x1="7"
+          y1="-7"
+          x2="32"
+          y2="-7"
+          stroke="#2563eb"
+          stroke-width="2.1"
+          marker-end="url(#accelerationVelocityArrow)">
+
+      <animate attributeName="x2"
+               values="32;32;19;19"
+               keyTimes="0;0.36;0.63;1"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <text x="12"
+          y="-12"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#1d4ed8">
+      v
+    </text>
+
+    <!-- Acceleration opposite to velocity -->
+    <line x1="-7"
+          y1="10"
+          x2="-24"
+          y2="10"
+          stroke="#16a34a"
+          stroke-width="2.1"
+          marker-end="url(#accelerationChangeArrow)"/>
+
+    <text x="-16"
+          y="21"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#15803d">
+      a
+    </text>
+
+    <circle cx="0"
+            cy="0"
+            r="5"
+            fill="#ef4444"
+            stroke="#991b1b"
+            stroke-width="1"/>
+  </g>
+
+  <!-- Relationship label -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.56;0.59;0.64;0.66;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="83"
+          y="118"
+          width="89"
+          height="16"
+          rx="7"
+          fill="#dcfce7"
+          stroke="#86efac"/>
+
+    <text x="127.5"
+          y="129"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.1"
+          font-weight="700"
+          fill="#15803d">
+      a points against v
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- 3. CHANGING DIRECTION                            -->
+  <!-- ================================================= -->
+
+  <rect x="20"
+        y="158"
+        width="230"
+        height="58"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1">
+
+    <animate attributeName="stroke"
+             values="
+               #cbd5e1;
+               #cbd5e1;
+               #93c5fd;
+               #93c5fd;
+               #cbd5e1
+             "
+             keyTimes="0;0.67;0.69;0.96;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <animate attributeName="stroke-width"
+             values="1;1;2.4;2.4;1"
+             keyTimes="0;0.67;0.69;0.96;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+  </rect>
+
+  <text x="29"
+        y="172"
+        font-family="Arial, sans-serif"
+        font-size="9.3"
+        font-weight="700"
+        fill="#0f172a">
+    3. Changing direction
+  </text>
+
+  <text x="238"
+        y="172"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        fill="#475569">
+    speed constant
+  </text>
+
+  <!-- Circular path -->
+  <circle cx="130"
+          cy="195"
+          r="20"
+          fill="none"
+          stroke="#cbd5e1"
+          stroke-width="5"
+          stroke-dasharray="4 3"/>
+
+  <!-- Centre -->
+  <circle cx="130"
+          cy="195"
+          r="2.8"
+          fill="#475569"/>
+
+  <!-- Rotating object and arrows -->
+  <g>
+
+    <animateTransform attributeName="transform"
+                      type="rotate"
+                      values="
+                        -75 130 195;
+                        -75 130 195;
+                        75 130 195;
+                        75 130 195
+                      "
+                      keyTimes="0;0.69;0.96;1"
+                      calcMode="linear"
+                      dur="12s"
+                      repeatCount="indefinite"/>
+
+    <g transform="translate(130 175)">
+
+      <!-- Faint radius towards the centre -->
+      <line x1="0"
+            y1="5"
+            x2="0"
+            y2="20"
+            stroke="#86efac"
+            stroke-width="1.2"
+            stroke-dasharray="3 2"/>
+
+      <!-- Tangential velocity -->
+      <line x1="7"
+            y1="0"
+            x2="28"
+            y2="0"
+            stroke="#2563eb"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            marker-end="url(#accelerationVelocityArrow)"/>
+
+      <!-- Inward acceleration -->
+      <line x1="0"
+            y1="6"
+            x2="0"
+            y2="16"
+            stroke="#16a34a"
+            stroke-width="2.2"
+            stroke-linecap="round"
+            marker-end="url(#accelerationChangeArrow)"/>
+
+      <!-- Moving object -->
+      <circle cx="0"
+              cy="0"
+              r="5.5"
+              fill="#ef4444"
+              stroke="#991b1b"
+              stroke-width="1"/>
+    </g>
+  </g>
+
+  <!-- Fixed arrow key -->
+  <line x1="163"
+        y1="184"
+        x2="181"
+        y2="184"
+        stroke="#2563eb"
+        stroke-width="2.1"
+        marker-end="url(#accelerationVelocityArrow)"/>
+
+  <text x="188"
+        y="187"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    velocity: tangent
+  </text>
+
+  <line x1="174"
+        y1="193"
+        x2="174"
+        y2="204"
+        stroke="#16a34a"
+        stroke-width="2.1"
+        marker-end="url(#accelerationChangeArrow)"/>
+
+  <text x="184"
+        y="199"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#15803d">
+    acceleration
+  </text>
+
+  <text x="184"
+        y="209"
+        font-family="Arial, sans-serif"
+        font-size="7.6"
+        fill="#475569">
+    points inward
+  </text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="270"
+        y="28"
+        width="140"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="340"
+        y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Acceleration
+  </text>
+
+  <line x1="285"
+        y1="57"
+        x2="395"
+        y2="57"
+        stroke="#e2e8f0"/>
+
+  <!-- Definition -->
+  <rect x="282"
+        y="67"
+        width="116"
+        height="43"
+        rx="8"
+        fill="#f8fafc"
+        stroke="#cbd5e1"/>
+
+  <text x="340"
+        y="82"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.9"
+        font-weight="700"
+        fill="#0f172a">
+    Change in velocity
+  </text>
+
+  <text x="340"
+        y="96"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        fill="#475569">
+    divided by time
+  </text>
+
+  <!-- Three cases -->
+  <circle cx="289"
+          cy="128"
+          r="5"
+          fill="#2563eb"/>
+
+  <text x="300"
+        y="131"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#0f172a">
+    Speeding up
+  </text>
+
+  <text x="300"
+        y="142"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    speed increases
+  </text>
+
+  <circle cx="289"
+          cy="158"
+          r="5"
+          fill="#f59e0b"/>
+
+  <text x="300"
+        y="161"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#0f172a">
+    Slowing down
+  </text>
+
+  <text x="300"
+        y="172"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    speed decreases
+  </text>
+
+  <circle cx="289"
+          cy="188"
+          r="5"
+          fill="#16a34a"/>
+
+  <text x="300"
+        y="191"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#0f172a">
+    Turning
+  </text>
+
+  <text x="300"
+        y="202"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    direction changes
+  </text>
+
+  <!-- Units -->
+  <rect x="295"
+        y="209"
+        width="90"
+        height="13"
+        rx="6"
+        fill="#dcfce7"
+        stroke="#86efac"/>
+
+  <text x="340"
+        y="218"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#15803d">
+    unit: m/s²
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#64748b">
+    Acceleration occurs whenever the magnitude or direction of velocity changes.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "Why can you feel acceleration but not constant velocity?",
+
+  equation: "\\boxed{\\text{constant velocity feels like rest; acceleration can be detected}}",
+
+  answer: "At constant velocity, everything inside a car, train or aeroplane shares the same steady motion. Without looking outside, this feels indistinguishable from being at rest. During acceleration, your body tends to maintain its previous velocity, so the seat, belt or side of the vehicle must exert a force to change your motion. You feel this force as pressure or a change in balance. A backward acceleration can slow a forward-moving car, bring it to rest and then make it move in reverse. During a turn, a sideways force changes the direction of your velocity. Strictly, you feel the forces associated with acceleration rather than velocity itself.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker id="feltAccelerationBlueArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <marker id="feltAccelerationGreenArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+    <marker id="feltAccelerationPurpleArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+    </marker>
+
+    <!-- Keep scenery inside the windows -->
+    <clipPath id="feltAccelerationWindowClip">
+
+      <path d="
+        M 42 89
+        Q 47 70, 65 67
+        L 103 67
+        L 103 94
+        L 39 94 Z
+      "/>
+
+      <path d="
+        M 113 67
+        L 202 67
+        Q 221 71, 227 94
+        L 113 94 Z
+      "/>
+    </clipPath>
+
+    <!-- Roadside tree -->
+    <g id="feltAccelerationTree">
+
+      <rect x="-1.5"
+            y="-12"
+            width="3"
+            height="15"
+            rx="1"
+            fill="#92400e"/>
+
+      <circle cx="0"
+              cy="-16"
+              r="7"
+              fill="#22c55e"/>
+
+      <circle cx="-4"
+              cy="-15"
+              r="4"
+              fill="#4ade80"/>
+
+      <circle cx="4"
+              cy="-15"
+              r="4"
+              fill="#16a34a"/>
+    </g>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Feeling acceleration
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10"
+        y="28"
+        width="250"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- Vehicle cabin -->
+  <path d="
+    M 25 91
+    Q 31 64, 57 58
+    L 209 58
+    Q 236 63, 244 91
+    L 244 177
+    L 25 177 Z
+  "
+        fill="#ffffff"
+        stroke="#64748b"
+        stroke-width="1.5"/>
+
+  <!-- Window sky -->
+  <path d="
+    M 42 89
+    Q 47 70, 65 67
+    L 103 67
+    L 103 94
+    L 39 94 Z
+  "
+        fill="#dbeafe"/>
+
+  <path d="
+    M 113 67
+    L 202 67
+    Q 221 71, 227 94
+    L 113 94 Z
+  "
+        fill="#dbeafe"/>
+
+  <!-- Ground outside -->
+  <g clip-path="url(#feltAccelerationWindowClip)">
+
+    <rect x="35"
+          y="87"
+          width="200"
+          height="10"
+          fill="#bbf7d0"/>
+
+    <line x1="35"
+          y1="87"
+          x2="235"
+          y2="87"
+          stroke="#86efac"
+          stroke-width="1"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- OUTSIDE: CONSTANT VELOCITY                       -->
+  <!-- ================================================= -->
+
+  <g clip-path="url(#feltAccelerationWindowClip)">
+
+    <g>
+
+      <animate attributeName="opacity"
+               values="1;1;0;0"
+               keyTimes="0;0.23;0.24;1"
+               dur="16s"
+               repeatCount="indefinite"/>
+
+      <!-- Equal movement in equal times -->
+      <animateTransform attributeName="transform"
+                        type="translate"
+                        values="
+                          0 0;
+                          -25 0;
+                          -50 0;
+                          -75 0;
+                          -100 0;
+                          -100 0
+                        "
+                        keyTimes="
+                          0;
+                          0.06;
+                          0.12;
+                          0.18;
+                          0.24;
+                          1
+                        "
+                        calcMode="linear"
+                        dur="16s"
+                        repeatCount="indefinite"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(55 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(105 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(155 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(205 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(255 91)"/>
+    </g>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- OUTSIDE: FORWARD ACCELERATION                    -->
+  <!-- ================================================= -->
+
+  <g clip-path="url(#feltAccelerationWindowClip)">
+
+    <g opacity="0">
+
+      <animate attributeName="opacity"
+               values="0;0;1;1;0;0"
+               keyTimes="0;0.24;0.25;0.47;0.48;1"
+               dur="16s"
+               repeatCount="indefinite"/>
+
+      <!-- Distance covered in each interval increases -->
+      <animateTransform attributeName="transform"
+                        type="translate"
+                        values="
+                          0 0;
+                          0 0;
+                          -4 0;
+                          -14 0;
+                          -32 0;
+                          -62 0;
+                          -108 0;
+                          -108 0
+                        "
+                        keyTimes="
+                          0;
+                          0.24;
+                          0.28;
+                          0.32;
+                          0.36;
+                          0.42;
+                          0.48;
+                          1
+                        "
+                        calcMode="linear"
+                        dur="16s"
+                        repeatCount="indefinite"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(55 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(105 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(155 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(205 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(255 91)"/>
+
+      <!-- Motion streaks appear as speed increases -->
+      <g opacity="0">
+
+        <animate attributeName="opacity"
+                 values="0;0;0.8;0.8"
+                 keyTimes="0;0.34;0.42;1"
+                 dur="16s"
+                 repeatCount="indefinite"/>
+
+        <line x1="54"
+              y1="76"
+              x2="40"
+              y2="76"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+
+        <line x1="127"
+              y1="83"
+              x2="108"
+              y2="83"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+
+        <line x1="202"
+              y1="75"
+              x2="180"
+              y2="75"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- OUTSIDE: BACKWARD ACCELERATION                   -->
+  <!-- ================================================= -->
+
+  <g clip-path="url(#feltAccelerationWindowClip)">
+
+    <g opacity="0">
+
+      <animate attributeName="opacity"
+               values="0;0;1;1;0;0"
+               keyTimes="0;0.48;0.49;0.71;0.72;1"
+               dur="16s"
+               repeatCount="indefinite"/>
+
+      <!--
+        The vehicle moves forwards, slows to rest,
+        and then begins moving in reverse.
+      -->
+      <animateTransform attributeName="transform"
+                        type="translate"
+                        values="
+                          0 0;
+                          0 0;
+                          -38 0;
+                          -62 0;
+                          -74 0;
+                          -78 0;
+                          -78 0;
+                          -72 0;
+                          -55 0;
+                          -30 0;
+                          -30 0
+                        "
+                        keyTimes="
+                          0;
+                          0.48;
+                          0.52;
+                          0.56;
+                          0.60;
+                          0.63;
+                          0.65;
+                          0.67;
+                          0.70;
+                          0.72;
+                          1
+                        "
+                        calcMode="linear"
+                        dur="16s"
+                        repeatCount="indefinite"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(55 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(105 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(155 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(205 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(255 91)"/>
+
+      <!-- Forward-motion streaks fade as the vehicle stops -->
+      <g>
+
+        <animate attributeName="opacity"
+                 values="0;0;0.8;0.8;0;0"
+                 keyTimes="0;0.48;0.49;0.55;0.63;1"
+                 dur="16s"
+                 repeatCount="indefinite"/>
+
+        <line x1="67"
+              y1="76"
+              x2="47"
+              y2="76"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+
+        <line x1="141"
+              y1="83"
+              x2="118"
+              y2="83"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+
+        <line x1="216"
+              y1="75"
+              x2="191"
+              y2="75"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+      </g>
+
+      <!-- Reverse-motion streaks appear on the opposite side -->
+      <g opacity="0">
+
+        <animate attributeName="opacity"
+                 values="0;0;0;0.75;0.75"
+                 keyTimes="0;0.65;0.68;0.71;1"
+                 dur="16s"
+                 repeatCount="indefinite"/>
+
+        <line x1="43"
+              y1="76"
+              x2="58"
+              y2="76"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+
+        <line x1="110"
+              y1="83"
+              x2="130"
+              y2="83"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+
+        <line x1="181"
+              y1="75"
+              x2="204"
+              y2="75"
+              stroke="#ffffff"
+              stroke-width="2"
+              stroke-linecap="round"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- OUTSIDE: TURNING                                 -->
+  <!-- ================================================= -->
+
+  <g clip-path="url(#feltAccelerationWindowClip)">
+
+    <g opacity="0">
+
+      <animate attributeName="opacity"
+               values="0;0;1;1"
+               keyTimes="0;0.72;0.73;1"
+               dur="16s"
+               repeatCount="indefinite"/>
+
+      <!-- Scenery sweeps diagonally during the turn -->
+      <animateTransform attributeName="transform"
+                        type="translate"
+                        values="
+                          0 0;
+                          0 0;
+                          -35 5;
+                          -75 13
+                        "
+                        keyTimes="0;0.72;0.86;1"
+                        calcMode="linear"
+                        dur="16s"
+                        repeatCount="indefinite"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(55 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(105 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(155 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(205 91)"/>
+
+      <use href="#feltAccelerationTree"
+           transform="translate(255 91)"/>
+    </g>
+  </g>
+
+  <!-- Window outlines -->
+  <path d="
+    M 42 89
+    Q 47 70, 65 67
+    L 103 67
+    L 103 94
+    L 39 94 Z
+  "
+        fill="none"
+        stroke="#93c5fd"/>
+
+  <path d="
+    M 113 67
+    L 202 67
+    Q 221 71, 227 94
+    L 113 94 Z
+  "
+        fill="none"
+        stroke="#93c5fd"/>
+
+  <!-- Floor -->
+  <line x1="31"
+        y1="165"
+        x2="238"
+        y2="165"
+        stroke="#94a3b8"
+        stroke-width="4"
+        stroke-linecap="round"/>
+
+  <!-- ================================================= -->
+  <!-- PHASE LABELS                                     -->
+  <!-- ================================================= -->
+
+  <!-- Constant velocity -->
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.23;0.24;1"
+             dur="16s"
+             repeatCount="indefinite"/>
+
+    <rect x="35"
+          y="37"
+          width="190"
+          height="18"
+          rx="8"
+          fill="#dbeafe"
+          stroke="#93c5fd"/>
+
+    <text x="130"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.8"
+          font-weight="700"
+          fill="#1d4ed8">
+      Constant velocity: scenery passes steadily
+    </text>
+  </g>
+
+  <!-- Forward acceleration -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.24;0.25;0.47;0.48;1"
+             dur="16s"
+             repeatCount="indefinite"/>
+
+    <rect x="35"
+          y="37"
+          width="190"
+          height="18"
+          rx="8"
+          fill="#dcfce7"
+          stroke="#86efac"/>
+
+    <text x="130"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.5"
+          font-weight="700"
+          fill="#15803d">
+      Forward acceleration: scenery moves increasingly fast
+    </text>
+  </g>
+
+  <!-- Backward acceleration -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.48;0.49;0.71;0.72;1"
+             dur="16s"
+             repeatCount="indefinite"/>
+
+    <rect x="35"
+          y="37"
+          width="190"
+          height="18"
+          rx="8"
+          fill="#fef3c7"
+          stroke="#fbbf24"/>
+
+    <text x="130"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.4"
+          font-weight="700"
+          fill="#92400e">
+      Backward acceleration: forward → stop → reverse
+    </text>
+  </g>
+
+  <!-- Turning -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.72;0.73;1"
+             dur="16s"
+             repeatCount="indefinite"/>
+
+    <rect x="35"
+          y="37"
+          width="190"
+          height="18"
+          rx="8"
+          fill="#f3e8ff"
+          stroke="#c084fc"/>
+
+    <text x="130"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.5"
+          font-weight="700"
+          fill="#6d28d9">
+      Turning: the door pushes you towards the centre
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- SEAT                                             -->
+  <!-- ================================================= -->
+
+  <rect x="75"
+        y="106"
+        width="13"
+        height="49"
+        rx="4"
+        fill="#475569"/>
+
+  <rect x="75"
+        y="143"
+        width="53"
+        height="13"
+        rx="4"
+        fill="#475569"/>
+
+  <rect x="79"
+        y="151"
+        width="7"
+        height="15"
+        rx="2"
+        fill="#334155"/>
+
+  <rect x="118"
+        y="151"
+        width="7"
+        height="15"
+        rx="2"
+        fill="#334155"/>
+
+  <!-- ================================================= -->
+  <!-- PASSENGER                                        -->
+  <!-- ================================================= -->
+
+  <!--
+    The whole passenger leans backwards during forward
+    acceleration and forwards during backward acceleration.
+  -->
+  <g>
+
+    <animateTransform attributeName="transform"
+                      type="rotate"
+                      values="
+                        0 108 140;
+                        0 108 140;
+                        -9 108 140;
+                        -9 108 140;
+                        11 108 140;
+                        11 108 140;
+                        0 108 140;
+                        0 108 140
+                      "
+                      keyTimes="
+                        0;
+                        0.24;
+                        0.29;
+                        0.47;
+                        0.53;
+                        0.71;
+                        0.75;
+                        1
+                      "
+                      dur="16s"
+                      repeatCount="indefinite"/>
+
+    <!--
+      During the turn, only the upper body tips towards
+      the viewer. Its head therefore moves forwards and lower.
+    -->
+    <g>
+
+      <animateTransform attributeName="transform"
+                        type="translate"
+                        values="
+                          0 0;
+                          0 0;
+                          0 5;
+                          0 5
+                        "
+                        keyTimes="
+                          0;
+                          0.72;
+                          0.80;
+                          1
+                        "
+                        dur="16s"
+                        repeatCount="indefinite"/>
+
+      <g>
+
+        <animateTransform attributeName="transform"
+                          type="rotate"
+                          values="
+                            0 108 139;
+                            0 108 139;
+                            18 108 139;
+                            18 108 139
+                          "
+                          keyTimes="
+                            0;
+                            0.72;
+                            0.80;
+                            1
+                          "
+                          dur="16s"
+                          repeatCount="indefinite"/>
+
+        <!-- Head -->
+        <circle cx="108"
+                cy="91"
+                r="12"
+                fill="#f5cfa0"
+                stroke="#92400e"
+                stroke-width="1"/>
+
+        <!-- Hair -->
+        <path d="
+          M 97 89
+          Q 98 77, 109 77
+          Q 120 78, 120 89
+          Q 115 83, 108 83
+          Q 101 83, 97 89 Z
+        "
+              fill="#78350f"/>
+
+        <!-- Blindfold -->
+        <rect x="97"
+              y="87"
+              width="22"
+              height="7"
+              rx="3"
+              fill="#1e293b"/>
+
+        <line x1="97"
+              y1="90"
+              x2="93"
+              y2="88"
+              stroke="#1e293b"
+              stroke-width="1.5"/>
+
+        <line x1="119"
+              y1="90"
+              x2="123"
+              y2="88"
+              stroke="#1e293b"
+              stroke-width="1.5"/>
+
+        <!-- Neck -->
+        <line x1="108"
+              y1="103"
+              x2="108"
+              y2="108"
+              stroke="#92400e"
+              stroke-width="4"/>
+
+        <!-- Torso -->
+        <path d="
+          M 99 108
+          Q 108 104, 117 108
+          L 121 139
+          L 96 139 Z
+        "
+              fill="#ef4444"
+              stroke="#991b1b"
+              stroke-width="1"/>
+
+        <!-- Arm -->
+        <line x1="115"
+              y1="114"
+              x2="126"
+              y2="132"
+              stroke="#f5cfa0"
+              stroke-width="5"
+              stroke-linecap="round"/>
+      </g>
+    </g>
+
+    <!-- Legs remain seated while the upper body tips -->
+    <line x1="106"
+          y1="139"
+          x2="127"
+          y2="144"
+          stroke="#1e3a8a"
+          stroke-width="7"
+          stroke-linecap="round"/>
+
+    <line x1="127"
+          y1="144"
+          x2="127"
+          y2="160"
+          stroke="#1e3a8a"
+          stroke-width="7"
+          stroke-linecap="round"/>
+
+    <line x1="127"
+          y1="160"
+          x2="142"
+          y2="160"
+          stroke="#0f172a"
+          stroke-width="5"
+          stroke-linecap="round"/>
+  </g>
+
+  <!-- Seat belt -->
+  <line x1="91"
+        y1="103"
+        x2="120"
+        y2="142"
+        stroke="#0f172a"
+        stroke-width="2.5"
+        opacity="0.75"/>
+
+  <!-- ================================================= -->
+  <!-- HANGING MASS                                     -->
+  <!-- ================================================= -->
+
+  <circle cx="199"
+          cy="66"
+          r="3"
+          fill="#475569"/>
+
+  <g>
+
+    <animateTransform attributeName="transform"
+                      type="rotate"
+                      values="
+                        0 199 66;
+                        0 199 66;
+                        18 199 66;
+                        18 199 66;
+                        -18 199 66;
+                        -18 199 66;
+                        15 199 66;
+                        15 199 66
+                      "
+                      keyTimes="
+                        0;
+                        0.24;
+                        0.29;
+                        0.47;
+                        0.53;
+                        0.71;
+                        0.77;
+                        1
+                      "
+                      dur="16s"
+                      repeatCount="indefinite"/>
+
+    <line x1="199"
+          y1="66"
+          x2="199"
+          y2="113"
+          stroke="#475569"
+          stroke-width="1.7"/>
+
+    <circle cx="199"
+            cy="116"
+            r="6"
+            fill="#f59e0b"
+            stroke="#92400e"
+            stroke-width="1"/>
+  </g>
+
+  <text x="199"
+        y="129"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        fill="#64748b">
+    hanging mass
+  </text>
+
+  <!-- ================================================= -->
+  <!-- CONSTANT VELOCITY                                -->
+  <!-- ================================================= -->
+
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.23;0.24;1"
+             dur="16s"
+             repeatCount="indefinite"/>
+
+    <line x1="45"
+          y1="190"
+          x2="103"
+          y2="190"
+          stroke="#2563eb"
+          stroke-width="2.4"
+          marker-end="url(#feltAccelerationBlueArrow)"/>
+
+    <text x="74"
+          y="184"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.3"
+          font-weight="700"
+          fill="#1d4ed8">
+      constant velocity
+    </text>
+
+    <text x="145"
+          y="193"
+          font-family="Arial, sans-serif"
+          font-size="8.1"
+          fill="#475569">
+      feels like rest
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- FORWARD ACCELERATION                             -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.24;0.25;0.47;0.48;1"
+             dur="16s"
+             repeatCount="indefinite"/>
+
+    <line x1="45"
+          y1="190"
+          x2="102"
+          y2="190"
+          stroke="#16a34a"
+          stroke-width="2.5"
+          marker-end="url(#feltAccelerationGreenArrow)"/>
+
+    <text x="73"
+          y="184"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.3"
+          font-weight="700"
+          fill="#15803d">
+      acceleration
+    </text>
+
+    <!-- Seat force -->
+    <line x1="81"
+          y1="121"
+          x2="98"
+          y2="121"
+          stroke="#16a34a"
+          stroke-width="2.3"
+          marker-end="url(#feltAccelerationGreenArrow)"/>
+
+    <text x="89"
+          y="115"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#15803d">
+      seat force
+    </text>
+
+    <text x="148"
+          y="193"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          fill="#475569">
+      pressed into seat
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- BACKWARD ACCELERATION                            -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.48;0.49;0.71;0.72;1"
+             dur="16s"
+             repeatCount="indefinite"/>
+
+    <line x1="103"
+          y1="190"
+          x2="46"
+          y2="190"
+          stroke="#16a34a"
+          stroke-width="2.5"
+          marker-end="url(#feltAccelerationGreenArrow)"/>
+
+    <text x="74"
+          y="184"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.3"
+          font-weight="700"
+          fill="#15803d">
+      acceleration
+    </text>
+
+    <!-- Belt force -->
+    <line x1="116"
+          y1="118"
+          x2="97"
+          y2="118"
+          stroke="#16a34a"
+          stroke-width="2.3"
+          marker-end="url(#feltAccelerationGreenArrow)"/>
+
+    <text x="106"
+          y="112"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#15803d">
+      belt force
+    </text>
+
+    <text x="139"
+          y="187"
+          font-family="Arial, sans-serif"
+          font-size="7.7"
+          font-weight="700"
+          fill="#475569">
+      forward
+    </text>
+
+    <text x="139"
+          y="198"
+          font-family="Arial, sans-serif"
+          font-size="7.7"
+          fill="#475569">
+      → stopped → reverse
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- TURNING PHASE                                    -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.72;0.73;1"
+             dur="16s"
+             repeatCount="indefinite"/>
+
+    <!-- Shows the upper body tipping towards the viewer -->
+    <path d="M 108 88 Q 122 93, 128 108"
+          fill="none"
+          stroke="#7c3aed"
+          stroke-width="2"
+          stroke-dasharray="3 2"
+          marker-end="url(#feltAccelerationPurpleArrow)"/>
+
+    <text x="145"
+          y="96"
+          font-family="Arial, sans-serif"
+          font-size="7.3"
+          font-weight="700"
+          fill="#6d28d9">
+      body leans towards the outside
+    </text>
+
+    <!-- Top-down turning inset -->
+    <rect x="143"
+          y="105"
+          width="95"
+          height="58"
+          rx="8"
+          fill="#faf5ff"
+          stroke="#c084fc"
+          stroke-width="1.2"/>
+
+    <text x="190.5"
+          y="116"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.8"
+          font-weight="700"
+          fill="#6d28d9">
+      turn seen from above
+    </text>
+
+    <!-- Curved road -->
+    <path d="M 151 153 Q 181 113, 230 134"
+          fill="none"
+          stroke="#cbd5e1"
+          stroke-width="11"
+          stroke-linecap="round"/>
+
+    <path d="M 151 153 Q 181 113, 230 134"
+          fill="none"
+          stroke="#ffffff"
+          stroke-width="1.2"
+          stroke-dasharray="4 4"/>
+
+    <!-- Car viewed from above -->
+    <g transform="translate(188 128) rotate(8)">
+
+      <rect x="-10"
+            y="-6"
+            width="20"
+            height="12"
+            rx="3"
+            fill="#2563eb"
+            stroke="#1e3a8a"
+            stroke-width="1"/>
+
+      <rect x="-4"
+            y="-4"
+            width="8"
+            height="8"
+            rx="2"
+            fill="#bfdbfe"/>
+
+      <!-- Passenger towards outside -->
+      <circle cx="0"
+              cy="-4"
+              r="2.6"
+              fill="#f59e0b"
+              stroke="#92400e"
+              stroke-width="0.7"/>
+    </g>
+
+    <!-- Tangential velocity -->
+    <line x1="198"
+          y1="125"
+          x2="222"
+          y2="128"
+          stroke="#2563eb"
+          stroke-width="2.2"
+          marker-end="url(#feltAccelerationBlueArrow)"/>
+
+    <text x="215"
+          y="121"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#1d4ed8">
+      velocity
+    </text>
+
+    <!-- Inward acceleration -->
+    <line x1="188"
+          y1="136"
+          x2="188"
+          y2="151"
+          stroke="#16a34a"
+          stroke-width="2.3"
+          marker-end="url(#feltAccelerationGreenArrow)"/>
+
+    <text x="199"
+          y="148"
+          font-family="Arial, sans-serif"
+          font-size="7.1"
+          font-weight="700"
+          fill="#15803d">
+      inward
+    </text>
+
+    <!-- Centre of turn -->
+    <circle cx="188"
+            cy="156"
+            r="2.3"
+            fill="#475569"/>
+
+    <text x="172"
+          y="160"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.7"
+          fill="#64748b">
+      centre
+    </text>
+
+    <text x="47"
+          y="190"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#6d28d9">
+      sideways force
+    </text>
+
+    <text x="47"
+          y="202"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          fill="#475569">
+      changes direction
+    </text>
+  </g>
+
+  <!-- RIGHT PANEL -->
+  <rect x="270"
+        y="28"
+        width="140"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="340"
+        y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    What can you sense?
+  </text>
+
+  <line x1="285"
+        y1="57"
+        x2="395"
+        y2="57"
+        stroke="#e2e8f0"/>
+
+  <!-- Constant velocity -->
+  <rect x="282"
+        y="67"
+        width="116"
+        height="43"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="340"
+        y="82"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.9"
+        font-weight="700"
+        fill="#1d4ed8">
+    Constant velocity
+  </text>
+
+  <text x="340"
+        y="96"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        fill="#475569">
+    feels the same as rest
+  </text>
+
+  <!-- Changing speed -->
+  <rect x="282"
+        y="119"
+        width="116"
+        height="43"
+        rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"/>
+
+  <text x="340"
+        y="134"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#15803d">
+    Changing speed
+  </text>
+
+  <text x="340"
+        y="147"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    seat or belt exerts
+  </text>
+
+  <text x="340"
+        y="157"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    a force on your body
+  </text>
+
+  <!-- Turning -->
+  <rect x="282"
+        y="171"
+        width="116"
+        height="43"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#c084fc"/>
+
+  <text x="340"
+        y="186"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.9"
+        font-weight="700"
+        fill="#6d28d9">
+    Turning
+  </text>
+
+  <text x="340"
+        y="199"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    sideways force changes the
+  </text>
+
+  <text x="340"
+        y="209"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    direction of your velocity
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    You do not feel velocity itself — you feel forces associated with acceleration.
+  </text>
+
+</svg>
+`
 }
 
 
