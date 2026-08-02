@@ -9824,8 +9824,5532 @@ svg: `
 </svg>
 `
 }
+,
+{
+  topic: "Mechanics",
 
+  term: "How did Galileo use rolling balls to reveal constant acceleration?",
 
+  equation: "\\boxed{x\\propto t^2\\quad\\text{from rest}}",
+
+  answer: "In the early seventeenth century, Galileo described experiments in which a ball rolled down a shallow inclined plane. Free fall happened too quickly to measure accurately with the clocks available, so the incline slowed the motion while preserving the pattern of constant acceleration. Galileo measured elapsed time using water flowing from a container. He found that the total distance travelled from rest was proportional to the square of the time. At times in the ratio 1:2:3:4, the positions are in the ratio 1:4:9:16, while the distances travelled during successive equal time intervals are 1:3:5:7. Galileo published this work in Two New Sciences in 1638.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <linearGradient id="galileoClearRamp"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1">
+
+      <stop offset="0%"
+            stop-color="#fef3c7"/>
+
+      <stop offset="100%"
+            stop-color="#d97706"/>
+    </linearGradient>
+
+    <marker id="galileoClearAccelerationArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Galileo’s rolling-ball experiment
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                       -->
+  <!-- ================================================= -->
+
+  <rect x="10"
+        y="28"
+        width="250"
+        height="199"
+        rx="11"
+        fill="#fffbeb"
+        stroke="#fcd34d"
+        stroke-width="1.2"/>
+
+  <!-- Main idea -->
+  <rect x="20"
+        y="37"
+        width="230"
+        height="19"
+        rx="8"
+        fill="#ffffff"
+        stroke="#fbbf24"/>
+
+  <text x="135"
+        y="50"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#92400e">
+    Snapshots are taken at equal time intervals
+  </text>
+
+  <!-- Ramp body -->
+  <path d="
+    M 35 78
+    L 227 165
+    L 220 179
+    L 28 92 Z
+  "
+        fill="url(#galileoClearRamp)"
+        stroke="#92400e"
+        stroke-width="1.3"/>
+
+  <!-- Groove -->
+  <line x1="40"
+        y1="77"
+        x2="225"
+        y2="164"
+        stroke="#78350f"
+        stroke-width="2.2"
+        stroke-linecap="round"/>
+
+  <line x1="42"
+        y1="74"
+        x2="227"
+        y2="161"
+        stroke="#fde68a"
+        stroke-width="1"
+        stroke-linecap="round"/>
+
+  <!-- ================================================= -->
+  <!-- TIME LABELS                                      -->
+  <!-- ================================================= -->
+
+  <!-- t = 0 -->
+  <rect x="18"
+        y="59"
+        width="35"
+        height="15"
+        rx="6"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="35.5"
+        y="69.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.5"
+        font-weight="700"
+        fill="#475569">
+    t = 0
+  </text>
+
+  <!-- t = 1 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.20;0.22;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="49"
+          y="66"
+          width="35"
+          height="15"
+          rx="6"
+          fill="#ffffff"
+          stroke="#93c5fd"/>
+
+    <text x="66.5"
+          y="76.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#1d4ed8">
+      t = 1
+    </text>
+  </g>
+
+  <!-- t = 2 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.35;0.37;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="81"
+          y="82"
+          width="35"
+          height="15"
+          rx="6"
+          fill="#ffffff"
+          stroke="#93c5fd"/>
+
+    <text x="98.5"
+          y="92.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#1d4ed8">
+      t = 2
+    </text>
+  </g>
+
+  <!-- t = 3 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.50;0.52;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="136"
+          y="107"
+          width="35"
+          height="15"
+          rx="6"
+          fill="#ffffff"
+          stroke="#93c5fd"/>
+
+    <text x="153.5"
+          y="117.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#1d4ed8">
+      t = 3
+    </text>
+  </g>
+
+  <!-- t = 4 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.66;0.68;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="211"
+          y="140"
+          width="35"
+          height="15"
+          rx="6"
+          fill="#ffffff"
+          stroke="#93c5fd"/>
+
+    <text x="228.5"
+          y="150.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#1d4ed8">
+      t = 4
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- SNAPSHOT POSITIONS                               -->
+  <!-- ================================================= -->
+
+  <!-- Starting position -->
+  <circle cx="42"
+          cy="78"
+          r="5"
+          fill="#ffffff"
+          stroke="#d97706"
+          stroke-width="1.5"/>
+
+  <!-- Position after 1 interval -->
+  <circle cx="54"
+          cy="84"
+          r="5"
+          fill="#ffffff"
+          stroke="#d97706"
+          stroke-width="1.5"
+          opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.20;0.22;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Position after 2 intervals -->
+  <circle cx="88"
+          cy="100"
+          r="5"
+          fill="#ffffff"
+          stroke="#d97706"
+          stroke-width="1.5"
+          opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.35;0.37;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Position after 3 intervals -->
+  <circle cx="145"
+          cy="127"
+          r="5"
+          fill="#ffffff"
+          stroke="#d97706"
+          stroke-width="1.5"
+          opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.50;0.52;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Position after 4 intervals -->
+  <circle cx="225"
+          cy="164"
+          r="5"
+          fill="#ffffff"
+          stroke="#d97706"
+          stroke-width="1.5"
+          opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.66;0.68;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+  </circle>
+
+  <!-- ================================================= -->
+  <!-- CONTINUOUSLY ACCELERATING BALL                   -->
+  <!-- ================================================= -->
+
+  <g transform="translate(42 78)">
+
+    <!--
+      The increasingly large position changes approximate
+      x proportional to t squared, so the ball accelerates
+      continuously instead of moving at constant speed
+      between the labelled snapshots.
+    -->
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        42 78;
+                        42 78;
+                        42.71 78.34;
+                        44.86 79.34;
+                        48.43 81.02;
+                        53.44 83.38;
+                        59.87 86.40;
+                        67.73 90.09;
+                        77.03 94.46;
+                        87.75 99.50;
+                        99.90 105.21;
+                        113.48 111.59;
+                        128.50 118.65;
+                        144.94 126.38;
+                        162.81 134.77;
+                        182.11 143.84;
+                        202.84 153.59;
+                        225 164;
+                        225 164
+                      "
+                      keyTimes="
+                        0;
+                        0.08;
+                        0.1175;
+                        0.155;
+                        0.1925;
+                        0.23;
+                        0.2675;
+                        0.305;
+                        0.3425;
+                        0.38;
+                        0.4175;
+                        0.455;
+                        0.4925;
+                        0.53;
+                        0.5675;
+                        0.605;
+                        0.6425;
+                        0.68;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="12s"
+                      repeatCount="indefinite"/>
+
+    <!-- Ball rotation also increases continuously -->
+    <g>
+
+      <animateTransform attributeName="transform"
+                        type="rotate"
+                        values="
+                          0;
+                          0;
+                          3.2;
+                          13;
+                          29.2;
+                          51.9;
+                          81.1;
+                          116.7;
+                          158.9;
+                          207.5;
+                          262.6;
+                          324.2;
+                          392.3;
+                          466.9;
+                          547.9;
+                          635.5;
+                          729.5;
+                          830;
+                          830
+                        "
+                        keyTimes="
+                          0;
+                          0.08;
+                          0.1175;
+                          0.155;
+                          0.1925;
+                          0.23;
+                          0.2675;
+                          0.305;
+                          0.3425;
+                          0.38;
+                          0.4175;
+                          0.455;
+                          0.4925;
+                          0.53;
+                          0.5675;
+                          0.605;
+                          0.6425;
+                          0.68;
+                          1
+                        "
+                        calcMode="linear"
+                        dur="12s"
+                        repeatCount="indefinite"/>
+
+      <circle cx="0"
+              cy="0"
+              r="7"
+              fill="#f59e0b"
+              stroke="#78350f"
+              stroke-width="1.3"/>
+
+      <line x1="-5"
+            y1="0"
+            x2="5"
+            y2="0"
+            stroke="#fff7ed"
+            stroke-width="1.5"
+            stroke-linecap="round"/>
+
+      <circle cx="-2"
+              cy="-2"
+              r="1.4"
+              fill="#fde68a"/>
+    </g>
+  </g>
+
+  <!-- Acceleration arrow -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.70;0.73;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <line x1="167"
+          y1="146"
+          x2="202"
+          y2="163"
+          stroke="#16a34a"
+          stroke-width="2.3"
+          marker-end="url(#galileoClearAccelerationArrow)"/>
+
+    <text x="174"
+          y="140"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.7"
+          font-weight="700"
+          fill="#15803d">
+      constant acceleration
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- INTERVAL-DISTANCE STRIP                          -->
+  <!-- ================================================= -->
+
+  <rect x="20"
+        y="181"
+        width="230"
+        height="37"
+        rx="8"
+        fill="#ffffff"
+        stroke="#d6d3d1"/>
+
+  <text x="135"
+        y="192"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.9"
+        font-weight="700"
+        fill="#475569">
+    Distance travelled during each equal time interval
+  </text>
+
+  <!-- Interval 1 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.20;0.22;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="26"
+          y="198"
+          width="48"
+          height="15"
+          rx="6"
+          fill="#ecfdf5"
+          stroke="#86efac"/>
+
+    <text x="50"
+          y="208.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#15803d">
+      Δx = 1
+    </text>
+  </g>
+
+  <!-- Interval 2 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.35;0.37;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="80"
+          y="198"
+          width="48"
+          height="15"
+          rx="6"
+          fill="#ecfdf5"
+          stroke="#86efac"/>
+
+    <text x="104"
+          y="208.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#15803d">
+      Δx = 3
+    </text>
+  </g>
+
+  <!-- Interval 3 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.50;0.52;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="134"
+          y="198"
+          width="48"
+          height="15"
+          rx="6"
+          fill="#ecfdf5"
+          stroke="#86efac"/>
+
+    <text x="158"
+          y="208.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#15803d">
+      Δx = 5
+    </text>
+  </g>
+
+  <!-- Interval 4 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.66;0.68;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <rect x="188"
+          y="198"
+          width="48"
+          height="15"
+          rx="6"
+          fill="#ecfdf5"
+          stroke="#86efac"/>
+
+    <text x="212"
+          y="208.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#15803d">
+      Δx = 7
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                      -->
+  <!-- ================================================= -->
+
+  <rect x="270"
+        y="28"
+        width="140"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="340"
+        y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Pattern revealed
+  </text>
+
+  <line x1="285"
+        y1="57"
+        x2="395"
+        y2="57"
+        stroke="#e2e8f0"/>
+
+  <!-- Position pattern -->
+  <rect x="282"
+        y="67"
+        width="116"
+        height="70"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="340"
+        y="81"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#1d4ed8">
+    Total distance from start
+  </text>
+
+  <text x="291"
+        y="99"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#475569">
+    Time t
+  </text>
+
+  <text x="389"
+        y="99"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        fill="#0f172a">
+
+ 0    1    2     3      4
+
+        </text>
+
+  <text x="291"
+        y="117"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#475569">
+    Position x
+  </text>
+
+  <text x="389"
+        y="117"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    0  1  4  9  16
+  </text>
+
+  <text x="340"
+        y="130"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#1d4ed8">
+    x ∝ t²
+  </text>
+
+  <!-- Interval pattern -->
+  <rect x="282"
+        y="147"
+        width="116"
+        height="45"
+        rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"/>
+
+  <text x="340"
+        y="161"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#15803d">
+    Equal-time distances
+  </text>
+
+  <text x="340"
+        y="178"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#15803d">
+    1   3   5   7
+  </text>
+
+  <text x="340"
+        y="188"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.4"
+        fill="#475569">
+    each distance is 2 larger
+  </text>
+
+  <!-- Meaning -->
+  <rect x="282"
+        y="201"
+        width="116"
+        height="18"
+        rx="7"
+        fill="#faf5ff"
+        stroke="#c084fc"/>
+
+  <text x="340"
+        y="213"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#6d28d9">
+    Larger gaps → greater speed
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    Constant acceleration gives equal velocity changes—not equal distances.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "Do heavier objects fall faster?",
+
+  equation: "\\boxed{a=g\\quad\\text{for all masses if air resistance is negligible}}",
+
+  answer: "Ignoring air resistance, heavy and light objects fall with the same gravitational acceleration. A heavier object experiences a greater gravitational force, but it also has proportionally greater inertia, so its acceleration remains the same. The famous story says that Galileo demonstrated this by dropping unequal masses from the Leaning Tower of Pisa. However, Galileo left no account of performing the experiment, and the story was recorded later by his pupil Vincenzo Viviani, so historians treat it cautiously. In ordinary air, a feather or another object with large air resistance may fall more slowly.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker id="pisaGravityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+    <marker id="pisaVelocityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <linearGradient id="pisaTowerStone"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1">
+
+      <stop offset="0%"
+            stop-color="#f5f5f4"/>
+
+      <stop offset="100%"
+            stop-color="#d6d3d1"/>
+    </linearGradient>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Galileo and the falling objects
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                       -->
+  <!-- ================================================= -->
+
+  <rect x="10"
+        y="28"
+        width="250"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- Main instruction -->
+  <rect x="20"
+        y="37"
+        width="230"
+        height="19"
+        rx="8"
+        fill="#ffffff"
+        stroke="#93c5fd"/>
+
+  <text x="135"
+        y="50"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    Released together from the same height
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEANING TOWER                                    -->
+  <!-- ================================================= -->
+
+  <!-- Tower body -->
+  <path d="
+    M 28 184
+    L 96 184
+    L 104 61
+    L 40 61 Z
+  "
+        fill="url(#pisaTowerStone)"
+        stroke="#78716c"
+        stroke-width="1.2"/>
+
+  <!-- Tower floors -->
+  <path d="M 38 72 L 103 72"
+        stroke="#a8a29e"
+        stroke-width="4"/>
+
+  <path d="M 37 89 L 102 89"
+        stroke="#a8a29e"
+        stroke-width="4"/>
+
+  <path d="M 35 107 L 101 107"
+        stroke="#a8a29e"
+        stroke-width="4"/>
+
+  <path d="M 34 125 L 99 125"
+        stroke="#a8a29e"
+        stroke-width="4"/>
+
+  <path d="M 32 143 L 98 143"
+        stroke="#a8a29e"
+        stroke-width="4"/>
+
+  <path d="M 31 162 L 97 162"
+        stroke="#a8a29e"
+        stroke-width="4"/>
+
+  <!-- Arched windows -->
+  <g fill="#64748b">
+
+    <path d="M 52 79
+             Q 57 73, 62 79
+             L 62 86
+             L 52 86 Z"/>
+
+    <path d="M 77 79
+             Q 82 73, 87 79
+             L 87 86
+             L 77 86 Z"/>
+
+    <path d="M 50 97
+             Q 55 91, 60 97
+             L 60 104
+             L 50 104 Z"/>
+
+    <path d="M 75 97
+             Q 80 91, 85 97
+             L 85 104
+             L 75 104 Z"/>
+
+    <path d="M 48 115
+             Q 53 109, 58 115
+             L 58 122
+             L 48 122 Z"/>
+
+    <path d="M 73 115
+             Q 78 109, 83 115
+             L 83 122
+             L 73 122 Z"/>
+
+    <path d="M 46 133
+             Q 51 127, 56 133
+             L 56 140
+             L 46 140 Z"/>
+
+    <path d="M 71 133
+             Q 76 127, 81 133
+             L 81 140
+             L 71 140 Z"/>
+
+    <path d="M 44 151
+             Q 49 145, 54 151
+             L 54 158
+             L 44 158 Z"/>
+
+    <path d="M 69 151
+             Q 74 145, 79 151
+             L 79 158
+             L 69 158 Z"/>
+  </g>
+
+  <!-- Top platform -->
+  <path d="M 36 61 L 107 61"
+        stroke="#78716c"
+        stroke-width="5"
+        stroke-linecap="round"/>
+
+  <text x="65"
+        y="198"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.5"
+        font-style="italic"
+        fill="#64748b">
+    the famous Pisa story
+  </text>
+
+  <!-- Ground -->
+  <path d="
+    M 18 184
+    Q 55 178, 91 184
+    Q 128 190, 168 183
+    Q 209 176, 250 184
+    L 250 218
+    L 18 218 Z
+  "
+        fill="#dcfce7"/>
+
+  <line x1="18"
+        y1="184"
+        x2="250"
+        y2="184"
+        stroke="#65a30d"
+        stroke-width="2"/>
+
+  <!-- ================================================= -->
+  <!-- FALLING LANES                                    -->
+  <!-- ================================================= -->
+
+  <!-- Lane labels -->
+  <rect x="119"
+        y="60"
+        width="54"
+        height="17"
+        rx="7"
+        fill="#dbeafe"
+        stroke="#93c5fd"/>
+
+  <text x="146"
+        y="71.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    light: m
+  </text>
+
+  <rect x="178"
+        y="60"
+        width="54"
+        height="17"
+        rx="7"
+        fill="#ffedd5"
+        stroke="#fdba74"/>
+
+  <text x="205"
+        y="71.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#c2410c">
+    heavy: 4m
+  </text>
+
+  <!-- Constant gravitational acceleration -->
+  <line x1="238"
+        y1="86"
+        x2="238"
+        y2="122"
+        stroke="#16a34a"
+        stroke-width="2.4"
+        marker-end="url(#pisaGravityArrow)"/>
+
+  <text x="244"
+        y="106"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#15803d">
+    g
+  </text>
+
+  <text x="238"
+        y="134"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.1"
+        font-weight="700"
+        fill="#15803d">
+    same a
+  </text>
+
+  <!-- ================================================= -->
+  <!-- EQUAL-TIME SNAPSHOT GUIDES                       -->
+  <!-- ================================================= -->
+
+  <!-- t = 0 -->
+  <line x1="120"
+        y1="80"
+        x2="224"
+        y2="80"
+        stroke="#cbd5e1"
+        stroke-width="1"
+        stroke-dasharray="3 3"/>
+
+  <text x="114"
+        y="83"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        font-weight="700"
+        fill="#64748b">
+    t=0
+  </text>
+
+  <!-- t = 1 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.23;0.24;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <line x1="120"
+          y1="87"
+          x2="224"
+          y2="87"
+          stroke="#cbd5e1"
+          stroke-width="1"
+          stroke-dasharray="3 3"/>
+
+    <text x="114"
+          y="90"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#64748b">
+      t=1
+    </text>
+
+    <circle cx="146"
+            cy="87"
+            r="4.8"
+            fill="#ffffff"
+            stroke="#2563eb"
+            stroke-width="1.2"/>
+
+    <circle cx="205"
+            cy="87"
+            r="4.8"
+            fill="#ffffff"
+            stroke="#f97316"
+            stroke-width="1.2"/>
+  </g>
+
+  <!-- t = 2 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.36;0.37;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <line x1="120"
+          y1="108"
+          x2="224"
+          y2="108"
+          stroke="#cbd5e1"
+          stroke-width="1"
+          stroke-dasharray="3 3"/>
+
+    <text x="114"
+          y="111"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#64748b">
+      t=2
+    </text>
+
+    <circle cx="146"
+            cy="108"
+            r="4.8"
+            fill="#ffffff"
+            stroke="#2563eb"
+            stroke-width="1.2"/>
+
+    <circle cx="205"
+            cy="108"
+            r="4.8"
+            fill="#ffffff"
+            stroke="#f97316"
+            stroke-width="1.2"/>
+  </g>
+
+  <!-- t = 3 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.50;0.51;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <line x1="120"
+          y1="143"
+          x2="224"
+          y2="143"
+          stroke="#cbd5e1"
+          stroke-width="1"
+          stroke-dasharray="3 3"/>
+
+    <text x="114"
+          y="146"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#64748b">
+      t=3
+    </text>
+
+    <circle cx="146"
+            cy="143"
+            r="4.8"
+            fill="#ffffff"
+            stroke="#2563eb"
+            stroke-width="1.2"/>
+
+    <circle cx="205"
+            cy="143"
+            r="4.8"
+            fill="#ffffff"
+            stroke="#f97316"
+            stroke-width="1.2"/>
+  </g>
+
+  <!-- t = 4 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.64;0.65;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <line x1="120"
+          y1="180"
+          x2="224"
+          y2="180"
+          stroke="#cbd5e1"
+          stroke-width="1"
+          stroke-dasharray="3 3"/>
+
+    <text x="114"
+          y="180"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#64748b">
+      t=4
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- LIGHT BALL                                       -->
+  <!-- ================================================= -->
+
+  <g transform="translate(146 80)">
+
+    <!-- Position follows distance proportional to t² -->
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        146 80;
+                        146 80;
+                        146 81.8;
+                        146 87;
+                        146 95.8;
+                        146 108;
+                        146 123.8;
+                        146 143;
+                        146 165.8;
+                        146 180;
+                        146 180
+                      "
+                      keyTimes="
+                        0;
+                        0.10;
+                        0.1675;
+                        0.235;
+                        0.3025;
+                        0.37;
+                        0.4375;
+                        0.505;
+                        0.5725;
+                        0.64;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="12s"
+                      repeatCount="indefinite"/>
+
+    <!-- Velocity arrow grows as the ball falls -->
+    <line x1="9"
+          y1="-2"
+          x2="9"
+          y2="7"
+          stroke="#2563eb"
+          stroke-width="2"
+          marker-end="url(#pisaVelocityArrow)">
+
+      <animate attributeName="y2"
+               values="7;7;10;14;19;19"
+               keyTimes="0;0.10;0.30;0.46;0.64;1"
+               dur="12s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="opacity"
+               values="0;0;1;1;0;0"
+               keyTimes="0;0.09;0.11;0.63;0.65;1"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <circle cx="0"
+            cy="0"
+            r="6"
+            fill="#60a5fa"
+            stroke="#1e3a8a"
+            stroke-width="1.2"/>
+
+    <circle cx="-2"
+            cy="-2"
+            r="1.5"
+            fill="#dbeafe"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- HEAVY BALL                                       -->
+  <!-- ================================================= -->
+
+  <g transform="translate(205 80)">
+
+    <!-- Exactly the same vertical motion -->
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        205 80;
+                        205 80;
+                        205 81.8;
+                        205 87;
+                        205 95.8;
+                        205 108;
+                        205 123.8;
+                        205 143;
+                        205 165.8;
+                        205 180;
+                        205 180
+                      "
+                      keyTimes="
+                        0;
+                        0.10;
+                        0.1675;
+                        0.235;
+                        0.3025;
+                        0.37;
+                        0.4375;
+                        0.505;
+                        0.5725;
+                        0.64;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="12s"
+                      repeatCount="indefinite"/>
+
+    <!-- Matching velocity arrow -->
+    <line x1="9"
+          y1="-2"
+          x2="9"
+          y2="7"
+          stroke="#2563eb"
+          stroke-width="2"
+          marker-end="url(#pisaVelocityArrow)">
+
+      <animate attributeName="y2"
+               values="7;7;10;14;19;19"
+               keyTimes="0;0.10;0.30;0.46;0.64;1"
+               dur="12s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="opacity"
+               values="0;0;1;1;0;0"
+               keyTimes="0;0.09;0.11;0.63;0.65;1"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <circle cx="0"
+            cy="0"
+            r="6"
+            fill="#f97316"
+            stroke="#9a3412"
+            stroke-width="1.2"/>
+
+    <circle cx="-2"
+            cy="-2"
+            r="1.5"
+            fill="#ffedd5"/>
+  </g>
+
+  <!-- Impact marks -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.64;0.66;0.82;0.84;1"
+             dur="12s"
+             repeatCount="indefinite"/>
+
+    <path d="M 133 185 L 125 190"
+          stroke="#2563eb"
+          stroke-width="1.4"/>
+
+    <path d="M 159 185 L 167 190"
+          stroke="#2563eb"
+          stroke-width="1.4"/>
+
+    <path d="M 192 185 L 184 190"
+          stroke="#f97316"
+          stroke-width="1.4"/>
+
+    <path d="M 218 185 L 226 190"
+          stroke="#f97316"
+          stroke-width="1.4"/>
+
+    <rect x="126"
+          y="195"
+          width="99"
+          height="17"
+          rx="7"
+          fill="#dcfce7"
+          stroke="#86efac"/>
+
+    <text x="175.5"
+          y="206.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.3"
+          font-weight="700"
+          fill="#15803d">
+      both reach the ground together
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                      -->
+  <!-- ================================================= -->
+
+  <rect x="270"
+        y="28"
+        width="140"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="340"
+        y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        font-weight="700"
+        fill="#0f172a">
+    Why the same fall?
+  </text>
+
+  <line x1="285"
+        y1="57"
+        x2="395"
+        y2="57"
+        stroke="#e2e8f0"/>
+
+  <!-- Same acceleration -->
+  <rect x="282"
+        y="67"
+        width="116"
+        height="48"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="340"
+        y="81"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    Same acceleration
+  </text>
+
+  <text x="340"
+        y="98"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#1d4ed8">
+    a<tspan baseline-shift="sub" font-size="7">m</tspan>
+    =
+    a<tspan baseline-shift="sub" font-size="7">4m</tspan>
+    = g
+  </text>
+
+  <text x="340"
+        y="109"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.3"
+        fill="#475569">
+    mass does not change g
+  </text>
+
+  <!-- Explanation -->
+  <rect x="282"
+        y="124"
+        width="116"
+        height="51"
+        rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"/>
+
+  <text x="340"
+        y="138"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#15803d">
+    Greater mass gives
+  </text>
+
+  <text x="340"
+        y="151"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    greater gravitational force
+  </text>
+
+  <text x="340"
+        y="162"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        fill="#475569">
+    but also greater inertia
+  </text>
+
+  <text x="340"
+        y="171"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.5"
+        font-weight="700"
+        fill="#15803d">
+    both increase in proportion
+  </text>
+
+  <!-- Air resistance -->
+  <rect x="282"
+        y="184"
+        width="116"
+        height="34"
+        rx="8"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <!-- Ball icon -->
+  <circle cx="295"
+          cy="200"
+          r="5"
+          fill="#f97316"
+          stroke="#9a3412"
+          stroke-width="1"/>
+
+  <!-- Feather icon -->
+  <path d="
+    M 307 208
+    Q 315 187, 324 190
+    Q 322 201, 307 208
+    M 310 204
+    L 323 191
+  "
+        fill="#ffffff"
+        stroke="#7c3aed"
+        stroke-width="1.2"
+        stroke-linecap="round"/>
+
+  <text x="360"
+        y="197"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#c2410c">
+    In air, drag matters
+  </text>
+
+  <text x="360"
+        y="208"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.4"
+        fill="#475569">
+    shape can change the fall
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    Without air resistance, falling acceleration is independent of mass.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "What does zero net force mean for a balanced pulley?",
+
+  equation: "\\boxed{F_{\\text{net}}=0\\quad\\Rightarrow\\quad a=0\\quad\\Rightarrow\\quad v=\\text{constant}}",
+
+  answer: "Equal masses on an ideal pulley balance at any allowed position; they do not need to hang at the same height. When no external force acts, each mass has an upward tension T equal to its downward weight mg, so the net force and acceleration are zero. If released from rest, the system remains stationary. A brief external push temporarily creates a net force and changes the velocity. Once the push is removed, the forces balance again. The acceleration then returns to zero, but the masses do not stop: they continue at constant speed. Because the rope is inextensible, the masses move equal distances in equal times and have equal speeds in opposite directions, so v_L = −v_R. Friction would eventually stop a real pulley, but not an ideal one.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker id="balancedLongPulleyTensionArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+    <marker id="balancedLongPulleyWeightArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#dc2626"/>
+    </marker>
+
+    <marker id="balancedLongPulleyVelocityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <marker id="balancedLongPulleyPushArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="6"
+            markerHeight="6"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+    </marker>
+
+    <radialGradient id="balancedLongPulleyWheel"
+                    cx="37%"
+                    cy="32%"
+                    r="72%">
+
+      <stop offset="0%"
+            stop-color="#f8fafc"/>
+
+      <stop offset="100%"
+            stop-color="#94a3b8"/>
+    </radialGradient>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Balanced forces: rest or constant velocity
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                       -->
+  <!-- ================================================= -->
+
+  <rect x="10"
+        y="28"
+        width="250"
+        height="199"
+        rx="11"
+        fill="#f8fafc"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <!-- ================================================= -->
+  <!-- ANIMATED PHASE LABELS                            -->
+  <!-- ================================================= -->
+
+  <!-- Stationary phase -->
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.27;0.28;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="230"
+          height="20"
+          rx="8"
+          fill="#eff6ff"
+          stroke="#93c5fd"/>
+
+    <text x="135"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.7"
+          font-weight="700"
+          fill="#1d4ed8">
+      Released from rest: the masses remain here
+    </text>
+  </g>
+
+  <!-- Brief push phase -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.27;0.28;0.35;0.36;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="230"
+          height="20"
+          rx="8"
+          fill="#faf5ff"
+          stroke="#c084fc"/>
+
+    <text x="135"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.7"
+          font-weight="700"
+          fill="#6d28d9">
+      A brief external push changes their velocity
+    </text>
+  </g>
+
+  <!-- Constant velocity phase -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.35;0.36;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="230"
+          height="20"
+          rx="8"
+          fill="#ecfdf5"
+          stroke="#86efac"/>
+
+    <text x="135"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.5"
+          font-weight="700"
+          fill="#15803d">
+      Push removed: zero acceleration, constant speed
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- SUPPORT AND PULLEY                               -->
+  <!-- ================================================= -->
+
+  <!-- Ceiling support -->
+  <line x1="72"
+        y1="64"
+        x2="198"
+        y2="64"
+        stroke="#475569"
+        stroke-width="5"
+        stroke-linecap="round"/>
+
+  <!-- Ceiling hatching -->
+  <g stroke="#94a3b8"
+     stroke-width="1">
+
+    <line x1="80"  y1="64" x2="88"  y2="57"/>
+    <line x1="96"  y1="64" x2="104" y2="57"/>
+    <line x1="112" y1="64" x2="120" y2="57"/>
+    <line x1="128" y1="64" x2="136" y2="57"/>
+    <line x1="144" y1="64" x2="152" y2="57"/>
+    <line x1="160" y1="64" x2="168" y2="57"/>
+    <line x1="176" y1="64" x2="184" y2="57"/>
+  </g>
+
+  <!-- Pulley support -->
+  <line x1="135"
+        y1="64"
+        x2="135"
+        y2="69"
+        stroke="#475569"
+        stroke-width="4"/>
+
+  <!-- Pulley wheel -->
+  <circle cx="135"
+          cy="78"
+          r="23"
+          fill="url(#balancedLongPulleyWheel)"
+          stroke="#475569"
+          stroke-width="2"/>
+
+  <circle cx="135"
+          cy="78"
+          r="4.5"
+          fill="#475569"/>
+
+  <!-- Rotating spokes -->
+  <g>
+
+    <animateTransform attributeName="transform"
+                      type="rotate"
+                      values="
+                        0 135 78;
+                        0 135 78;
+                        -4 135 78;
+                        -12 135 78;
+                        -48 135 78;
+                        -84 135 78;
+                        -120 135 78;
+                        -156 135 78;
+                        -156 135 78
+                      "
+                      keyTimes="
+                        0;
+                        0.28;
+                        0.31;
+                        0.35;
+                        0.46;
+                        0.58;
+                        0.70;
+                        0.82;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="18s"
+                      repeatCount="indefinite"/>
+
+    <line x1="135"
+          y1="57"
+          x2="135"
+          y2="99"
+          stroke="#64748b"
+          stroke-width="1.8"/>
+
+    <line x1="114"
+          y1="78"
+          x2="156"
+          y2="78"
+          stroke="#64748b"
+          stroke-width="1.8"/>
+
+    <line x1="120"
+          y1="63"
+          x2="150"
+          y2="93"
+          stroke="#64748b"
+          stroke-width="1.4"/>
+
+    <line x1="150"
+          y1="63"
+          x2="120"
+          y2="93"
+          stroke="#64748b"
+          stroke-width="1.4"/>
+  </g>
+
+  <!-- Rope over the top of the pulley -->
+  <path d="M 112 78 Q 135 32, 158 78"
+        fill="none"
+        stroke="#92400e"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <!-- Longer left rope section -->
+  <line x1="112"
+        y1="78"
+        x2="112"
+        y2="151"
+        stroke="#92400e"
+        stroke-width="3">
+
+    <animate attributeName="y2"
+             values="
+               151;
+               151;
+               152;
+               154;
+               163;
+               172;
+               181;
+               190;
+               190
+             "
+             keyTimes="
+               0;
+               0.28;
+               0.31;
+               0.35;
+               0.46;
+               0.58;
+               0.70;
+               0.82;
+               1
+             "
+             calcMode="linear"
+             dur="18s"
+             repeatCount="indefinite"/>
+  </line>
+
+  <!-- Longer right rope section -->
+  <line x1="158"
+        y1="78"
+        x2="158"
+        y2="131"
+        stroke="#92400e"
+        stroke-width="3">
+
+    <animate attributeName="y2"
+             values="
+               131;
+               131;
+               130;
+               128;
+               119;
+               110;
+               101;
+               92;
+               92
+             "
+             keyTimes="
+               0;
+               0.28;
+               0.31;
+               0.35;
+               0.46;
+               0.58;
+               0.70;
+               0.82;
+               1
+             "
+             calcMode="linear"
+             dur="18s"
+             repeatCount="indefinite"/>
+  </line>
+
+  <!-- ================================================= -->
+  <!-- CONSTANT-VELOCITY SNAPSHOTS                      -->
+  <!-- ================================================= -->
+
+  <!-- Snapshot 1 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.45;0.46;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="99"
+          y="166"
+          width="26"
+          height="20"
+          rx="4"
+          fill="none"
+          stroke="#93c5fd"
+          stroke-width="1.3"
+          stroke-dasharray="3 2"/>
+
+    <rect x="145"
+          y="122"
+          width="26"
+          height="20"
+          rx="4"
+          fill="none"
+          stroke="#93c5fd"
+          stroke-width="1.3"
+          stroke-dasharray="3 2"/>
+  </g>
+
+  <!-- Snapshot 2 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.57;0.58;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="99"
+          y="175"
+          width="26"
+          height="20"
+          rx="4"
+          fill="none"
+          stroke="#60a5fa"
+          stroke-width="1.3"
+          stroke-dasharray="3 2"/>
+
+    <rect x="145"
+          y="113"
+          width="26"
+          height="20"
+          rx="4"
+          fill="none"
+          stroke="#60a5fa"
+          stroke-width="1.3"
+          stroke-dasharray="3 2"/>
+  </g>
+
+  <!-- Snapshot 3 -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.69;0.70;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="99"
+          y="184"
+          width="26"
+          height="20"
+          rx="4"
+          fill="none"
+          stroke="#3b82f6"
+          stroke-width="1.3"
+          stroke-dasharray="3 2"/>
+
+    <rect x="145"
+          y="104"
+          width="26"
+          height="20"
+          rx="4"
+          fill="none"
+          stroke="#3b82f6"
+          stroke-width="1.3"
+          stroke-dasharray="3 2"/>
+  </g>
+
+  <!-- Final snapshot -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.81;0.82;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="99"
+          y="193"
+          width="26"
+          height="20"
+          rx="4"
+          fill="none"
+          stroke="#1d4ed8"
+          stroke-width="1.3"
+          stroke-dasharray="3 2"/>
+
+    <rect x="145"
+          y="95"
+          width="26"
+          height="20"
+          rx="4"
+          fill="none"
+          stroke="#1d4ed8"
+          stroke-width="1.3"
+          stroke-dasharray="3 2"/>
+  </g>
+
+  <!-- Equal time labels beside snapshots -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.45;0.46;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <text x="86"
+          y="178"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          fill="#64748b">
+      Δt
+    </text>
+
+    <text x="86"
+          y="187"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          fill="#64748b">
+      Δt
+    </text>
+
+    <text x="86"
+          y="196"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          fill="#64748b">
+      Δt
+    </text>
+
+    <line x1="90" y1="169" x2="90" y2="176"
+          stroke="#64748b" stroke-width="1"/>
+
+    <line x1="90" y1="178" x2="90" y2="185"
+          stroke="#64748b" stroke-width="1"/>
+
+    <line x1="90" y1="187" x2="90" y2="194"
+          stroke="#64748b" stroke-width="1"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- LEFT MASS                                        -->
+  <!-- ================================================= -->
+
+  <g>
+
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        0 0;
+                        0 0;
+                        0 1;
+                        0 3;
+                        0 12;
+                        0 21;
+                        0 30;
+                        0 39;
+                        0 39
+                      "
+                      keyTimes="
+                        0;
+                        0.28;
+                        0.31;
+                        0.35;
+                        0.46;
+                        0.58;
+                        0.70;
+                        0.82;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="18s"
+                      repeatCount="indefinite"/>
+
+    <!-- Connector -->
+    <line x1="112"
+          y1="151"
+          x2="112"
+          y2="154"
+          stroke="#475569"
+          stroke-width="2"/>
+
+    <!-- Smaller mass -->
+    <rect x="99"
+          y="154"
+          width="26"
+          height="20"
+          rx="4"
+          fill="#60a5fa"
+          stroke="#1e3a8a"
+          stroke-width="1.4"/>
+
+    <text x="112"
+          y="168"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="9.5"
+          font-weight="700"
+          fill="#ffffff">
+      m
+    </text>
+
+    <!-- Balanced-force arrows -->
+    <g>
+
+      <animate attributeName="opacity"
+               values="1;1;0;0;1;1"
+               keyTimes="0;0.27;0.28;0.35;0.36;1"
+               dur="18s"
+               repeatCount="indefinite"/>
+
+      <!-- Tension -->
+      <line x1="85"
+            y1="153"
+            x2="85"
+            y2="138"
+            stroke="#16a34a"
+            stroke-width="2.2"
+            marker-end="url(#balancedLongPulleyTensionArrow)"/>
+
+      <text x="79"
+            y="141"
+            text-anchor="end"
+            font-family="Arial, sans-serif"
+            font-size="7.3"
+            font-weight="700"
+            fill="#15803d">
+        T
+      </text>
+
+      <!-- Weight -->
+      <line x1="85"
+            y1="175"
+            x2="85"
+            y2="190"
+            stroke="#dc2626"
+            stroke-width="2.2"
+            marker-end="url(#balancedLongPulleyWeightArrow)"/>
+
+      <text x="79"
+            y="189"
+            text-anchor="end"
+            font-family="Arial, sans-serif"
+            font-size="7.3"
+            font-weight="700"
+            fill="#b91c1c">
+        mg
+      </text>
+    </g>
+
+    <!-- Downward velocity -->
+    <g opacity="0">
+
+      <animate attributeName="opacity"
+               values="0;0;1;1"
+               keyTimes="0;0.35;0.36;1"
+               dur="18s"
+               repeatCount="indefinite"/>
+
+      <line x1="131"
+            y1="155"
+            x2="131"
+            y2="174"
+            stroke="#2563eb"
+            stroke-width="2.3"
+            marker-end="url(#balancedLongPulleyVelocityArrow)"/>
+
+      <text x="137"
+            y="167"
+            font-family="Arial, sans-serif"
+            font-size="7.5"
+            font-weight="700"
+            fill="#1d4ed8">
+        v
+      </text>
+    </g>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT MASS                                       -->
+  <!-- ================================================= -->
+
+  <g>
+
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        0 0;
+                        0 0;
+                        0 -1;
+                        0 -3;
+                        0 -12;
+                        0 -21;
+                        0 -30;
+                        0 -39;
+                        0 -39
+                      "
+                      keyTimes="
+                        0;
+                        0.28;
+                        0.31;
+                        0.35;
+                        0.46;
+                        0.58;
+                        0.70;
+                        0.82;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="18s"
+                      repeatCount="indefinite"/>
+
+    <!-- Connector -->
+    <line x1="158"
+          y1="131"
+          x2="158"
+          y2="134"
+          stroke="#475569"
+          stroke-width="2"/>
+
+    <!-- Smaller mass -->
+    <rect x="145"
+          y="134"
+          width="26"
+          height="20"
+          rx="4"
+          fill="#f97316"
+          stroke="#9a3412"
+          stroke-width="1.4"/>
+
+    <text x="158"
+          y="148"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="9.5"
+          font-weight="700"
+          fill="#ffffff">
+      m
+    </text>
+
+    <!-- Balanced-force arrows -->
+    <g>
+
+      <animate attributeName="opacity"
+               values="1;1;0;0;1;1"
+               keyTimes="0;0.27;0.28;0.35;0.36;1"
+               dur="18s"
+               repeatCount="indefinite"/>
+
+      <!-- Tension -->
+      <line x1="182"
+            y1="133"
+            x2="182"
+            y2="118"
+            stroke="#16a34a"
+            stroke-width="2.2"
+            marker-end="url(#balancedLongPulleyTensionArrow)"/>
+
+      <text x="188"
+            y="121"
+            font-family="Arial, sans-serif"
+            font-size="7.3"
+            font-weight="700"
+            fill="#15803d">
+        T
+      </text>
+
+      <!-- Weight -->
+      <line x1="182"
+            y1="155"
+            x2="182"
+            y2="170"
+            stroke="#dc2626"
+            stroke-width="2.2"
+            marker-end="url(#balancedLongPulleyWeightArrow)"/>
+
+      <text x="188"
+            y="169"
+            font-family="Arial, sans-serif"
+            font-size="7.3"
+            font-weight="700"
+            fill="#b91c1c">
+        mg
+      </text>
+    </g>
+
+    <!-- Upward velocity -->
+    <g opacity="0">
+
+      <animate attributeName="opacity"
+               values="0;0;1;1"
+               keyTimes="0;0.35;0.36;1"
+               dur="18s"
+               repeatCount="indefinite"/>
+
+      <line x1="139"
+            y1="151"
+            x2="139"
+            y2="132"
+            stroke="#2563eb"
+            stroke-width="2.3"
+            marker-end="url(#balancedLongPulleyVelocityArrow)"/>
+
+      <text x="133"
+            y="144"
+            text-anchor="end"
+            font-family="Arial, sans-serif"
+            font-size="7.5"
+            font-weight="700"
+            fill="#1d4ed8">
+        v
+      </text>
+    </g>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- BRIEF EXTERNAL PUSH                              -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.27;0.28;0.34;0.35;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <line x1="62"
+          y1="137"
+          x2="62"
+          y2="166"
+          stroke="#7c3aed"
+          stroke-width="3"
+          marker-end="url(#balancedLongPulleyPushArrow)"/>
+
+    <text x="54"
+          y="144"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#6d28d9">
+      brief
+    </text>
+
+    <text x="54"
+          y="154"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#6d28d9">
+      push
+    </text>
+
+    <text x="54"
+          y="164"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.1"
+          fill="#6d28d9">
+      F<tspan baseline-shift="sub" font-size="5.5">net</tspan> ≠ 0
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- BOTTOM MESSAGE                                   -->
+  <!-- ================================================= -->
+
+  <rect x="23"
+        y="207"
+        width="224"
+        height="13"
+        rx="6"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <!-- Rest message -->
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.27;0.28;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <text x="135"
+          y="216.3"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#475569">
+      Unequal heights do not create an unbalanced force
+    </text>
+  </g>
+
+  <!-- Motion message -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.35;0.36;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <text x="135"
+          y="216.3"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#1d4ed8">
+      Equal spacing at equal times → constant speed
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                      -->
+  <!-- ================================================= -->
+
+  <rect x="270"
+        y="28"
+        width="140"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="340"
+        y="47"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11.5"
+        font-weight="700"
+        fill="#0f172a">
+    What does F<tspan baseline-shift="sub" font-size="8">net</tspan> = 0 mean?
+  </text>
+
+  <line x1="285"
+        y1="57"
+        x2="395"
+        y2="57"
+        stroke="#e2e8f0"/>
+
+  <!-- Balance box -->
+  <rect x="282"
+        y="66"
+        width="116"
+        height="45"
+        rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"/>
+
+  <text x="340"
+        y="79"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#15803d">
+    With no external push
+  </text>
+
+  <text x="340"
+        y="94"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#0f172a">
+    T = mg
+  </text>
+
+  <text x="340"
+        y="105"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        fill="#475569">
+    so a = 0
+  </text>
+
+  <!-- Rest box -->
+  <rect x="282"
+        y="120"
+        width="116"
+        height="38"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="340"
+        y="134"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#1d4ed8">
+    Starting from rest
+  </text>
+
+  <text x="340"
+        y="148"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        fill="#475569">
+    v = 0 remains v = 0
+  </text>
+
+  <!-- Motion box -->
+  <rect x="282"
+        y="167"
+        width="116"
+        height="49"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#c084fc"/>
+
+  <text x="340"
+        y="181"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#6d28d9">
+    Already moving
+  </text>
+
+  <text x="340"
+        y="194"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.1"
+        fill="#475569">
+    velocity remains constant
+  </text>
+
+  <text x="340"
+        y="207"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        font-weight="700"
+        fill="#6d28d9">
+    v<tspan baseline-shift="sub" font-size="6">L</tspan>
+    = −v<tspan baseline-shift="sub" font-size="6">R</tspan>
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    Zero net force means no change in velocity—not necessarily no motion.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "How does net force affect a car moving on a motorway?",
+
+  equation: "\\boxed{\\vec F_{\\text{net}}=m\\vec a\\qquad F_{\\text{net}}=0\\Rightarrow \\vec v=\\text{constant}}",
+
+  answer: "A car travelling at constant velocity along a straight, level motorway has zero acceleration. The road’s upward normal force balances the car’s weight, while the forward force exerted by the road on the driven tyres balances air resistance and rolling resistance. The net force is therefore zero and the velocity remains constant. If the driver lifts off the accelerator, the driving force decreases. The resistive forces then produce a backward net force, so the car slows down even though it is still moving forwards. If the driver presses the accelerator, the driving force becomes greater than the resistive forces. The net force and acceleration are then forwards, so the car speeds up. As its speed rises, air resistance increases; at a new steady speed, the forces can balance again.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- ================================================= -->
+    <!-- ARROW MARKERS                                    -->
+    <!-- ================================================= -->
+
+    <marker id="motorwayThreeDriveArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="6"
+            markerHeight="6"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+    <marker id="motorwayThreeResistanceArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="6"
+            markerHeight="6"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#dc2626"/>
+    </marker>
+
+    <marker id="motorwayThreeVerticalArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <marker id="motorwayThreeNetArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="6"
+            markerHeight="6"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+    </marker>
+
+    <!-- Scene clipping -->
+    <clipPath id="motorwayThreeSceneClip">
+
+      <rect x="20"
+            y="58"
+            width="240"
+            height="124"
+            rx="7"/>
+    </clipPath>
+
+    <!-- Car body gradient -->
+    <linearGradient id="motorwayThreeCarBody"
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1">
+
+      <stop offset="0%"
+            stop-color="#60a5fa"/>
+
+      <stop offset="100%"
+            stop-color="#1d4ed8"/>
+    </linearGradient>
+
+    <!-- Roadside tree -->
+    <g id="motorwayThreeTree">
+
+      <rect x="-2"
+            y="-14"
+            width="4"
+            height="17"
+            rx="1"
+            fill="#92400e"/>
+
+      <circle cx="0"
+              cy="-20"
+              r="9"
+              fill="#16a34a"/>
+
+      <circle cx="-6"
+              cy="-18"
+              r="6"
+              fill="#22c55e"/>
+
+      <circle cx="6"
+              cy="-18"
+              r="6"
+              fill="#15803d"/>
+    </g>
+
+    <!-- Small car for snapshot strip -->
+    <g id="motorwayThreeMiniCar">
+
+      <path d="
+        M 0 7
+        L 3 1
+        Q 4 0, 7 0
+        L 13 0
+        Q 15 0, 17 3
+        L 19 7
+        L 19 11
+        L 0 11 Z
+      "
+            fill="#60a5fa"
+            stroke="#1e3a8a"
+            stroke-width="0.8"/>
+
+      <path d="
+        M 5 2
+        L 12 2
+        Q 13 2, 15 6
+        L 4 6 Z
+      "
+            fill="#dbeafe"/>
+
+      <circle cx="4"
+              cy="11"
+              r="2.2"
+              fill="#1e293b"/>
+
+      <circle cx="15"
+              cy="11"
+              r="2.2"
+              fill="#1e293b"/>
+    </g>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Net force changes velocity
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                       -->
+  <!-- ================================================= -->
+
+  <rect x="10"
+        y="28"
+        width="258"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- ================================================= -->
+  <!-- PHASE LABEL 1: CONSTANT VELOCITY                 -->
+  <!-- ================================================= -->
+
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.45;0.46;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="238"
+          height="20"
+          rx="8"
+          fill="#ecfdf5"
+          stroke="#86efac"/>
+
+    <text x="139"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.7"
+          font-weight="700"
+          fill="#15803d">
+      Forces balance: the car moves at constant velocity
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE LABEL 2: SLOWING DOWN                      -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.45;0.46;0.69;0.70;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="238"
+          height="20"
+          rx="8"
+          fill="#fff7ed"
+          stroke="#fdba74"/>
+
+    <text x="139"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.7"
+          font-weight="700"
+          fill="#c2410c">
+      Driver lifts off: the backward forces are larger
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE LABEL 3: SPEEDING UP                       -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.69;0.70;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="238"
+          height="20"
+          rx="8"
+          fill="#faf5ff"
+          stroke="#c084fc"/>
+
+    <text x="139"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.5"
+          font-weight="700"
+          fill="#6d28d9">
+      Driver accelerates: the forward force is larger
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- MOVING MOTORWAY SCENE                            -->
+  <!-- ================================================= -->
+
+  <g clip-path="url(#motorwayThreeSceneClip)">
+
+    <!-- Sky -->
+    <rect x="20"
+          y="58"
+          width="240"
+          height="74"
+          fill="#dbeafe"/>
+
+    <!-- Distant hills -->
+    <path d="
+      M -80 127
+      Q -35 86, 8 120
+      Q 49 79, 93 121
+      Q 137 86, 180 122
+      Q 230 84, 280 124
+      Q 330 86, 380 122
+      Q 430 82, 480 124
+      L 480 145
+      L -80 145 Z
+    "
+          fill="#bbf7d0"/>
+
+    <!-- Moving foreground -->
+    <g>
+
+      <!--
+        Phase 1:
+        equal displacement in equal times.
+
+        Phase 2:
+        displacement increments become smaller.
+
+        Phase 3:
+        displacement increments become larger.
+      -->
+      <animateTransform attributeName="transform"
+                        type="translate"
+                        values="
+                          0 0;
+                          -24 0;
+                          -48 0;
+                          -72 0;
+                          -96 0;
+                          -120 0;
+
+                          -140 0;
+                          -156 0;
+                          -168 0;
+                          -176 0;
+                          -180 0;
+
+                          -184 0;
+                          -191 0;
+                          -201 0;
+                          -214 0;
+                          -230 0;
+                          -249 0;
+                          -259 0;
+                          -259 0
+                        "
+                        keyTimes="
+                          0;
+                          0.09;
+                          0.18;
+                          0.27;
+                          0.36;
+                          0.45;
+
+                          0.50;
+                          0.55;
+                          0.60;
+                          0.65;
+                          0.70;
+
+                          0.74;
+                          0.78;
+                          0.82;
+                          0.86;
+                          0.90;
+                          0.94;
+                          0.96;
+                          1
+                        "
+                        calcMode="linear"
+                        dur="24s"
+                        repeatCount="indefinite"/>
+
+      <!-- Trees -->
+      <use href="#motorwayThreeTree"
+           transform="translate(-120 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(-45 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(30 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(105 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(180 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(255 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(330 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(405 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(480 132)"/>
+
+      <use href="#motorwayThreeTree"
+           transform="translate(555 132)"/>
+
+      <!-- Motorway sign -->
+      <g transform="translate(335 83)">
+
+        <line x1="0"
+              y1="0"
+              x2="0"
+              y2="51"
+              stroke="#64748b"
+              stroke-width="3"/>
+
+        <rect x="-22"
+              y="-10"
+              width="44"
+              height="28"
+              rx="3"
+              fill="#16a34a"
+              stroke="#ffffff"
+              stroke-width="1.5"/>
+
+        <text x="0"
+              y="1"
+              text-anchor="middle"
+              font-family="Arial, sans-serif"
+              font-size="6.7"
+              font-weight="700"
+              fill="#ffffff">
+          MOTORWAY
+        </text>
+
+        <text x="0"
+              y="12"
+              text-anchor="middle"
+              font-family="Arial, sans-serif"
+              font-size="8.5"
+              font-weight="700"
+              fill="#ffffff">
+          100
+        </text>
+      </g>
+
+      <!-- Road -->
+      <rect x="-300"
+            y="132"
+            width="1100"
+            height="50"
+            fill="#475569"/>
+
+      <!-- Road edges -->
+      <line x1="-300"
+            y1="137"
+            x2="800"
+            y2="137"
+            stroke="#ffffff"
+            stroke-width="2"/>
+
+      <line x1="-300"
+            y1="178"
+            x2="800"
+            y2="178"
+            stroke="#ffffff"
+            stroke-width="2"/>
+
+      <!-- Lane markings -->
+      <g fill="#ffffff">
+
+        <rect x="-280" y="157" width="30" height="3" rx="1.5"/>
+        <rect x="-220" y="157" width="30" height="3" rx="1.5"/>
+        <rect x="-160" y="157" width="30" height="3" rx="1.5"/>
+        <rect x="-100" y="157" width="30" height="3" rx="1.5"/>
+        <rect x="-40"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="20"   y="157" width="30" height="3" rx="1.5"/>
+        <rect x="80"   y="157" width="30" height="3" rx="1.5"/>
+        <rect x="140"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="200"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="260"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="320"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="380"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="440"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="500"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="560"  y="157" width="30" height="3" rx="1.5"/>
+        <rect x="620"  y="157" width="30" height="3" rx="1.5"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- MAIN CAR                                         -->
+  <!-- ================================================= -->
+
+  <!-- Shadow -->
+  <ellipse cx="138"
+           cy="165"
+           rx="48"
+           ry="6"
+           fill="#0f172a"
+           opacity="0.18"/>
+
+  <!-- Car body -->
+  <path d="
+    M 86 146
+    L 94 128
+    Q 96 123, 103 123
+    L 145 123
+    Q 152 123, 157 130
+    L 169 146
+    L 180 148
+    Q 184 149, 184 154
+    L 184 159
+    L 83 159
+    L 83 151
+    Q 83 147, 86 146 Z
+  "
+        fill="url(#motorwayThreeCarBody)"
+        stroke="#1e3a8a"
+        stroke-width="1.5"/>
+
+  <!-- Windows -->
+  <path d="
+    M 101 127
+    L 119 127
+    L 119 141
+    L 94 141 Z
+  "
+        fill="#bfdbfe"
+        stroke="#93c5fd"/>
+
+  <path d="
+    M 124 127
+    L 144 127
+    Q 149 127, 154 141
+    L 124 141 Z
+  "
+        fill="#bfdbfe"
+        stroke="#93c5fd"/>
+
+  <!-- Driver -->
+  <circle cx="137"
+          cy="133"
+          r="4"
+          fill="#f5cfa0"/>
+
+  <!-- Lights and bumpers -->
+  <rect x="81"
+        y="151"
+        width="7"
+        height="5"
+        rx="2"
+        fill="#334155"/>
+
+  <rect x="178"
+        y="150"
+        width="7"
+        height="5"
+        rx="2"
+        fill="#fef3c7"/>
+
+  <!-- Wheels -->
+  <circle cx="105"
+          cy="159"
+          r="10"
+          fill="#1e293b"/>
+
+  <circle cx="105"
+          cy="159"
+          r="4"
+          fill="#94a3b8"/>
+
+  <circle cx="163"
+          cy="159"
+          r="10"
+          fill="#1e293b"/>
+
+  <circle cx="163"
+          cy="159"
+          r="4"
+          fill="#94a3b8"/>
+
+  <!-- ================================================= -->
+  <!-- WHEEL ROTATION                                   -->
+  <!-- ================================================= -->
+
+  <g>
+
+    <animateTransform attributeName="transform"
+                      type="rotate"
+                      values="
+                        0 105 159;
+                        90 105 159;
+                        180 105 159;
+                        270 105 159;
+                        360 105 159;
+                        450 105 159;
+
+                        525 105 159;
+                        585 105 159;
+                        630 105 159;
+                        660 105 159;
+                        675 105 159;
+
+                        690 105 159;
+                        716 105 159;
+                        753 105 159;
+                        802 105 159;
+                        862 105 159;
+                        933 105 159;
+                        970 105 159;
+                        970 105 159
+                      "
+                      keyTimes="
+                        0;
+                        0.09;
+                        0.18;
+                        0.27;
+                        0.36;
+                        0.45;
+
+                        0.50;
+                        0.55;
+                        0.60;
+                        0.65;
+                        0.70;
+
+                        0.74;
+                        0.78;
+                        0.82;
+                        0.86;
+                        0.90;
+                        0.94;
+                        0.96;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="24s"
+                      repeatCount="indefinite"/>
+
+    <line x1="105"
+          y1="155"
+          x2="105"
+          y2="163"
+          stroke="#f8fafc"
+          stroke-width="1.3"/>
+
+    <line x1="101"
+          y1="159"
+          x2="109"
+          y2="159"
+          stroke="#f8fafc"
+          stroke-width="1.3"/>
+  </g>
+
+  <g>
+
+    <animateTransform attributeName="transform"
+                      type="rotate"
+                      values="
+                        0 163 159;
+                        90 163 159;
+                        180 163 159;
+                        270 163 159;
+                        360 163 159;
+                        450 163 159;
+
+                        525 163 159;
+                        585 163 159;
+                        630 163 159;
+                        660 163 159;
+                        675 163 159;
+
+                        690 163 159;
+                        716 163 159;
+                        753 163 159;
+                        802 163 159;
+                        862 163 159;
+                        933 163 159;
+                        970 163 159;
+                        970 163 159
+                      "
+                      keyTimes="
+                        0;
+                        0.09;
+                        0.18;
+                        0.27;
+                        0.36;
+                        0.45;
+
+                        0.50;
+                        0.55;
+                        0.60;
+                        0.65;
+                        0.70;
+
+                        0.74;
+                        0.78;
+                        0.82;
+                        0.86;
+                        0.90;
+                        0.94;
+                        0.96;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="24s"
+                      repeatCount="indefinite"/>
+
+    <line x1="163"
+          y1="155"
+          x2="163"
+          y2="163"
+          stroke="#f8fafc"
+          stroke-width="1.3"/>
+
+    <line x1="159"
+          y1="159"
+          x2="167"
+          y2="159"
+          stroke="#f8fafc"
+          stroke-width="1.3"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- VERTICAL FORCES: ALWAYS BALANCED                 -->
+  <!-- ================================================= -->
+
+  <line x1="134"
+        y1="127"
+        x2="134"
+        y2="77"
+        stroke="#2563eb"
+        stroke-width="2.3"
+        marker-end="url(#motorwayThreeVerticalArrow)"/>
+
+  <text x="142"
+        y="82"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#1d4ed8">
+    N
+  </text>
+
+  <line x1="134"
+        y1="136"
+        x2="134"
+        y2="181"
+        stroke="#2563eb"
+        stroke-width="2.3"
+        marker-end="url(#motorwayThreeVerticalArrow)"/>
+
+  <text x="142"
+        y="178"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#1d4ed8">
+    mg
+  </text>
+
+  <!-- ================================================= -->
+  <!-- PHASE 1 FORCE DIAGRAM: BALANCED                  -->
+  <!-- ================================================= -->
+
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.45;0.46;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <!-- Driving force -->
+    <line x1="139"
+          y1="111"
+          x2="211"
+          y2="111"
+          stroke="#16a34a"
+          stroke-width="2.8"
+          marker-end="url(#motorwayThreeDriveArrow)"/>
+
+    <text x="175"
+          y="91"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.4"
+          font-weight="700"
+          fill="#15803d">
+      driving force
+    </text>
+
+    <text x="175"
+          y="100"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          fill="#15803d">
+      road on tyres
+    </text>
+
+    <!-- Resistance -->
+    <line x1="129"
+          y1="111"
+          x2="57"
+          y2="111"
+          stroke="#dc2626"
+          stroke-width="2.8"
+          marker-end="url(#motorwayThreeResistanceArrow)"/>
+
+    <text x="93"
+          y="91"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.3"
+          font-weight="700"
+          fill="#b91c1c">
+      air + rolling
+    </text>
+
+    <text x="93"
+          y="100"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          fill="#b91c1c">
+      resistance
+    </text>
+
+    <!-- Zero net force label -->
+    <rect x="105"
+          y="181"
+          width="62"
+          height="14"
+          rx="6"
+          fill="#ecfdf5"
+          stroke="#86efac"/>
+
+    <text x="136"
+          y="190.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.6"
+          font-weight="700"
+          fill="#15803d">
+      F<tspan baseline-shift="sub"
+               font-size="5.5">net</tspan>
+      = 0
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE 2 FORCE DIAGRAM: SLOWING                   -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.45;0.46;0.69;0.70;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <!-- Reduced driving force -->
+    <line x1="139"
+          y1="111"
+          x2="168"
+          y2="111"
+          stroke="#16a34a"
+          stroke-width="2.6"
+          marker-end="url(#motorwayThreeDriveArrow)"/>
+
+    <text x="153"
+          y="100"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          font-weight="700"
+          fill="#15803d">
+      reduced drive
+    </text>
+
+    <!-- Larger resistance -->
+    <line x1="129"
+          y1="111"
+          x2="57"
+          y2="111"
+          stroke="#dc2626"
+          stroke-width="2.8"
+          marker-end="url(#motorwayThreeResistanceArrow)"/>
+
+    <text x="93"
+          y="91"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.3"
+          font-weight="700"
+          fill="#b91c1c">
+      resistance
+    </text>
+
+    <text x="93"
+          y="100"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          fill="#b91c1c">
+      is now larger
+    </text>
+
+    <!-- Net force backwards -->
+    <line x1="133"
+          y1="184"
+          x2="82"
+          y2="184"
+          stroke="#7c3aed"
+          stroke-width="3"
+          marker-end="url(#motorwayThreeNetArrow)"/>
+
+    <text x="108"
+          y="176"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#6d28d9">
+      net force backwards
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE 3 FORCE DIAGRAM: SPEEDING UP               -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.69;0.70;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <!-- Larger driving force -->
+    <line x1="139"
+          y1="111"
+          x2="224"
+          y2="111"
+          stroke="#16a34a"
+          stroke-width="3"
+          marker-end="url(#motorwayThreeDriveArrow)"/>
+
+    <text x="182"
+          y="91"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.4"
+          font-weight="700"
+          fill="#15803d">
+      increased driving force
+    </text>
+
+    <text x="182"
+          y="100"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          fill="#15803d">
+      road on tyres
+    </text>
+
+    <!-- Smaller resistance -->
+    <line x1="129"
+          y1="111"
+          x2="77"
+          y2="111"
+          stroke="#dc2626"
+          stroke-width="2.7"
+          marker-end="url(#motorwayThreeResistanceArrow)"/>
+
+    <text x="103"
+          y="100"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          font-weight="700"
+          fill="#b91c1c">
+      resistance
+    </text>
+
+    <!-- Net force forwards -->
+    <line x1="135"
+          y1="184"
+          x2="192"
+          y2="184"
+          stroke="#7c3aed"
+          stroke-width="3"
+          marker-end="url(#motorwayThreeNetArrow)"/>
+
+    <text x="163"
+          y="176"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#6d28d9">
+      net force forwards
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- SPEED DISPLAYS                                   -->
+  <!-- ================================================= -->
+
+  <!-- Constant speed -->
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.45;0.46;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <rect x="205"
+          y="64"
+          width="46"
+          height="25"
+          rx="7"
+          fill="#ffffff"
+          stroke="#93c5fd"/>
+
+    <text x="228"
+          y="75"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          font-weight="700"
+          fill="#1d4ed8">
+      100
+    </text>
+
+    <text x="228"
+          y="84"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.7"
+          fill="#475569">
+      km h⁻¹
+    </text>
+  </g>
+
+  <!-- Slowing speed -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.45;0.46;0.69;0.70;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <rect x="198"
+          y="64"
+          width="53"
+          height="25"
+          rx="7"
+          fill="#fff7ed"
+          stroke="#fdba74"/>
+
+    <text x="224.5"
+          y="75"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.3"
+          font-weight="700"
+          fill="#c2410c">
+      100 → 80
+    </text>
+
+    <text x="224.5"
+          y="84"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.7"
+          fill="#475569">
+      km h⁻¹
+    </text>
+  </g>
+
+  <!-- Increasing speed -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.69;0.70;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <rect x="198"
+          y="64"
+          width="53"
+          height="25"
+          rx="7"
+          fill="#faf5ff"
+          stroke="#c084fc"/>
+
+    <text x="224.5"
+          y="75"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.3"
+          font-weight="700"
+          fill="#6d28d9">
+      80 → 110
+    </text>
+
+    <text x="224.5"
+          y="84"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.7"
+          fill="#475569">
+      km h⁻¹
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- EQUAL-TIME SNAPSHOT STRIP                        -->
+  <!-- ================================================= -->
+
+  <rect x="20"
+        y="198"
+        width="238"
+        height="21"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <!-- Constant velocity snapshots -->
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.45;0.46;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <text x="139"
+          y="207"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.9"
+          font-weight="700"
+          fill="#15803d">
+      Equal times → equal distances
+    </text>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(27 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(75 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(123 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(171 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(219 207) scale(0.58)"/>
+  </g>
+
+  <!-- Slowing snapshots -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.45;0.46;0.69;0.70;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <text x="139"
+          y="207"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.9"
+          font-weight="700"
+          fill="#c2410c">
+      Equal times → smaller and smaller distances
+    </text>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(25 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(89 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(141 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(181 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(210 207) scale(0.58)"/>
+  </g>
+
+  <!-- Accelerating snapshots -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.69;0.70;1"
+             dur="24s"
+             repeatCount="indefinite"/>
+
+    <text x="139"
+          y="207"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.9"
+          font-weight="700"
+          fill="#6d28d9">
+      Equal times → larger and larger distances
+    </text>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(25 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(52 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(89 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(136 207) scale(0.58)"/>
+
+    <use href="#motorwayThreeMiniCar"
+         transform="translate(195 207) scale(0.58)"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                      -->
+  <!-- ================================================= -->
+
+  <rect x="278"
+        y="28"
+        width="132"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="344"
+        y="46"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Compare the forces
+  </text>
+
+  <line x1="291"
+        y1="56"
+        x2="397"
+        y2="56"
+        stroke="#e2e8f0"/>
+
+  <!-- Balanced -->
+  <rect x="289"
+        y="64"
+        width="110"
+        height="44"
+        rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"/>
+
+  <text x="344"
+        y="77"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        font-weight="700"
+        fill="#15803d">
+    Forces balance
+  </text>
+
+  <text x="344"
+        y="90"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.9"
+        font-weight="700"
+        fill="#0f172a">
+    F<tspan baseline-shift="sub"
+             font-size="5.7">drive</tspan>
+    =
+    F<tspan baseline-shift="sub"
+             font-size="5.7">resistive</tspan>
+  </text>
+
+  <text x="344"
+        y="102"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.4"
+        fill="#475569">
+    a = 0; velocity is constant
+  </text>
+
+  <!-- Slowing -->
+  <rect x="289"
+        y="116"
+        width="110"
+        height="45"
+        rx="8"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <text x="344"
+        y="129"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        font-weight="700"
+        fill="#c2410c">
+    Car slows down
+  </text>
+
+  <text x="344"
+        y="142"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.9"
+        font-weight="700"
+        fill="#0f172a">
+    F<tspan baseline-shift="sub"
+             font-size="5.7">drive</tspan>
+    &lt;
+    F<tspan baseline-shift="sub"
+             font-size="5.7">resistive</tspan>
+  </text>
+
+  <text x="344"
+        y="154"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.3"
+        fill="#475569">
+    acceleration is backwards
+  </text>
+
+  <!-- Speeding up -->
+  <rect x="289"
+        y="169"
+        width="110"
+        height="47"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#c084fc"/>
+
+  <text x="344"
+        y="182"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        font-weight="700"
+        fill="#6d28d9">
+    Car speeds up
+  </text>
+
+  <text x="344"
+        y="195"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.9"
+        font-weight="700"
+        fill="#0f172a">
+    F<tspan baseline-shift="sub"
+             font-size="5.7">drive</tspan>
+    &gt;
+    F<tspan baseline-shift="sub"
+             font-size="5.7">resistive</tspan>
+  </text>
+
+  <text x="344"
+        y="207"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.3"
+        fill="#475569">
+    acceleration is forwards
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    The current net force determines acceleration—not the current velocity.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "How does a parachute change a skydiver’s motion?",
+
+  equation: "\\boxed{\\vec F_{\\text{net}}=m\\vec a\\qquad\\text{and at terminal speed }F_{\\text{drag}}=mg}",
+
+  answer: "A skydiver’s motion changes because the forces acting on them change. At the instant of release, the skydiver’s speed and air resistance are approximately zero, while weight acts downward. The skydiver therefore initially accelerates downward at nearly g. As the downward speed increases, air resistance increases. Weight remains larger than drag, so the skydiver continues speeding up downward, but the downward acceleration gradually decreases. When the parachute opens, the upward drag force suddenly becomes much larger than the weight. The skydiver is still moving downward, but now slows rapidly because the acceleration is upward. As the skydiver slows, drag decreases and the upward acceleration becomes smaller. Eventually drag becomes equal to weight. The net force and acceleration are then zero, so the skydiver continues downward at a new, much smaller constant terminal velocity.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- ================================================= -->
+    <!-- ARROW MARKERS                                    -->
+    <!-- ================================================= -->
+
+    <marker id="skyWeightArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#dc2626"/>
+    </marker>
+
+    <marker id="skyDragArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+    <marker id="skyVelocityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <marker id="skyAccelArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            markerUnits="userSpaceOnUse"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+    </marker>
+
+    <!-- ================================================= -->
+    <!-- SCENE CLIP                                       -->
+    <!-- ================================================= -->
+
+    <clipPath id="skydiverSceneClip">
+
+      <rect x="20"
+            y="59"
+            width="232"
+            height="120"
+            rx="8"/>
+    </clipPath>
+
+    <!-- ================================================= -->
+    <!-- SMALL DIVER ICONS                                -->
+    <!-- ================================================= -->
+
+    <g id="miniDiver">
+
+      <circle cx="0"
+              cy="-6"
+              r="2.2"
+              fill="#f5cfa0"/>
+
+      <line x1="0"
+            y1="-3.8"
+            x2="0"
+            y2="4.2"
+            stroke="#0f172a"
+            stroke-width="1.3"
+            stroke-linecap="round"/>
+
+      <line x1="-4.2"
+            y1="-1.2"
+            x2="4.2"
+            y2="-1.2"
+            stroke="#0f172a"
+            stroke-width="1.2"
+            stroke-linecap="round"/>
+
+      <line x1="0"
+            y1="4.2"
+            x2="-3.2"
+            y2="8.6"
+            stroke="#0f172a"
+            stroke-width="1.2"
+            stroke-linecap="round"/>
+
+      <line x1="0"
+            y1="4.2"
+            x2="3.2"
+            y2="8.6"
+            stroke="#0f172a"
+            stroke-width="1.2"
+            stroke-linecap="round"/>
+    </g>
+
+    <g id="miniParachuteDiver">
+
+      <path d="
+        M -8 -16
+        Q 0 -25, 8 -16
+      "
+            fill="none"
+            stroke="#ef4444"
+            stroke-width="1.5"
+            stroke-linecap="round"/>
+
+      <line x1="-6"
+            y1="-16"
+            x2="-2"
+            y2="-6"
+            stroke="#64748b"
+            stroke-width="0.9"/>
+
+      <line x1="0"
+            y1="-18"
+            x2="0"
+            y2="-6"
+            stroke="#64748b"
+            stroke-width="0.9"/>
+
+      <line x1="6"
+            y1="-16"
+            x2="2"
+            y2="-6"
+            stroke="#64748b"
+            stroke-width="0.9"/>
+
+      <use href="#miniDiver"/>
+    </g>
+
+    <!-- ================================================= -->
+    <!-- CLOUD                                            -->
+    <!-- ================================================= -->
+
+    <g id="skyCloud">
+
+      <ellipse cx="0"
+               cy="0"
+               rx="12"
+               ry="7"
+               fill="#ffffff"
+               opacity="0.95"/>
+
+      <ellipse cx="-8"
+               cy="2"
+               rx="7"
+               ry="5"
+               fill="#ffffff"
+               opacity="0.95"/>
+
+      <ellipse cx="8"
+               cy="2"
+               rx="7"
+               ry="5"
+               fill="#ffffff"
+               opacity="0.95"/>
+    </g>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Skydiver: changing forces and changing motion
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                       -->
+  <!-- ================================================= -->
+
+  <rect x="10"
+        y="28"
+        width="252"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <!-- ================================================= -->
+  <!-- PHASE 1 LABEL                                    -->
+  <!-- ================================================= -->
+
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.30;0.31;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="232"
+          height="20"
+          rx="8"
+          fill="#fff7ed"
+          stroke="#fdba74"/>
+
+    <text x="136"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.35"
+          font-weight="700"
+          fill="#c2410c">
+      Phase 1: drag grows with speed, but weight is still larger
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE 2 LABEL                                    -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.30;0.31;0.62;0.63;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="232"
+          height="20"
+          rx="8"
+          fill="#faf5ff"
+          stroke="#c084fc"/>
+
+    <text x="136"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.15"
+          font-weight="700"
+          fill="#6d28d9">
+      Phase 2: the diver slows, so the large drag gradually decreases
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE 3 LABEL                                    -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.62;0.63;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <rect x="20"
+          y="36"
+          width="232"
+          height="20"
+          rx="8"
+          fill="#ecfdf5"
+          stroke="#86efac"/>
+
+    <text x="136"
+          y="49.5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.35"
+          font-weight="700"
+          fill="#15803d">
+      Phase 3: drag balances weight → constant terminal velocity
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- SKY SCENE                                        -->
+  <!-- ================================================= -->
+
+  <g clip-path="url(#skydiverSceneClip)">
+
+    <rect x="20"
+          y="59"
+          width="232"
+          height="120"
+          fill="#dbeafe"/>
+
+    <!-- Clouds -->
+    <use href="#skyCloud"
+         transform="translate(55 82)"/>
+
+    <use href="#skyCloud"
+         transform="translate(210 88) scale(0.8)"/>
+
+    <use href="#skyCloud"
+         transform="translate(78 150) scale(0.7)"/>
+
+    <use href="#skyCloud"
+         transform="translate(218 146) scale(0.75)"/>
+
+    <!-- Fall guide -->
+    <line x1="131"
+          y1="68"
+          x2="131"
+          y2="178"
+          stroke="#93c5fd"
+          stroke-width="2"
+          stroke-dasharray="5 4"/>
+
+    <!-- ================================================= -->
+    <!-- CLEAN AEROPLANE SYMBOL                           -->
+    <!-- ================================================= -->
+
+    <g transform="translate(206 74)">
+
+      <text x="0"
+            y="-11"
+            text-anchor="middle"
+            font-family="Arial, sans-serif"
+            font-size="7"
+            font-weight="700"
+            fill="#475569">
+        jump
+      </text>
+
+      <!-- Fuselage -->
+      <line x1="-14"
+            y1="0"
+            x2="13"
+            y2="0"
+            stroke="#475569"
+            stroke-width="1.8"
+            stroke-linecap="round"/>
+
+      <!-- Nose -->
+      <path d="
+        M 13 0 L 8 -3
+        M 13 0 L 8 3
+      "
+            fill="none"
+            stroke="#475569"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"/>
+
+      <!-- Main wings -->
+      <path d="
+        M 1 0 L -7 -8
+        M 1 0 L -7 8
+      "
+            fill="none"
+            stroke="#475569"
+            stroke-width="1.6"
+            stroke-linecap="round"/>
+
+      <!-- Tail wings -->
+      <path d="
+        M -10 0 L -14 -4
+        M -10 0 L -14 4
+      "
+            fill="none"
+            stroke="#475569"
+            stroke-width="1.3"
+            stroke-linecap="round"/>
+    </g>
+
+    <!-- ================================================= -->
+    <!-- MAIN MOVING DIVER                               -->
+    <!-- ================================================= -->
+
+    <g transform="translate(131 78)">
+
+      <animateTransform attributeName="transform"
+                        type="translate"
+                        values="
+                          131 78;
+                          131 82;
+                          131 89;
+                          131 99;
+                          131 112;
+                          131 127;
+
+                          131 140;
+                          131 150;
+                          131 157;
+                          131 163;
+
+                          131 169;
+                          131 175;
+                          131 181;
+                          131 187;
+                          131 187
+                        "
+                        keyTimes="
+                          0;
+                          0.06;
+                          0.12;
+                          0.18;
+                          0.24;
+                          0.30;
+
+                          0.38;
+                          0.46;
+                          0.54;
+                          0.62;
+
+                          0.72;
+                          0.82;
+                          0.92;
+                          0.98;
+                          1
+                        "
+                        calcMode="linear"
+                        dur="18s"
+                        repeatCount="indefinite"/>
+
+      <!-- ================================================= -->
+      <!-- PARACHUTE                                      -->
+      <!-- ================================================= -->
+
+      <g opacity="0">
+
+        <animate attributeName="opacity"
+                 values="0;0;1;1"
+                 keyTimes="0;0.30;0.33;1"
+                 dur="18s"
+                 repeatCount="indefinite"/>
+
+        <g>
+
+          <animateTransform attributeName="transform"
+                            type="scale"
+                            values="
+                              0.2 0.2;
+                              0.2 0.2;
+                              1 1;
+                              1 1
+                            "
+                            keyTimes="
+                              0;
+                              0.30;
+                              0.34;
+                              1
+                            "
+                            dur="18s"
+                            repeatCount="indefinite"/>
+
+          <path d="
+            M -34 -34
+            Q 0 -60, 34 -34
+          "
+                fill="#f87171"
+                stroke="#b91c1c"
+                stroke-width="1.8"/>
+
+          <path d="
+            M -17 -46
+            Q 0 -56, 17 -46
+          "
+                fill="none"
+                stroke="#fecaca"
+                stroke-width="1.4"/>
+
+          <path d="
+            M -34 -34
+            Q -23 -43, -17 -34
+            Q -8 -46, 0 -34
+            Q 8 -46, 17 -34
+            Q 23 -43, 34 -34
+          "
+                fill="none"
+                stroke="#991b1b"
+                stroke-width="0.9"/>
+        </g>
+
+        <!-- Suspension lines -->
+        <line x1="-24"
+              y1="-34"
+              x2="-6"
+              y2="-8"
+              stroke="#64748b"
+              stroke-width="1.2"/>
+
+        <line x1="-8"
+              y1="-40"
+              x2="-2"
+              y2="-8"
+              stroke="#64748b"
+              stroke-width="1.2"/>
+
+        <line x1="8"
+              y1="-40"
+              x2="2"
+              y2="-8"
+              stroke="#64748b"
+              stroke-width="1.2"/>
+
+        <line x1="24"
+              y1="-34"
+              x2="6"
+              y2="-8"
+              stroke="#64748b"
+              stroke-width="1.2"/>
+      </g>
+
+      <!-- ================================================= -->
+      <!-- BODY                                            -->
+      <!-- ================================================= -->
+
+      <circle cx="0"
+              cy="-10"
+              r="5"
+              fill="#f5cfa0"/>
+
+      <line x1="0"
+            y1="-5"
+            x2="0"
+            y2="10"
+            stroke="#0f172a"
+            stroke-width="2"
+            stroke-linecap="round"/>
+
+      <line x1="-8"
+            y1="0"
+            x2="8"
+            y2="0"
+            stroke="#0f172a"
+            stroke-width="2"
+            stroke-linecap="round"/>
+
+      <line x1="0"
+            y1="10"
+            x2="-6"
+            y2="20"
+            stroke="#0f172a"
+            stroke-width="2"
+            stroke-linecap="round"/>
+
+      <line x1="0"
+            y1="10"
+            x2="6"
+            y2="20"
+            stroke="#0f172a"
+            stroke-width="2"
+            stroke-linecap="round"/>
+
+      <!-- ================================================= -->
+      <!-- PHASE 1: DRAG STARTS AT ZERO AND GROWS          -->
+      <!-- ================================================= -->
+
+      <g>
+
+        <animate attributeName="opacity"
+                 values="1;1;0;0"
+                 keyTimes="0;0.30;0.31;1"
+                 dur="18s"
+                 repeatCount="indefinite"/>
+
+        <!-- Constant weight -->
+        <line x1="-20"
+              y1="-2"
+              x2="-20"
+              y2="28"
+              stroke="#dc2626"
+              stroke-width="2.4"
+              marker-end="url(#skyWeightArrow)"/>
+
+        <text x="-26"
+              y="18"
+              text-anchor="end"
+              font-family="Arial, sans-serif"
+              font-size="8"
+              font-weight="700"
+              fill="#b91c1c">
+          mg
+        </text>
+
+        <!-- Drag starts at zero and increases -->
+        <line x1="20"
+              y1="10"
+              x2="20"
+              y2="10"
+              stroke="#16a34a"
+              stroke-width="2.2"
+              marker-end="url(#skyDragArrow)">
+
+          <animate attributeName="y2"
+                   values="
+                     10;
+                     10;
+                     8;
+                     5;
+                     1;
+                     -3;
+                     -7;
+                     -7
+                   "
+                   keyTimes="
+                     0;
+                     0.03;
+                     0.07;
+                     0.12;
+                     0.18;
+                     0.24;
+                     0.30;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+
+          <animate attributeName="opacity"
+                   values="
+                     0;
+                     0;
+                     0.3;
+                     0.6;
+                     1;
+                     1
+                   "
+                   keyTimes="
+                     0;
+                     0.03;
+                     0.08;
+                     0.15;
+                     0.23;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+        </line>
+
+        <text x="26"
+              y="0"
+              font-family="Arial, sans-serif"
+              font-size="7.6"
+              font-weight="700"
+              fill="#15803d"
+              opacity="0">
+          drag
+
+          <animate attributeName="opacity"
+                   values="0;0;1;1"
+                   keyTimes="0;0.07;0.12;1"
+                   dur="18s"
+                   repeatCount="indefinite"/>
+        </text>
+
+        <!-- Downward velocity grows -->
+        <line x1="32"
+              y1="0"
+              x2="32"
+              y2="5"
+              stroke="#2563eb"
+              stroke-width="2.2"
+              marker-end="url(#skyVelocityArrow)">
+
+          <animate attributeName="y2"
+                   values="
+                     5;
+                     5;
+                     8;
+                     12;
+                     17;
+                     22;
+                     27;
+                     27
+                   "
+                   keyTimes="
+                     0;
+                     0.03;
+                     0.07;
+                     0.12;
+                     0.18;
+                     0.24;
+                     0.30;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+
+          <animate attributeName="opacity"
+                   values="0;0;1;1"
+                   keyTimes="0;0.03;0.06;1"
+                   dur="18s"
+                   repeatCount="indefinite"/>
+        </line>
+
+        <text x="38"
+              y="16"
+              font-family="Arial, sans-serif"
+              font-size="8"
+              font-weight="700"
+              fill="#1d4ed8">
+          v
+        </text>
+
+        <!-- Downward acceleration decreases -->
+        <line x1="-32"
+              y1="-2"
+              x2="-32"
+              y2="24"
+              stroke="#7c3aed"
+              stroke-width="2.2"
+              marker-end="url(#skyAccelArrow)">
+
+          <animate attributeName="y2"
+                   values="
+                     24;
+                     24;
+                     22;
+                     19;
+                     16;
+                     13;
+                     10;
+                     10
+                   "
+                   keyTimes="
+                     0;
+                     0.03;
+                     0.07;
+                     0.12;
+                     0.18;
+                     0.24;
+                     0.30;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+        </line>
+
+        <text x="-38"
+              y="14"
+              text-anchor="end"
+              font-family="Arial, sans-serif"
+              font-size="8"
+              font-weight="700"
+              fill="#6d28d9">
+          a
+        </text>
+      </g>
+
+      <!-- ================================================= -->
+      <!-- PHASE 2: PARACHUTE OPENS                         -->
+      <!-- ================================================= -->
+
+      <g opacity="0">
+
+        <animate attributeName="opacity"
+                 values="0;0;1;1;0;0"
+                 keyTimes="0;0.30;0.31;0.62;0.63;1"
+                 dur="18s"
+                 repeatCount="indefinite"/>
+
+        <!-- Drag decreases towards the weight -->
+        <line x1="24"
+              y1="14"
+              x2="24"
+              y2="-24"
+              stroke="#16a34a"
+              stroke-width="2.6"
+              marker-end="url(#skyDragArrow)">
+
+          <animate attributeName="y2"
+                   values="
+                     -24;
+                     -24;
+                     -22;
+                     -19;
+                     -16;
+                     -14;
+                     -12;
+                     -12
+                   "
+                   keyTimes="
+                     0;
+                     0.31;
+                     0.36;
+                     0.42;
+                     0.49;
+                     0.56;
+                     0.62;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+        </line>
+
+        <!-- Moved slightly left -->
+        <text x="27"
+              y="-6"
+              font-family="Arial, sans-serif"
+              font-size="7.8"
+              font-weight="700"
+              fill="#15803d">
+          drag
+        </text>
+
+        <!-- Weight remains constant -->
+        <line x1="-24"
+              y1="-2"
+              x2="-24"
+              y2="24"
+              stroke="#dc2626"
+              stroke-width="2.3"
+              marker-end="url(#skyWeightArrow)"/>
+
+        <text x="-30"
+              y="15"
+              text-anchor="end"
+              font-family="Arial, sans-serif"
+              font-size="8"
+              font-weight="700"
+              fill="#b91c1c">
+          mg
+        </text>
+
+        <!-- Velocity decreases towards terminal velocity -->
+        <line x1="38"
+              y1="4"
+              x2="38"
+              y2="25"
+              stroke="#2563eb"
+              stroke-width="2.2"
+              marker-end="url(#skyVelocityArrow)">
+
+          <animate attributeName="y2"
+                   values="
+                     25;
+                     25;
+                     23;
+                     21;
+                     19;
+                     18;
+                     18
+                   "
+                   keyTimes="
+                     0;
+                     0.31;
+                     0.37;
+                     0.45;
+                     0.53;
+                     0.62;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+        </line>
+
+        <text x="44"
+              y="16"
+              font-family="Arial, sans-serif"
+              font-size="8"
+              font-weight="700"
+              fill="#1d4ed8">
+          v
+        </text>
+
+        <!-- Upward acceleration decreases to zero -->
+        <line x1="-38"
+              y1="16"
+              x2="-38"
+              y2="-8"
+              stroke="#7c3aed"
+              stroke-width="2.2"
+              marker-end="url(#skyAccelArrow)">
+
+          <animate attributeName="y2"
+                   values="
+                     -8;
+                     -8;
+                     -4;
+                     1;
+                     6;
+                     11;
+                     15;
+                     15
+                   "
+                   keyTimes="
+                     0;
+                     0.31;
+                     0.36;
+                     0.42;
+                     0.49;
+                     0.56;
+                     0.62;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+
+          <animate attributeName="opacity"
+                   values="
+                     1;
+                     1;
+                     1;
+                     1;
+                     0.8;
+                     0.5;
+                     0;
+                     0
+                   "
+                   keyTimes="
+                     0;
+                     0.31;
+                     0.40;
+                     0.48;
+                     0.54;
+                     0.59;
+                     0.62;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+        </line>
+
+        <text x="-44"
+              y="2"
+              text-anchor="end"
+              font-family="Arial, sans-serif"
+              font-size="8"
+              font-weight="700"
+              fill="#6d28d9">
+
+          a
+
+          <animate attributeName="opacity"
+                   values="
+                     1;
+                     1;
+                     1;
+                     1;
+                     0.7;
+                     0.3;
+                     0;
+                     0
+                   "
+                   keyTimes="
+                     0;
+                     0.31;
+                     0.45;
+                     0.52;
+                     0.57;
+                     0.60;
+                     0.62;
+                     1
+                   "
+                   dur="18s"
+                   repeatCount="indefinite"/>
+        </text>
+      </g>
+
+      <!-- ================================================= -->
+      <!-- PHASE 3: NEW TERMINAL VELOCITY                   -->
+      <!-- ================================================= -->
+
+      <g opacity="0">
+
+        <animate attributeName="opacity"
+                 values="0;0;1;1"
+                 keyTimes="0;0.62;0.63;1"
+                 dur="18s"
+                 repeatCount="indefinite"/>
+
+        <!-- Drag remains at the final Phase 2 size -->
+        <line x1="24"
+              y1="14"
+              x2="24"
+              y2="-12"
+              stroke="#16a34a"
+              stroke-width="2.6"
+              marker-end="url(#skyDragArrow)"/>
+
+        <!-- Moved slightly left -->
+        <text x="27"
+              y="-6"
+              font-family="Arial, sans-serif"
+              font-size="7.8"
+              font-weight="700"
+              fill="#15803d">
+          drag
+        </text>
+
+        <!-- Weight has the same vector length as drag -->
+        <line x1="-24"
+              y1="-2"
+              x2="-24"
+              y2="24"
+              stroke="#dc2626"
+              stroke-width="2.3"
+              marker-end="url(#skyWeightArrow)"/>
+
+        <text x="-30"
+              y="15"
+              text-anchor="end"
+              font-family="Arial, sans-serif"
+              font-size="8"
+              font-weight="700"
+              fill="#b91c1c">
+          mg
+        </text>
+
+        <!-- Constant terminal-velocity vector -->
+        <line x1="38"
+              y1="3"
+              x2="38"
+              y2="17"
+              stroke="#2563eb"
+              stroke-width="2.2"
+              marker-end="url(#skyVelocityArrow)"/>
+
+        <text x="44"
+              y="14"
+              font-family="Arial, sans-serif"
+              font-size="8"
+              font-weight="700"
+              fill="#1d4ed8">
+          v
+        </text>
+
+        <!-- Zero acceleration -->
+        <rect x="-18"
+              y="24"
+              width="36"
+              height="12"
+              rx="5"
+              fill="#ecfdf5"
+              stroke="#86efac"/>
+
+        <text x="0"
+              y="32.5"
+              text-anchor="middle"
+              font-family="Arial, sans-serif"
+              font-size="7.2"
+              font-weight="700"
+              fill="#15803d">
+          a = 0
+        </text>
+      </g>
+
+    </g>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- SNAPSHOT STRIP                                   -->
+  <!-- ================================================= -->
+
+  <rect x="20"
+        y="187"
+        width="232"
+        height="30"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <!-- Phase 1 snapshots -->
+  <g>
+
+    <animate attributeName="opacity"
+             values="1;1;0;0"
+             keyTimes="0;0.30;0.31;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <text x="136"
+          y="197"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.05"
+          font-weight="700"
+          fill="#c2410c">
+      Equal times → increasing gaps: speed rises as drag grows
+    </text>
+
+    <use href="#miniDiver"
+         transform="translate(35 208)"/>
+
+    <use href="#miniDiver"
+         transform="translate(65 208)"/>
+
+    <use href="#miniDiver"
+         transform="translate(102 208)"/>
+
+    <use href="#miniDiver"
+         transform="translate(148 208)"/>
+
+    <use href="#miniDiver"
+         transform="translate(203 208)"/>
+  </g>
+
+  <!-- Phase 2 snapshots -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1;0;0"
+             keyTimes="0;0.30;0.31;0.62;0.63;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <text x="136"
+          y="197"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.9"
+          font-weight="700"
+          fill="#6d28d9">
+      Equal times → smaller gaps: moving down but slowing
+    </text>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(35 210) scale(0.9)"/>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(95 210) scale(0.9)"/>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(141 210) scale(0.9)"/>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(176 210) scale(0.9)"/>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(203 210) scale(0.9)"/>
+  </g>
+
+  <!-- Phase 3 snapshots -->
+  <g opacity="0">
+
+    <animate attributeName="opacity"
+             values="0;0;1;1"
+             keyTimes="0;0.62;0.63;1"
+             dur="18s"
+             repeatCount="indefinite"/>
+
+    <text x="136"
+          y="197"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7"
+          font-weight="700"
+          fill="#15803d">
+      Equal times → equal small gaps: terminal velocity
+    </text>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(47 210) scale(0.9)"/>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(89 210) scale(0.9)"/>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(131 210) scale(0.9)"/>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(173 210) scale(0.9)"/>
+
+    <use href="#miniParachuteDiver"
+         transform="translate(215 210) scale(0.9)"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                      -->
+  <!-- ================================================= -->
+
+  <rect x="272"
+        y="28"
+        width="138"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="341"
+        y="46"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Compare the three phases
+  </text>
+
+  <line x1="285"
+        y1="55"
+        x2="397"
+        y2="55"
+        stroke="#e2e8f0"/>
+
+  <!-- Phase 1 box -->
+  <rect x="283"
+        y="63"
+        width="116"
+        height="50"
+        rx="8"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <text x="341"
+        y="76"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        font-weight="700"
+        fill="#c2410c">
+    1. Speeding up
+  </text>
+
+  <text x="341"
+        y="88"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.6"
+        fill="#475569">
+    At release: v = 0
+  </text>
+
+  <text x="341"
+        y="99"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.6"
+        font-weight="700"
+        fill="#0f172a">
+    F<tspan baseline-shift="sub"
+             font-size="5.5">drag</tspan>
+    = 0, then increases
+  </text>
+
+  <text x="341"
+        y="109"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.4"
+        fill="#475569">
+    mg &gt; F<tspan baseline-shift="sub"
+                    font-size="5.4">drag</tspan>
+    : acceleration down
+  </text>
+
+  <!-- Phase 2 box -->
+  <rect x="283"
+        y="120"
+        width="116"
+        height="49"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#c084fc"/>
+
+  <text x="341"
+        y="133"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        font-weight="700"
+        fill="#6d28d9">
+    2. Parachute opens
+  </text>
+
+  <text x="341"
+        y="146"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#0f172a">
+    F<tspan baseline-shift="sub"
+             font-size="5.7">drag</tspan>
+    &gt; mg
+  </text>
+
+  <text x="341"
+        y="157"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        fill="#475569">
+    drag and upward
+  </text>
+
+  <text x="341"
+        y="166"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        fill="#475569">
+    acceleration both decrease
+  </text>
+
+  <!-- Phase 3 box -->
+  <rect x="283"
+        y="176"
+        width="116"
+        height="41"
+        rx="8"
+        fill="#ecfdf5"
+        stroke="#86efac"/>
+
+  <text x="341"
+        y="189"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        font-weight="700"
+        fill="#15803d">
+    3. New terminal speed
+  </text>
+
+  <text x="341"
+        y="202"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#0f172a">
+    F<tspan baseline-shift="sub"
+             font-size="5.7">drag</tspan>
+    = mg
+  </text>
+
+  <text x="341"
+        y="213"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.3"
+        fill="#475569">
+    F<tspan baseline-shift="sub"
+             font-size="5.4">net</tspan>
+    = 0, so a = 0
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    As the skydiver slows, drag decreases until it exactly balances weight.
+  </text>
+
+</svg>
+`
+}
 
 
 ];
