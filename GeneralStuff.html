@@ -434,13 +434,12 @@ const flashcards = [
   equation: "\\begin{aligned}\\frac{7.2^\\circ}{360^\\circ}&=\\frac{1}{50}\\\\[3pt]C&\\approx50d\\\\[3pt]C&\\approx50(800\\ \\text{km})\\\\[3pt]C&\\approx40{,}000\\ \\text{km}\\end{aligned}",
 
   answer: "Earth’s circumference is approximately 40,000 km. Around 240 BCE, Eratosthenes compared the midday Sun at Syene, where the Sun was nearly overhead, with the shadow cast by a vertical stick at Alexandria. The shadow angle was about 7.2°, which is 1/50 of a full circle. He therefore multiplied the distance between the cities, about 800 km, by 50 and obtained a value close to 40,000 km. The angle in the diagram is exaggerated for clarity.",
-
-  svg: `
+svg: `
 <svg viewBox="0 0 420 240"
      xmlns="http://www.w3.org/2000/svg">
 
   <defs>
-    <marker id="earthRayArrow"
+    <marker id="sunArrowMove"
             viewBox="0 0 10 10"
             refX="8"
             refY="5"
@@ -451,7 +450,7 @@ const flashcards = [
             fill="#f59e0b"/>
     </marker>
 
-    <radialGradient id="earthGradient"
+    <radialGradient id="earthGradMove"
                     cx="38%" cy="32%" r="70%">
       <stop offset="0%" stop-color="#93c5fd"/>
       <stop offset="100%" stop-color="#2563eb"/>
@@ -459,250 +458,431 @@ const flashcards = [
   </defs>
 
   <!-- Background -->
-  <rect width="420" height="240"
+  <rect width="420"
+        height="240"
         rx="12"
         fill="#f8fafc"/>
 
-  <!-- Parallel sunlight -->
-  <g stroke="#f59e0b"
-     stroke-width="2"
-     marker-end="url(#earthRayArrow)">
-    <line x1="92" y1="8"
-          x2="92" y2="38"/>
-    <line x1="108" y1="8"
-          x2="108" y2="38"/>
-    <line x1="124" y1="8"
-          x2="124" y2="38"/>
-  </g>
-
-  <text x="34" y="17"
-        font-family="Arial, sans-serif"
-        font-size="10"
-        font-weight="700"
-        fill="#b45309">
-    parallel rays from the Sun
-  </text>
+  <!-- Left panel -->
+  <rect x="10"
+        y="28"
+        width="205"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
 
   <!-- Earth -->
-  <circle cx="119" cy="133" r="89"
-          fill="url(#earthGradient)"
+  <circle cx="115"
+          cy="132"
+          r="78"
+          fill="url(#earthGradMove)"
           stroke="#1e3a8a"
-          stroke-width="2"/>
+          stroke-width="1.8"/>
 
-  <!-- Simple continents -->
-  <path d="
-    M 61 94
-    C 75 75, 92 76, 99 88
-    C 106 99, 95 110, 81 109
-    C 70 108, 67 121, 56 118
-    C 48 112, 50 102, 61 94 Z"
-    fill="#86efac"
-    opacity="0.9"/>
-
-  <path d="
-    M 142 91
-    C 157 78, 179 84, 185 99
-    C 189 110, 176 117, 166 115
-    C 158 113, 155 126, 144 128
-    C 133 123, 132 104, 142 91 Z"
-    fill="#86efac"
-    opacity="0.9"/>
-
-  <path d="
-    M 132 156
-    C 146 149, 159 157, 158 170
-    C 156 184, 143 194, 133 188
-    C 126 182, 121 163, 132 156 Z"
-    fill="#86efac"
-    opacity="0.9"/>
-
-  <!-- Centre -->
-  <circle cx="119" cy="133" r="2.5"
+  <!-- Centre of Earth -->
+  <circle cx="115"
+          cy="132"
+          r="2.8"
           fill="#0f172a"/>
 
-  <!-- Radii to the two cities -->
-  <line x1="119" y1="133"
-        x2="119" y2="44"
+  <!-- Fixed radius to Syene -->
+  <line x1="115"
+        y1="132"
+        x2="115"
+        y2="54"
         stroke="#ffffff"
-        stroke-width="1.7"
-        opacity="0.9"/>
+        stroke-width="1.8"/>
 
-  <line x1="119" y1="133"
-        x2="95" y2="47"
-        stroke="#ffffff"
-        stroke-width="1.7"
-        opacity="0.9"/>
+  <!-- Fixed Syene point -->
+  <circle cx="115"
+          cy="54"
+          r="4"
+          fill="#ef4444"
+          stroke="#ffffff"
+          stroke-width="1.1"/>
 
-  <!-- Central angle (exaggerated for clarity) -->
-  <path d="
-    M 119 104
-    A 29 29 0 0 0 111 105"
-    fill="none"
-    stroke="#fde047"
-    stroke-width="3"/>
-
-  <text x="82" y="116"
-        font-family="Arial, sans-serif"
-        font-size="11"
-        font-weight="700"
-        fill="#ffffff">
-    7.2°
-  </text>
-
-  <!-- Syene stick -->
-  <line x1="119" y1="44"
-        x2="119" y2="30"
+  <!-- Longer local normal at Syene -->
+  <line x1="115"
+        y1="54"
+        x2="115"
+        y2="30"
         stroke="#111827"
         stroke-width="3"
         stroke-linecap="round"/>
 
-  <!-- Alexandria stick -->
-  <line x1="95" y1="47"
-        x2="91" y2="34"
-        stroke="#111827"
-        stroke-width="3"
-        stroke-linecap="round"/>
-
-  <!-- City points -->
-  <circle cx="119" cy="44" r="3.5"
-          fill="#ef4444"
-          stroke="#ffffff"
-          stroke-width="1"/>
-
-  <circle cx="95" cy="47" r="3.5"
-          fill="#ef4444"
-          stroke="#ffffff"
-          stroke-width="1"/>
+  <!-- Sun ray at Syene -->
+  <line x1="115"
+        y1="8"
+        x2="115"
+        y2="25"
+        stroke="#f59e0b"
+        stroke-width="2.2"
+        marker-end="url(#sunArrowMove)"/>
 
   <!-- Labels -->
-  <line x1="119" y1="37"
-        x2="154" y2="26"
-        stroke="#64748b"
-        stroke-width="1"/>
-
-  <text x="158" y="25"
+  <text x="126"
+        y="56"
         font-family="Arial, sans-serif"
-        font-size="10"
+        font-size="9.5"
         font-weight="700"
         fill="#0f172a">
     Syene
   </text>
 
-  <text x="158" y="37"
+  <text x="18"
+        y="42"
         font-family="Arial, sans-serif"
-        font-size="9"
-        fill="#475569">
-    Sun nearly overhead
-  </text>
-
-  <line x1="95" y1="40"
-        x2="50" y2="31"
-        stroke="#64748b"
-        stroke-width="1"/>
-
-  <text x="8" y="27"
-        font-family="Arial, sans-serif"
-        font-size="10"
+        font-size="9.5"
         font-weight="700"
         fill="#0f172a">
     Alexandria
   </text>
 
-  <text x="8" y="39"
-        font-family="Arial, sans-serif"
-        font-size="9"
-        fill="#475569">
-    shadow angle 7.2°
-  </text>
-
-  <!-- Surface distance -->
+  <!-- Maximum surface arc shown -->
   <path d="
-    M 95 50
-    Q 107 41 119 50"
-    fill="none"
-    stroke="#ef4444"
-    stroke-width="2"
-    stroke-dasharray="3 2"/>
+    M 115 54
+    A 78 78 0 0 0 64.9 72.3
+  "
+        fill="none"
+        stroke="#ef4444"
+        stroke-width="2"
+        stroke-dasharray="4 3"/>
 
-  <text x="50" y="66"
-        font-family="Arial, sans-serif"
-        font-size="10"
-        font-weight="700"
-        fill="#7f1d1d">
-    distance ≈ 800 km
-  </text>
+  <!-- Moving Alexandria system -->
+  <g>
+    <animateTransform
+      attributeName="transform"
+      type="rotate"
+      values="
+        0 115 132;
+        -40 115 132;
+        -40 115 132;
+        0 115 132
+      "
+      keyTimes="0;0.38;0.78;1"
+      dur="6s"
+      repeatCount="indefinite"/>
 
-  <text x="119" y="220"
+    <!-- Moving radius -->
+    <line x1="115"
+          y1="132"
+          x2="115"
+          y2="54"
+          stroke="#ffffff"
+          stroke-width="1.8"/>
+
+    <!-- Moving point -->
+    <circle cx="115"
+            cy="54"
+            r="4"
+            fill="#ef4444"
+            stroke="#ffffff"
+            stroke-width="1.1"/>
+
+    <!-- Longer moving local normal -->
+    <line x1="115"
+          y1="54"
+          x2="115"
+          y2="30"
+          stroke="#111827"
+          stroke-width="3"
+          stroke-linecap="round"/>
+
+    <!-- Counter-rotation keeps the Sun ray parallel -->
+    <g>
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="
+          0 115 54;
+          40 115 54;
+          40 115 54;
+          0 115 54
+        "
+        keyTimes="0;0.38;0.78;1"
+        dur="6s"
+        repeatCount="indefinite"/>
+
+      <line x1="115"
+            y1="8"
+            x2="115"
+            y2="49"
+            stroke="#f59e0b"
+            stroke-width="2.2"
+            marker-end="url(#sunArrowMove)"/>
+    </g>
+  </g>
+
+  <!--
+       Expanding angle between the parallel Sun ray
+       and Alexandria's local normal
+  -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;1;1;0"
+             keyTimes="0;0.18;0.82;1"
+             dur="6s"
+             repeatCount="indefinite"/>
+
+    <path fill="none"
+          stroke="#f59e0b"
+          stroke-width="2.8"
+          stroke-linecap="round">
+
+      <animate attributeName="d"
+               values="
+                 M 115 46
+                 A 8 8 0 0 0 114.8 46;
+
+                 M 64.9 58.3
+                 A 14 14 0 0 0 55.9 61.6;
+
+                 M 64.9 58.3
+                 A 14 14 0 0 0 55.9 61.6;
+
+                 M 115 46
+                 A 8 8 0 0 0 114.8 46
+               "
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+    </path>
+
+    <!-- Badge follows the middle of the opening angle -->
+    <circle r="7"
+            fill="#fff7ed"
+            opacity="0.96">
+
+      <animate attributeName="cx"
+               values="112;57.7;57.7;112"
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="cy"
+               values="44;52.6;52.6;44"
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+    </circle>
+
+    <text text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="11.5"
+          font-weight="700"
+          fill="#b45309">
+
+      <animate attributeName="x"
+               values="112;57.7;57.7;112"
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="y"
+               values="47.5;56.2;56.2;47.5"
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+
+      θ
+    </text>
+  </g>
+
+  <!-- Expanding central angle -->
+  <g>
+    <animate attributeName="opacity"
+             values="0;1;1;0"
+             keyTimes="0;0.18;0.82;1"
+             dur="6s"
+             repeatCount="indefinite"/>
+
+    <path fill="none"
+          stroke="#fde047"
+          stroke-width="3"
+          stroke-linecap="round">
+
+      <animate attributeName="d"
+               values="
+                 M 115 114
+                 A 18 18 0 0 0 114.8 114;
+
+                 M 115 110
+                 A 22 22 0 0 0 100.8 115.2;
+
+                 M 115 110
+                 A 22 22 0 0 0 100.8 115.2;
+
+                 M 115 114
+                 A 18 18 0 0 0 114.8 114
+               "
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+    </path>
+
+    <!-- Central theta badge -->
+    <circle r="7"
+            fill="#ffffff"
+            opacity="0.30">
+
+      <animate attributeName="cx"
+               values="112;105;105;112"
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="cy"
+               values="113;108;108;113"
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+    </circle>
+
+    <text text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="11.5"
+          font-weight="700"
+          fill="#ffffff">
+
+      <animate attributeName="x"
+               values="112;105;105;112"
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="y"
+               values="116.5;111.7;111.7;116.5"
+               keyTimes="0;0.38;0.78;1"
+               dur="6s"
+               repeatCount="indefinite"/>
+
+      θ
+    </text>
+  </g>
+
+  <!-- Key relationship -->
+  <rect x="24"
+        y="184"
+        width="180"
+        height="30"
+        rx="7"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="114"
+        y="197"
         text-anchor="middle"
         font-family="Arial, sans-serif"
-        font-size="10"
-        fill="#e0f2fe">
-    Earth shown in cross-section — angle exaggerated for clarity
+        font-size="9.2"
+        font-weight="700"
+        fill="#0f172a">
+    shadow angle = central angle
   </text>
 
-  <!-- Calculation panel -->
-  <rect x="230" y="32"
-        width="176" height="170"
-        rx="12"
+  <text x="114"
+        y="209"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        fill="#475569">
+    drawing exaggerated for clarity
+  </text>
+
+  <!-- Right panel -->
+  <rect x="225"
+        y="28"
+        width="185"
+        height="199"
+        rx="11"
         fill="#ffffff"
         stroke="#cbd5e1"
-        stroke-width="1.5"/>
+        stroke-width="1.2"/>
 
-  <text x="318" y="56"
+  <text x="317.5"
+        y="50"
         text-anchor="middle"
         font-family="Arial, sans-serif"
         font-size="13"
         font-weight="700"
         fill="#0f172a">
-    Eratosthenes’ calculation
+    Eratosthenes’ method
   </text>
 
-  <line x1="247" y1="66"
-        x2="389" y2="66"
+  <line x1="243"
+        y1="61"
+        x2="392"
+        y2="61"
         stroke="#e2e8f0"
         stroke-width="1"/>
 
-  <text x="318" y="88"
+  <text x="317.5"
+        y="85"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
+        fill="#334155">
+    For Eratosthenes:
+  </text>
+
+  <text x="317.5"
+        y="105"
         text-anchor="middle"
         font-family="Arial, sans-serif"
         font-size="13"
+        font-weight="700"
+        fill="#334155">
+    θ ≈ 7.2°
+  </text>
+
+  <text x="317.5"
+        y="132"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="12"
         fill="#334155">
     7.2° is 1/50 of 360°
   </text>
 
-  <text x="318" y="116"
+  <text x="317.5"
+        y="156"
         text-anchor="middle"
         font-family="Arial, sans-serif"
-        font-size="13"
+        font-size="12"
         fill="#334155">
-    C ≈ 50 × distance
+    Earth circumference
   </text>
 
-  <text x="318" y="142"
+  <text x="317.5"
+        y="172"
         text-anchor="middle"
         font-family="Arial, sans-serif"
-        font-size="13"
+        font-size="12"
         fill="#334155">
-    C ≈ 50 × 800 km
+    ≈ 50 × 800 km
   </text>
 
-  <rect x="253" y="156"
-        width="130" height="31"
+  <rect x="249"
+        y="184"
+        width="137"
+        height="28"
         rx="8"
         fill="#dbeafe"
         stroke="#60a5fa"/>
 
-  <text x="318" y="177"
+  <text x="317.5"
+        y="203"
         text-anchor="middle"
         font-family="Arial, sans-serif"
         font-size="16"
         font-weight="700"
         fill="#1d4ed8">
-    C ≈ 40,000 km
+    ≈ 40,000 km
   </text>
 
 </svg>
-`
+`  
 },
 
 
