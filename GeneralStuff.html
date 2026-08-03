@@ -15349,6 +15349,5725 @@ svg: `
 
 </svg>
 `
+},
+{
+  topic: "Mechanics",
+
+  term: "How does Newton’s second law determine the motion of an unequal-mass pulley?",
+
+  equation: "\\boxed{a=\\frac{(m_2-m_1)g}{m_1+m_2}}\\qquad (m_2>m_1)",
+
+  answer: "In an unequal-mass pulley, or Atwood machine, the heavier mass m₂ accelerates downward while the lighter mass m₁ accelerates upward. Because the rope is inextensible, the masses move equal distances in opposite directions and always have equal speed and equal acceleration magnitude. For an ideal massless rope and frictionless pulley, the tension is the same on both sides. Newton’s second law gives T-m₁g=m₁a for the lighter mass and m₂g-T=m₂a for the heavier mass. Adding the equations cancels the internal tension force and gives (m₂-m₁)g=(m₁+m₂)a. In the illustrated example m₂=2m₁. The net force on m₂ is therefore twice the net force on m₁, but m₂ also has twice the mass, so both masses have the same acceleration. The force vectors remain constant while the equal-magnitude velocity vectors grow, showing that a constant net force produces constant acceleration and a steadily changing velocity.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- ================================================= -->
+    <!-- ARROW MARKERS                                     -->
+    <!-- ================================================= -->
+
+    <marker id="atwoodImprovedWeightArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#dc2626"/>
+    </marker>
+
+    <marker id="atwoodImprovedTensionArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+    <marker id="atwoodImprovedVelocityArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="5.5"
+            markerHeight="5.5"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <marker id="atwoodImprovedRotationArrow"
+            viewBox="0 0 10 10"
+            refX="8"
+            refY="5"
+            markerWidth="4.5"
+            markerHeight="4.5"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#64748b"/>
+    </marker>
+
+    <!-- ================================================= -->
+    <!-- PULLEY SHADOW                                     -->
+    <!-- ================================================= -->
+
+    <filter id="atwoodPulleyShadow"
+            x="-30%"
+            y="-30%"
+            width="160%"
+            height="160%">
+
+      <feDropShadow dx="0"
+                    dy="1.5"
+                    stdDeviation="1.3"
+                    flood-color="#64748b"
+                    flood-opacity="0.28"/>
+    </filter>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Newton’s second law for an unequal-mass pulley
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect x="10"
+        y="28"
+        width="250"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <text x="135"
+        y="42"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#334155">
+    Heavier m₂ moves down while lighter m₁ moves up
+  </text>
+
+  <!-- Example mass ratio -->
+  <rect x="21"
+        y="51"
+        width="69"
+        height="16"
+        rx="7"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="55.5"
+        y="62"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#475569">
+    example: m₂ = 2m₁
+  </text>
+
+  <!-- Constant acceleration badge -->
+  <rect x="180"
+        y="51"
+        width="69"
+        height="16"
+        rx="7"
+        fill="#faf5ff"
+        stroke="#d8b4fe"/>
+
+  <text x="214.5"
+        y="62"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#6d28d9">
+    a = constant
+  </text>
+
+  <!-- ================================================= -->
+  <!-- IMPROVED PULLEY SUPPORT                            -->
+  <!-- ================================================= -->
+
+  <!-- Ceiling beam -->
+  <rect x="105"
+        y="47"
+        width="60"
+        height="7"
+        rx="3.5"
+        fill="#cbd5e1"
+        stroke="#94a3b8"
+        stroke-width="0.8"/>
+
+  <!-- Beam detail -->
+  <line x1="111"
+        y1="50.5"
+        x2="159"
+        y2="50.5"
+        stroke="#e2e8f0"
+        stroke-width="1"/>
+
+  <!-- Bracket -->
+  <path d="
+    M 126 54
+    L 129 61
+    L 141 61
+    L 144 54
+  "
+        fill="#94a3b8"
+        stroke="#64748b"
+        stroke-width="1.2"
+        stroke-linejoin="round"/>
+
+  <!-- Axle support -->
+  <line x1="135"
+        y1="58"
+        x2="135"
+        y2="73"
+        stroke="#64748b"
+        stroke-width="3"
+        stroke-linecap="round"/>
+
+  <!-- ================================================= -->
+  <!-- PULLEY WHEEL                                       -->
+  <!-- ================================================= -->
+
+  <g filter="url(#atwoodPulleyShadow)">
+
+    <!-- Outer wheel -->
+    <circle cx="135"
+            cy="75"
+            r="21"
+            fill="#dbe3ec"
+            stroke="#475569"
+            stroke-width="2"/>
+
+    <!-- Rope groove -->
+    <circle cx="135"
+            cy="75"
+            r="18.5"
+            fill="none"
+            stroke="#94a3b8"
+            stroke-width="1.5"/>
+
+    <!-- Rotating spokes and rim marker -->
+    <g>
+
+      <animateTransform attributeName="transform"
+                        type="rotate"
+                        values="
+                          0 135 75;
+                          3 135 75;
+                          8 135 75;
+                          15 135 75;
+                          24 135 75;
+                          36 135 75;
+                          53 135 75;
+                          76 135 75;
+                          76 135 75
+                        "
+                        keyTimes="
+                          0;
+                          0.10;
+                          0.20;
+                          0.30;
+                          0.40;
+                          0.52;
+                          0.66;
+                          0.82;
+                          1
+                        "
+                        calcMode="linear"
+                        dur="10s"
+                        repeatCount="indefinite"/>
+
+      <!-- Four spokes -->
+      <line x1="135"
+            y1="60"
+            x2="135"
+            y2="90"
+            stroke="#64748b"
+            stroke-width="1.3"/>
+
+      <line x1="120"
+            y1="75"
+            x2="150"
+            y2="75"
+            stroke="#64748b"
+            stroke-width="1.3"/>
+
+      <line x1="124.5"
+            y1="64.5"
+            x2="145.5"
+            y2="85.5"
+            stroke="#94a3b8"
+            stroke-width="1"/>
+
+      <line x1="145.5"
+            y1="64.5"
+            x2="124.5"
+            y2="85.5"
+            stroke="#94a3b8"
+            stroke-width="1"/>
+
+      <!-- Visible rim marker makes rotation clear -->
+      <circle cx="135"
+              cy="57"
+              r="2.2"
+              fill="#475569"/>
+    </g>
+
+    <!-- Hub -->
+    <circle cx="135"
+            cy="75"
+            r="5.2"
+            fill="#94a3b8"
+            stroke="#475569"
+            stroke-width="1.2"/>
+
+    <circle cx="135"
+            cy="75"
+            r="2"
+            fill="#e2e8f0"/>
+  </g>
+
+  <!-- Rotation guide -->
+  <path d="
+    M 146 64
+    A 15 15 0 0 1 147 86
+  "
+        fill="none"
+        stroke="#64748b"
+        stroke-width="1.1"
+        stroke-dasharray="3 2"
+        marker-end="url(#atwoodImprovedRotationArrow)"
+        opacity="0.8"/>
+
+  <!-- ================================================= -->
+  <!-- ROPE                                               -->
+  <!-- ================================================= -->
+
+  <!-- Rope wrapping around the outside of the pulley -->
+  <path d="
+    M 111 75
+    A 24 24 0 0 1 159 75
+  "
+        fill="none"
+        stroke="#475569"
+        stroke-width="2.4"
+        stroke-linecap="round"/>
+
+  <!-- Left hanging rope -->
+  <line x1="111"
+        y1="75"
+        x2="111"
+        y2="122"
+        stroke="#475569"
+        stroke-width="2.4"
+        stroke-linecap="round">
+
+    <animate attributeName="y2"
+             values="
+               122;
+               121;
+               119;
+               116;
+               112;
+               107;
+               100;
+               90;
+               90
+             "
+             keyTimes="
+               0;
+               0.10;
+               0.20;
+               0.30;
+               0.40;
+               0.52;
+               0.66;
+               0.82;
+               1
+             "
+             calcMode="linear"
+             dur="10s"
+             repeatCount="indefinite"/>
+  </line>
+
+  <!-- Right hanging rope -->
+  <line x1="159"
+        y1="75"
+        x2="159"
+        y2="92"
+        stroke="#475569"
+        stroke-width="2.4"
+        stroke-linecap="round">
+
+    <animate attributeName="y2"
+             values="
+               92;
+               93;
+               95;
+               98;
+               102;
+               107;
+               114;
+               124;
+               124
+             "
+             keyTimes="
+               0;
+               0.10;
+               0.20;
+               0.30;
+               0.40;
+               0.52;
+               0.66;
+               0.82;
+               1
+             "
+             calcMode="linear"
+             dur="10s"
+             repeatCount="indefinite"/>
+  </line>
+
+  <!-- ================================================= -->
+  <!-- LIGHTER MASS m1                                    -->
+  <!-- ================================================= -->
+
+  <g transform="translate(111 122)">
+
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        111 122;
+                        111 121;
+                        111 119;
+                        111 116;
+                        111 112;
+                        111 107;
+                        111 100;
+                        111 90;
+                        111 90
+                      "
+                      keyTimes="
+                        0;
+                        0.10;
+                        0.20;
+                        0.30;
+                        0.40;
+                        0.52;
+                        0.66;
+                        0.82;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="10s"
+                      repeatCount="indefinite"/>
+
+    <!-- Constant tension: length 16 -->
+    <line x1="0"
+          y1="0"
+          x2="0"
+          y2="-16"
+          stroke="#16a34a"
+          stroke-width="2.4"
+          marker-end="url(#atwoodImprovedTensionArrow)"/>
+
+    <text x="7"
+          y="-9"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#15803d">
+      T
+    </text>
+
+    <!-- Growing upward velocity -->
+    <line x1="-27"
+          y1="10"
+          x2="-27"
+          y2="10"
+          stroke="#2563eb"
+          stroke-width="2.3"
+          marker-end="url(#atwoodImprovedVelocityArrow)"
+          opacity="0">
+
+      <animate attributeName="y2"
+               values="
+                 10;
+                 6;
+                 2;
+                 -2;
+                 -6;
+                 -10;
+                 -15;
+                 -20;
+                 -20
+               "
+               keyTimes="
+                 0;
+                 0.10;
+                 0.20;
+                 0.30;
+                 0.40;
+                 0.52;
+                 0.66;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="10s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="opacity"
+               values="0;0.35;1;1"
+               keyTimes="0;0.04;0.10;1"
+               dur="10s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <text x="-33"
+          y="-5"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#1d4ed8">
+      v
+    </text>
+
+    <!-- Initial velocity label -->
+    <text x="-31"
+          y="21"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7"
+          font-weight="700"
+          fill="#1d4ed8">
+      v = 0
+
+      <animate attributeName="opacity"
+               values="1;1;0;0"
+               keyTimes="0;0.06;0.12;1"
+               dur="10s"
+               repeatCount="indefinite"/>
+    </text>
+
+    <!-- Mass body -->
+    <rect x="-11"
+          y="0"
+          width="22"
+          height="20"
+          rx="3.5"
+          fill="#fef3c7"
+          stroke="#d97706"
+          stroke-width="1.5"/>
+
+    <rect x="-8"
+          y="3"
+          width="16"
+          height="4"
+          rx="2"
+          fill="#fde68a"
+          opacity="0.8"/>
+
+    <text x="0"
+          y="14"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          font-weight="700"
+          fill="#92400e">
+      m₁
+    </text>
+
+    <!-- Weight: length 12 -->
+    <line x1="0"
+          y1="20"
+          x2="0"
+          y2="32"
+          stroke="#dc2626"
+          stroke-width="2.4"
+          marker-end="url(#atwoodImprovedWeightArrow)"/>
+
+    <text x="7"
+          y="31"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#b91c1c">
+      m₁g
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- HEAVIER MASS m2                                    -->
+  <!-- ================================================= -->
+
+  <g transform="translate(159 92)">
+
+    <animateTransform attributeName="transform"
+                      type="translate"
+                      values="
+                        159 92;
+                        159 93;
+                        159 95;
+                        159 98;
+                        159 102;
+                        159 107;
+                        159 114;
+                        159 124;
+                        159 124
+                      "
+                      keyTimes="
+                        0;
+                        0.10;
+                        0.20;
+                        0.30;
+                        0.40;
+                        0.52;
+                        0.66;
+                        0.82;
+                        1
+                      "
+                      calcMode="linear"
+                      dur="10s"
+                      repeatCount="indefinite"/>
+
+    <!-- Same constant tension: length 16 -->
+    <line x1="0"
+          y1="0"
+          x2="0"
+          y2="-16"
+          stroke="#16a34a"
+          stroke-width="2.4"
+          marker-end="url(#atwoodImprovedTensionArrow)"/>
+
+    <text x="7"
+          y="-9"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#15803d">
+      T
+    </text>
+
+    <!-- Growing downward velocity -->
+    <line x1="29"
+          y1="14"
+          x2="29"
+          y2="14"
+          stroke="#2563eb"
+          stroke-width="2.3"
+          marker-end="url(#atwoodImprovedVelocityArrow)"
+          opacity="0">
+
+      <animate attributeName="y2"
+               values="
+                 14;
+                 18;
+                 22;
+                 26;
+                 30;
+                 34;
+                 39;
+                 44;
+                 44
+               "
+               keyTimes="
+                 0;
+                 0.10;
+                 0.20;
+                 0.30;
+                 0.40;
+                 0.52;
+                 0.66;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="10s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="opacity"
+               values="0;0.35;1;1"
+               keyTimes="0;0.04;0.10;1"
+               dur="10s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <text x="35"
+          y="33"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#1d4ed8">
+      v
+    </text>
+
+    <!-- Initial velocity label -->
+    <text x="35"
+          y="10"
+          font-family="Arial, sans-serif"
+          font-size="7"
+          font-weight="700"
+          fill="#1d4ed8">
+      v = 0
+
+      <animate attributeName="opacity"
+               values="1;1;0;0"
+               keyTimes="0;0.06;0.12;1"
+               dur="10s"
+               repeatCount="indefinite"/>
+    </text>
+
+    <!-- Mass body -->
+    <rect x="-13"
+          y="0"
+          width="26"
+          height="28"
+          rx="3.5"
+          fill="#dbeafe"
+          stroke="#2563eb"
+          stroke-width="1.5"/>
+
+    <rect x="-10"
+          y="3"
+          width="20"
+          height="5"
+          rx="2.5"
+          fill="#bfdbfe"
+          opacity="0.9"/>
+
+    <text x="0"
+          y="18"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          font-weight="700"
+          fill="#1d4ed8">
+      m₂
+    </text>
+
+    <!-- Weight: length 24 -->
+    <line x1="0"
+          y1="28"
+          x2="0"
+          y2="52"
+          stroke="#dc2626"
+          stroke-width="2.4"
+          marker-end="url(#atwoodImprovedWeightArrow)"/>
+
+    <text x="7"
+          y="46"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#b91c1c">
+      m₂g
+    </text>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- LEFT-PANEL SUMMARY                                 -->
+  <!-- ================================================= -->
+
+  <rect x="87"
+        y="159"
+        width="96"
+        height="18"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="135"
+        y="171"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#475569">
+    m₁g &lt; T &lt; m₂g
+  </text>
+
+  <rect x="22"
+        y="184"
+        width="226"
+        height="33"
+        rx="9"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="135"
+        y="196"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#0f172a">
+    Forces remain constant
+  </text>
+
+  <text x="135"
+        y="208"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.4"
+        fill="#475569">
+    Equal velocity magnitudes grow steadily with time
+  </text>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect x="270"
+        y="28"
+        width="140"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="340"
+        y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Newton’s second law
+  </text>
+
+  <line x1="282"
+        y1="52"
+        x2="398"
+        y2="52"
+        stroke="#e2e8f0"/>
+
+  <!-- Lighter mass -->
+  <rect x="281"
+        y="58"
+        width="118"
+        height="38"
+        rx="8"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <text x="340"
+        y="71"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#9a3412">
+    Lighter mass m₁
+  </text>
+
+  <text x="340"
+        y="87"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    T - m₁g = m₁a
+  </text>
+
+  <!-- Heavier mass -->
+  <rect x="281"
+        y="102"
+        width="118"
+        height="38"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="340"
+        y="115"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#1d4ed8">
+    Heavier mass m₂
+  </text>
+
+  <text x="340"
+        y="131"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    m₂g - T = m₂a
+  </text>
+
+  <!-- Illustrated ratio -->
+  <rect x="281"
+        y="146"
+        width="118"
+        height="27"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#d8b4fe"/>
+
+  <text x="340"
+        y="157"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        font-weight="700"
+        fill="#6d28d9">
+    For m₂ = 2m₁:
+  </text>
+
+  <text x="340"
+        y="168"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        font-weight="700"
+        fill="#6d28d9">
+    Fnet,₂ = 2Fnet,₁ but a₂ = a₁
+  </text>
+
+  <!-- Combined system -->
+  <text x="340"
+        y="187"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.8"
+        font-weight="700"
+        fill="#475569">
+    Add equations: tension cancels
+  </text>
+
+  <text x="340"
+        y="199"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.6"
+        font-weight="700"
+        fill="#0f172a">
+    (m₂-m₁)g = (m₁+m₂)a
+  </text>
+
+  <rect x="286"
+        y="205"
+        width="108"
+        height="15"
+        rx="7.5"
+        fill="#dbeafe"
+        stroke="#60a5fa"/>
+
+  <text x="340"
+        y="216"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.1"
+        font-weight="700"
+        fill="#1d4ed8">
+    a = (m₂-m₁)g / (m₁+m₂)
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    A constant net force gives constant acceleration, so both velocity magnitudes grow together.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "How do the x- and y-components change when a vector’s direction and magnitude change?",
+
+  equation: "",
+
+  answer: "A vector can be separated into perpendicular horizontal and vertical components. The black arrow is the original vector, while the blue and purple arrows are its x- and y-components. The animation begins with a vector magnitude of 10.0. During each rotation, the vector magnitude remains fixed: the x-component decreases smoothly as the y-component increases. At 0° the vector is entirely horizontal, at 45° the components are equal, and at 90° the vector is entirely vertical. The animation cycles through magnitudes 10.0, 15.0, 20.0 and 5.0 before returning to 10.0. Changing direction redistributes a fixed magnitude between x and y, while changing magnitude scales the vector and both components together. The live values are shown to one decimal place. The pause button freezes the arrows, angle, bars and numerical readouts together at the current instant.",
+
+  svg: (() => {
+
+    /* ===================================================
+       INSTALL ONE DELEGATED PAUSE/PLAY HANDLER
+       =================================================== */
+
+    if (
+      typeof document !== "undefined" &&
+      !globalThis.__vectorComponentPauseInstalled
+    ) {
+      globalThis.__vectorComponentPauseInstalled = true;
+
+      const findPauseButton = target => {
+        if (
+          typeof Element === "undefined" ||
+          !(target instanceof Element)
+        ) {
+          return null;
+        }
+
+        return target.closest("[data-vector-pause]");
+      };
+
+      const toggleVectorAnimation = button => {
+        const rootSvg = button.ownerSVGElement;
+
+        if (!rootSvg) {
+          console.warn(
+            "The pause button could not find its SVG."
+          );
+          return;
+        }
+
+        if (
+          typeof rootSvg.pauseAnimations !== "function" ||
+          typeof rootSvg.unpauseAnimations !== "function"
+        ) {
+          console.warn(
+            "This browser or SVG renderer does not support SVG animation controls."
+          );
+          return;
+        }
+
+        /*
+          The numerical readouts use nested SVG elements,
+          so these must also be paused and resumed.
+        */
+        const nestedSvgs = [
+          ...rootSvg.querySelectorAll("svg")
+        ].filter(svg =>
+          typeof svg.pauseAnimations === "function" &&
+          typeof svg.unpauseAnimations === "function"
+        );
+
+        const pauseSymbol =
+          button.querySelector(".vectorPauseSymbol");
+
+        const playSymbol =
+          button.querySelector(".vectorPlaySymbol");
+
+        const isPaused =
+          button.getAttribute("aria-pressed") === "true";
+
+        if (isPaused) {
+          /*
+            Resume the main SVG and all nested numerical
+            SVG timelines.
+          */
+          rootSvg.unpauseAnimations();
+
+          nestedSvgs.forEach(svg => {
+            svg.unpauseAnimations();
+          });
+
+          /*
+            Re-align nested timelines with the main SVG.
+          */
+          if (
+            typeof rootSvg.getCurrentTime === "function"
+          ) {
+            const currentTime =
+              rootSvg.getCurrentTime();
+
+            nestedSvgs.forEach(svg => {
+              if (
+                typeof svg.setCurrentTime === "function"
+              ) {
+                try {
+                  svg.setCurrentTime(currentTime);
+                } catch (error) {
+                  // Some SVG renderers do not support this.
+                }
+              }
+            });
+          }
+
+          button.setAttribute(
+            "aria-pressed",
+            "false"
+          );
+
+          button.setAttribute(
+            "aria-label",
+            "Pause vector animation"
+          );
+
+          pauseSymbol?.setAttribute(
+            "display",
+            "inline"
+          );
+
+          playSymbol?.setAttribute(
+            "display",
+            "none"
+          );
+
+        } else {
+          /*
+            Pause the main SVG first.
+          */
+          rootSvg.pauseAnimations();
+
+          const currentTime =
+            typeof rootSvg.getCurrentTime === "function"
+              ? rootSvg.getCurrentTime()
+              : null;
+
+          /*
+            Freeze all nested numerical SVGs at the same
+            animation time.
+          */
+          nestedSvgs.forEach(svg => {
+            if (
+              currentTime !== null &&
+              typeof svg.setCurrentTime === "function"
+            ) {
+              try {
+                svg.setCurrentTime(currentTime);
+              } catch (error) {
+                // Some SVG renderers do not support this.
+              }
+            }
+
+            svg.pauseAnimations();
+          });
+
+          button.setAttribute(
+            "aria-pressed",
+            "true"
+          );
+
+          button.setAttribute(
+            "aria-label",
+            "Resume vector animation"
+          );
+
+          pauseSymbol?.setAttribute(
+            "display",
+            "none"
+          );
+
+          playSymbol?.setAttribute(
+            "display",
+            "inline"
+          );
+        }
+      };
+
+      document.addEventListener(
+        "click",
+        event => {
+          const button =
+            findPauseButton(event.target);
+
+          if (!button) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          toggleVectorAnimation(button);
+        },
+        true
+      );
+
+      document.addEventListener(
+        "keydown",
+        event => {
+          const button =
+            findPauseButton(event.target);
+
+          if (!button) return;
+
+          if (
+            event.key === "Enter" ||
+            event.key === " " ||
+            event.key === "Spacebar"
+          ) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            toggleVectorAnimation(button);
+          }
+        },
+        true
+      );
+    }
+
+    /* ===================================================
+       ANIMATION GEOMETRY
+       =================================================== */
+
+    const ox = 43;
+    const oy = 188;
+
+    const pixelsPerUnit = 5.1;
+
+    /*
+      The axes extend only slightly beyond the maximum
+      displayed vector magnitude of 20 units.
+    */
+    const axisMaximum = 21.5;
+
+    const xAxisEnd =
+      ox + axisMaximum * pixelsPerUnit;
+
+    const yAxisEnd =
+      oy - axisMaximum * pixelsPerUnit;
+
+    /*
+      Each generated animation frame lasts 0.15 seconds.
+    */
+    const dt = 0.1;
+
+    const rotationSteps = 90;
+    const endPauseFrames = 9;
+    const magnitudeTransitionSteps = 30;
+
+    /*
+      The animation begins at 10 units.
+    */
+    const magnitudes = [
+      10,
+      15,
+      20,
+      5
+    ];
+
+    const frames = [];
+
+    const addFrame = (
+      magnitude,
+      angle
+    ) => {
+      const radians =
+        angle * Math.PI / 180;
+
+      const xComponent =
+        magnitude * Math.cos(radians);
+
+      const yComponent =
+        magnitude * Math.sin(radians);
+
+      frames.push({
+        magnitude,
+        angle,
+        xComponent,
+        yComponent,
+
+        xEnd:
+          ox +
+          pixelsPerUnit *
+          xComponent,
+
+        yEnd:
+          oy -
+          pixelsPerUnit *
+          yComponent
+      });
+    };
+
+    const addLinearSection = (
+      startMagnitude,
+      endMagnitude,
+      startAngle,
+      endAngle,
+      steps,
+      includeFirst = false
+    ) => {
+      for (
+        let i = includeFirst ? 0 : 1;
+        i <= steps;
+        i += 1
+      ) {
+        const fraction =
+          i / steps;
+
+        addFrame(
+          startMagnitude +
+            (
+              endMagnitude -
+              startMagnitude
+            ) * fraction,
+
+          startAngle +
+            (
+              endAngle -
+              startAngle
+            ) * fraction
+        );
+      }
+    };
+
+    magnitudes.forEach(
+      (magnitude, index) => {
+        const nextMagnitude =
+          magnitudes[
+            (index + 1) %
+            magnitudes.length
+          ];
+
+        if (frames.length === 0) {
+          addFrame(
+            magnitude,
+            0
+          );
+        }
+
+        /*
+          Rotate from 0° to 90°.
+        */
+        addLinearSection(
+          magnitude,
+          magnitude,
+          0,
+          90,
+          rotationSteps
+        );
+
+        /*
+          Pause briefly at 90°.
+        */
+        for (
+          let i = 0;
+          i < endPauseFrames;
+          i += 1
+        ) {
+          addFrame(
+            magnitude,
+            90
+          );
+        }
+
+        /*
+          Rotate from 90° back to 0°.
+        */
+        addLinearSection(
+          magnitude,
+          magnitude,
+          90,
+          0,
+          rotationSteps
+        );
+
+        /*
+          Pause briefly at 0°.
+        */
+        for (
+          let i = 0;
+          i < endPauseFrames;
+          i += 1
+        ) {
+          addFrame(
+            magnitude,
+            0
+          );
+        }
+
+        /*
+          Change only the magnitude while horizontal.
+        */
+        addLinearSection(
+          magnitude,
+          nextMagnitude,
+          0,
+          0,
+          magnitudeTransitionSteps
+        );
+      }
+    );
+
+    const duration =
+      (
+        (frames.length - 1) *
+        dt
+      ).toFixed(2);
+
+    const keyTimes = frames
+      .map(
+        (_, index) =>
+          (
+            index /
+            (frames.length - 1)
+          ).toFixed(6)
+      )
+      .join(";");
+
+    const series = (
+      selector,
+      digits = 2
+    ) =>
+      frames
+        .map(
+          frame =>
+            Number(
+              selector(frame)
+            ).toFixed(digits)
+        )
+        .join(";");
+
+    const xEndValues =
+      series(
+        frame => frame.xEnd
+      );
+
+    const yEndValues =
+      series(
+        frame => frame.yEnd
+      );
+
+    /*
+      Reveal the quarter-circle angle arc up to θ.
+    */
+    const angleArcValues = frames
+      .map(
+        frame =>
+          `${frame.angle.toFixed(2)} 90`
+      )
+      .join(";");
+
+    const angleVisibleValues = frames
+      .map(
+        frame =>
+          frame.angle > 1
+            ? "1"
+            : "0"
+      )
+      .join(";");
+
+    const rightAngleVisibleValues = frames
+      .map(
+        frame =>
+          frame.xComponent > 0.25 &&
+          frame.yComponent > 0.25
+            ? "1"
+            : "0"
+      )
+      .join(";");
+
+    /*
+      Position θ halfway around the current angle.
+    */
+    const thetaXValues = series(
+      frame => {
+        const halfAngle =
+          frame.angle *
+          Math.PI /
+          360;
+
+        return (
+          ox +
+          29 *
+          Math.cos(halfAngle)
+        );
+      }
+    );
+
+    const thetaYValues = series(
+      frame => {
+        const halfAngle =
+          frame.angle *
+          Math.PI /
+          360;
+
+        return (
+          oy -
+          29 *
+          Math.sin(halfAngle)
+        );
+      }
+    );
+
+    const xLabelXValues = series(
+      frame =>
+        ox +
+        (
+          frame.xEnd -
+          ox
+        ) / 2
+    );
+
+    const yLabelXValues = series(
+      frame =>
+        frame.xEnd + 7
+    );
+
+    const yLabelYValues = series(
+      frame =>
+        oy +
+        (
+          frame.yEnd -
+          oy
+        ) / 2
+    );
+
+    const maxComponentBarWidth = 92;
+
+    const xBarValues = series(
+      frame =>
+        maxComponentBarWidth *
+        frame.xComponent /
+        20
+    );
+
+    const yBarValues = series(
+      frame =>
+        maxComponentBarWidth *
+        frame.yComponent /
+        20
+    );
+
+    const rightAnglePathValues = frames
+      .map(frame => {
+        const x =
+          frame.xEnd;
+
+        return (
+          `M ${(x - 7).toFixed(2)} ${oy} ` +
+          `L ${(x - 7).toFixed(2)} ${(oy - 7).toFixed(2)} ` +
+          `L ${x.toFixed(2)} ${(oy - 7).toFixed(2)}`
+        );
+      })
+      .join(";");
+
+    /* ===================================================
+       ANIMATED NUMERICAL READOUTS
+       =================================================== */
+
+    /*
+      Digit-strip index 0 is blank.
+      Indices 1–10 display the digits 0–9.
+    */
+    const digitIndex =
+      digit => digit + 1;
+
+    const decimalParts = value => {
+      const roundedTenths =
+        Math.max(
+          0,
+          Math.round(value * 10)
+        );
+
+      const integerPart =
+        Math.floor(
+          roundedTenths / 10
+        );
+
+      const tenths =
+        roundedTenths % 10;
+
+      const tens =
+        Math.floor(
+          integerPart / 10
+        );
+
+      const ones =
+        integerPart % 10;
+
+      return {
+        tens:
+          integerPart >= 10
+            ? digitIndex(tens)
+            : 0,
+
+        ones:
+          digitIndex(ones),
+
+        tenths:
+          digitIndex(tenths)
+      };
+    };
+
+    const integerParts = value => {
+      const rounded =
+        Math.max(
+          0,
+          Math.round(value)
+        );
+
+      return {
+        tens:
+          rounded >= 10
+            ? digitIndex(
+                Math.floor(
+                  rounded / 10
+                ) % 10
+              )
+            : 0,
+
+        ones:
+          digitIndex(
+            rounded % 10
+          )
+      };
+    };
+
+    const transformValues = (
+      valueSelector,
+      partSelector,
+      decimal = true
+    ) =>
+      frames
+        .map(frame => {
+          const parts = decimal
+            ? decimalParts(
+                valueSelector(frame)
+              )
+            : integerParts(
+                valueSelector(frame)
+              );
+
+          return (
+            `0 ${-14 * partSelector(parts)}`
+          );
+        })
+        .join(";");
+
+    const digitWindow = (
+      x,
+      y,
+      colour,
+      transformSeries
+    ) => `
+      <svg x="${x}"
+           y="${y}"
+           width="10"
+           height="14"
+           viewBox="0 0 10 14"
+           overflow="hidden">
+
+        <g color="${colour}">
+
+          <use href="#smoothNumberDigitStrip"
+               xlink:href="#smoothNumberDigitStrip"/>
+
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            values="${transformSeries}"
+            keyTimes="${keyTimes}"
+            calcMode="discrete"
+            dur="${duration}s"
+            repeatCount="indefinite"/>
+
+        </g>
+
+      </svg>
+    `;
+
+    const decimalReadout = (
+      centreX,
+      y,
+      colour,
+      valueSelector
+    ) => {
+      const tens =
+        transformValues(
+          valueSelector,
+          parts => parts.tens
+        );
+
+      const ones =
+        transformValues(
+          valueSelector,
+          parts => parts.ones
+        );
+
+      const tenths =
+        transformValues(
+          valueSelector,
+          parts => parts.tenths
+        );
+
+      return `
+        ${digitWindow(
+          centreX - 21,
+          y,
+          colour,
+          tens
+        )}
+
+        ${digitWindow(
+          centreX - 10,
+          y,
+          colour,
+          ones
+        )}
+
+        <text x="${centreX + 3}"
+              y="${y + 11.5}"
+              text-anchor="middle"
+              font-family="Arial, sans-serif"
+              font-size="12"
+              font-weight="700"
+              fill="${colour}">
+          .
+        </text>
+
+        ${digitWindow(
+          centreX + 7,
+          y,
+          colour,
+          tenths
+        )}
+      `;
+    };
+
+    const integerReadout = (
+      centreX,
+      y,
+      colour,
+      valueSelector
+    ) => {
+      const tens =
+        transformValues(
+          valueSelector,
+          parts => parts.tens,
+          false
+        );
+
+      const ones =
+        transformValues(
+          valueSelector,
+          parts => parts.ones,
+          false
+        );
+
+      return `
+        ${digitWindow(
+          centreX - 12,
+          y,
+          colour,
+          tens
+        )}
+
+        ${digitWindow(
+          centreX - 1,
+          y,
+          colour,
+          ones
+        )}
+      `;
+    };
+
+    /* ===================================================
+       SVG
+       =================================================== */
+
+    return `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg"
+     xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <defs>
+
+    <!-- Small arrowheads -->
+
+    <marker id="smoothNumberBlueArrow"
+            viewBox="0 0 10 10"
+            refX="8.5"
+            refY="5"
+            markerWidth="3.4"
+            markerHeight="3.4"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+
+    </marker>
+
+    <marker id="smoothNumberPurpleArrow"
+            viewBox="0 0 10 10"
+            refX="8.5"
+            refY="5"
+            markerWidth="3.4"
+            markerHeight="3.4"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+
+    </marker>
+
+    <marker id="smoothNumberBlackArrow"
+            viewBox="0 0 10 10"
+            refX="8.5"
+            refY="5"
+            markerWidth="3.8"
+            markerHeight="3.8"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#0f172a"/>
+
+    </marker>
+
+    <marker id="smoothNumberAxisArrow"
+            viewBox="0 0 10 10"
+            refX="8.5"
+            refY="5"
+            markerWidth="3"
+            markerHeight="3"
+            orient="auto">
+
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#64748b"/>
+
+    </marker>
+
+    <filter id="smoothNumberTipShadow"
+            x="-80%"
+            y="-80%"
+            width="260%"
+            height="260%">
+
+      <feDropShadow
+        dx="0"
+        dy="1"
+        stdDeviation="1"
+        flood-color="#475569"
+        flood-opacity="0.30"/>
+
+    </filter>
+
+    <!-- Digit strip used by the live readouts -->
+
+    <g id="smoothNumberDigitStrip"
+       font-family="Arial, sans-serif"
+       font-size="12"
+       font-weight="700"
+       text-anchor="middle"
+       fill="currentColor">
+
+      <text x="5" y="11"></text>
+      <text x="5" y="25">0</text>
+      <text x="5" y="39">1</text>
+      <text x="5" y="53">2</text>
+      <text x="5" y="67">3</text>
+      <text x="5" y="81">4</text>
+      <text x="5" y="95">5</text>
+      <text x="5" y="109">6</text>
+      <text x="5" y="123">7</text>
+      <text x="5" y="137">8</text>
+      <text x="5" y="151">9</text>
+
+    </g>
+
+    <style>
+      [data-vector-pause]:focus .vectorPauseOutline {
+        stroke: #2563eb;
+        stroke-width: 2;
+      }
+    </style>
+
+  </defs>
+
+  <!-- Background -->
+
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Numerical vector components: direction and magnitude
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect x="10"
+        y="28"
+        width="250"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <text x="135"
+        y="42"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.5"
+        font-weight="700"
+        fill="#334155">
+    Direction changes the balance between x and y
+  </text>
+
+  <rect x="21"
+        y="49"
+        width="228"
+        height="18"
+        rx="8"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="135"
+        y="61"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        font-weight="700"
+        fill="#475569">
+    Starts at 10.0, then cycles through 15.0, 20.0 and 5.0
+  </text>
+
+  <!-- Legend -->
+
+  <line x1="25"
+        y1="78"
+        x2="38"
+        y2="78"
+        stroke="#0f172a"
+        stroke-width="3.4"
+        marker-end="url(#smoothNumberBlackArrow)"/>
+
+  <text x="43"
+        y="80.5"
+        font-family="Arial, sans-serif"
+        font-size="7.3"
+        font-weight="700"
+        fill="#0f172a">
+    vector
+  </text>
+
+  <line x1="82"
+        y1="78"
+        x2="95"
+        y2="78"
+        stroke="#2563eb"
+        stroke-width="2.5"
+        marker-end="url(#smoothNumberBlueArrow)"/>
+
+  <text x="100"
+        y="80.5"
+        font-family="Arial, sans-serif"
+        font-size="7.3"
+        font-weight="700"
+        fill="#1d4ed8">
+    x-component
+  </text>
+
+  <line x1="166"
+        y1="83"
+        x2="166"
+        y2="73"
+        stroke="#7c3aed"
+        stroke-width="2.5"
+        marker-end="url(#smoothNumberPurpleArrow)"/>
+
+  <text x="172"
+        y="80.5"
+        font-family="Arial, sans-serif"
+        font-size="7.3"
+        font-weight="700"
+        fill="#6d28d9">
+    y-component
+  </text>
+
+  <!-- ================================================= -->
+  <!-- AXES                                               -->
+  <!-- ================================================= -->
+
+  <!--
+    Both axes extend only slightly beyond the maximum
+    component value of 20 units.
+  -->
+
+  <line x1="${ox - 8}"
+        y1="${oy}"
+        x2="${xAxisEnd}"
+        y2="${oy}"
+        stroke="#64748b"
+        stroke-width="1.2"
+        marker-end="url(#smoothNumberAxisArrow)"/>
+
+  <line x1="${ox}"
+        y1="${oy + 8}"
+        x2="${ox}"
+        y2="${yAxisEnd}"
+        stroke="#64748b"
+        stroke-width="1.2"
+        marker-end="url(#smoothNumberAxisArrow)"/>
+
+  <text x="${xAxisEnd + 4}"
+        y="${oy + 4}"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    x
+  </text>
+
+  <text x="${ox - 5}"
+        y="${yAxisEnd + 2}"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    y
+  </text>
+
+  <circle cx="${ox}"
+          cy="${oy}"
+          r="3"
+          fill="#475569"/>
+
+  <!-- ================================================= -->
+  <!-- ANGLE ARC                                          -->
+  <!-- ================================================= -->
+
+  <path d="
+          M ${ox + 22} ${oy}
+          A 22 22 0 0 0 ${ox} ${oy - 22}
+        "
+        pathLength="90"
+        fill="none"
+        stroke="#475569"
+        stroke-width="1.35"
+        stroke-dasharray="0 90">
+
+    <animate
+      attributeName="stroke-dasharray"
+      values="${angleArcValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </path>
+
+  <!-- Moving angle label -->
+
+  <text x="${ox + 29}"
+        y="${oy}"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.3"
+        font-weight="700"
+        fill="#475569"
+        opacity="0">
+
+    θ
+
+    <animate
+      attributeName="x"
+      values="${thetaXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y"
+      values="${thetaYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="opacity"
+      values="${angleVisibleValues}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- COMPONENT TRIANGLE                                 -->
+  <!-- ================================================= -->
+
+  <!-- Horizontal projection guide -->
+
+  <line x1="${ox}"
+        y1="${oy}"
+        x2="${ox}"
+        y2="${oy}"
+        stroke="#94a3b8"
+        stroke-width="1"
+        stroke-dasharray="3 3">
+
+    <animate
+      attributeName="y1"
+      values="${yEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="x2"
+      values="${xEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y2"
+      values="${yEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Horizontal x-component -->
+
+  <line x1="${ox}"
+        y1="${oy}"
+        x2="${ox}"
+        y2="${oy}"
+        stroke="#2563eb"
+        stroke-width="2.8"
+        marker-end="url(#smoothNumberBlueArrow)">
+
+    <animate
+      attributeName="x2"
+      values="${xEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Vertical y-component -->
+
+  <line x1="${ox}"
+        y1="${oy}"
+        x2="${ox}"
+        y2="${oy}"
+        stroke="#7c3aed"
+        stroke-width="2.8"
+        marker-end="url(#smoothNumberPurpleArrow)">
+
+    <animate
+      attributeName="x1"
+      values="${xEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="x2"
+      values="${xEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y2"
+      values="${yEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Right-angle marker -->
+
+  <path d="
+          M ${ox} ${oy}
+          L ${ox} ${oy - 7}
+          L ${ox + 7} ${oy - 7}
+        "
+        fill="none"
+        stroke="#64748b"
+        stroke-width="1"
+        opacity="0">
+
+    <animate
+      attributeName="d"
+      values="${rightAnglePathValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="opacity"
+      values="${rightAngleVisibleValues}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </path>
+
+  <!-- Original vector -->
+
+  <line x1="${ox}"
+        y1="${oy}"
+        x2="${ox}"
+        y2="${oy}"
+        stroke="#0f172a"
+        stroke-width="3.8"
+        stroke-linecap="round"
+        marker-end="url(#smoothNumberBlackArrow)">
+
+    <animate
+      attributeName="x2"
+      values="${xEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y2"
+      values="${yEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Moving endpoint -->
+
+  <circle cx="${ox}"
+          cy="${oy}"
+          r="4.1"
+          fill="#f59e0b"
+          stroke="#92400e"
+          stroke-width="1.2"
+          filter="url(#smoothNumberTipShadow)">
+
+    <animate
+      attributeName="cx"
+      values="${xEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="cy"
+      values="${yEndValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </circle>
+
+  <!-- Component labels -->
+
+  <text x="${ox}"
+        y="201"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#1d4ed8">
+
+    x
+
+    <animate
+      attributeName="x"
+      values="${xLabelXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <text x="${ox + 7}"
+        y="${oy}"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#6d28d9">
+
+    y
+
+    <animate
+      attributeName="x"
+      values="${yLabelXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y"
+      values="${yLabelYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <!-- Explanatory strip -->
+
+  <rect x="21"
+        y="207"
+        width="228"
+        height="13"
+        rx="6.5"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="135"
+        y="216"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.5"
+        font-weight="700"
+        fill="#475569">
+    The blue and purple vectors join head-to-tail to recreate the black vector
+  </text>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect x="270"
+        y="28"
+        width="140"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="337"
+        y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Live numerical values
+  </text>
+
+  <!-- ================================================= -->
+  <!-- PAUSE / PLAY BUTTON                                -->
+  <!-- ================================================= -->
+
+  <g data-vector-pause
+     role="button"
+     tabindex="0"
+     aria-label="Pause vector animation"
+     aria-pressed="false"
+     transform="translate(393 42)"
+     style="cursor:pointer"
+     pointer-events="all">
+
+    <title>Pause or resume the animation</title>
+
+    <rect class="vectorPauseOutline"
+          x="-12"
+          y="-10"
+          width="24"
+          height="20"
+          rx="6"
+          fill="#ffffff"
+          stroke="#94a3b8"
+          stroke-width="1.1"/>
+
+    <!-- Pause symbol shown while playing -->
+
+    <g class="vectorPauseSymbol">
+
+      <rect x="-4.7"
+            y="-5"
+            width="3.2"
+            height="10"
+            rx="0.8"
+            fill="#475569"/>
+
+      <rect x="1.5"
+            y="-5"
+            width="3.2"
+            height="10"
+            rx="0.8"
+            fill="#475569"/>
+
+    </g>
+
+    <!-- Play symbol shown while paused -->
+
+    <path class="vectorPlaySymbol"
+          d="M -3.5 -5.5 L 5.5 0 L -3.5 5.5 Z"
+          fill="#475569"
+          display="none"/>
+
+  </g>
+
+  <line x1="282"
+        y1="52"
+        x2="398"
+        y2="52"
+        stroke="#e2e8f0"/>
+
+  <!-- Magnitude -->
+
+  <rect x="281"
+        y="58"
+        width="118"
+        height="36"
+        rx="8"
+        fill="#f8fafc"
+        stroke="#cbd5e1"/>
+
+  <text x="340"
+        y="69"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        font-weight="700"
+        fill="#64748b">
+    vector magnitude
+  </text>
+
+  ${decimalReadout(
+    340,
+    74,
+    "#0f172a",
+    frame => frame.magnitude
+  )}
+
+  <!-- Angle -->
+
+  <rect x="281"
+        y="100"
+        width="118"
+        height="32"
+        rx="8"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <text x="318"
+        y="113"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        font-weight="700"
+        fill="#9a3412">
+    angle
+  </text>
+
+  ${integerReadout(
+    351,
+    106,
+    "#9a3412",
+    frame => frame.angle
+  )}
+
+  <text x="368"
+        y="117.5"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#9a3412">
+    °
+  </text>
+
+  <!-- Horizontal component -->
+
+  <rect x="281"
+        y="138"
+        width="118"
+        height="36"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="340"
+        y="149"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        font-weight="700"
+        fill="#1d4ed8">
+    horizontal x-component
+  </text>
+
+  ${decimalReadout(
+    340,
+    153,
+    "#1d4ed8",
+    frame => frame.xComponent
+  )}
+
+  <rect x="294"
+        y="169"
+        width="92"
+        height="3.5"
+        rx="1.75"
+        fill="#dbeafe"/>
+
+  <rect x="294"
+        y="169"
+        width="0"
+        height="3.5"
+        rx="1.75"
+        fill="#2563eb">
+
+    <animate
+      attributeName="width"
+      values="${xBarValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </rect>
+
+  <!-- Vertical component -->
+
+  <rect x="281"
+        y="180"
+        width="118"
+        height="36"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#d8b4fe"/>
+
+  <text x="340"
+        y="191"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        font-weight="700"
+        fill="#6d28d9">
+    vertical y-component
+  </text>
+
+  ${decimalReadout(
+    340,
+    195,
+    "#6d28d9",
+    frame => frame.yComponent
+  )}
+
+  <rect x="294"
+        y="211"
+        width="92"
+        height="3.5"
+        rx="1.75"
+        fill="#ede9fe"/>
+
+  <rect x="294"
+        y="211"
+        width="0"
+        height="3.5"
+        rx="1.75"
+        fill="#7c3aed">
+
+    <animate
+      attributeName="width"
+      values="${yBarValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </rect>
+
+  <!-- Footer -->
+
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    Direction redistributes the vector between x and y; magnitude scales both components.
+  </text>
+
+</svg>
+`;
+  })()
+},
+
+{
+  topic: "Trigonometry",
+
+  term: "How do sin θ, cos θ and tan θ appear on the unit circle?",
+
+  equation: "\\cos\\theta=x,\\qquad \\sin\\theta=y,\\qquad \\tan\\theta=\\dfrac{\\sin\\theta}{\\cos\\theta}",
+
+  answer: "On the unit circle, the moving point has coordinates (cosθ, sinθ). The blue horizontal component is cosθ and the purple vertical component is sinθ. The green line shows tanθ on the tangent line x = 1. As cosθ approaches zero, tanθ grows without limit and leaves the visible scale. Tanθ is undefined at 90° and 270°. Pause the animation to examine particular angles.",
+
+  svg: (() => {
+
+    /* ===================================================
+       PAUSE / PLAY
+       =================================================== */
+
+    if (
+      typeof document !== "undefined" &&
+      !globalThis.__unitCirclePauseInstalled
+    ) {
+      globalThis.__unitCirclePauseInstalled = true;
+
+      const findPauseButton = target => {
+        if (
+          typeof Element === "undefined" ||
+          !(target instanceof Element)
+        ) {
+          return null;
+        }
+
+        return target.closest(
+          "[data-unit-circle-pause]"
+        );
+      };
+
+      const toggleUnitCircleAnimation = button => {
+        const rootSvg =
+          button.ownerSVGElement;
+
+        if (!rootSvg) return;
+
+        if (
+          typeof rootSvg.pauseAnimations !== "function" ||
+          typeof rootSvg.unpauseAnimations !== "function"
+        ) {
+          console.warn(
+            "This SVG renderer does not support animation controls."
+          );
+          return;
+        }
+
+        const nestedSvgs = [
+          ...rootSvg.querySelectorAll("svg")
+        ].filter(
+          svg =>
+            typeof svg.pauseAnimations === "function" &&
+            typeof svg.unpauseAnimations === "function"
+        );
+
+        const pauseSymbol =
+          button.querySelector(
+            ".unitCirclePauseSymbol"
+          );
+
+        const playSymbol =
+          button.querySelector(
+            ".unitCirclePlaySymbol"
+          );
+
+        const isPaused =
+          button.getAttribute(
+            "aria-pressed"
+          ) === "true";
+
+        if (isPaused) {
+          rootSvg.unpauseAnimations();
+
+          nestedSvgs.forEach(
+            svg => svg.unpauseAnimations()
+          );
+
+          if (
+            typeof rootSvg.getCurrentTime === "function"
+          ) {
+            const currentTime =
+              rootSvg.getCurrentTime();
+
+            nestedSvgs.forEach(svg => {
+              if (
+                typeof svg.setCurrentTime === "function"
+              ) {
+                try {
+                  svg.setCurrentTime(currentTime);
+                } catch (error) {
+                  // Unsupported by some renderers.
+                }
+              }
+            });
+          }
+
+          button.setAttribute(
+            "aria-pressed",
+            "false"
+          );
+
+          button.setAttribute(
+            "aria-label",
+            "Pause unit-circle animation"
+          );
+
+          pauseSymbol?.setAttribute(
+            "display",
+            "inline"
+          );
+
+          playSymbol?.setAttribute(
+            "display",
+            "none"
+          );
+
+        } else {
+          rootSvg.pauseAnimations();
+
+          const currentTime =
+            typeof rootSvg.getCurrentTime === "function"
+              ? rootSvg.getCurrentTime()
+              : null;
+
+          nestedSvgs.forEach(svg => {
+            if (
+              currentTime !== null &&
+              typeof svg.setCurrentTime === "function"
+            ) {
+              try {
+                svg.setCurrentTime(currentTime);
+              } catch (error) {
+                // Unsupported by some renderers.
+              }
+            }
+
+            svg.pauseAnimations();
+          });
+
+          button.setAttribute(
+            "aria-pressed",
+            "true"
+          );
+
+          button.setAttribute(
+            "aria-label",
+            "Resume unit-circle animation"
+          );
+
+          pauseSymbol?.setAttribute(
+            "display",
+            "none"
+          );
+
+          playSymbol?.setAttribute(
+            "display",
+            "inline"
+          );
+        }
+      };
+
+      document.addEventListener(
+        "click",
+        event => {
+          const button =
+            findPauseButton(event.target);
+
+          if (!button) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          toggleUnitCircleAnimation(button);
+        },
+        true
+      );
+
+      document.addEventListener(
+        "keydown",
+        event => {
+          const button =
+            findPauseButton(event.target);
+
+          if (!button) return;
+
+          if (
+            event.key === "Enter" ||
+            event.key === " " ||
+            event.key === "Spacebar"
+          ) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            toggleUnitCircleAnimation(button);
+          }
+        },
+        true
+      );
+    }
+
+    /* ===================================================
+       GEOMETRY
+       =================================================== */
+
+    const cx = 124;
+    const cy = 132;
+    const R = 72;
+
+    /*
+      These are the visible panel limits for tangent.
+      The unit-circle scaling itself is unchanged.
+    */
+    const tangentTopY = 30;
+    const tangentBottomY = 226;
+
+    /*
+      With two-degree steps, this marks only 90° and
+      270° as undefined.
+    */
+    const tanUndefinedThreshold = 0.02;
+
+    const dt = 0.15;
+
+    const frames = [];
+
+    const pauseAngles = new Set([
+      0,
+      30,
+      45,
+      60,
+      90,
+      120,
+      135,
+      150,
+      180,
+      210,
+      225,
+      240,
+      270,
+      300,
+      315,
+      330,
+      360
+    ]);
+
+    const clamp = (
+      value,
+      minimum,
+      maximum
+    ) =>
+      Math.max(
+        minimum,
+        Math.min(maximum, value)
+      );
+
+    const addFrame = angle => {
+      const radians =
+        angle * Math.PI / 180;
+
+      const cosValue =
+        Math.cos(radians);
+
+      const sinValue =
+        Math.sin(radians);
+
+      const tanValue =
+        sinValue / cosValue;
+
+      const tanUndefined =
+        Math.abs(cosValue) <
+        tanUndefinedThreshold;
+
+      const rawTangentY =
+        cy - R * tanValue;
+
+      /*
+        At an undefined angle, show the tangent heading
+        out through the top of the panel. Immediately
+        after the angle it reappears from below.
+      */
+      const tangentY =
+        tanUndefined
+          ? tangentTopY
+          : clamp(
+              rawTangentY,
+              tangentTopY,
+              tangentBottomY
+            );
+
+      frames.push({
+        angle,
+        radians,
+        cosValue,
+        sinValue,
+        tanValue,
+        tanUndefined,
+        tangentY,
+
+        pointX:
+          cx + R * cosValue,
+
+        pointY:
+          cy - R * sinValue
+      });
+    };
+
+    for (
+      let angle = 0;
+      angle <= 360;
+      angle += 2
+    ) {
+      addFrame(angle);
+
+      if (pauseAngles.has(angle)) {
+        for (
+          let i = 0;
+          i < 5;
+          i += 1
+        ) {
+          addFrame(angle);
+        }
+      }
+    }
+
+    const duration =
+      (
+        (frames.length - 1) *
+        dt
+      ).toFixed(2);
+
+    const keyTimes = frames
+      .map(
+        (_, index) =>
+          (
+            index /
+            (frames.length - 1)
+          ).toFixed(6)
+      )
+      .join(";");
+
+    const series = (
+      selector,
+      digits = 2
+    ) =>
+      frames
+        .map(
+          frame =>
+            Number(
+              selector(frame)
+            ).toFixed(digits)
+        )
+        .join(";");
+
+    const pointXValues =
+      series(
+        frame => frame.pointX
+      );
+
+    const pointYValues =
+      series(
+        frame => frame.pointY
+      );
+
+    const tangentYValues =
+      series(
+        frame => frame.tangentY
+      );
+
+    const tanDefinedValues =
+      frames
+        .map(
+          frame =>
+            frame.tanUndefined
+              ? "0"
+              : "1"
+        )
+        .join(";");
+
+    const tanUndefinedValues =
+      frames
+        .map(
+          frame =>
+            frame.tanUndefined
+              ? "1"
+              : "0"
+        )
+        .join(";");
+
+    const cosLabelXValues =
+      series(
+        frame =>
+          (
+            cx +
+            frame.pointX
+          ) / 2
+      );
+
+    const sinLabelXValues =
+      series(
+        frame =>
+          frame.pointX + 7
+      );
+
+    const sinLabelYValues =
+      series(
+        frame =>
+          (
+            cy +
+            frame.pointY
+          ) / 2
+      );
+
+    const thetaLabelXValues =
+      series(frame => {
+        const halfAngle =
+          frame.radians / 2;
+
+        return (
+          cx +
+          24 *
+          Math.cos(halfAngle)
+        );
+      });
+
+    const thetaLabelYValues =
+      series(frame => {
+        const halfAngle =
+          frame.radians / 2;
+
+        return (
+          cy -
+          24 *
+          Math.sin(halfAngle)
+        );
+      });
+
+    const thetaOpacityValues =
+      frames
+        .map(
+          frame =>
+            frame.angle > 2 &&
+            frame.angle < 358
+              ? "1"
+              : "0"
+        )
+        .join(";");
+
+    /* ===================================================
+       ANGLE ARC
+       =================================================== */
+
+    const arcDValues =
+      frames
+        .map(frame => {
+          const angle =
+            frame.angle;
+
+          if (angle < 1) {
+            return (
+              `M ${(cx + 18).toFixed(2)} ` +
+              `${cy.toFixed(2)}`
+            );
+          }
+
+          if (angle >= 359) {
+            return (
+              `M ${(cx + 18).toFixed(2)} ` +
+              `${cy.toFixed(2)} ` +
+              `A 18 18 0 1 0 ` +
+              `${(cx + 18).toFixed(2)} ` +
+              `${(cy - 0.01).toFixed(2)}`
+            );
+          }
+
+          const arcX =
+            cx +
+            18 *
+            Math.cos(frame.radians);
+
+          const arcY =
+            cy -
+            18 *
+            Math.sin(frame.radians);
+
+          const largeArc =
+            angle > 180
+              ? 1
+              : 0;
+
+          return (
+            `M ${(cx + 18).toFixed(2)} ` +
+            `${cy.toFixed(2)} ` +
+            `A 18 18 0 ${largeArc} 0 ` +
+            `${arcX.toFixed(2)} ` +
+            `${arcY.toFixed(2)}`
+          );
+        })
+        .join(";");
+
+    /* ===================================================
+       GRID: MINOR 0.1, MAJOR 0.5
+       =================================================== */
+
+    const gridLines = [];
+
+    for (
+      let n = -10;
+      n <= 10;
+      n += 1
+    ) {
+      const value =
+        n / 10;
+
+      const px =
+        cx + value * R;
+
+      const py =
+        cy - value * R;
+
+      if (n !== 0) {
+        const isMajor =
+          n % 5 === 0;
+
+        gridLines.push(`
+          <line
+            x1="${px.toFixed(2)}"
+            y1="${(cy - R).toFixed(2)}"
+            x2="${px.toFixed(2)}"
+            y2="${(cy + R).toFixed(2)}"
+            stroke="${isMajor ? "#cbd5e1" : "#e2e8f0"}"
+            stroke-width="${isMajor ? "1.1" : "0.7"}"/>
+        `);
+
+        gridLines.push(`
+          <line
+            x1="${(cx - R).toFixed(2)}"
+            y1="${py.toFixed(2)}"
+            x2="${(cx + R).toFixed(2)}"
+            y2="${py.toFixed(2)}"
+            stroke="${isMajor ? "#cbd5e1" : "#e2e8f0"}"
+            stroke-width="${isMajor ? "1.1" : "0.7"}"/>
+        `);
+      }
+    }
+
+    /* ===================================================
+       NUMERICAL READOUTS
+       =================================================== */
+
+    const digitIndex =
+      digit => digit + 1;
+
+    const signIndex =
+      negative =>
+        negative
+          ? 1
+          : 0;
+
+    const digitWindow = (
+      x,
+      y,
+      colour,
+      transformSeries
+    ) => `
+      <svg
+        x="${x}"
+        y="${y}"
+        width="10"
+        height="14"
+        viewBox="0 0 10 14"
+        overflow="hidden">
+
+        <g color="${colour}">
+
+          <use
+            href="#unitCircleDigitStrip"
+            xlink:href="#unitCircleDigitStrip"/>
+
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            values="${transformSeries}"
+            keyTimes="${keyTimes}"
+            calcMode="discrete"
+            dur="${duration}s"
+            repeatCount="indefinite"/>
+
+        </g>
+
+      </svg>
+    `;
+
+    const signWindow = (
+      x,
+      y,
+      colour,
+      transformSeries
+    ) => `
+      <svg
+        x="${x}"
+        y="${y}"
+        width="8"
+        height="14"
+        viewBox="0 0 8 14"
+        overflow="hidden">
+
+        <g color="${colour}">
+
+          <use
+            href="#unitCircleSignStrip"
+            xlink:href="#unitCircleSignStrip"/>
+
+          <animateTransform
+            attributeName="transform"
+            type="translate"
+            values="${transformSeries}"
+            keyTimes="${keyTimes}"
+            calcMode="discrete"
+            dur="${duration}s"
+            repeatCount="indefinite"/>
+
+        </g>
+
+      </svg>
+    `;
+
+    const buildSeriesFromParts =
+      partsArray =>
+        partsArray
+          .map(
+            index =>
+              `0 ${-14 * index}`
+          )
+          .join(";");
+
+    const signedFixed3Parts = (
+      value,
+      maxAbs,
+      integerDigits
+    ) => {
+      const clamped =
+        clamp(
+          value,
+          -maxAbs,
+          maxAbs
+        );
+
+      const negative =
+        clamped < -0.0005;
+
+      const absoluteValue =
+        Math.abs(clamped);
+
+      const scaled =
+        Math.round(
+          absoluteValue * 1000
+        );
+
+      const integerPart =
+        Math.floor(
+          scaled / 1000
+        );
+
+      const decimals =
+        scaled % 1000;
+
+      const decimal1 =
+        Math.floor(
+          decimals / 100
+        );
+
+      const decimal2 =
+        Math.floor(
+          (
+            decimals %
+            100
+          ) / 10
+        );
+
+      const decimal3 =
+        decimals % 10;
+
+      if (integerDigits === 1) {
+        return {
+          sign:
+            signIndex(negative),
+
+          integer1:
+            digitIndex(
+              integerPart
+            ),
+
+          decimal1:
+            digitIndex(
+              decimal1
+            ),
+
+          decimal2:
+            digitIndex(
+              decimal2
+            ),
+
+          decimal3:
+            digitIndex(
+              decimal3
+            )
+        };
+      }
+
+      return {
+        sign:
+          signIndex(negative),
+
+        integer1:
+          integerPart >= 10
+            ? digitIndex(
+                Math.floor(
+                  integerPart / 10
+                )
+              )
+            : 0,
+
+        integer2:
+          digitIndex(
+            integerPart % 10
+          ),
+
+        decimal1:
+          digitIndex(decimal1),
+
+        decimal2:
+          digitIndex(decimal2),
+
+        decimal3:
+          digitIndex(decimal3)
+      };
+    };
+
+    const signedFixed3Readout = (
+      x,
+      y,
+      colour,
+      selector,
+      maxAbs,
+      integerDigits
+    ) => {
+      const parts =
+        frames.map(
+          frame =>
+            signedFixed3Parts(
+              selector(frame),
+              maxAbs,
+              integerDigits
+            )
+        );
+
+      const signTransforms =
+        buildSeriesFromParts(
+          parts.map(
+            part => part.sign
+          )
+        );
+
+      const integer1Transforms =
+        buildSeriesFromParts(
+          parts.map(
+            part =>
+              part.integer1
+          )
+        );
+
+      const decimal1Transforms =
+        buildSeriesFromParts(
+          parts.map(
+            part =>
+              part.decimal1
+          )
+        );
+
+      const decimal2Transforms =
+        buildSeriesFromParts(
+          parts.map(
+            part =>
+              part.decimal2
+          )
+        );
+
+      const decimal3Transforms =
+        buildSeriesFromParts(
+          parts.map(
+            part =>
+              part.decimal3
+          )
+        );
+
+      if (integerDigits === 1) {
+        return `
+          ${signWindow(
+            x,
+            y,
+            colour,
+            signTransforms
+          )}
+
+          ${digitWindow(
+            x + 8,
+            y,
+            colour,
+            integer1Transforms
+          )}
+
+          <text
+            x="${x + 22}"
+            y="${y + 11.5}"
+            text-anchor="middle"
+            font-family="Arial, sans-serif"
+            font-size="12"
+            font-weight="700"
+            fill="${colour}">
+            .
+          </text>
+
+          ${digitWindow(
+            x + 26,
+            y,
+            colour,
+            decimal1Transforms
+          )}
+
+          ${digitWindow(
+            x + 37,
+            y,
+            colour,
+            decimal2Transforms
+          )}
+
+          ${digitWindow(
+            x + 48,
+            y,
+            colour,
+            decimal3Transforms
+          )}
+        `;
+      }
+
+      const integer2Transforms =
+        buildSeriesFromParts(
+          parts.map(
+            part =>
+              part.integer2
+          )
+        );
+
+      return `
+        ${signWindow(
+          x,
+          y,
+          colour,
+          signTransforms
+        )}
+
+        ${digitWindow(
+          x + 8,
+          y,
+          colour,
+          integer1Transforms
+        )}
+
+        ${digitWindow(
+          x + 19,
+          y,
+          colour,
+          integer2Transforms
+        )}
+
+        <text
+          x="${x + 33}"
+          y="${y + 11.5}"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="12"
+          font-weight="700"
+          fill="${colour}">
+          .
+        </text>
+
+        ${digitWindow(
+          x + 37,
+          y,
+          colour,
+          decimal1Transforms
+        )}
+
+        ${digitWindow(
+          x + 48,
+          y,
+          colour,
+          decimal2Transforms
+        )}
+
+        ${digitWindow(
+          x + 59,
+          y,
+          colour,
+          decimal3Transforms
+        )}
+      `;
+    };
+
+    const angleReadout = (
+      x,
+      y,
+      colour,
+      selector
+    ) => {
+      const parts =
+        frames.map(frame => {
+          const value =
+            Math.max(
+              0,
+              Math.round(
+                selector(frame)
+              )
+            );
+
+          return {
+            hundreds:
+              value >= 100
+                ? digitIndex(
+                    Math.floor(
+                      value / 100
+                    )
+                  )
+                : 0,
+
+            tens:
+              value >= 10
+                ? digitIndex(
+                    Math.floor(
+                      value / 10
+                    ) % 10
+                  )
+                : 0,
+
+            ones:
+              digitIndex(
+                value % 10
+              )
+          };
+        });
+
+      const hundredsTransforms =
+        buildSeriesFromParts(
+          parts.map(
+            part =>
+              part.hundreds
+          )
+        );
+
+      const tensTransforms =
+        buildSeriesFromParts(
+          parts.map(
+            part => part.tens
+          )
+        );
+
+      const onesTransforms =
+        buildSeriesFromParts(
+          parts.map(
+            part => part.ones
+          )
+        );
+
+      return `
+        ${digitWindow(
+          x,
+          y,
+          colour,
+          hundredsTransforms
+        )}
+
+        ${digitWindow(
+          x + 11,
+          y,
+          colour,
+          tensTransforms
+        )}
+
+        ${digitWindow(
+          x + 22,
+          y,
+          colour,
+          onesTransforms
+        )}
+      `;
+    };
+
+    /* ===================================================
+       SVG
+       =================================================== */
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink">
+
+  <defs>
+
+    <marker
+      id="unitCircleAxisArrow"
+      viewBox="0 0 10 10"
+      refX="8.5"
+      refY="5"
+      markerWidth="3"
+      markerHeight="3"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#64748b"/>
+
+    </marker>
+
+    <marker
+      id="unitCircleBlueArrow"
+      viewBox="0 0 10 10"
+      refX="8.5"
+      refY="5"
+      markerWidth="3.2"
+      markerHeight="3.2"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#2563eb"/>
+
+    </marker>
+
+    <marker
+      id="unitCirclePurpleArrow"
+      viewBox="0 0 10 10"
+      refX="8.5"
+      refY="5"
+      markerWidth="3.2"
+      markerHeight="3.2"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#7c3aed"/>
+
+    </marker>
+
+    <marker
+      id="unitCircleBlackArrow"
+      viewBox="0 0 10 10"
+      refX="8.5"
+      refY="5"
+      markerWidth="3.5"
+      markerHeight="3.5"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#0f172a"/>
+
+    </marker>
+
+    <marker
+      id="unitCircleGreenArrow"
+      viewBox="0 0 10 10"
+      refX="8.5"
+      refY="5"
+      markerWidth="3.4"
+      markerHeight="3.4"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#16a34a"/>
+
+    </marker>
+
+    <filter
+      id="unitCirclePointShadow"
+      x="-80%"
+      y="-80%"
+      width="260%"
+      height="260%">
+
+      <feDropShadow
+        dx="0"
+        dy="1"
+        stdDeviation="1"
+        flood-color="#475569"
+        flood-opacity="0.28"/>
+
+    </filter>
+
+    <g
+      id="unitCircleDigitStrip"
+      font-family="Arial, sans-serif"
+      font-size="12"
+      font-weight="700"
+      text-anchor="middle"
+      fill="currentColor">
+
+      <text x="5" y="11"></text>
+      <text x="5" y="25">0</text>
+      <text x="5" y="39">1</text>
+      <text x="5" y="53">2</text>
+      <text x="5" y="67">3</text>
+      <text x="5" y="81">4</text>
+      <text x="5" y="95">5</text>
+      <text x="5" y="109">6</text>
+      <text x="5" y="123">7</text>
+      <text x="5" y="137">8</text>
+      <text x="5" y="151">9</text>
+
+    </g>
+
+    <g
+      id="unitCircleSignStrip"
+      font-family="Arial, sans-serif"
+      font-size="12"
+      font-weight="700"
+      text-anchor="middle"
+      fill="currentColor">
+
+      <text x="4" y="11"></text>
+      <text x="4" y="25">−</text>
+
+    </g>
+
+    <style>
+      [data-unit-circle-pause]:focus
+      .unitCirclePauseOutline {
+        stroke: #2563eb;
+        stroke-width: 2;
+      }
+    </style>
+
+  </defs>
+
+  <!-- Background -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Unit circle: sin θ, cos θ and tan θ
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="250"
+    height="199"
+    rx="11"
+    fill="#eff6ff"
+    stroke="#bfdbfe"
+    stroke-width="1.2"/>
+
+  <text
+    x="135"
+    y="42"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.5"
+    font-weight="700"
+    fill="#334155"
+    stroke="#eff6ff"
+    stroke-width="3"
+    paint-order="stroke">
+
+    On the unit circle, the point is (cosθ, sinθ)
+
+  </text>
+
+  <!-- Legend -->
+
+  <line
+    x1="20"
+    y1="55"
+    x2="33"
+    y2="55"
+    stroke="#0f172a"
+    stroke-width="3"
+    marker-end="url(#unitCircleBlackArrow)"/>
+
+  <text
+    x="38"
+    y="57.5"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#0f172a"
+    stroke="#eff6ff"
+    stroke-width="2"
+    paint-order="stroke">
+
+    radius
+
+  </text>
+
+  <line
+    x1="83"
+    y1="55"
+    x2="96"
+    y2="55"
+    stroke="#2563eb"
+    stroke-width="2.5"
+    marker-end="url(#unitCircleBlueArrow)"/>
+
+  <text
+    x="101"
+    y="57.5"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#1d4ed8"
+    stroke="#eff6ff"
+    stroke-width="2"
+    paint-order="stroke">
+
+    cos θ
+
+  </text>
+
+  <line
+    x1="140"
+    y1="59"
+    x2="140"
+    y2="47"
+    stroke="#7c3aed"
+    stroke-width="2.5"
+    marker-end="url(#unitCirclePurpleArrow)"/>
+
+  <text
+    x="146"
+    y="57.5"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#6d28d9"
+    stroke="#eff6ff"
+    stroke-width="2"
+    paint-order="stroke">
+
+    sin θ
+
+  </text>
+
+  <line
+    x1="185"
+    y1="55"
+    x2="198"
+    y2="55"
+    stroke="#16a34a"
+    stroke-width="2.3"
+    marker-end="url(#unitCircleGreenArrow)"/>
+
+  <text
+    x="203"
+    y="57.5"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#15803d"
+    stroke="#eff6ff"
+    stroke-width="2"
+    paint-order="stroke">
+
+    tan θ
+
+  </text>
+
+  <!-- Grid -->
+
+  ${gridLines.join("")}
+
+  <!-- Axes -->
+
+  <line
+    x1="${(cx - R - 7).toFixed(2)}"
+    y1="${cy}"
+    x2="${(cx + R + 18).toFixed(2)}"
+    y2="${cy}"
+    stroke="#475569"
+    stroke-width="1.5"
+    marker-end="url(#unitCircleAxisArrow)"/>
+
+  <line
+    x1="${cx}"
+    y1="${(cy + R + 7).toFixed(2)}"
+    x2="${cx}"
+    y2="${(cy - R - 7).toFixed(2)}"
+    stroke="#475569"
+    stroke-width="1.5"
+    marker-end="url(#unitCircleAxisArrow)"/>
+
+  <!-- Unit circle -->
+
+  <circle
+    cx="${cx}"
+    cy="${cy}"
+    r="${R}"
+    fill="none"
+    stroke="#1e3a8a"
+    stroke-width="1.7"/>
+
+  <!-- Full tangent line x = 1 -->
+
+  <line
+    x1="${(cx + R).toFixed(2)}"
+    y1="${tangentTopY}"
+    x2="${(cx + R).toFixed(2)}"
+    y2="${tangentBottomY}"
+    stroke="#16a34a"
+    stroke-width="1.35"
+    stroke-dasharray="4 3"
+    opacity="0.72"/>
+
+  <text
+    x="${(cx + R + 4).toFixed(2)}"
+    y="${(cy - R - 3).toFixed(2)}"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#15803d"
+    stroke="#eff6ff"
+    stroke-width="2.4"
+    paint-order="stroke">
+
+    x = 1
+
+  </text>
+
+  <!-- Axis labels -->
+
+  <text
+    x="${(cx + R + 22).toFixed(2)}"
+    y="${(cy + 4).toFixed(2)}"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#475569">
+
+    x
+
+  </text>
+
+  <text
+    x="${(cx - 6).toFixed(2)}"
+    y="${(cy - R - 10).toFixed(2)}"
+    text-anchor="end"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#475569">
+
+    y
+
+  </text>
+
+  <!-- Unit labels -->
+
+  <text
+    x="${(cx + R - 4).toFixed(2)}"
+    y="${(cy + 13).toFixed(2)}"
+    font-family="Arial, sans-serif"
+    font-size="7.5"
+    fill="#475569">
+    1
+  </text>
+
+  <text
+    x="${(cx - R - 8).toFixed(2)}"
+    y="${(cy + 13).toFixed(2)}"
+    font-family="Arial, sans-serif"
+    font-size="7.5"
+    fill="#475569">
+    −1
+  </text>
+
+  <text
+    x="${(cx - 13).toFixed(2)}"
+    y="${(cy - R + 4).toFixed(2)}"
+    font-family="Arial, sans-serif"
+    font-size="7.5"
+    fill="#475569">
+    1
+  </text>
+
+  <text
+    x="${(cx - 16).toFixed(2)}"
+    y="${(cy + R + 3).toFixed(2)}"
+    font-family="Arial, sans-serif"
+    font-size="7.5"
+    fill="#475569">
+    −1
+  </text>
+
+  <circle
+    cx="${cx}"
+    cy="${cy}"
+    r="2.7"
+    fill="#475569"/>
+
+  <!-- Angle arc -->
+
+  <path
+    d="M ${(cx + 18).toFixed(2)} ${cy.toFixed(2)}"
+    fill="none"
+    stroke="#f59e0b"
+    stroke-width="2">
+
+    <animate
+      attributeName="d"
+      values="${arcDValues}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </path>
+
+  <!-- θ label -->
+
+  <text
+    x="${cx + 24}"
+    y="${cy}"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.3"
+    font-weight="700"
+    fill="#b45309"
+    opacity="0">
+
+    θ
+
+    <animate
+      attributeName="x"
+      values="${thetaLabelXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y"
+      values="${thetaLabelYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="opacity"
+      values="${thetaOpacityValues}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <!-- Cosine component -->
+
+  <line
+    x1="${cx}"
+    y1="${cy}"
+    x2="${cx + R}"
+    y2="${cy}"
+    stroke="#2563eb"
+    stroke-width="2.8"
+    marker-end="url(#unitCircleBlueArrow)">
+
+    <animate
+      attributeName="x2"
+      values="${pointXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Sine component -->
+
+  <line
+    x1="${cx + R}"
+    y1="${cy}"
+    x2="${cx + R}"
+    y2="${cy}"
+    stroke="#7c3aed"
+    stroke-width="2.8"
+    marker-end="url(#unitCirclePurpleArrow)">
+
+    <animate
+      attributeName="x1"
+      values="${pointXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="x2"
+      values="${pointXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y2"
+      values="${pointYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Radius -->
+
+  <line
+    x1="${cx}"
+    y1="${cy}"
+    x2="${cx + R}"
+    y2="${cy}"
+    stroke="#0f172a"
+    stroke-width="3.1"
+    stroke-linecap="round"
+    marker-end="url(#unitCircleBlackArrow)">
+
+    <animate
+      attributeName="x2"
+      values="${pointXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y2"
+      values="${pointYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Extension of the radius line to x = 1 -->
+
+  <line
+    x1="${cx + R}"
+    y1="${cy}"
+    x2="${cx + R}"
+    y2="${cy}"
+    stroke="#16a34a"
+    stroke-width="2"
+    stroke-dasharray="4 3">
+
+    <animate
+      attributeName="x1"
+      values="${pointXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y1"
+      values="${pointYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y2"
+      values="${tangentYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="opacity"
+      values="${tanDefinedValues}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Tangent segment: exits the visible panel -->
+
+  <line
+    x1="${(cx + R).toFixed(2)}"
+    y1="${cy}"
+    x2="${(cx + R).toFixed(2)}"
+    y2="${cy}"
+    stroke="#16a34a"
+    stroke-width="2.8"
+    stroke-linecap="round"
+    marker-end="url(#unitCircleGreenArrow)">
+
+    <animate
+      attributeName="y2"
+      values="${tangentYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <!-- Moving point -->
+
+  <circle
+    cx="${cx + R}"
+    cy="${cy}"
+    r="4.3"
+    fill="#f59e0b"
+    stroke="#92400e"
+    stroke-width="1.2"
+    filter="url(#unitCirclePointShadow)">
+
+    <animate
+      attributeName="cx"
+      values="${pointXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="cy"
+      values="${pointYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </circle>
+
+  <!-- Cosine label -->
+
+  <text
+    x="${(cx + R / 2).toFixed(2)}"
+    y="${(cy + 13).toFixed(2)}"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.8"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    cos θ
+
+    <animate
+      attributeName="x"
+      values="${cosLabelXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <!-- Sine label -->
+
+  <text
+    x="${(cx + R + 6).toFixed(2)}"
+    y="${(cy - 20).toFixed(2)}"
+    font-family="Arial, sans-serif"
+    font-size="7.8"
+    font-weight="700"
+    fill="#6d28d9">
+
+    sin θ
+
+    <animate
+      attributeName="x"
+      values="${sinLabelXValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y"
+      values="${sinLabelYValues}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <!-- Bottom explanation -->
+
+  <rect
+    x="18"
+    y="209"
+    width="234"
+    height="12.5"
+    rx="6"
+    fill="#ffffff"
+    stroke="#cbd5e1"/>
+
+  <text
+    x="135"
+    y="217.6"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#475569">
+
+    cos θ is x, sin θ is y, and tan θ = sin θ / cos θ
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="270"
+    y="28"
+    width="140"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="337"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="11"
+    font-weight="700"
+    fill="#0f172a">
+
+    Live values
+
+  </text>
+
+  <!-- Pause button -->
+
+  <g
+    data-unit-circle-pause
+    role="button"
+    tabindex="0"
+    aria-label="Pause unit-circle animation"
+    aria-pressed="false"
+    transform="translate(393 42)"
+    style="cursor:pointer"
+    pointer-events="all">
+
+    <title>
+      Pause or resume the animation
+    </title>
+
+    <rect
+      class="unitCirclePauseOutline"
+      x="-12"
+      y="-10"
+      width="24"
+      height="20"
+      rx="6"
+      fill="#ffffff"
+      stroke="#94a3b8"
+      stroke-width="1.1"/>
+
+    <g class="unitCirclePauseSymbol">
+
+      <rect
+        x="-4.7"
+        y="-5"
+        width="3.2"
+        height="10"
+        rx="0.8"
+        fill="#475569"/>
+
+      <rect
+        x="1.5"
+        y="-5"
+        width="3.2"
+        height="10"
+        rx="0.8"
+        fill="#475569"/>
+
+    </g>
+
+    <path
+      class="unitCirclePlaySymbol"
+      d="M -3.5 -5.5 L 5.5 0 L -3.5 5.5 Z"
+      fill="#475569"
+      display="none"/>
+
+  </g>
+
+  <line
+    x1="282"
+    y1="52"
+    x2="398"
+    y2="52"
+    stroke="#e2e8f0"/>
+
+  <!-- Angle -->
+
+  <rect
+    x="281"
+    y="58"
+    width="118"
+    height="30"
+    rx="8"
+    fill="#fff7ed"
+    stroke="#fdba74"/>
+
+  <text
+    x="340"
+    y="70"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.8"
+    font-weight="700"
+    fill="#9a3412">
+
+    angle
+
+  </text>
+
+  ${angleReadout(
+    321,
+    73,
+    "#9a3412",
+    frame => frame.angle
+  )}
+
+  <text
+    x="356"
+    y="84.5"
+    font-family="Arial, sans-serif"
+    font-size="11"
+    font-weight="700"
+    fill="#9a3412">
+
+    °
+
+  </text>
+
+  <!-- Identity -->
+
+  <rect
+    x="281"
+    y="94"
+    width="118"
+    height="24"
+    rx="8"
+    fill="#f8fafc"
+    stroke="#cbd5e1"/>
+
+  <text
+    x="340"
+    y="104.5"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.3"
+    font-weight="700"
+    fill="#475569">
+
+    point = (cosθ, sinθ)
+
+  </text>
+
+  <text
+    x="340"
+    y="114"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.1"
+    fill="#64748b">
+
+    radius = 1
+
+  </text>
+
+  <!-- Cosine -->
+
+  <rect
+    x="281"
+    y="124"
+    width="118"
+    height="28"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="308"
+    y="136"
+    font-family="Arial, sans-serif"
+    font-size="8.3"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    cos θ
+
+  </text>
+
+  ${signedFixed3Readout(
+    328,
+    132,
+    "#1d4ed8",
+    frame => frame.cosValue,
+    1.999,
+    1
+  )}
+
+  <!-- Sine -->
+
+  <rect
+    x="281"
+    y="156"
+    width="118"
+    height="28"
+    rx="8"
+    fill="#faf5ff"
+    stroke="#d8b4fe"/>
+
+  <text
+    x="308"
+    y="168"
+    font-family="Arial, sans-serif"
+    font-size="8.3"
+    font-weight="700"
+    fill="#6d28d9">
+
+    sin θ
+
+  </text>
+
+  ${signedFixed3Readout(
+    328,
+    164,
+    "#6d28d9",
+    frame => frame.sinValue,
+    1.999,
+    1
+  )}
+
+  <!-- Tangent -->
+
+  <rect
+    x="281"
+    y="188"
+    width="118"
+    height="28"
+    rx="8"
+    fill="#f0fdf4"
+    stroke="#86efac"/>
+
+  <text
+    x="308"
+    y="200"
+    font-family="Arial, sans-serif"
+    font-size="8.3"
+    font-weight="700"
+    fill="#15803d">
+
+    tan θ
+
+  </text>
+
+  <g opacity="1">
+
+    ${signedFixed3Readout(
+      317,
+      196,
+      "#15803d",
+      frame =>
+        clamp(
+          frame.tanValue,
+          -99.999,
+          99.999
+        ),
+      99.999,
+      2
+    )}
+
+    <animate
+      attributeName="opacity"
+      values="${tanDefinedValues}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </g>
+
+  <text
+    x="357"
+    y="207.8"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.2"
+    font-weight="700"
+    fill="#15803d"
+    opacity="0">
+
+    undefined
+
+    <animate
+      attributeName="opacity"
+      values="${tanUndefinedValues}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <text
+    x="340"
+    y="224"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.4"
+    font-weight="700"
+    fill="#64748b">
+
+    tan θ is undefined at 90° and 270°
+
+  </text>
+
+</svg>
+`;
+  })()
+},
+
+{
+  topic: "Mechanics",
+
+  term: "How can projectile motion be understood as independent horizontal and vertical motion?",
+
+  equation: "\\boxed{a_x=0,\\quad a_y=-g}\\qquad\\boxed{v_x=v_0\\cos\\theta,\\quad v_y=v_0\\sin\\theta-gt}",
+
+  answer: "With air resistance neglected, gravity is the only force acting on a projectile after launch. There is no horizontal acceleration, so the horizontal component of velocity remains constant: aₓ=0 and vₓ=v₀cosθ. Vertically, the projectile has constant downward acceleration: aᵧ=-g, so vᵧ=v₀sinθ-gt. The vertical velocity decreases while the projectile rises, becomes zero at the highest point, and then grows downward. The projectile is not stationary at the top because vₓ is still non-zero. The resultant velocity is the vector sum of vₓ and vᵧ and is always tangent to the trajectory. Horizontal and vertical motion evolve independently but share the same elapsed time. Equal-time position markers therefore have equal horizontal spacing, while their vertical spacing changes because of gravity.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- ================================================= -->
+    <!-- SMALL, REFINED ARROW MARKERS                       -->
+    <!-- ================================================= -->
+
+    <!-- Horizontal velocity -->
+    <marker id="projectileVxArrow"
+            viewBox="0 0 10 10"
+            refX="8.4"
+            refY="5"
+            markerWidth="3.8"
+            markerHeight="3.8"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#2563eb"/>
+    </marker>
+
+    <!-- Vertical velocity -->
+    <marker id="projectileVyArrow"
+            viewBox="0 0 10 10"
+            refX="8.4"
+            refY="5"
+            markerWidth="3.8"
+            markerHeight="3.8"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#7c3aed"/>
+    </marker>
+
+    <!-- Resultant velocity -->
+    <marker id="projectileResultantArrow"
+            viewBox="0 0 10 10"
+            refX="8.4"
+            refY="5"
+            markerWidth="3.8"
+            markerHeight="3.8"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#0f172a"/>
+    </marker>
+
+    <!-- Acceleration -->
+    <marker id="projectileAccelerationArrow"
+            viewBox="0 0 10 10"
+            refX="8.4"
+            refY="5"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#dc2626"/>
+    </marker>
+
+    <!-- Coordinate axes -->
+    <marker id="projectileAxisArrow"
+            viewBox="0 0 10 10"
+            refX="8.4"
+            refY="5"
+            markerWidth="3.4"
+            markerHeight="3.4"
+            orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 Z"
+            fill="#64748b"/>
+    </marker>
+
+    <!-- Projectile shadow -->
+    <filter id="projectileBallShadow"
+            x="-80%"
+            y="-80%"
+            width="260%"
+            height="260%">
+      <feDropShadow dx="0"
+                    dy="1.2"
+                    stdDeviation="1.2"
+                    flood-color="#475569"
+                    flood-opacity="0.35"/>
+    </filter>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect width="420"
+        height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <text x="210"
+        y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Projectile motion: one motion, two independent components
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT ANIMATION PANEL                               -->
+  <!-- ================================================= -->
+
+  <rect x="10"
+        y="28"
+        width="250"
+        height="199"
+        rx="11"
+        fill="#eff6ff"
+        stroke="#bfdbfe"
+        stroke-width="1.2"/>
+
+  <text x="135"
+        y="42"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.8"
+        font-weight="700"
+        fill="#334155">
+    Constant horizontal velocity + accelerated vertical motion
+  </text>
+
+  <!-- Assumption badge -->
+  <rect x="20"
+        y="49"
+        width="87"
+        height="17"
+        rx="7.5"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <text x="63.5"
+        y="60.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#64748b">
+    air resistance neglected
+  </text>
+
+  <!-- Highest-point callout -->
+  <rect x="159"
+        y="48"
+        width="89"
+        height="22"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#d8b4fe"/>
+
+  <text x="203.5"
+        y="57.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        font-weight="700"
+        fill="#6d28d9">
+    highest point
+  </text>
+
+  <text x="203.5"
+        y="66"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#6d28d9">
+    vᵧ = 0, but vₓ ≠ 0
+  </text>
+
+  <path d="M 171 70 Q 151 76 136 78"
+        fill="none"
+        stroke="#a78bfa"
+        stroke-width="1"
+        stroke-dasharray="3 2"/>
+
+  <!-- ================================================= -->
+  <!-- COORDINATE AXES                                    -->
+  <!-- ================================================= -->
+
+  <line x1="25"
+        y1="174"
+        x2="245"
+        y2="174"
+        stroke="#64748b"
+        stroke-width="1.2"
+        marker-end="url(#projectileAxisArrow)"/>
+
+  <line x1="34"
+        y1="180"
+        x2="34"
+        y2="73"
+        stroke="#64748b"
+        stroke-width="1.2"
+        marker-end="url(#projectileAxisArrow)"/>
+
+  <text x="246"
+        y="184"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    x
+  </text>
+
+  <text x="25"
+        y="75"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    y
+  </text>
+
+  <!-- Ground -->
+  <path d="
+    M 22 176
+    L 248 176
+    L 248 181
+    L 22 181
+    Z
+  "
+        fill="#d6d3d1"/>
+
+  <line x1="22"
+        y1="176"
+        x2="248"
+        y2="176"
+        stroke="#78716c"
+        stroke-width="1.2"/>
+
+  <!-- ================================================= -->
+  <!-- INITIAL LAUNCH ANGLE                               -->
+  <!-- ================================================= -->
+
+  <line x1="34"
+        y1="170"
+        x2="52"
+        y2="136"
+        stroke="#94a3b8"
+        stroke-width="1.3"
+        stroke-dasharray="4 3"/>
+
+  <path d="
+    M 49 170
+    A 15 15 0 0 0 41 157
+  "
+        fill="none"
+        stroke="#64748b"
+        stroke-width="1.1"/>
+
+  <text x="48"
+        y="160"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#475569">
+    θ
+  </text>
+
+  <!-- ================================================= -->
+  <!-- EQUAL-TIME GUIDE LINES                             -->
+  <!-- ================================================= -->
+
+  <g stroke="#94a3b8"
+     stroke-width="0.8"
+     stroke-dasharray="2 3"
+     opacity="0.32">
+
+    <line x1="58.5" y1="129.75" x2="58.5" y2="174"/>
+    <line x1="83" y1="101" x2="83" y2="174"/>
+    <line x1="107.5" y1="83.75" x2="107.5" y2="174"/>
+    <line x1="132" y1="78" x2="132" y2="174"/>
+    <line x1="156.5" y1="83.75" x2="156.5" y2="174"/>
+    <line x1="181" y1="101" x2="181" y2="174"/>
+    <line x1="205.5" y1="129.75" x2="205.5" y2="174"/>
+  </g>
+
+  <!-- Equal horizontal ground ticks -->
+  <g stroke="#64748b"
+     stroke-width="0.8"
+     opacity="0.65">
+
+    <line x1="34" y1="174" x2="34" y2="179"/>
+    <line x1="58.5" y1="174" x2="58.5" y2="179"/>
+    <line x1="83" y1="174" x2="83" y2="179"/>
+    <line x1="107.5" y1="174" x2="107.5" y2="179"/>
+    <line x1="132" y1="174" x2="132" y2="179"/>
+    <line x1="156.5" y1="174" x2="156.5" y2="179"/>
+    <line x1="181" y1="174" x2="181" y2="179"/>
+    <line x1="205.5" y1="174" x2="205.5" y2="179"/>
+    <line x1="230" y1="174" x2="230" y2="179"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- TRAJECTORY                                         -->
+  <!-- ================================================= -->
+
+  <!-- Pale complete trajectory -->
+  <path d="
+    M 34 170
+    Q 132 -14 230 170
+  "
+        fill="none"
+        stroke="#94a3b8"
+        stroke-width="1.5"
+        stroke-dasharray="4 4"
+        opacity="0.75"/>
+
+  <!-- Animated trail -->
+  <path d="
+    M 34 170
+    Q 132 -14 230 170
+  "
+        fill="none"
+        stroke="#60a5fa"
+        stroke-width="2.2"
+        stroke-linecap="round"
+        stroke-dasharray="281 281"
+        stroke-dashoffset="281">
+
+    <animate attributeName="stroke-dashoffset"
+             values="
+               281;
+               281;
+               233.8;
+               196;
+               165.9;
+               140.5;
+               115.1;
+               85;
+               47.2;
+               0;
+               0
+             "
+             keyTimes="
+               0;
+               0.08;
+               0.1725;
+               0.265;
+               0.3575;
+               0.45;
+               0.5425;
+               0.635;
+               0.7275;
+               0.82;
+               1
+             "
+             calcMode="linear"
+             dur="12s"
+             repeatCount="indefinite"/>
+  </path>
+
+  <!-- Equal-time position markers -->
+  <g fill="#ffffff"
+     stroke="#64748b"
+     stroke-width="1"
+     opacity="0.75">
+
+    <circle cx="34" cy="170" r="2.7"/>
+    <circle cx="58.5" cy="129.75" r="2.7"/>
+    <circle cx="83" cy="101" r="2.7"/>
+    <circle cx="107.5" cy="83.75" r="2.7"/>
+    <circle cx="132" cy="78" r="2.7"/>
+    <circle cx="156.5" cy="83.75" r="2.7"/>
+    <circle cx="181" cy="101" r="2.7"/>
+    <circle cx="205.5" cy="129.75" r="2.7"/>
+    <circle cx="230" cy="170" r="2.7"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- MOVING PROJECTILE AND VECTORS                      -->
+  <!-- ================================================= -->
+
+  <g>
+
+    <!--
+      The projectile pauses at launch, travels forward,
+      pauses at landing and then snaps back to the start.
+    -->
+    <animateMotion path="M 34 170 Q 132 -14 230 170"
+                   keyPoints="
+                     0;
+                     0;
+                     0.167865;
+                     0.302561;
+                     0.409673;
+                     0.5;
+                     0.590327;
+                     0.697439;
+                     0.832135;
+                     1;
+                     1
+                   "
+                   keyTimes="
+                     0;
+                     0.08;
+                     0.1725;
+                     0.265;
+                     0.3575;
+                     0.45;
+                     0.5425;
+                     0.635;
+                     0.7275;
+                     0.82;
+                     1
+                   "
+                   calcMode="linear"
+                   rotate="0"
+                   dur="12s"
+                   repeatCount="indefinite"/>
+
+    <!-- ------------------------------------------------- -->
+    <!-- CONSTANT DOWNWARD ACCELERATION                     -->
+    <!-- ------------------------------------------------- -->
+
+    <line x1="-22"
+          y1="-36"
+          x2="-22"
+          y2="-12"
+          stroke="#dc2626"
+          stroke-width="2.3"
+          marker-end="url(#projectileAccelerationArrow)"/>
+
+    <text x="-27"
+          y="-22"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.7"
+          font-weight="700"
+          fill="#b91c1c">
+      a = −g
+    </text>
+
+    <!-- ------------------------------------------------- -->
+    <!-- VECTOR-ADDITION GUIDES                             -->
+    <!-- ------------------------------------------------- -->
+
+    <line x1="18"
+          y1="0"
+          x2="18"
+          y2="-34"
+          stroke="#94a3b8"
+          stroke-width="1"
+          stroke-dasharray="2.5 2.5">
+
+      <animate attributeName="y2"
+               values="
+                 -34;
+                 -34;
+                 -25.5;
+                 -17;
+                 -8.5;
+                 0;
+                 8.5;
+                 17;
+                 25.5;
+                 34;
+                 34
+               "
+               keyTimes="
+                 0;
+                 0.08;
+                 0.1725;
+                 0.265;
+                 0.3575;
+                 0.45;
+                 0.5425;
+                 0.635;
+                 0.7275;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <line x1="0"
+          y1="-34"
+          x2="18"
+          y2="-34"
+          stroke="#94a3b8"
+          stroke-width="1"
+          stroke-dasharray="2.5 2.5">
+
+      <animate attributeName="y1"
+               values="
+                 -34;
+                 -34;
+                 -25.5;
+                 -17;
+                 -8.5;
+                 0;
+                 8.5;
+                 17;
+                 25.5;
+                 34;
+                 34
+               "
+               keyTimes="
+                 0;
+                 0.08;
+                 0.1725;
+                 0.265;
+                 0.3575;
+                 0.45;
+                 0.5425;
+                 0.635;
+                 0.7275;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="12s"
+               repeatCount="indefinite"/>
+
+      <animate attributeName="y2"
+               values="
+                 -34;
+                 -34;
+                 -25.5;
+                 -17;
+                 -8.5;
+                 0;
+                 8.5;
+                 17;
+                 25.5;
+                 34;
+                 34
+               "
+               keyTimes="
+                 0;
+                 0.08;
+                 0.1725;
+                 0.265;
+                 0.3575;
+                 0.45;
+                 0.5425;
+                 0.635;
+                 0.7275;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <!-- ------------------------------------------------- -->
+    <!-- RESULTANT VELOCITY                                -->
+    <!-- ------------------------------------------------- -->
+
+    <line x1="0"
+          y1="0"
+          x2="18"
+          y2="-34"
+          stroke="#0f172a"
+          stroke-width="2.2"
+          marker-end="url(#projectileResultantArrow)">
+
+      <animate attributeName="y2"
+               values="
+                 -34;
+                 -34;
+                 -25.5;
+                 -17;
+                 -8.5;
+                 0;
+                 8.5;
+                 17;
+                 25.5;
+                 34;
+                 34
+               "
+               keyTimes="
+                 0;
+                 0.08;
+                 0.1725;
+                 0.265;
+                 0.3575;
+                 0.45;
+                 0.5425;
+                 0.635;
+                 0.7275;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <text x="23"
+          y="-18"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#0f172a">
+      v
+
+      <animate attributeName="y"
+               values="
+                 -18;
+                 -18;
+                 -14;
+                 -10;
+                 -6;
+                 -5;
+                 6;
+                 10;
+                 14;
+                 18;
+                 18
+               "
+               keyTimes="
+                 0;
+                 0.08;
+                 0.1725;
+                 0.265;
+                 0.3575;
+                 0.45;
+                 0.5425;
+                 0.635;
+                 0.7275;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </text>
+
+    <!-- ------------------------------------------------- -->
+    <!-- CONSTANT HORIZONTAL VELOCITY                      -->
+    <!-- ------------------------------------------------- -->
+
+    <line x1="0"
+          y1="0"
+          x2="18"
+          y2="0"
+          stroke="#2563eb"
+          stroke-width="2.8"
+          marker-end="url(#projectileVxArrow)"/>
+
+    <text x="8"
+          y="-5"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.7"
+          font-weight="700"
+          fill="#1d4ed8">
+      vₓ
+    </text>
+
+    <!-- ------------------------------------------------- -->
+    <!-- CHANGING VERTICAL VELOCITY                        -->
+    <!-- ------------------------------------------------- -->
+
+    <line x1="0"
+          y1="0"
+          x2="0"
+          y2="-34"
+          stroke="#7c3aed"
+          stroke-width="2.8"
+          marker-end="url(#projectileVyArrow)">
+
+      <animate attributeName="y2"
+               values="
+                 -34;
+                 -34;
+                 -25.5;
+                 -17;
+                 -8.5;
+                 0;
+                 8.5;
+                 17;
+                 25.5;
+                 34;
+                 34
+               "
+               keyTimes="
+                 0;
+                 0.08;
+                 0.1725;
+                 0.265;
+                 0.3575;
+                 0.45;
+                 0.5425;
+                 0.635;
+                 0.7275;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </line>
+
+    <text x="-7"
+          y="-18"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="7.7"
+          font-weight="700"
+          fill="#6d28d9">
+      vᵧ
+
+      <animate attributeName="y"
+               values="
+                 -18;
+                 -18;
+                 -14;
+                 -10;
+                 -6;
+                 6;
+                 10;
+                 14;
+                 18;
+                 22;
+                 22
+               "
+               keyTimes="
+                 0;
+                 0.08;
+                 0.1725;
+                 0.265;
+                 0.3575;
+                 0.45;
+                 0.5425;
+                 0.635;
+                 0.7275;
+                 0.82;
+                 1
+               "
+               calcMode="linear"
+               dur="12s"
+               repeatCount="indefinite"/>
+    </text>
+
+    <!-- Projectile -->
+    <circle cx="0"
+            cy="0"
+            r="5"
+            fill="#f59e0b"
+            stroke="#92400e"
+            stroke-width="1.4"
+            filter="url(#projectileBallShadow)"/>
+
+    <circle cx="-1.5"
+            cy="-1.7"
+            r="1.4"
+            fill="#fde68a"/>
+  </g>
+
+  <!-- ================================================= -->
+  <!-- LEFT-PANEL LEGEND                                  -->
+  <!-- ================================================= -->
+
+  <rect x="20"
+        y="185"
+        width="228"
+        height="33"
+        rx="9"
+        fill="#ffffff"
+        stroke="#cbd5e1"/>
+
+  <!-- vx legend -->
+  <line x1="29"
+        y1="196"
+        x2="42"
+        y2="196"
+        stroke="#2563eb"
+        stroke-width="2.5"
+        marker-end="url(#projectileVxArrow)"/>
+
+  <text x="47"
+        y="198.5"
+        font-family="Arial, sans-serif"
+        font-size="7.5"
+        font-weight="700"
+        fill="#1d4ed8">
+    vₓ constant
+  </text>
+
+  <!-- vy legend -->
+  <line x1="103"
+        y1="201"
+        x2="103"
+        y2="190"
+        stroke="#7c3aed"
+        stroke-width="2.5"
+        marker-end="url(#projectileVyArrow)"/>
+
+  <text x="109"
+        y="198.5"
+        font-family="Arial, sans-serif"
+        font-size="7.5"
+        font-weight="700"
+        fill="#6d28d9">
+    vᵧ changes
+  </text>
+
+  <!-- acceleration legend -->
+  <line x1="182"
+        y1="190"
+        x2="182"
+        y2="201"
+        stroke="#dc2626"
+        stroke-width="2.4"
+        marker-end="url(#projectileAccelerationArrow)"/>
+
+  <text x="188"
+        y="198.5"
+        font-family="Arial, sans-serif"
+        font-size="7.5"
+        font-weight="700"
+        fill="#b91c1c">
+    a = −g
+  </text>
+
+  <text x="134"
+        y="213"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#475569">
+    Equal Δt gives equal horizontal gaps
+  </text>
+
+  <!-- ================================================= -->
+  <!-- RIGHT EQUATION PANEL                               -->
+  <!-- ================================================= -->
+
+  <rect x="270"
+        y="28"
+        width="140"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="340"
+        y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Separate the components
+  </text>
+
+  <line x1="282"
+        y1="52"
+        x2="398"
+        y2="52"
+        stroke="#e2e8f0"/>
+
+  <!-- Initial components -->
+  <rect x="281"
+        y="58"
+        width="118"
+        height="31"
+        rx="8"
+        fill="#f8fafc"
+        stroke="#cbd5e1"/>
+
+  <text x="340"
+        y="69"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#475569">
+    Resolve the launch velocity
+  </text>
+
+  <text x="340"
+        y="80"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#0f172a">
+    v₀ₓ = v₀cosθ
+  </text>
+
+  <text x="340"
+        y="87"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#0f172a">
+    v₀ᵧ = v₀sinθ
+  </text>
+
+  <!-- Horizontal motion -->
+  <rect x="281"
+        y="95"
+        width="118"
+        height="35"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="340"
+        y="106"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#1d4ed8">
+    Horizontal motion
+  </text>
+
+  <text x="340"
+        y="117"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#0f172a">
+    aₓ = 0,  vₓ = v₀cosθ
+  </text>
+
+  <text x="340"
+        y="126"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.7"
+        font-weight="700"
+        fill="#0f172a">
+    x = v₀cosθ · t
+  </text>
+
+  <!-- Vertical motion -->
+  <rect x="281"
+        y="136"
+        width="118"
+        height="42"
+        rx="8"
+        fill="#faf5ff"
+        stroke="#d8b4fe"/>
+
+  <text x="340"
+        y="147"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#6d28d9">
+    Vertical motion
+  </text>
+
+  <text x="340"
+        y="158"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.6"
+        font-weight="700"
+        fill="#0f172a">
+    aᵧ = −g
+  </text>
+
+  <text x="340"
+        y="168"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#0f172a">
+    vᵧ = v₀sinθ − gt
+  </text>
+
+  <text x="340"
+        y="176"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        font-weight="700"
+        fill="#0f172a">
+    y = v₀sinθ · t − ½gt²
+  </text>
+
+  <!-- Parabolic trajectory -->
+  <rect x="281"
+        y="184"
+        width="118"
+        height="35"
+        rx="8"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <text x="340"
+        y="195"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#9a3412">
+    Eliminate the shared time t
+  </text>
+
+  <text x="340"
+        y="207"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.1"
+        font-weight="700"
+        fill="#0f172a">
+    y = x tanθ −
+  </text>
+
+  <text x="340"
+        y="216"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#0f172a">
+    gx² / (2v₀²cos²θ)
+  </text>
+
+  <!-- Footer -->
+  <text x="210"
+        y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    Gravity changes the vertical velocity only; the horizontal velocity continues unchanged.
+  </text>
+
+</svg>
+`
 }
 
 
