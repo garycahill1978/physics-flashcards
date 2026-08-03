@@ -17946,26 +17946,23 @@ svg: `
   })()
 },
 
+
 {
   topic: "Trigonometry",
 
-  term: "How do sin θ, cos θ and tan θ appear on the unit circle?",
+  term: "How do sin θ and cos θ appear on the unit circle?",
 
-  equation: "\\cos\\theta=x,\\qquad \\sin\\theta=y,\\qquad \\tan\\theta=\\dfrac{\\sin\\theta}{\\cos\\theta}",
+  equation: "\\cos\\theta=x,\\qquad \\sin\\theta=y",
 
-  answer: "On the unit circle, the moving point has coordinates (cosθ, sinθ). The blue horizontal component is cosθ and the purple vertical component is sinθ. The green line shows tanθ on the tangent line x = 1. As cosθ approaches zero, tanθ grows without limit and leaves the visible scale. Tanθ is undefined at 90° and 270°. Pause the animation to examine particular angles.",
+  answer: "On the unit circle, the moving point has coordinates (cosθ, sinθ). The blue horizontal component is cosθ and the purple vertical component is sinθ. As the radius rotates anticlockwise, the signs and sizes of sine and cosine change in each quadrant. Pause the animation to examine a particular angle.",
 
   svg: (() => {
 
     /* ===================================================
-       PAUSE / PLAY
+       PAUSE / PLAY CONTROLS
        =================================================== */
 
-    if (
-      typeof document !== "undefined" &&
-      !globalThis.__unitCirclePauseInstalled
-    ) {
-      globalThis.__unitCirclePauseInstalled = true;
+    if (typeof document !== "undefined") {
 
       const findPauseButton = target => {
         if (
@@ -17976,26 +17973,26 @@ svg: `
         }
 
         return target.closest(
-          "[data-unit-circle-pause]"
+          "[data-sincos-circle-pause]"
         );
       };
 
-      const toggleUnitCircleAnimation = button => {
+      const toggleAnimation = button => {
         const rootSvg =
           button.ownerSVGElement;
 
-        if (!rootSvg) return;
-
         if (
+          !rootSvg ||
           typeof rootSvg.pauseAnimations !== "function" ||
           typeof rootSvg.unpauseAnimations !== "function"
         ) {
-          console.warn(
-            "This SVG renderer does not support animation controls."
-          );
           return;
         }
 
+        /*
+          The numerical readouts use nested SVG elements,
+          so their timelines are controlled separately.
+        */
         const nestedSvgs = [
           ...rootSvg.querySelectorAll("svg")
         ].filter(
@@ -18006,12 +18003,12 @@ svg: `
 
         const pauseSymbol =
           button.querySelector(
-            ".unitCirclePauseSymbol"
+            ".sinCosPauseSymbol"
           );
 
         const playSymbol =
           button.querySelector(
-            ".unitCirclePlaySymbol"
+            ".sinCosPlaySymbol"
           );
 
         const isPaused =
@@ -18020,12 +18017,16 @@ svg: `
           ) === "true";
 
         if (isPaused) {
+
           rootSvg.unpauseAnimations();
 
           nestedSvgs.forEach(
             svg => svg.unpauseAnimations()
           );
 
+          /*
+            Re-align all nested numerical timelines.
+          */
           if (
             typeof rootSvg.getCurrentTime === "function"
           ) {
@@ -18039,7 +18040,7 @@ svg: `
                 try {
                   svg.setCurrentTime(currentTime);
                 } catch (error) {
-                  // Unsupported by some renderers.
+                  // Unsupported by some SVG renderers.
                 }
               }
             });
@@ -18066,6 +18067,7 @@ svg: `
           );
 
         } else {
+
           rootSvg.pauseAnimations();
 
           const currentTime =
@@ -18074,6 +18076,7 @@ svg: `
               : null;
 
           nestedSvgs.forEach(svg => {
+
             if (
               currentTime !== null &&
               typeof svg.setCurrentTime === "function"
@@ -18081,7 +18084,7 @@ svg: `
               try {
                 svg.setCurrentTime(currentTime);
               } catch (error) {
-                // Unsupported by some renderers.
+                // Unsupported by some SVG renderers.
               }
             }
 
@@ -18110,8 +18113,32 @@ svg: `
         }
       };
 
-      document.addEventListener(
-        "click",
+      /*
+        Replace any previous copy of these delegated
+        listeners when the flashcard code is reloaded.
+      */
+
+      if (
+        globalThis.__sinCosCircleClickHandler
+      ) {
+        document.removeEventListener(
+          "click",
+          globalThis.__sinCosCircleClickHandler,
+          true
+        );
+      }
+
+      if (
+        globalThis.__sinCosCircleKeyHandler
+      ) {
+        document.removeEventListener(
+          "keydown",
+          globalThis.__sinCosCircleKeyHandler,
+          true
+        );
+      }
+
+      globalThis.__sinCosCircleClickHandler =
         event => {
           const button =
             findPauseButton(event.target);
@@ -18121,13 +18148,10 @@ svg: `
           event.preventDefault();
           event.stopPropagation();
 
-          toggleUnitCircleAnimation(button);
-        },
-        true
-      );
+          toggleAnimation(button);
+        };
 
-      document.addEventListener(
-        "keydown",
+      globalThis.__sinCosCircleKeyHandler =
         event => {
           const button =
             findPauseButton(event.target);
@@ -18142,15 +18166,25 @@ svg: `
             event.preventDefault();
             event.stopPropagation();
 
-            toggleUnitCircleAnimation(button);
+            toggleAnimation(button);
           }
-        },
+        };
+
+      document.addEventListener(
+        "click",
+        globalThis.__sinCosCircleClickHandler,
+        true
+      );
+
+      document.addEventListener(
+        "keydown",
+        globalThis.__sinCosCircleKeyHandler,
         true
       );
     }
 
     /* ===================================================
-       GEOMETRY
+       UNIT-CIRCLE GEOMETRY
        =================================================== */
 
     const cx = 124;
@@ -18158,22 +18192,16 @@ svg: `
     const R = 72;
 
     /*
-      These are the visible panel limits for tangent.
-      The unit-circle scaling itself is unchanged.
+      Each generated frame lasts 0.15 seconds.
     */
-    const tangentTopY = 30;
-    const tangentBottomY = 226;
-
-    /*
-      With two-degree steps, this marks only 90° and
-      270° as undefined.
-    */
-    const tanUndefinedThreshold = 0.02;
-
     const dt = 0.15;
 
     const frames = [];
 
+    /*
+      The animation briefly pauses at commonly used
+      angles while continuing smoothly between them.
+    */
     const pauseAngles = new Set([
       0,
       30,
@@ -18194,16 +18222,6 @@ svg: `
       360
     ]);
 
-    const clamp = (
-      value,
-      minimum,
-      maximum
-    ) =>
-      Math.max(
-        minimum,
-        Math.min(maximum, value)
-      );
-
     const addFrame = angle => {
       const radians =
         angle * Math.PI / 180;
@@ -18214,47 +18232,25 @@ svg: `
       const sinValue =
         Math.sin(radians);
 
-      const tanValue =
-        sinValue / cosValue;
-
-      const tanUndefined =
-        Math.abs(cosValue) <
-        tanUndefinedThreshold;
-
-      const rawTangentY =
-        cy - R * tanValue;
-
-      /*
-        At an undefined angle, show the tangent heading
-        out through the top of the panel. Immediately
-        after the angle it reappears from below.
-      */
-      const tangentY =
-        tanUndefined
-          ? tangentTopY
-          : clamp(
-              rawTangentY,
-              tangentTopY,
-              tangentBottomY
-            );
-
       frames.push({
         angle,
         radians,
         cosValue,
         sinValue,
-        tanValue,
-        tanUndefined,
-        tangentY,
 
         pointX:
-          cx + R * cosValue,
+          cx +
+          R * cosValue,
 
         pointY:
-          cy - R * sinValue
+          cy -
+          R * sinValue
       });
     };
 
+    /*
+      Two-degree steps produce a smooth full rotation.
+    */
     for (
       let angle = 0;
       angle <= 360;
@@ -18262,11 +18258,13 @@ svg: `
     ) {
       addFrame(angle);
 
-      if (pauseAngles.has(angle)) {
+      if (
+        pauseAngles.has(angle)
+      ) {
         for (
-          let i = 0;
-          i < 5;
-          i += 1
+          let pauseFrame = 0;
+          pauseFrame < 5;
+          pauseFrame += 1
         ) {
           addFrame(angle);
         }
@@ -18279,15 +18277,16 @@ svg: `
         dt
       ).toFixed(2);
 
-    const keyTimes = frames
-      .map(
-        (_, index) =>
-          (
-            index /
-            (frames.length - 1)
-          ).toFixed(6)
-      )
-      .join(";");
+    const keyTimes =
+      frames
+        .map(
+          (_, index) =>
+            (
+              index /
+              (frames.length - 1)
+            ).toFixed(6)
+        )
+        .join(";");
 
     const series = (
       selector,
@@ -18312,30 +18311,9 @@ svg: `
         frame => frame.pointY
       );
 
-    const tangentYValues =
-      series(
-        frame => frame.tangentY
-      );
-
-    const tanDefinedValues =
-      frames
-        .map(
-          frame =>
-            frame.tanUndefined
-              ? "0"
-              : "1"
-        )
-        .join(";");
-
-    const tanUndefinedValues =
-      frames
-        .map(
-          frame =>
-            frame.tanUndefined
-              ? "1"
-              : "0"
-        )
-        .join(";");
+    /* ===================================================
+       MOVING LABEL POSITIONS
+       =================================================== */
 
     const cosLabelXValues =
       series(
@@ -18449,7 +18427,10 @@ svg: `
         .join(";");
 
     /* ===================================================
-       GRID: MINOR 0.1, MAJOR 0.5
+       GRID
+
+       Minor divisions: 0.1
+       Major divisions: 0.5
        =================================================== */
 
     const gridLines = [];
@@ -18463,10 +18444,12 @@ svg: `
         n / 10;
 
       const px =
-        cx + value * R;
+        cx +
+        value * R;
 
       const py =
-        cy - value * R;
+        cy -
+        value * R;
 
       if (n !== 0) {
         const isMajor =
@@ -18498,6 +18481,10 @@ svg: `
        NUMERICAL READOUTS
        =================================================== */
 
+    /*
+      Digit-strip index zero is blank.
+      Indices one to ten contain digits zero to nine.
+    */
     const digitIndex =
       digit => digit + 1;
 
@@ -18524,8 +18511,8 @@ svg: `
         <g color="${colour}">
 
           <use
-            href="#unitCircleDigitStrip"
-            xlink:href="#unitCircleDigitStrip"/>
+            href="#sinCosDigitStrip"
+            xlink:href="#sinCosDigitStrip"/>
 
           <animateTransform
             attributeName="transform"
@@ -18558,8 +18545,8 @@ svg: `
         <g color="${colour}">
 
           <use
-            href="#unitCircleSignStrip"
-            xlink:href="#unitCircleSignStrip"/>
+            href="#sinCosSignStrip"
+            xlink:href="#sinCosSignStrip"/>
 
           <animateTransform
             attributeName="transform"
@@ -18584,59 +18571,61 @@ svg: `
           )
           .join(";");
 
-    const signedFixed3Parts = (
-      value,
-      maxAbs,
-      integerDigits
-    ) => {
-      const clamped =
-        clamp(
-          value,
-          -maxAbs,
-          maxAbs
-        );
+    const signedFixed3Parts =
+      value => {
 
-      const negative =
-        clamped < -0.0005;
+        /*
+          Prevent tiny floating-point values such as
+          −0.000000 from being displayed as negative.
+        */
+        const cleanedValue =
+          Math.abs(value) < 0.0005
+            ? 0
+            : value;
 
-      const absoluteValue =
-        Math.abs(clamped);
+        const negative =
+          cleanedValue < 0;
 
-      const scaled =
-        Math.round(
-          absoluteValue * 1000
-        );
+        const absoluteValue =
+          Math.min(
+            1,
+            Math.abs(cleanedValue)
+          );
 
-      const integerPart =
-        Math.floor(
-          scaled / 1000
-        );
+        const scaled =
+          Math.round(
+            absoluteValue * 1000
+          );
 
-      const decimals =
-        scaled % 1000;
+        const integerPart =
+          Math.floor(
+            scaled / 1000
+          );
 
-      const decimal1 =
-        Math.floor(
-          decimals / 100
-        );
+        const decimals =
+          scaled % 1000;
 
-      const decimal2 =
-        Math.floor(
-          (
-            decimals %
-            100
-          ) / 10
-        );
+        const decimal1 =
+          Math.floor(
+            decimals / 100
+          );
 
-      const decimal3 =
-        decimals % 10;
+        const decimal2 =
+          Math.floor(
+            (
+              decimals %
+              100
+            ) / 10
+          );
 
-      if (integerDigits === 1) {
+        const decimal3 =
+          decimals % 10;
+
         return {
           sign:
             signIndex(negative),
 
-          integer1:
+          integer:
             digitIndex(
               integerPart
             ),
@@ -18656,52 +18645,19 @@ svg: `
               decimal3
             )
         };
-      }
-
-      return {
-        sign:
-          signIndex(negative),
-
-        integer1:
-          integerPart >= 10
-            ? digitIndex(
-                Math.floor(
-                  integerPart / 10
-                )
-              )
-            : 0,
-
-        integer2:
-          digitIndex(
-            integerPart % 10
-          ),
-
-        decimal1:
-          digitIndex(decimal1),
-
-        decimal2:
-          digitIndex(decimal2),
-
-        decimal3:
-          digitIndex(decimal3)
       };
-    };
 
     const signedFixed3Readout = (
       x,
       y,
       colour,
-      selector,
-      maxAbs,
-      integerDigits
+      selector
     ) => {
       const parts =
         frames.map(
           frame =>
             signedFixed3Parts(
-              selector(frame),
-              maxAbs,
-              integerDigits
+              selector(frame)
             )
         );
 
@@ -18712,93 +18668,31 @@ svg: `
           )
         );
 
-      const integer1Transforms =
+      const integerTransforms =
         buildSeriesFromParts(
           parts.map(
-            part =>
-              part.integer1
+            part => part.integer
           )
         );
 
       const decimal1Transforms =
         buildSeriesFromParts(
           parts.map(
-            part =>
-              part.decimal1
+            part => part.decimal1
           )
         );
 
       const decimal2Transforms =
         buildSeriesFromParts(
           parts.map(
-            part =>
-              part.decimal2
+            part => part.decimal2
           )
         );
 
       const decimal3Transforms =
         buildSeriesFromParts(
           parts.map(
-            part =>
-              part.decimal3
-          )
-        );
-
-      if (integerDigits === 1) {
-        return `
-          ${signWindow(
-            x,
-            y,
-            colour,
-            signTransforms
-          )}
-
-          ${digitWindow(
-            x + 8,
-            y,
-            colour,
-            integer1Transforms
-          )}
-
-          <text
-            x="${x + 22}"
-            y="${y + 11.5}"
-            text-anchor="middle"
-            font-family="Arial, sans-serif"
-            font-size="12"
-            font-weight="700"
-            fill="${colour}">
-            .
-          </text>
-
-          ${digitWindow(
-            x + 26,
-            y,
-            colour,
-            decimal1Transforms
-          )}
-
-          ${digitWindow(
-            x + 37,
-            y,
-            colour,
-            decimal2Transforms
-          )}
-
-          ${digitWindow(
-            x + 48,
-            y,
-            colour,
-            decimal3Transforms
-          )}
-        `;
-      }
-
-      const integer2Transforms =
-        buildSeriesFromParts(
-          parts.map(
-            part =>
-              part.integer2
+            part => part.decimal3
           )
         );
 
@@ -18814,18 +18708,11 @@ svg: `
           x + 8,
           y,
           colour,
-          integer1Transforms
-        )}
-
-        ${digitWindow(
-          x + 19,
-          y,
-          colour,
-          integer2Transforms
+          integerTransforms
         )}
 
         <text
-          x="${x + 33}"
+          x="${x + 22}"
           y="${y + 11.5}"
           text-anchor="middle"
           font-family="Arial, sans-serif"
@@ -18836,21 +18723,21 @@ svg: `
         </text>
 
         ${digitWindow(
-          x + 37,
+          x + 26,
           y,
           colour,
           decimal1Transforms
         )}
 
         ${digitWindow(
-          x + 48,
+          x + 37,
           y,
           colour,
           decimal2Transforms
         )}
 
         ${digitWindow(
-          x + 59,
+          x + 48,
           y,
           colour,
           decimal3Transforms
@@ -18861,8 +18748,7 @@ svg: `
     const angleReadout = (
       x,
       y,
-      colour,
-      selector
+      colour
     ) => {
       const parts =
         frames.map(frame => {
@@ -18870,7 +18756,7 @@ svg: `
             Math.max(
               0,
               Math.round(
-                selector(frame)
+                frame.angle
               )
             );
 
@@ -18903,8 +18789,7 @@ svg: `
       const hundredsTransforms =
         buildSeriesFromParts(
           parts.map(
-            part =>
-              part.hundreds
+            part => part.hundreds
           )
         );
 
@@ -18958,8 +18843,10 @@ svg: `
 
   <defs>
 
+    <!-- Axis arrow -->
+
     <marker
-      id="unitCircleAxisArrow"
+      id="sinCosAxisArrow"
       viewBox="0 0 10 10"
       refX="8.5"
       refY="5"
@@ -18973,8 +18860,10 @@ svg: `
 
     </marker>
 
+    <!-- Cosine arrow -->
+
     <marker
-      id="unitCircleBlueArrow"
+      id="sinCosBlueArrow"
       viewBox="0 0 10 10"
       refX="8.5"
       refY="5"
@@ -18988,8 +18877,10 @@ svg: `
 
     </marker>
 
+    <!-- Sine arrow -->
+
     <marker
-      id="unitCirclePurpleArrow"
+      id="sinCosPurpleArrow"
       viewBox="0 0 10 10"
       refX="8.5"
       refY="5"
@@ -19003,8 +18894,10 @@ svg: `
 
     </marker>
 
+    <!-- Radius arrow -->
+
     <marker
-      id="unitCircleBlackArrow"
+      id="sinCosBlackArrow"
       viewBox="0 0 10 10"
       refX="8.5"
       refY="5"
@@ -19018,23 +18911,8 @@ svg: `
 
     </marker>
 
-    <marker
-      id="unitCircleGreenArrow"
-      viewBox="0 0 10 10"
-      refX="8.5"
-      refY="5"
-      markerWidth="3.4"
-      markerHeight="3.4"
-      orient="auto">
-
-      <path
-        d="M 0 0 L 10 5 L 0 10 Z"
-        fill="#16a34a"/>
-
-    </marker>
-
     <filter
-      id="unitCirclePointShadow"
+      id="sinCosPointShadow"
       x="-80%"
       y="-80%"
       width="260%"
@@ -19049,8 +18927,10 @@ svg: `
 
     </filter>
 
+    <!-- Numerical digit strip -->
+
     <g
-      id="unitCircleDigitStrip"
+      id="sinCosDigitStrip"
       font-family="Arial, sans-serif"
       font-size="12"
       font-weight="700"
@@ -19071,8 +18951,10 @@ svg: `
 
     </g>
 
+    <!-- Minus-sign strip -->
+
     <g
-      id="unitCircleSignStrip"
+      id="sinCosSignStrip"
       font-family="Arial, sans-serif"
       font-size="12"
       font-weight="700"
@@ -19085,8 +18967,8 @@ svg: `
     </g>
 
     <style>
-      [data-unit-circle-pause]:focus
-      .unitCirclePauseOutline {
+      [data-sincos-circle-pause]:focus
+      .sinCosPauseOutline {
         stroke: #2563eb;
         stroke-width: 2;
       }
@@ -19102,6 +18984,8 @@ svg: `
     rx="12"
     fill="#f8fafc"/>
 
+  <!-- Main title -->
+
   <text
     x="210"
     y="17"
@@ -19111,7 +18995,7 @@ svg: `
     font-weight="700"
     fill="#0f172a">
 
-    Unit circle: sin θ, cos θ and tan θ
+    Unit circle: sin θ and cos θ
 
   </text>
 
@@ -19136,110 +19020,74 @@ svg: `
     font-family="Arial, sans-serif"
     font-size="9.5"
     font-weight="700"
-    fill="#334155"
-    stroke="#eff6ff"
-    stroke-width="3"
-    paint-order="stroke">
+    fill="#334155">
 
-    On the unit circle, the point is (cosθ, sinθ)
+    The point on the circle is (cosθ, sinθ)
 
   </text>
 
   <!-- Legend -->
 
   <line
-    x1="20"
+    x1="31"
     y1="55"
-    x2="33"
+    x2="44"
     y2="55"
     stroke="#0f172a"
     stroke-width="3"
-    marker-end="url(#unitCircleBlackArrow)"/>
+    marker-end="url(#sinCosBlackArrow)"/>
 
   <text
-    x="38"
+    x="49"
     y="57.5"
     font-family="Arial, sans-serif"
-    font-size="7.2"
+    font-size="7.4"
     font-weight="700"
-    fill="#0f172a"
-    stroke="#eff6ff"
-    stroke-width="2"
-    paint-order="stroke">
+    fill="#0f172a">
 
-    radius
+    radius = 1
 
   </text>
 
   <line
-    x1="83"
+    x1="106"
     y1="55"
-    x2="96"
+    x2="119"
     y2="55"
     stroke="#2563eb"
     stroke-width="2.5"
-    marker-end="url(#unitCircleBlueArrow)"/>
+    marker-end="url(#sinCosBlueArrow)"/>
 
   <text
-    x="101"
+    x="124"
     y="57.5"
     font-family="Arial, sans-serif"
-    font-size="7.2"
+    font-size="7.4"
     font-weight="700"
-    fill="#1d4ed8"
-    stroke="#eff6ff"
-    stroke-width="2"
-    paint-order="stroke">
+    fill="#1d4ed8">
 
     cos θ
 
   </text>
 
   <line
-    x1="140"
+    x1="178"
     y1="59"
-    x2="140"
+    x2="178"
     y2="47"
     stroke="#7c3aed"
     stroke-width="2.5"
-    marker-end="url(#unitCirclePurpleArrow)"/>
+    marker-end="url(#sinCosPurpleArrow)"/>
 
   <text
-    x="146"
+    x="184"
     y="57.5"
     font-family="Arial, sans-serif"
-    font-size="7.2"
+    font-size="7.4"
     font-weight="700"
-    fill="#6d28d9"
-    stroke="#eff6ff"
-    stroke-width="2"
-    paint-order="stroke">
+    fill="#6d28d9">
 
     sin θ
-
-  </text>
-
-  <line
-    x1="185"
-    y1="55"
-    x2="198"
-    y2="55"
-    stroke="#16a34a"
-    stroke-width="2.3"
-    marker-end="url(#unitCircleGreenArrow)"/>
-
-  <text
-    x="203"
-    y="57.5"
-    font-family="Arial, sans-serif"
-    font-size="7.2"
-    font-weight="700"
-    fill="#15803d"
-    stroke="#eff6ff"
-    stroke-width="2"
-    paint-order="stroke">
-
-    tan θ
 
   </text>
 
@@ -19256,7 +19104,7 @@ svg: `
     y2="${cy}"
     stroke="#475569"
     stroke-width="1.5"
-    marker-end="url(#unitCircleAxisArrow)"/>
+    marker-end="url(#sinCosAxisArrow)"/>
 
   <line
     x1="${cx}"
@@ -19265,7 +19113,7 @@ svg: `
     y2="${(cy - R - 7).toFixed(2)}"
     stroke="#475569"
     stroke-width="1.5"
-    marker-end="url(#unitCircleAxisArrow)"/>
+    marker-end="url(#sinCosAxisArrow)"/>
 
   <!-- Unit circle -->
 
@@ -19277,34 +19125,7 @@ svg: `
     stroke="#1e3a8a"
     stroke-width="1.7"/>
 
-  <!-- Full tangent line x = 1 -->
-
-  <line
-    x1="${(cx + R).toFixed(2)}"
-    y1="${tangentTopY}"
-    x2="${(cx + R).toFixed(2)}"
-    y2="${tangentBottomY}"
-    stroke="#16a34a"
-    stroke-width="1.35"
-    stroke-dasharray="4 3"
-    opacity="0.72"/>
-
-  <text
-    x="${(cx + R + 4).toFixed(2)}"
-    y="${(cy - R - 3).toFixed(2)}"
-    font-family="Arial, sans-serif"
-    font-size="8"
-    font-weight="700"
-    fill="#15803d"
-    stroke="#eff6ff"
-    stroke-width="2.4"
-    paint-order="stroke">
-
-    x = 1
-
-  </text>
-
-  <!-- Axis labels -->
+  <!-- Axis names -->
 
   <text
     x="${(cx + R + 22).toFixed(2)}"
@@ -19331,7 +19152,7 @@ svg: `
 
   </text>
 
-  <!-- Unit labels -->
+  <!-- Horizontal unit labels -->
 
   <text
     x="${(cx + R - 4).toFixed(2)}"
@@ -19339,7 +19160,9 @@ svg: `
     font-family="Arial, sans-serif"
     font-size="7.5"
     fill="#475569">
+
     1
+
   </text>
 
   <text
@@ -19348,8 +19171,12 @@ svg: `
     font-family="Arial, sans-serif"
     font-size="7.5"
     fill="#475569">
+
     −1
+
   </text>
+
+  <!-- Vertical unit labels -->
 
   <text
     x="${(cx - 13).toFixed(2)}"
@@ -19357,7 +19184,9 @@ svg: `
     font-family="Arial, sans-serif"
     font-size="7.5"
     fill="#475569">
+
     1
+
   </text>
 
   <text
@@ -19366,8 +19195,12 @@ svg: `
     font-family="Arial, sans-serif"
     font-size="7.5"
     fill="#475569">
+
     −1
+
   </text>
+
+  <!-- Origin -->
 
   <circle
     cx="${cx}"
@@ -19375,7 +19208,7 @@ svg: `
     r="2.7"
     fill="#475569"/>
 
-  <!-- Angle arc -->
+  <!-- Animated angle arc -->
 
   <path
     d="M ${(cx + 18).toFixed(2)} ${cy.toFixed(2)}"
@@ -19393,7 +19226,7 @@ svg: `
 
   </path>
 
-  <!-- θ label -->
+  <!-- Moving θ label -->
 
   <text
     x="${cx + 24}"
@@ -19442,7 +19275,7 @@ svg: `
     y2="${cy}"
     stroke="#2563eb"
     stroke-width="2.8"
-    marker-end="url(#unitCircleBlueArrow)">
+    marker-end="url(#sinCosBlueArrow)">
 
     <animate
       attributeName="x2"
@@ -19463,7 +19296,7 @@ svg: `
     y2="${cy}"
     stroke="#7c3aed"
     stroke-width="2.8"
-    marker-end="url(#unitCirclePurpleArrow)">
+    marker-end="url(#sinCosPurpleArrow)">
 
     <animate
       attributeName="x1"
@@ -19491,7 +19324,7 @@ svg: `
 
   </line>
 
-  <!-- Radius -->
+  <!-- Unit-radius vector -->
 
   <line
     x1="${cx}"
@@ -19501,7 +19334,7 @@ svg: `
     stroke="#0f172a"
     stroke-width="3.1"
     stroke-linecap="round"
-    marker-end="url(#unitCircleBlackArrow)">
+    marker-end="url(#sinCosBlackArrow)">
 
     <animate
       attributeName="x2"
@@ -19514,73 +19347,6 @@ svg: `
     <animate
       attributeName="y2"
       values="${pointYValues}"
-      keyTimes="${keyTimes}"
-      calcMode="linear"
-      dur="${duration}s"
-      repeatCount="indefinite"/>
-
-  </line>
-
-  <!-- Extension of the radius line to x = 1 -->
-
-  <line
-    x1="${cx + R}"
-    y1="${cy}"
-    x2="${cx + R}"
-    y2="${cy}"
-    stroke="#16a34a"
-    stroke-width="2"
-    stroke-dasharray="4 3">
-
-    <animate
-      attributeName="x1"
-      values="${pointXValues}"
-      keyTimes="${keyTimes}"
-      calcMode="linear"
-      dur="${duration}s"
-      repeatCount="indefinite"/>
-
-    <animate
-      attributeName="y1"
-      values="${pointYValues}"
-      keyTimes="${keyTimes}"
-      calcMode="linear"
-      dur="${duration}s"
-      repeatCount="indefinite"/>
-
-    <animate
-      attributeName="y2"
-      values="${tangentYValues}"
-      keyTimes="${keyTimes}"
-      calcMode="linear"
-      dur="${duration}s"
-      repeatCount="indefinite"/>
-
-    <animate
-      attributeName="opacity"
-      values="${tanDefinedValues}"
-      keyTimes="${keyTimes}"
-      calcMode="discrete"
-      dur="${duration}s"
-      repeatCount="indefinite"/>
-
-  </line>
-
-  <!-- Tangent segment: exits the visible panel -->
-
-  <line
-    x1="${(cx + R).toFixed(2)}"
-    y1="${cy}"
-    x2="${(cx + R).toFixed(2)}"
-    y2="${cy}"
-    stroke="#16a34a"
-    stroke-width="2.8"
-    stroke-linecap="round"
-    marker-end="url(#unitCircleGreenArrow)">
-
-    <animate
-      attributeName="y2"
-      values="${tangentYValues}"
       keyTimes="${keyTimes}"
       calcMode="linear"
       dur="${duration}s"
@@ -19597,7 +19363,7 @@ svg: `
     fill="#f59e0b"
     stroke="#92400e"
     stroke-width="1.2"
-    filter="url(#unitCirclePointShadow)">
+    filter="url(#sinCosPointShadow)">
 
     <animate
       attributeName="cx"
@@ -19617,7 +19383,7 @@ svg: `
 
   </circle>
 
-  <!-- Cosine label -->
+  <!-- Moving cosine label -->
 
   <text
     x="${(cx + R / 2).toFixed(2)}"
@@ -19640,7 +19406,7 @@ svg: `
 
   </text>
 
-  <!-- Sine label -->
+  <!-- Moving sine label -->
 
   <text
     x="${(cx + R + 6).toFixed(2)}"
@@ -19686,11 +19452,11 @@ svg: `
     y="217.6"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="7.2"
+    font-size="7.4"
     font-weight="700"
     fill="#475569">
 
-    cos θ is x, sin θ is y, and tan θ = sin θ / cos θ
+    cosine is the x-coordinate; sine is the y-coordinate
 
   </text>
 
@@ -19721,10 +19487,10 @@ svg: `
 
   </text>
 
-  <!-- Pause button -->
+  <!-- Pause/play button -->
 
   <g
-    data-unit-circle-pause
+    data-sincos-circle-pause
     role="button"
     tabindex="0"
     aria-label="Pause unit-circle animation"
@@ -19738,7 +19504,7 @@ svg: `
     </title>
 
     <rect
-      class="unitCirclePauseOutline"
+      class="sinCosPauseOutline"
       x="-12"
       y="-10"
       width="24"
@@ -19748,7 +19514,7 @@ svg: `
       stroke="#94a3b8"
       stroke-width="1.1"/>
 
-    <g class="unitCirclePauseSymbol">
+    <g class="sinCosPauseSymbol">
 
       <rect
         x="-4.7"
@@ -19769,7 +19535,7 @@ svg: `
     </g>
 
     <path
-      class="unitCirclePlaySymbol"
+      class="sinCosPlaySymbol"
       d="M -3.5 -5.5 L 5.5 0 L -3.5 5.5 Z"
       fill="#475569"
       display="none"/>
@@ -19789,7 +19555,7 @@ svg: `
     x="281"
     y="58"
     width="118"
-    height="30"
+    height="32"
     rx="8"
     fill="#fff7ed"
     stroke="#fdba74"/>
@@ -19809,14 +19575,13 @@ svg: `
 
   ${angleReadout(
     321,
-    73,
-    "#9a3412",
-    frame => frame.angle
+    74,
+    "#9a3412"
   )}
 
   <text
     x="356"
-    y="84.5"
+    y="85.5"
     font-family="Arial, sans-serif"
     font-size="11"
     font-weight="700"
@@ -19826,23 +19591,23 @@ svg: `
 
   </text>
 
-  <!-- Identity -->
+  <!-- Point and radius -->
 
   <rect
     x="281"
-    y="94"
+    y="97"
     width="118"
-    height="24"
+    height="27"
     rx="8"
     fill="#f8fafc"
     stroke="#cbd5e1"/>
 
   <text
     x="340"
-    y="104.5"
+    y="108"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="7.3"
+    font-size="7.5"
     font-weight="700"
     fill="#475569">
 
@@ -19852,10 +19617,10 @@ svg: `
 
   <text
     x="340"
-    y="114"
+    y="119"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="7.1"
+    font-size="7.2"
     fill="#64748b">
 
     radius = 1
@@ -19866,18 +19631,18 @@ svg: `
 
   <rect
     x="281"
-    y="124"
+    y="131"
     width="118"
-    height="28"
+    height="34"
     rx="8"
     fill="#eff6ff"
     stroke="#93c5fd"/>
 
   <text
-    x="308"
-    y="136"
+    x="306"
+    y="144"
     font-family="Arial, sans-serif"
-    font-size="8.3"
+    font-size="8.5"
     font-weight="700"
     fill="#1d4ed8">
 
@@ -19887,29 +19652,27 @@ svg: `
 
   ${signedFixed3Readout(
     328,
-    132,
+    143,
     "#1d4ed8",
-    frame => frame.cosValue,
-    1.999,
-    1
+    frame => frame.cosValue
   )}
 
   <!-- Sine -->
 
   <rect
     x="281"
-    y="156"
+    y="172"
     width="118"
-    height="28"
+    height="34"
     rx="8"
     fill="#faf5ff"
     stroke="#d8b4fe"/>
 
   <text
-    x="308"
-    y="168"
+    x="306"
+    y="185"
     font-family="Arial, sans-serif"
-    font-size="8.3"
+    font-size="8.5"
     font-weight="700"
     fill="#6d28d9">
 
@@ -19919,94 +19682,32 @@ svg: `
 
   ${signedFixed3Readout(
     328,
-    164,
+    184,
     "#6d28d9",
-    frame => frame.sinValue,
-    1.999,
-    1
+    frame => frame.sinValue
   )}
 
-  <!-- Tangent -->
+  <!-- Pythagorean identity -->
 
   <rect
     x="281"
-    y="188"
+    y="212"
     width="118"
-    height="28"
-    rx="8"
-    fill="#f0fdf4"
-    stroke="#86efac"/>
-
-  <text
-    x="308"
-    y="200"
-    font-family="Arial, sans-serif"
-    font-size="8.3"
-    font-weight="700"
-    fill="#15803d">
-
-    tan θ
-
-  </text>
-
-  <g opacity="1">
-
-    ${signedFixed3Readout(
-      317,
-      196,
-      "#15803d",
-      frame =>
-        clamp(
-          frame.tanValue,
-          -99.999,
-          99.999
-        ),
-      99.999,
-      2
-    )}
-
-    <animate
-      attributeName="opacity"
-      values="${tanDefinedValues}"
-      keyTimes="${keyTimes}"
-      calcMode="discrete"
-      dur="${duration}s"
-      repeatCount="indefinite"/>
-
-  </g>
-
-  <text
-    x="357"
-    y="207.8"
-    text-anchor="middle"
-    font-family="Arial, sans-serif"
-    font-size="9.2"
-    font-weight="700"
-    fill="#15803d"
-    opacity="0">
-
-    undefined
-
-    <animate
-      attributeName="opacity"
-      values="${tanUndefinedValues}"
-      keyTimes="${keyTimes}"
-      calcMode="discrete"
-      dur="${duration}s"
-      repeatCount="indefinite"/>
-
-  </text>
+    height="10"
+    rx="5"
+    fill="#f8fafc"
+    stroke="#cbd5e1"/>
 
   <text
     x="340"
-    y="224"
+    y="219.2"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="7.4"
+    font-size="7.3"
     font-weight="700"
-    fill="#64748b">
+    fill="#475569">
 
-    tan θ is undefined at 90° and 270°
+    cos²θ + sin²θ = 1
 
   </text>
 
