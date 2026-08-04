@@ -31974,8 +31974,8536 @@ svg: `
 </svg>
 `;
   })()
+},
+
+{
+  topic: "Mechanics",
+
+  term: "How do the components of weight change as an incline gets steeper?",
+
+  equation: "\\boxed{W_{\\parallel}=mg\\sin\\theta}\\qquad\\boxed{W_{\\perp}=mg\\cos\\theta}\\qquad\\boxed{N=mg\\cos\\theta}",
+
+  answer: "A block on a frictionless incline has weight mg acting vertically downward. The weight can be resolved into a component parallel to the plane, mg sin θ, and a component perpendicular to the plane, mg cos θ. The angle between the weight vector and the inward perpendicular direction is also θ, so mg cos θ is the component adjacent to this angle. The normal force acts away from the plane and balances the inward component, giving N = mg cos θ. As the incline becomes steeper, mg sin θ increases while mg cos θ and the normal force decrease.",
+
+  svg: (() => {
+
+    /* ===================================================
+       UNIQUE SVG IDS
+       =================================================== */
+
+    const instanceKey =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const weightArrowId =
+      `inclineWeightArrow-${instanceKey}`;
+
+    const parallelArrowId =
+      `inclineParallelArrow-${instanceKey}`;
+
+    const perpendicularArrowId =
+      `inclinePerpendicularArrow-${instanceKey}`;
+
+    const normalArrowId =
+      `inclineNormalArrow-${instanceKey}`;
+
+    const rampGradientId =
+      `inclineRampFill-${instanceKey}`;
+
+    /* ===================================================
+       PAUSE / PLAY CONTROL
+       =================================================== */
+
+    if (typeof document !== "undefined") {
+
+      if (globalThis.__inclineForcesClickHandler) {
+        document.removeEventListener(
+          "click",
+          globalThis.__inclineForcesClickHandler,
+          true
+        );
+      }
+
+      if (globalThis.__inclineForcesKeyHandler) {
+        document.removeEventListener(
+          "keydown",
+          globalThis.__inclineForcesKeyHandler,
+          true
+        );
+      }
+
+      const findPauseButton = target => {
+
+        if (
+          typeof Element === "undefined" ||
+          !(target instanceof Element)
+        ) {
+          return null;
+        }
+
+        return target.closest(
+          "[data-incline-forces-pause]"
+        );
+      };
+
+      const toggleAnimation = button => {
+
+        const rootSvg =
+          button.ownerSVGElement;
+
+        if (
+          !rootSvg ||
+          typeof rootSvg.pauseAnimations !== "function" ||
+          typeof rootSvg.unpauseAnimations !== "function"
+        ) {
+          return;
+        }
+
+        const isPaused =
+          button.getAttribute("aria-pressed") === "true";
+
+        const pauseSymbol =
+          button.querySelector(
+            ".inclinePauseSymbol"
+          );
+
+        const playSymbol =
+          button.querySelector(
+            ".inclinePlaySymbol"
+          );
+
+        if (isPaused) {
+
+          rootSvg.unpauseAnimations();
+
+          button.setAttribute(
+            "aria-pressed",
+            "false"
+          );
+
+          button.setAttribute(
+            "aria-label",
+            "Pause incline-force animation"
+          );
+
+          pauseSymbol?.setAttribute(
+            "display",
+            "inline"
+          );
+
+          playSymbol?.setAttribute(
+            "display",
+            "none"
+          );
+
+        } else {
+
+          rootSvg.pauseAnimations();
+
+          button.setAttribute(
+            "aria-pressed",
+            "true"
+          );
+
+          button.setAttribute(
+            "aria-label",
+            "Resume incline-force animation"
+          );
+
+          pauseSymbol?.setAttribute(
+            "display",
+            "none"
+          );
+
+          playSymbol?.setAttribute(
+            "display",
+            "inline"
+          );
+        }
+      };
+
+      globalThis.__inclineForcesClickHandler =
+        event => {
+
+          const button =
+            findPauseButton(event.target);
+
+          if (!button) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          toggleAnimation(button);
+        };
+
+      globalThis.__inclineForcesKeyHandler =
+        event => {
+
+          const button =
+            findPauseButton(event.target);
+
+          if (!button) return;
+
+          if (
+            event.key === "Enter" ||
+            event.key === " " ||
+            event.key === "Spacebar"
+          ) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            toggleAnimation(button);
+          }
+        };
+
+      document.addEventListener(
+        "click",
+        globalThis.__inclineForcesClickHandler,
+        true
+      );
+
+      document.addEventListener(
+        "keydown",
+        globalThis.__inclineForcesKeyHandler,
+        true
+      );
+    }
+
+    /* ===================================================
+       GEOMETRY AND ANIMATION
+       =================================================== */
+
+    const pivotX = 46;
+    const pivotY = 176;
+
+    const planeLength = 180;
+    const blockDistance = 96;
+    const blockOffset = 12;
+
+    const weightLength = 52;
+    const componentScale = 48;
+
+    const duration = 18;
+
+    /*
+      The final angle is 89.5° rather than exactly 90°,
+      so the surface remains visually distinguishable.
+    */
+
+    const angles = [
+      0,
+      0,
+      15,
+      30,
+      45,
+      60,
+      75,
+      89.5,
+      89.5
+    ];
+
+    const keyTimes = [
+      0,
+      0.08,
+      0.22,
+      0.36,
+      0.50,
+      0.64,
+      0.78,
+      0.92,
+      1
+    ];
+
+    const keyTimesString =
+      keyTimes.join(";");
+
+    const toRadians =
+      degrees =>
+        degrees *
+        Math.PI / 180;
+
+    const format =
+      value =>
+        Number(value).toFixed(2);
+
+    /* ===================================================
+       ANIMATED VALUES
+       =================================================== */
+
+    const planeEndXValues = [];
+    const planeEndYValues = [];
+
+    const planePolygonValues = [];
+
+    const blockXValues = [];
+    const blockYValues = [];
+    const blockRotationValues = [];
+
+    const inclineAngleArcValues = [];
+    const inclineThetaXValues = [];
+    const inclineThetaYValues = [];
+
+    const parallelXValues = [];
+    const parallelYValues = [];
+
+    const perpendicularXValues = [];
+    const perpendicularYValues = [];
+
+    const normalXValues = [];
+    const normalYValues = [];
+
+    /*
+      Angle marker at the block.
+
+      This angle is between:
+        • the vertical weight mg
+        • the inward perpendicular component mg cosθ
+    */
+
+    const componentAngleArcValues = [];
+    const componentThetaXValues = [];
+    const componentThetaYValues = [];
+
+    angles.forEach(angle => {
+
+      const radians =
+        toRadians(angle);
+
+      const cosTheta =
+        Math.cos(radians);
+
+      const sinTheta =
+        Math.sin(radians);
+
+      /* -----------------------------------------------
+         Plane
+         ----------------------------------------------- */
+
+      const planeEndX =
+        pivotX +
+        planeLength *
+        cosTheta;
+
+      const planeEndY =
+        pivotY -
+        planeLength *
+        sinTheta;
+
+      planeEndXValues.push(
+        format(planeEndX)
+      );
+
+      planeEndYValues.push(
+        format(planeEndY)
+      );
+
+      planePolygonValues.push(
+        [
+          `${format(pivotX)},${format(pivotY)}`,
+          `${format(planeEndX)},${format(planeEndY)}`,
+          `${format(planeEndX)},${format(pivotY)}`
+        ].join(" ")
+      );
+
+      /* -----------------------------------------------
+         Block position
+         ----------------------------------------------- */
+
+      const contactX =
+        pivotX +
+        blockDistance *
+        cosTheta;
+
+      const contactY =
+        pivotY -
+        blockDistance *
+        sinTheta;
+
+      /*
+        Unit vector perpendicular away from the plane.
+      */
+
+      const outwardNormalX =
+        -sinTheta;
+
+      const outwardNormalY =
+        -cosTheta;
+
+      /*
+        Unit vector perpendicular into the plane.
+      */
+
+      const inwardNormalX =
+        sinTheta;
+
+      const inwardNormalY =
+        cosTheta;
+
+      /*
+        Unit vector down the slope.
+      */
+
+      const downSlopeX =
+        -cosTheta;
+
+      const downSlopeY =
+        sinTheta;
+
+      const blockX =
+        contactX +
+        blockOffset *
+        outwardNormalX;
+
+      const blockY =
+        contactY +
+        blockOffset *
+        outwardNormalY;
+
+      blockXValues.push(
+        format(blockX)
+      );
+
+      blockYValues.push(
+        format(blockY)
+      );
+
+      blockRotationValues.push(
+        format(-angle)
+      );
+
+      /* -----------------------------------------------
+         Weight components
+         ----------------------------------------------- */
+
+      const parallelLength =
+        componentScale *
+        sinTheta;
+
+      const perpendicularLength =
+        componentScale *
+        cosTheta;
+
+      parallelXValues.push(
+        format(
+          downSlopeX *
+          parallelLength
+        )
+      );
+
+      parallelYValues.push(
+        format(
+          downSlopeY *
+          parallelLength
+        )
+      );
+
+      perpendicularXValues.push(
+        format(
+          inwardNormalX *
+          perpendicularLength
+        )
+      );
+
+      perpendicularYValues.push(
+        format(
+          inwardNormalY *
+          perpendicularLength
+        )
+      );
+
+      normalXValues.push(
+        format(
+          outwardNormalX *
+          perpendicularLength
+        )
+      );
+
+      normalYValues.push(
+        format(
+          outwardNormalY *
+          perpendicularLength
+        )
+      );
+
+      /* -----------------------------------------------
+         Incline angle θ at the base
+         ----------------------------------------------- */
+
+      const baseArcRadius = 24;
+
+      const baseArcEndX =
+        pivotX +
+        baseArcRadius *
+        cosTheta;
+
+      const baseArcEndY =
+        pivotY -
+        baseArcRadius *
+        sinTheta;
+
+      inclineAngleArcValues.push(
+        [
+          `M ${format(pivotX + baseArcRadius)} ${format(pivotY)}`,
+          `A ${baseArcRadius} ${baseArcRadius}`,
+          `0 0 0`,
+          `${format(baseArcEndX)} ${format(baseArcEndY)}`
+        ].join(" ")
+      );
+
+      const baseLabelRadians =
+        toRadians(
+          Math.max(
+            angle / 2,
+            7
+          )
+        );
+
+      inclineThetaXValues.push(
+        format(
+          pivotX +
+          34 *
+          Math.cos(baseLabelRadians)
+        )
+      );
+
+      inclineThetaYValues.push(
+        format(
+          pivotY -
+          31 *
+          Math.sin(baseLabelRadians)
+        )
+      );
+
+      /* -----------------------------------------------
+         Angle θ between mg and mg cosθ
+
+         In SVG coordinates:
+           weight direction = 90°
+           inward normal direction = 90° - θ
+
+         Their angular separation is therefore θ.
+         ----------------------------------------------- */
+
+      const componentArcRadius = 20;
+
+      const componentArcStartX =
+        componentArcRadius *
+        sinTheta;
+
+      const componentArcStartY =
+        componentArcRadius *
+        cosTheta;
+
+      const componentArcEndX = 0;
+
+      const componentArcEndY =
+        componentArcRadius;
+
+      componentAngleArcValues.push(
+        [
+          `M ${format(componentArcStartX)} ${format(componentArcStartY)}`,
+          `A ${componentArcRadius} ${componentArcRadius}`,
+          `0 0 1`,
+          `${format(componentArcEndX)} ${format(componentArcEndY)}`
+        ].join(" ")
+      );
+
+      /*
+        Place the θ label approximately halfway
+        between the weight and perpendicular directions.
+      */
+
+      componentThetaXValues.push(
+        format(
+          7 +
+          28 *
+          Math.sin(radians / 2)
+        )
+      );
+
+      componentThetaYValues.push(
+        format(
+          28 *
+          Math.cos(radians / 2)
+        )
+      );
+    });
+
+    const blockTranslationValues =
+      blockXValues
+        .map(
+          (x, index) =>
+            `${x} ${blockYValues[index]}`
+        )
+        .join(";");
+
+    /* ===================================================
+       STAGE TEXT
+       =================================================== */
+
+    const stage0Opacity =
+      "1;1;0;0;0;0;0;0;0";
+
+    const stage45Opacity =
+      "0;0;0;0;1;1;0;0;0";
+
+    const stage90Opacity =
+      "0;0;0;0;0;0;0;1;1";
+
+    /* ===================================================
+       SVG
+       =================================================== */
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Weight -->
+
+    <marker
+      id="${weightArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.2"
+      refY="5"
+      markerWidth="4.4"
+      markerHeight="4.4"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#dc2626"/>
+
+    </marker>
+
+    <!-- Parallel component -->
+
+    <marker
+      id="${parallelArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.2"
+      refY="5"
+      markerWidth="4.2"
+      markerHeight="4.2"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#ea580c"/>
+
+    </marker>
+
+    <!-- Perpendicular component -->
+
+    <marker
+      id="${perpendicularArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.2"
+      refY="5"
+      markerWidth="4.2"
+      markerHeight="4.2"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#2563eb"/>
+
+    </marker>
+
+    <!-- Normal force -->
+
+    <marker
+      id="${normalArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.2"
+      refY="5"
+      markerWidth="4.2"
+      markerHeight="4.2"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#16a34a"/>
+
+    </marker>
+
+    <linearGradient
+      id="${rampGradientId}"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="1">
+
+      <stop
+        offset="0%"
+        stop-color="#fde68a"/>
+
+      <stop
+        offset="100%"
+        stop-color="#f59e0b"/>
+
+    </linearGradient>
+
+    <style>
+
+      [data-incline-forces-pause]:focus
+      .inclinePauseOutline {
+        stroke: #2563eb;
+        stroke-width: 2;
+      }
+
+    </style>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Incline forces: the weight stays vertical
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#fffdf5"
+    stroke="#fcd34d"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="43"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.2"
+    font-weight="700"
+    fill="#92400e">
+
+    Frictionless block on an incline
+
+  </text>
+
+  <!-- Horizontal reference -->
+
+  <line
+    x1="${pivotX}"
+    y1="${pivotY}"
+    x2="${pivotX + 57}"
+    y2="${pivotY}"
+    stroke="#94a3b8"
+    stroke-width="1.2"
+    stroke-dasharray="4 3"/>
+
+  <text
+    x="${pivotX + 61}"
+    y="${pivotY + 4}"
+    font-family="Arial, sans-serif"
+    font-size="7.3"
+    font-weight="700"
+    fill="#64748b">
+
+    horizontal
+
+  </text>
+
+  <!-- Incline angle arc -->
+
+  <path
+    d="${inclineAngleArcValues[0]}"
+    fill="none"
+    stroke="#7c3aed"
+    stroke-width="2">
+
+    <animate
+      attributeName="d"
+      values="${inclineAngleArcValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </path>
+
+  <!-- Incline-angle label -->
+
+  <text
+    x="${inclineThetaXValues[0]}"
+    y="${inclineThetaYValues[0]}"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10"
+    font-weight="700"
+    fill="#6d28d9"
+    paint-order="stroke"
+    stroke="#fffdf5"
+    stroke-width="3">
+
+    θ
+
+    <animate
+      attributeName="x"
+      values="${inclineThetaXValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y"
+      values="${inclineThetaYValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <!-- Ramp fill -->
+
+  <polygon
+    points="${planePolygonValues[0]}"
+    fill="url(#${rampGradientId})"
+    opacity="0.38">
+
+    <animate
+      attributeName="points"
+      values="${planePolygonValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </polygon>
+
+  <!-- Ramp surface -->
+
+  <line
+    x1="${pivotX}"
+    y1="${pivotY}"
+    x2="${planeEndXValues[0]}"
+    y2="${planeEndYValues[0]}"
+    stroke="#92400e"
+    stroke-width="6"
+    stroke-linecap="round">
+
+    <animate
+      attributeName="x2"
+      values="${planeEndXValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y2"
+      values="${planeEndYValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <circle
+    cx="${pivotX}"
+    cy="${pivotY}"
+    r="2.8"
+    fill="#78716c"/>
+
+  <!-- ================================================= -->
+  <!-- MOVING BLOCK AND FORCE DIAGRAM                     -->
+  <!-- ================================================= -->
+
+  <g
+    transform="
+      translate(
+        ${blockXValues[0]}
+        ${blockYValues[0]}
+      )
+    ">
+
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      values="${blockTranslationValues}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <!-- Weight: constant and vertically downward -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="0"
+      y2="${weightLength}"
+      stroke="#dc2626"
+      stroke-width="2.8"
+      marker-end="url(#${weightArrowId})"/>
+
+    <text
+      x="-8"
+      y="40"
+      text-anchor="end"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#b91c1c"
+      paint-order="stroke"
+      stroke="#ffffff"
+      stroke-width="3">
+
+      mg
+
+    </text>
+
+    <!-- Parallel weight component -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="${parallelXValues[0]}"
+      y2="${parallelYValues[0]}"
+      stroke="#ea580c"
+      stroke-width="2.6"
+      marker-end="url(#${parallelArrowId})">
+
+      <animate
+        attributeName="x2"
+        values="${parallelXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y2"
+        values="${parallelYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <!-- Inward perpendicular weight component -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="${perpendicularXValues[0]}"
+      y2="${perpendicularYValues[0]}"
+      stroke="#2563eb"
+      stroke-width="2.6"
+      marker-end="url(#${perpendicularArrowId})">
+
+      <animate
+        attributeName="x2"
+        values="${perpendicularXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y2"
+        values="${perpendicularYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <!-- Normal force -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="${normalXValues[0]}"
+      y2="${normalYValues[0]}"
+      stroke="#16a34a"
+      stroke-width="2.6"
+      marker-end="url(#${normalArrowId})">
+
+      <animate
+        attributeName="x2"
+        values="${normalXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y2"
+        values="${normalYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <!-- ================================================= -->
+    <!-- SEMI-TRANSPARENT BLOCK                            -->
+    <!-- ================================================= -->
+
+    <g
+      transform="
+        rotate(
+          ${blockRotationValues[0]}
+        )
+      ">
+
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="${blockRotationValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <!-- Transparent body; outline remains opaque -->
+
+      <rect
+        x="-14"
+        y="-10"
+        width="28"
+        height="20"
+        rx="3"
+        fill="#e5e7eb"
+        fill-opacity="0.55"
+        stroke="#475569"
+        stroke-width="1.4"/>
+
+      <!-- Subtle transparent inner face -->
+
+      <rect
+        x="-10"
+        y="-6"
+        width="20"
+        height="12"
+        rx="2"
+        fill="#ffffff"
+        fill-opacity="0.25"
+        stroke="#94a3b8"
+        stroke-opacity="0.35"
+        stroke-width="0.7"/>
+
+      <!-- Opaque mass label -->
+
+      <text
+        x="0"
+        y="3.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#334155">
+
+        m
+
+      </text>
+
+    </g>
+
+    <!-- ================================================= -->
+    <!-- ANGLE BETWEEN mg AND mg cosθ                      -->
+    <!-- Drawn after the block so it remains prominent     -->
+    <!-- ================================================= -->
+
+    <path
+      d="${componentAngleArcValues[0]}"
+      fill="none"
+      stroke="#7c3aed"
+      stroke-width="2">
+
+      <animate
+        attributeName="d"
+        values="${componentAngleArcValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </path>
+
+    <text
+      x="${componentThetaXValues[0]}"
+      y="${componentThetaYValues[0]}"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.5"
+      font-weight="700"
+      fill="#6d28d9"
+      paint-order="stroke"
+      stroke="#ffffff"
+      stroke-width="3">
+
+      θ
+
+      <animate
+        attributeName="x"
+        values="${componentThetaXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y"
+        values="${componentThetaYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- LEGEND                                             -->
+  <!-- ================================================= -->
+
+  <rect
+    x="20"
+    y="188"
+    width="230"
+    height="31"
+    rx="9"
+    fill="#ffffff"
+    stroke="#e5e7eb"/>
+
+  <!-- Weight -->
+
+  <line
+    x1="30"
+    y1="197"
+    x2="30"
+    y2="210"
+    stroke="#dc2626"
+    stroke-width="2.4"
+    marker-end="url(#${weightArrowId})"/>
+
+  <text
+    x="38"
+    y="206"
+    font-family="Arial, sans-serif"
+    font-size="7.1"
+    font-weight="700"
+    fill="#b91c1c">
+
+    mg
+
+  </text>
+
+  <!-- Parallel component -->
+
+  <line
+    x1="66"
+    y1="204"
+    x2="82"
+    y2="210"
+    stroke="#ea580c"
+    stroke-width="2.4"
+    marker-end="url(#${parallelArrowId})"/>
+
+  <text
+    x="88"
+    y="206"
+    font-family="Arial, sans-serif"
+    font-size="7.1"
+    font-weight="700"
+    fill="#c2410c">
+
+    mg sinθ
+
+  </text>
+
+  <!-- Perpendicular component -->
+
+  <line
+    x1="135"
+    y1="197"
+    x2="142"
+    y2="210"
+    stroke="#2563eb"
+    stroke-width="2.4"
+    marker-end="url(#${perpendicularArrowId})"/>
+
+  <text
+    x="149"
+    y="206"
+    font-family="Arial, sans-serif"
+    font-size="7.1"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    mg cosθ
+
+  </text>
+
+  <!-- Normal force -->
+
+  <line
+    x1="211"
+    y1="210"
+    x2="204"
+    y2="197"
+    stroke="#16a34a"
+    stroke-width="2.4"
+    marker-end="url(#${normalArrowId})"/>
+
+  <text
+    x="218"
+    y="206"
+    font-family="Arial, sans-serif"
+    font-size="7.1"
+    font-weight="700"
+    fill="#15803d">
+
+    N
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="337"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10.6"
+    font-weight="700"
+    fill="#0f172a">
+
+    Force components
+
+  </text>
+
+  <!-- Pause control -->
+
+  <g
+    data-incline-forces-pause
+    role="button"
+    tabindex="0"
+    aria-label="Pause incline-force animation"
+    aria-pressed="false"
+    transform="translate(393 42)"
+    style="cursor:pointer"
+    pointer-events="all">
+
+    <title>
+      Pause or resume the animation
+    </title>
+
+    <rect
+      class="inclinePauseOutline"
+      x="-12"
+      y="-10"
+      width="24"
+      height="20"
+      rx="6"
+      fill="#ffffff"
+      stroke="#94a3b8"
+      stroke-width="1.1"/>
+
+    <g class="inclinePauseSymbol">
+
+      <rect
+        x="-4.7"
+        y="-5"
+        width="3.2"
+        height="10"
+        rx="0.8"
+        fill="#475569"/>
+
+      <rect
+        x="1.5"
+        y="-5"
+        width="3.2"
+        height="10"
+        rx="0.8"
+        fill="#475569"/>
+
+    </g>
+
+    <path
+      class="inclinePlaySymbol"
+      d="M -3.5 -5.5 L 5.5 0 L -3.5 5.5 Z"
+      fill="#475569"
+      display="none"/>
+
+  </g>
+
+  <line
+    x1="284"
+    y1="52"
+    x2="398"
+    y2="52"
+    stroke="#e2e8f0"/>
+
+  <!-- Equal-angle explanation -->
+
+  <rect
+    x="283"
+    y="59"
+    width="116"
+    height="38"
+    rx="8"
+    fill="#faf5ff"
+    stroke="#c4b5fd"/>
+
+  <text
+    x="341"
+    y="72"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.7"
+    font-weight="700"
+    fill="#6d28d9">
+
+    The two marked angles
+
+  </text>
+
+  <text
+    x="341"
+    y="84"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.7"
+    font-weight="700"
+    fill="#6d28d9">
+
+    are both θ
+
+  </text>
+
+  <text
+    x="341"
+    y="93"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.9"
+    fill="#64748b">
+
+    plane ⟂ normal; horizontal ⟂ mg
+
+  </text>
+
+  <!-- Parallel component -->
+
+  <rect
+    x="283"
+    y="103"
+    width="116"
+    height="32"
+    rx="8"
+    fill="#fff7ed"
+    stroke="#fdba74"/>
+
+  <text
+    x="341"
+    y="116"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.7"
+    font-weight="700"
+    fill="#c2410c">
+
+    down the plane
+
+  </text>
+
+  <text
+    x="341"
+    y="129"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.6"
+    font-weight="700"
+    fill="#c2410c">
+
+    W∥ = mg sinθ
+
+  </text>
+
+  <!-- Perpendicular component -->
+
+  <rect
+    x="283"
+    y="141"
+    width="116"
+    height="32"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="154"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.7"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    adjacent to θ
+
+  </text>
+
+  <text
+    x="341"
+    y="167"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.6"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    W⊥ = mg cosθ
+
+  </text>
+
+  <!-- Normal force -->
+
+  <rect
+    x="283"
+    y="179"
+    width="116"
+    height="39"
+    rx="8"
+    fill="#ecfdf5"
+    stroke="#86efac"/>
+
+  <text
+    x="341"
+    y="192"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.7"
+    font-weight="700"
+    fill="#15803d">
+
+    no acceleration normal
+
+  </text>
+
+  <text
+    x="341"
+    y="205"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.5"
+    font-weight="700"
+    fill="#15803d">
+
+    N = mg cosθ
+
+  </text>
+
+  <!-- Animated stage text -->
+
+  <g opacity="1">
+
+    <animate
+      attributeName="opacity"
+      values="${stage0Opacity}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="341"
+      y="216"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      font-weight="700"
+      fill="#64748b">
+
+      0°: N = mg; W∥ = 0
+
+    </text>
+
+  </g>
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${stage45Opacity}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="341"
+      y="216"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      font-weight="700"
+      fill="#64748b">
+
+      45°: both components = 0.707mg
+
+    </text>
+
+  </g>
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${stage90Opacity}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="341"
+      y="216"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      font-weight="700"
+      fill="#64748b">
+
+      90° limit: N → 0; W∥ → mg
+
+    </text>
+
+  </g>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#64748b">
+
+    The angle between mg and its inward perpendicular component is θ.
+
+  </text>
+
+</svg>
+`;
+  })()
+},
+
+{
+  topic: "Mechanics",
+
+  term: "How does friction determine when a block begins to slide down an incline?",
+
+  equation: "\\boxed{f_s\\leq\\mu_sN}\\qquad\\boxed{f_k=\\mu_kN}\\qquad\\boxed{a=g\\left(\\sin\\theta-\\mu_k\\cos\\theta\\right)}",
+answer: "Consider a block initially at rest while the angle of the incline is slowly increased. The component of weight down the plane is mg sin θ. Static friction acts up the plane and adjusts from zero to whatever value is needed to prevent motion, so fₛ = mg sin θ while fₛ remains below its maximum value μₛN. Here μₛ = μₖ = 0.50 and N = mg cos θ. The block begins to slip when mg sin θ exceeds μₛmg cos θ. This occurs when tan θc = μₛ, giving θc ≈ 26.6°. Once the block is sliding, the friction is kinetic: fₖ = μₖN = 0.50mg cos θ. The net force is then mg sin θ − 0.50mg cos θ, giving a = g(sin θ − 0.50 cos θ). The net force is not an additional force; it is the vector sum of the forces acting on the block.",
+
+  svg: (() => {
+
+    /* ===================================================
+       UNIQUE SVG IDS
+       =================================================== */
+
+    const instanceKey =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const weightArrowId =
+      `frictionInclineWeight-${instanceKey}`;
+
+    const parallelArrowId =
+      `frictionInclineParallel-${instanceKey}`;
+
+    const perpendicularArrowId =
+      `frictionInclinePerpendicular-${instanceKey}`;
+
+    const normalArrowId =
+      `frictionInclineNormal-${instanceKey}`;
+
+    const frictionArrowId =
+      `frictionInclineFriction-${instanceKey}`;
+
+    const resultantArrowId =
+      `frictionInclineResultant-${instanceKey}`;
+
+    const rampGradientId =
+      `frictionInclineRamp-${instanceKey}`;
+
+    /* ===================================================
+       PAUSE / PLAY CONTROL
+       =================================================== */
+
+    if (typeof document !== "undefined") {
+
+      if (globalThis.__staticKineticInclineClickHandler) {
+        document.removeEventListener(
+          "click",
+          globalThis.__staticKineticInclineClickHandler,
+          true
+        );
+      }
+
+      if (globalThis.__staticKineticInclineKeyHandler) {
+        document.removeEventListener(
+          "keydown",
+          globalThis.__staticKineticInclineKeyHandler,
+          true
+        );
+      }
+
+      const findPauseButton = target => {
+
+        if (
+          typeof Element === "undefined" ||
+          !(target instanceof Element)
+        ) {
+          return null;
+        }
+
+        return target.closest(
+          "[data-static-kinetic-incline-pause]"
+        );
+      };
+
+      const toggleAnimation = button => {
+
+        const rootSvg =
+          button.ownerSVGElement;
+
+        if (
+          !rootSvg ||
+          typeof rootSvg.pauseAnimations !== "function" ||
+          typeof rootSvg.unpauseAnimations !== "function"
+        ) {
+          return;
+        }
+
+        const isPaused =
+          button.getAttribute("aria-pressed") === "true";
+
+        const pauseSymbol =
+          button.querySelector(
+            ".staticKineticPauseSymbol"
+          );
+
+        const playSymbol =
+          button.querySelector(
+            ".staticKineticPlaySymbol"
+          );
+
+        if (isPaused) {
+
+          rootSvg.unpauseAnimations();
+
+          button.setAttribute(
+            "aria-pressed",
+            "false"
+          );
+
+          button.setAttribute(
+            "aria-label",
+            "Pause incline-friction animation"
+          );
+
+          pauseSymbol?.setAttribute(
+            "display",
+            "inline"
+          );
+
+          playSymbol?.setAttribute(
+            "display",
+            "none"
+          );
+
+        } else {
+
+          rootSvg.pauseAnimations();
+
+          button.setAttribute(
+            "aria-pressed",
+            "true"
+          );
+
+          button.setAttribute(
+            "aria-label",
+            "Resume incline-friction animation"
+          );
+
+          pauseSymbol?.setAttribute(
+            "display",
+            "none"
+          );
+
+          playSymbol?.setAttribute(
+            "display",
+            "inline"
+          );
+        }
+      };
+
+      globalThis.__staticKineticInclineClickHandler =
+        event => {
+
+          const button =
+            findPauseButton(event.target);
+
+          if (!button) return;
+
+          event.preventDefault();
+          event.stopPropagation();
+
+          toggleAnimation(button);
+        };
+
+      globalThis.__staticKineticInclineKeyHandler =
+        event => {
+
+          const button =
+            findPauseButton(event.target);
+
+          if (!button) return;
+
+          if (
+            event.key === "Enter" ||
+            event.key === " " ||
+            event.key === "Spacebar"
+          ) {
+
+            event.preventDefault();
+            event.stopPropagation();
+
+            toggleAnimation(button);
+          }
+        };
+
+      document.addEventListener(
+        "click",
+        globalThis.__staticKineticInclineClickHandler,
+        true
+      );
+
+      document.addEventListener(
+        "keydown",
+        globalThis.__staticKineticInclineKeyHandler,
+        true
+      );
+    }
+
+    /* ===================================================
+       PHYSICAL MODEL
+
+       μs = μk = 0.50
+
+       Before slipping:
+
+         fs = mg sinθ
+
+         ΣF∥ = 0
+
+         a = 0
+
+       Maximum static friction:
+
+         fs,max = μsN
+
+                = μsmg cosθ
+
+       Critical angle:
+
+         mg sinθc = μsmg cosθc
+
+         tanθc = μs
+
+         θc = tan⁻¹(0.50)
+
+            ≈ 26.6°
+
+       After slipping:
+
+         fk = μkN
+
+            = 0.50mg cosθ
+
+         ΣF∥ = mg sinθ − 0.50mg cosθ
+
+         a = g(sinθ − 0.50cosθ)
+       =================================================== */
+
+    const muStatic = 0.50;
+    const muKinetic = 0.50;
+
+    const criticalAngle =
+      Math.atan(muStatic) *
+      180 /
+      Math.PI;
+
+    const pivotX = 52;
+    const pivotY = 158;
+
+    const planeLength = 122;
+    const blockDistance = 82;
+    const blockOffset = 11;
+
+    const weightLength = 42;
+    const forceScale = 40;
+
+    /*
+      The resultant is placed farther above the block
+      than the individual physical-force vectors.
+    */
+
+    const netDisplayOffset = 37;
+
+    const duration = 20;
+
+    const angles = [
+      0,
+      0,
+      15,
+      criticalAngle,
+      30,
+      45,
+      60,
+      75,
+      89.5,
+      89.5
+    ];
+
+    const keyTimes = [
+      0,
+      0.07,
+      0.19,
+      0.34,
+      0.43,
+      0.56,
+      0.69,
+      0.82,
+      0.94,
+      1
+    ];
+
+    const keyTimesString =
+      keyTimes.join(";");
+
+    const toRadians =
+      degrees =>
+        degrees *
+        Math.PI / 180;
+
+    const format =
+      value =>
+        Number(value).toFixed(2);
+
+    /* ===================================================
+       ANIMATED VALUES
+       =================================================== */
+
+    const planeEndXValues = [];
+    const planeEndYValues = [];
+    const planePolygonValues = [];
+
+    const blockXValues = [];
+    const blockYValues = [];
+    const blockRotationValues = [];
+
+    const baseAngleArcValues = [];
+    const baseThetaXValues = [];
+    const baseThetaYValues = [];
+
+    const parallelXValues = [];
+    const parallelYValues = [];
+
+    const perpendicularXValues = [];
+    const perpendicularYValues = [];
+
+    const normalXValues = [];
+    const normalYValues = [];
+
+    const frictionXValues = [];
+    const frictionYValues = [];
+
+    const frictionLabelXValues = [];
+    const frictionLabelYValues = [];
+
+    const componentAngleArcValues = [];
+    const componentThetaXValues = [];
+    const componentThetaYValues = [];
+
+    const netBaseXValues = [];
+    const netBaseYValues = [];
+
+    const netFirstEndXValues = [];
+    const netFirstEndYValues = [];
+
+    const netSecondStartXValues = [];
+    const netSecondStartYValues = [];
+
+    const netEndXValues = [];
+    const netEndYValues = [];
+
+    const netLabelXValues = [];
+    const netLabelYValues = [];
+
+    angles.forEach(angle => {
+
+      const radians =
+        toRadians(angle);
+
+      const cosTheta =
+        Math.cos(radians);
+
+      const sinTheta =
+        Math.sin(radians);
+
+      /* -----------------------------------------------
+         Incline geometry
+         ----------------------------------------------- */
+
+      const planeEndX =
+        pivotX +
+        planeLength *
+        cosTheta;
+
+      const planeEndY =
+        pivotY -
+        planeLength *
+        sinTheta;
+
+      planeEndXValues.push(
+        format(planeEndX)
+      );
+
+      planeEndYValues.push(
+        format(planeEndY)
+      );
+
+      planePolygonValues.push(
+        [
+          `${format(pivotX)},${format(pivotY)}`,
+          `${format(planeEndX)},${format(planeEndY)}`,
+          `${format(planeEndX)},${format(pivotY)}`
+        ].join(" ")
+      );
+
+      /* -----------------------------------------------
+         Unit directions
+         ----------------------------------------------- */
+
+      const upSlopeX =
+        cosTheta;
+
+      const upSlopeY =
+        -sinTheta;
+
+      const downSlopeX =
+        -cosTheta;
+
+      const downSlopeY =
+        sinTheta;
+
+      const outwardNormalX =
+        -sinTheta;
+
+      const outwardNormalY =
+        -cosTheta;
+
+      const inwardNormalX =
+        sinTheta;
+
+      const inwardNormalY =
+        cosTheta;
+
+      /* -----------------------------------------------
+         Block position
+         ----------------------------------------------- */
+
+      const contactX =
+        pivotX +
+        blockDistance *
+        cosTheta;
+
+      const contactY =
+        pivotY -
+        blockDistance *
+        sinTheta;
+
+      const blockX =
+        contactX +
+        blockOffset *
+        outwardNormalX;
+
+      const blockY =
+        contactY +
+        blockOffset *
+        outwardNormalY;
+
+      blockXValues.push(
+        format(blockX)
+      );
+
+      blockYValues.push(
+        format(blockY)
+      );
+
+      blockRotationValues.push(
+        format(-angle)
+      );
+
+      /* -----------------------------------------------
+         Force magnitudes
+         ----------------------------------------------- */
+
+      const parallelMagnitude =
+        forceScale *
+        sinTheta;
+
+      const normalMagnitude =
+        forceScale *
+        cosTheta;
+
+      /*
+        Static friction exactly matches the downslope
+        component until its limiting value is reached.
+
+        Once the block slips, the friction is kinetic.
+      */
+
+      const isStatic =
+        angle <=
+        criticalAngle + 0.001;
+
+      const frictionMagnitude =
+        isStatic
+          ? parallelMagnitude
+          : muKinetic *
+            normalMagnitude;
+
+      const netMagnitude =
+        isStatic
+          ? 0
+          : Math.max(
+              0,
+              parallelMagnitude -
+              frictionMagnitude
+            );
+
+      /* -----------------------------------------------
+         mg sinθ
+         ----------------------------------------------- */
+
+      parallelXValues.push(
+        format(
+          downSlopeX *
+          parallelMagnitude
+        )
+      );
+
+      parallelYValues.push(
+        format(
+          downSlopeY *
+          parallelMagnitude
+        )
+      );
+
+      /* -----------------------------------------------
+         mg cosθ
+         ----------------------------------------------- */
+
+      perpendicularXValues.push(
+        format(
+          inwardNormalX *
+          normalMagnitude
+        )
+      );
+
+      perpendicularYValues.push(
+        format(
+          inwardNormalY *
+          normalMagnitude
+        )
+      );
+
+      /* -----------------------------------------------
+         Normal force
+         ----------------------------------------------- */
+
+      normalXValues.push(
+        format(
+          outwardNormalX *
+          normalMagnitude
+        )
+      );
+
+      normalYValues.push(
+        format(
+          outwardNormalY *
+          normalMagnitude
+        )
+      );
+
+      /* -----------------------------------------------
+         Friction: up the plane
+         ----------------------------------------------- */
+
+      const frictionX =
+        upSlopeX *
+        frictionMagnitude;
+
+      const frictionY =
+        upSlopeY *
+        frictionMagnitude;
+
+      frictionXValues.push(
+        format(frictionX)
+      );
+
+      frictionYValues.push(
+        format(frictionY)
+      );
+
+      frictionLabelXValues.push(
+        format(
+          frictionX * 0.65 +
+          outwardNormalX * 8
+        )
+      );
+
+      frictionLabelYValues.push(
+        format(
+          frictionY * 0.65 +
+          outwardNormalY * 8
+        )
+      );
+
+      /* -----------------------------------------------
+         Base angle
+         ----------------------------------------------- */
+
+      const baseArcRadius = 22;
+
+      const baseArcEndX =
+        pivotX +
+        baseArcRadius *
+        cosTheta;
+
+      const baseArcEndY =
+        pivotY -
+        baseArcRadius *
+        sinTheta;
+
+      baseAngleArcValues.push(
+        [
+          `M ${format(pivotX + baseArcRadius)} ${format(pivotY)}`,
+          `A ${baseArcRadius} ${baseArcRadius}`,
+          `0 0 0`,
+          `${format(baseArcEndX)} ${format(baseArcEndY)}`
+        ].join(" ")
+      );
+
+      const baseLabelRadians =
+        toRadians(
+          Math.max(
+            angle / 2,
+            7
+          )
+        );
+
+      baseThetaXValues.push(
+        format(
+          pivotX +
+          32 *
+          Math.cos(baseLabelRadians)
+        )
+      );
+
+      baseThetaYValues.push(
+        format(
+          pivotY -
+          29 *
+          Math.sin(baseLabelRadians)
+        )
+      );
+
+      /* -----------------------------------------------
+         Angle between mg and mg cosθ
+         ----------------------------------------------- */
+
+      const componentArcRadius = 18;
+
+      const componentArcStartX =
+        componentArcRadius *
+        sinTheta;
+
+      const componentArcStartY =
+        componentArcRadius *
+        cosTheta;
+
+      componentAngleArcValues.push(
+        [
+          `M ${format(componentArcStartX)} ${format(componentArcStartY)}`,
+          `A ${componentArcRadius} ${componentArcRadius}`,
+          `0 0 1`,
+          `0 ${format(componentArcRadius)}`
+        ].join(" ")
+      );
+
+      componentThetaXValues.push(
+        format(
+          6 +
+          25 *
+          Math.sin(radians / 2)
+        )
+      );
+
+      componentThetaYValues.push(
+        format(
+          25 *
+          Math.cos(radians / 2)
+        )
+      );
+
+      /* -----------------------------------------------
+         Resultant indicator
+
+         This is deliberately offset above the block.
+
+         It represents the vector sum of the forces,
+         not an additional physical force.
+         ----------------------------------------------- */
+
+      const netVectorX =
+        downSlopeX *
+        netMagnitude;
+
+      const netVectorY =
+        downSlopeY *
+        netMagnitude;
+
+      const netBaseX =
+        outwardNormalX *
+        netDisplayOffset;
+
+      const netBaseY =
+        outwardNormalY *
+        netDisplayOffset;
+
+      const netFirstEndX =
+        netBaseX +
+        netVectorX *
+        0.56;
+
+      const netFirstEndY =
+        netBaseY +
+        netVectorY *
+        0.56;
+
+      const netSecondStartX =
+        netBaseX +
+        netVectorX *
+        0.43;
+
+      const netSecondStartY =
+        netBaseY +
+        netVectorY *
+        0.43;
+
+      const netEndX =
+        netBaseX +
+        netVectorX;
+
+      const netEndY =
+        netBaseY +
+        netVectorY;
+
+      netBaseXValues.push(
+        format(netBaseX)
+      );
+
+      netBaseYValues.push(
+        format(netBaseY)
+      );
+
+      netFirstEndXValues.push(
+        format(netFirstEndX)
+      );
+
+      netFirstEndYValues.push(
+        format(netFirstEndY)
+      );
+
+      netSecondStartXValues.push(
+        format(netSecondStartX)
+      );
+
+      netSecondStartYValues.push(
+        format(netSecondStartY)
+      );
+
+      netEndXValues.push(
+        format(netEndX)
+      );
+
+      netEndYValues.push(
+        format(netEndY)
+      );
+
+      netLabelXValues.push(
+        format(
+          netBaseX +
+          netVectorX * 0.5 +
+          outwardNormalX * 8
+        )
+      );
+
+      netLabelYValues.push(
+        format(
+          netBaseY +
+          netVectorY * 0.5 +
+          outwardNormalY * 8
+        )
+      );
+    });
+
+    const blockTranslationValues =
+      blockXValues
+        .map(
+          (x, index) =>
+            `${x} ${blockYValues[index]}`
+        )
+        .join(";");
+
+    /* ===================================================
+       PHASE OPACITIES
+       =================================================== */
+
+    const staticPhaseOpacity =
+      "1;1;1;0;0;0;0;0;0;0";
+
+    const criticalPhaseOpacity =
+      "0;0;0;1;0;0;0;0;0;0";
+
+    const slidingPhaseOpacity =
+      "0;0;0;0;1;1;1;1;1;1";
+
+    const netOpacity =
+      "0;0;0;0;1;1;1;1;1;1";
+
+    /* ===================================================
+       SVG
+       =================================================== */
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Medium-sized arrowheads -->
+
+    <!-- Weight -->
+
+    <marker
+      id="${weightArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.8"
+      markerHeight="3.8"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#dc2626"/>
+
+    </marker>
+
+    <!-- Parallel component -->
+
+    <marker
+      id="${parallelArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.6"
+      markerHeight="3.6"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#ea580c"/>
+
+    </marker>
+
+    <!-- Perpendicular component -->
+
+    <marker
+      id="${perpendicularArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.5"
+      markerHeight="3.5"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#2563eb"/>
+
+    </marker>
+
+    <!-- Normal force -->
+
+    <marker
+      id="${normalArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.6"
+      markerHeight="3.6"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#16a34a"/>
+
+    </marker>
+
+    <!-- Friction -->
+
+    <marker
+      id="${frictionArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.6"
+      markerHeight="3.6"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#7c3aed"/>
+
+    </marker>
+
+    <!-- Resultant -->
+
+    <marker
+      id="${resultantArrowId}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.5"
+      markerHeight="3.5"
+      orient="auto">
+
+      <path
+        d="M 0 0 L 10 5 L 0 10 Z"
+        fill="#0f172a"/>
+
+    </marker>
+
+    <linearGradient
+      id="${rampGradientId}"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="1">
+
+      <stop
+        offset="0%"
+        stop-color="#fde68a"/>
+
+      <stop
+        offset="100%"
+        stop-color="#f59e0b"/>
+
+    </linearGradient>
+
+    <style>
+
+      [data-static-kinetic-incline-pause]:focus
+      .staticKineticPauseOutline {
+        stroke: #2563eb;
+        stroke-width: 2;
+      }
+
+    </style>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Static friction prevents motion—until its limit is reached
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#fffdf5"
+    stroke="#fcd34d"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="43"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.1"
+    font-weight="700"
+    fill="#92400e">
+
+    Block initially at rest; μₛ = μₖ = 0.50
+
+  </text>
+
+  <!-- Horizontal reference -->
+
+  <line
+    x1="${pivotX}"
+    y1="${pivotY}"
+    x2="${pivotX + 52}"
+    y2="${pivotY}"
+    stroke="#94a3b8"
+    stroke-width="1.1"
+    stroke-dasharray="4 3"/>
+
+  <!-- Incline angle -->
+
+  <path
+    d="${baseAngleArcValues[0]}"
+    fill="none"
+    stroke="#7c3aed"
+    stroke-width="1.8">
+
+    <animate
+      attributeName="d"
+      values="${baseAngleArcValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </path>
+
+  <text
+    x="${baseThetaXValues[0]}"
+    y="${baseThetaYValues[0]}"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.5"
+    font-weight="700"
+    fill="#6d28d9"
+    paint-order="stroke"
+    stroke="#fffdf5"
+    stroke-width="3">
+
+    θ
+
+    <animate
+      attributeName="x"
+      values="${baseThetaXValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y"
+      values="${baseThetaYValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </text>
+
+  <!-- Ramp body -->
+
+  <polygon
+    points="${planePolygonValues[0]}"
+    fill="url(#${rampGradientId})"
+    opacity="0.38">
+
+    <animate
+      attributeName="points"
+      values="${planePolygonValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </polygon>
+
+  <!-- Ramp surface -->
+
+  <line
+    x1="${pivotX}"
+    y1="${pivotY}"
+    x2="${planeEndXValues[0]}"
+    y2="${planeEndYValues[0]}"
+    stroke="#92400e"
+    stroke-width="6"
+    stroke-linecap="round">
+
+    <animate
+      attributeName="x2"
+      values="${planeEndXValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="y2"
+      values="${planeEndYValues.join(";")}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </line>
+
+  <circle
+    cx="${pivotX}"
+    cy="${pivotY}"
+    r="2.7"
+    fill="#78716c"/>
+
+  <!-- ================================================= -->
+  <!-- BLOCK AND FORCES                                   -->
+  <!-- ================================================= -->
+
+  <g
+    transform="
+      translate(
+        ${blockXValues[0]}
+        ${blockYValues[0]}
+      )
+    ">
+
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      values="${blockTranslationValues}"
+      keyTimes="${keyTimesString}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <!-- mg cosθ: resolved component into the plane -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="${perpendicularXValues[0]}"
+      y2="${perpendicularYValues[0]}"
+      stroke="#2563eb"
+      stroke-width="2.1"
+      stroke-dasharray="4 2"
+      opacity="0.72"
+      marker-end="url(#${perpendicularArrowId})">
+
+      <animate
+        attributeName="x2"
+        values="${perpendicularXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y2"
+        values="${perpendicularYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <!-- Normal force -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="${normalXValues[0]}"
+      y2="${normalYValues[0]}"
+      stroke="#16a34a"
+      stroke-width="2.4"
+      marker-end="url(#${normalArrowId})">
+
+      <animate
+        attributeName="x2"
+        values="${normalXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y2"
+        values="${normalYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <!-- Friction -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="${frictionXValues[0]}"
+      y2="${frictionYValues[0]}"
+      stroke="#7c3aed"
+      stroke-width="2.5"
+      marker-end="url(#${frictionArrowId})">
+
+      <animate
+        attributeName="x2"
+        values="${frictionXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y2"
+        values="${frictionYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <text
+      x="${frictionLabelXValues[0]}"
+      y="${frictionLabelYValues[0]}"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.1"
+      font-weight="700"
+      fill="#6d28d9"
+      paint-order="stroke"
+      stroke="#ffffff"
+      stroke-width="3">
+
+      f
+
+      <animate
+        attributeName="x"
+        values="${frictionLabelXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y"
+        values="${frictionLabelYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </text>
+
+    <!-- mg sinθ: down the plane -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="${parallelXValues[0]}"
+      y2="${parallelYValues[0]}"
+      stroke="#ea580c"
+      stroke-width="2.5"
+      marker-end="url(#${parallelArrowId})">
+
+      <animate
+        attributeName="x2"
+        values="${parallelXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y2"
+        values="${parallelYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <!-- Weight remains vertical -->
+
+    <line
+      x1="0"
+      y1="0"
+      x2="0"
+      y2="${weightLength}"
+      stroke="#dc2626"
+      stroke-width="2.6"
+      marker-end="url(#${weightArrowId})"/>
+
+    <text
+      x="-7"
+      y="34"
+      text-anchor="end"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#b91c1c"
+      paint-order="stroke"
+      stroke="#ffffff"
+      stroke-width="3">
+
+      mg
+
+    </text>
+
+    <!-- Semi-transparent block -->
+
+    <g
+      transform="
+        rotate(
+          ${blockRotationValues[0]}
+        )
+      ">
+
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="${blockRotationValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <rect
+        x="-14"
+        y="-10"
+        width="28"
+        height="20"
+        rx="3"
+        fill="#e5e7eb"
+        fill-opacity="0.55"
+        stroke="#475569"
+        stroke-width="1.4"/>
+
+      <rect
+        x="-10"
+        y="-6"
+        width="20"
+        height="12"
+        rx="2"
+        fill="#ffffff"
+        fill-opacity="0.24"
+        stroke="#94a3b8"
+        stroke-opacity="0.35"
+        stroke-width="0.7"/>
+
+      <text
+        x="0"
+        y="3.5"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#334155">
+
+        m
+
+      </text>
+
+    </g>
+
+    <!-- Angle between mg and mg cosθ -->
+
+    <path
+      d="${componentAngleArcValues[0]}"
+      fill="none"
+      stroke="#7c3aed"
+      stroke-width="1.7">
+
+      <animate
+        attributeName="d"
+        values="${componentAngleArcValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </path>
+
+    <text
+      x="${componentThetaXValues[0]}"
+      y="${componentThetaYValues[0]}"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8.8"
+      font-weight="700"
+      fill="#6d28d9"
+      paint-order="stroke"
+      stroke="#ffffff"
+      stroke-width="3">
+
+      θ
+
+      <animate
+        attributeName="x"
+        values="${componentThetaXValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="y"
+        values="${componentThetaYValues.join(";")}"
+        keyTimes="${keyTimesString}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </text>
+
+    <!-- ================================================= -->
+    <!-- RESULTANT INDICATOR                               -->
+    <!-- Hidden while static friction maintains balance    -->
+    <!-- ================================================= -->
+
+    <g opacity="0">
+
+      <animate
+        attributeName="opacity"
+        values="${netOpacity}"
+        keyTimes="${keyTimesString}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <!-- First chevron -->
+
+      <line
+        x1="${netBaseXValues[0]}"
+        y1="${netBaseYValues[0]}"
+        x2="${netFirstEndXValues[0]}"
+        y2="${netFirstEndYValues[0]}"
+        stroke="#0f172a"
+        stroke-width="2.3"
+        stroke-dasharray="3 2"
+        marker-end="url(#${resultantArrowId})">
+
+        <animate
+          attributeName="x1"
+          values="${netBaseXValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <animate
+          attributeName="y1"
+          values="${netBaseYValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <animate
+          attributeName="x2"
+          values="${netFirstEndXValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <animate
+          attributeName="y2"
+          values="${netFirstEndYValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </line>
+
+      <!-- Second chevron -->
+
+      <line
+        x1="${netSecondStartXValues[0]}"
+        y1="${netSecondStartYValues[0]}"
+        x2="${netEndXValues[0]}"
+        y2="${netEndYValues[0]}"
+        stroke="#0f172a"
+        stroke-width="2.3"
+        stroke-dasharray="3 2"
+        marker-end="url(#${resultantArrowId})">
+
+        <animate
+          attributeName="x1"
+          values="${netSecondStartXValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <animate
+          attributeName="y1"
+          values="${netSecondStartYValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <animate
+          attributeName="x2"
+          values="${netEndXValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <animate
+          attributeName="y2"
+          values="${netEndYValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </line>
+
+      <text
+        x="${netLabelXValues[0]}"
+        y="${netLabelYValues[0]}"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.9"
+        font-weight="700"
+        fill="#0f172a"
+        paint-order="stroke"
+        stroke="#ffffff"
+        stroke-width="3">
+
+        ΣF∥ → a
+
+        <animate
+          attributeName="x"
+          values="${netLabelXValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <animate
+          attributeName="y"
+          values="${netLabelYValues.join(";")}"
+          keyTimes="${keyTimesString}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </text>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- LEFT-PANEL LEGEND                                  -->
+  <!-- ================================================= -->
+
+  <rect
+    x="20"
+    y="190"
+    width="230"
+    height="30"
+    rx="9"
+    fill="#ffffff"
+    stroke="#e5e7eb"/>
+
+  <!-- Downslope component -->
+
+  <line
+    x1="27"
+    y1="199"
+    x2="40"
+    y2="205"
+    stroke="#ea580c"
+    stroke-width="2.2"
+    marker-end="url(#${parallelArrowId})"/>
+
+  <text
+    x="46"
+    y="203"
+    font-family="Arial, sans-serif"
+    font-size="6.6"
+    font-weight="700"
+    fill="#c2410c">
+
+    mg sinθ
+
+  </text>
+
+  <!-- Friction -->
+
+  <line
+    x1="98"
+    y1="205"
+    x2="111"
+    y2="199"
+    stroke="#7c3aed"
+    stroke-width="2.2"
+    marker-end="url(#${frictionArrowId})"/>
+
+  <text
+    x="117"
+    y="203"
+    font-family="Arial, sans-serif"
+    font-size="6.6"
+    font-weight="700"
+    fill="#6d28d9">
+
+    friction
+
+  </text>
+
+  <!-- Resultant -->
+
+  <line
+    x1="179"
+    y1="202"
+    x2="190"
+    y2="202"
+    stroke="#0f172a"
+    stroke-width="2"
+    stroke-dasharray="3 2"
+    marker-end="url(#${resultantArrowId})"/>
+
+  <line
+    x1="187"
+    y1="202"
+    x2="198"
+    y2="202"
+    stroke="#0f172a"
+    stroke-width="2"
+    stroke-dasharray="3 2"
+    marker-end="url(#${resultantArrowId})"/>
+
+  <text
+    x="205"
+    y="204"
+    font-family="Arial, sans-serif"
+    font-size="6.6"
+    font-weight="700"
+    fill="#0f172a">
+
+    net force
+
+  </text>
+
+  <!-- Static phase -->
+
+  <g opacity="1">
+
+    <animate
+      attributeName="opacity"
+      values="${staticPhaseOpacity}"
+      keyTimes="${keyTimesString}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="135"
+      y="217"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.9"
+      font-weight="700"
+      fill="#475569">
+
+      Static: friction grows to match mg sinθ; ΣF = 0 and a = 0
+
+    </text>
+
+  </g>
+
+  <!-- Critical point -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${criticalPhaseOpacity}"
+      keyTimes="${keyTimesString}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="135"
+      y="217"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.9"
+      font-weight="700"
+      fill="#15803d">
+
+      θ = 26.6°: static friction is at its maximum—about to slip
+
+    </text>
+
+  </g>
+
+  <!-- Sliding phase -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${slidingPhaseOpacity}"
+      keyTimes="${keyTimesString}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="135"
+      y="217"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.9"
+      font-weight="700"
+      fill="#c2410c">
+
+      Sliding: mg sinθ exceeds friction; the block accelerates down
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="337"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10.4"
+    font-weight="700"
+    fill="#0f172a">
+
+    Static → kinetic friction
+
+  </text>
+
+  <!-- Pause button -->
+
+  <g
+    data-static-kinetic-incline-pause
+    role="button"
+    tabindex="0"
+    aria-label="Pause incline-friction animation"
+    aria-pressed="false"
+    transform="translate(393 42)"
+    style="cursor:pointer"
+    pointer-events="all">
+
+    <title>
+      Pause or resume the animation
+    </title>
+
+    <rect
+      class="staticKineticPauseOutline"
+      x="-12"
+      y="-10"
+      width="24"
+      height="20"
+      rx="6"
+      fill="#ffffff"
+      stroke="#94a3b8"
+      stroke-width="1.1"/>
+
+    <g class="staticKineticPauseSymbol">
+
+      <rect
+        x="-4.7"
+        y="-5"
+        width="3.2"
+        height="10"
+        rx="0.8"
+        fill="#475569"/>
+
+      <rect
+        x="1.5"
+        y="-5"
+        width="3.2"
+        height="10"
+        rx="0.8"
+        fill="#475569"/>
+
+    </g>
+
+    <path
+      class="staticKineticPlaySymbol"
+      d="M -3.5 -5.5 L 5.5 0 L -3.5 5.5 Z"
+      fill="#475569"
+      display="none"/>
+
+  </g>
+
+  <line
+    x1="284"
+    y1="52"
+    x2="398"
+    y2="52"
+    stroke="#e2e8f0"/>
+
+  <!-- Coefficients -->
+
+  <rect
+    x="283"
+    y="59"
+    width="116"
+    height="26"
+    rx="8"
+    fill="#faf5ff"
+    stroke="#c4b5fd"/>
+
+  <text
+    x="341"
+    y="70"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.3"
+    font-weight="700"
+    fill="#6d28d9">
+
+    simplified model
+
+  </text>
+
+  <text
+    x="341"
+    y="81"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9"
+    font-weight="700"
+    fill="#6d28d9">
+
+    μₛ = μₖ = 0.50
+
+  </text>
+
+  <!-- Static friction -->
+
+  <rect
+    x="283"
+    y="91"
+    width="116"
+    height="38"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="103"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.3"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    before slipping
+
+  </text>
+
+  <text
+    x="341"
+    y="115"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.2"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    fₛ = mg sinθ
+
+  </text>
+
+  <text
+    x="341"
+    y="125"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.1"
+    fill="#475569">
+
+    while fₛ ≤ μₛN
+
+  </text>
+
+  <!-- Critical angle -->
+
+  <rect
+    x="283"
+    y="135"
+    width="116"
+    height="27"
+    rx="8"
+    fill="#ecfdf5"
+    stroke="#86efac"/>
+
+  <text
+    x="341"
+    y="146"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#15803d">
+
+    tanθc = μₛ = 0.50
+
+  </text>
+
+  <text
+    x="341"
+    y="158"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.5"
+    font-weight="700"
+    fill="#15803d">
+
+    θc ≈ 26.6°
+
+  </text>
+
+  <!-- Sliding -->
+
+  <rect
+    x="283"
+    y="168"
+    width="116"
+    height="34"
+    rx="8"
+    fill="#fff7ed"
+    stroke="#fdba74"/>
+
+  <text
+    x="341"
+    y="180"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#c2410c">
+
+    after slipping
+
+  </text>
+
+  <text
+    x="341"
+    y="191"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.9"
+    font-weight="700"
+    fill="#6d28d9">
+
+    fₖ = μₖN = 0.5mg cosθ
+
+  </text>
+
+  <text
+    x="341"
+    y="199"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.7"
+    font-weight="700"
+    fill="#c2410c">
+
+    a = g(sinθ − 0.5cosθ)
+
+  </text>
+
+  <!-- Net-force warning -->
+
+  <rect
+    x="283"
+    y="208"
+    width="116"
+    height="13"
+    rx="6"
+    fill="#f1f5f9"
+    stroke="#94a3b8"/>
+
+  <text
+    x="341"
+    y="216.8"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.4"
+    font-weight="700"
+    fill="#334155">
+
+    ΣF is a sum—not another force
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#64748b">
+
+    No acceleration occurs until the downslope weight component exceeds maximum static friction.
+
+  </text>
+
+</svg>
+`;
+  })()
+},
+{
+  topic: "Mechanics",
+
+  term: "Why does wheel spin reduce a car’s acceleration from rest?",
+
+  equation: "\\boxed{\\sum f_s\\leq\\mu_smg}\\qquad\\boxed{a_{\\max}=\\mu_sg}\\qquad\\boxed{\\sum f_k=\\mu_kmg}",
+
+  answer: "Consider a simplified four-wheel-drive car accelerating from rest on a level road. All four tyres are the same size. While they roll without slipping, static friction acts forwards on the car and increases as more engine torque is applied, up to a maximum total value of μₛmg. In this simplified model, the greatest possible acceleration without wheel spin is μₛg. If the engine demands more traction than static friction can provide, the tyres spin and their contact patches slide backwards across the road. The friction then becomes kinetic: Σfₖ = μₖmg. Because μₖ is usually smaller than μₛ, the forward traction force and acceleration decrease during wheel spin.",
+
+  svg: (() => {
+
+    const key =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const ids = {
+      staticArrow: `launchStatic-${key}`,
+      kineticArrow: `launchKinetic-${key}`,
+      accelArrow: `launchAccel-${key}`,
+      carGradient: `launchCar-${key}`
+    };
+
+    const duration = 12;
+
+    const keyTimes =
+      "0;0.18;0.58;0.72;1";
+
+    /*
+      Phase 1: at rest
+      Phase 2: controlled launch using static friction
+      Phase 3: wheel spin using kinetic friction
+    */
+
+    const carMotion =
+      "0 0;0 0;18 0;26 0;36 0";
+
+    /*
+      Positive SVG rotation is clockwise.
+
+      During wheel spin, the tyres rotate much faster
+      than the forward motion of the car requires.
+    */
+
+    const wheelRotation =
+      "0;0;180;420;980";
+
+    const staticOpacity =
+      "0;1;1;0;0";
+
+    const kineticOpacity =
+      "0;0;0;1;1";
+
+    const restTextOpacity =
+      "1;0;0;0;0";
+
+    const gripTextOpacity =
+      "0;1;1;0;0";
+
+    const spinTextOpacity =
+      "0;0;0;1;1";
+
+    /* ===================================================
+       REUSABLE WHEEL
+
+       All four tyres use exactly the same geometry.
+       =================================================== */
+
+    const wheel = (x, y) => `
+      <g transform="translate(${x} ${y})">
+
+        <g transform="rotate(0)">
+
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="${wheelRotation}"
+            keyTimes="${keyTimes}"
+            calcMode="linear"
+            dur="${duration}s"
+            repeatCount="indefinite"/>
+
+          <circle
+            cx="0"
+            cy="0"
+            r="12"
+            fill="#111827"
+            stroke="#64748b"
+            stroke-width="1.4"/>
+
+          <circle
+            cx="0"
+            cy="0"
+            r="5.8"
+            fill="#e2e8f0"
+            stroke="#94a3b8"
+            stroke-width="1"/>
+
+          <line
+            x1="-8"
+            y1="0"
+            x2="8"
+            y2="0"
+            stroke="#cbd5e1"
+            stroke-width="1.1"/>
+
+          <line
+            x1="0"
+            y1="-8"
+            x2="0"
+            y2="8"
+            stroke="#cbd5e1"
+            stroke-width="1.1"/>
+
+          <!-- Yellow marker makes rotation visible -->
+
+          <circle
+            cx="0"
+            cy="-8"
+            r="2"
+            fill="#fbbf24"/>
+
+        </g>
+
+      </g>`;
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Static-friction arrow -->
+
+    <marker
+      id="${ids.staticArrow}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.6"
+      markerHeight="3.6"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#7c3aed"/>
+
+    </marker>
+
+    <!-- Kinetic-friction arrow -->
+
+    <marker
+      id="${ids.kineticArrow}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.6"
+      markerHeight="3.6"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#dc2626"/>
+
+    </marker>
+
+    <!-- Acceleration arrow -->
+
+    <marker
+      id="${ids.accelArrow}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.6"
+      markerHeight="3.6"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#0f172a"/>
+
+    </marker>
+
+    <!-- Car body gradient -->
+
+    <linearGradient
+      id="${ids.carGradient}"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="1">
+
+      <stop
+        offset="0%"
+        stop-color="#93c5fd"/>
+
+      <stop
+        offset="100%"
+        stop-color="#2563eb"/>
+
+    </linearGradient>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Acceleration from rest: grip first, then wheel spin
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="43"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.2"
+    font-weight="700"
+    fill="#334155">
+
+    Simplified AWD car with four equal tyres
+
+  </text>
+
+  <!-- Road -->
+
+  <rect
+    x="18"
+    y="52"
+    width="236"
+    height="123"
+    rx="8"
+    fill="#475569"/>
+
+  <line
+    x1="24"
+    y1="114"
+    x2="248"
+    y2="114"
+    stroke="#cbd5e1"
+    stroke-width="1.5"
+    stroke-dasharray="12 9"
+    opacity="0.75"/>
+
+  <text
+    x="27"
+    y="64"
+    font-family="Arial, sans-serif"
+    font-size="6.8"
+    font-weight="700"
+    fill="#e2e8f0">
+
+    direction of travel →
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- MOVING CAR                                         -->
+  <!-- ================================================= -->
+
+  <g transform="translate(0 0)">
+
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      values="${carMotion}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <!-- One acceleration indicator -->
+
+    <line
+      x1="92"
+      y1="72"
+      x2="94"
+      y2="72"
+      stroke="#0f172a"
+      stroke-width="2.4"
+      stroke-dasharray="3 2"
+      marker-end="url(#${ids.accelArrow})">
+
+      <animate
+        attributeName="x2"
+        values="94;110;127;116;116"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <text
+      x="87"
+      y="75"
+      text-anchor="end"
+      font-family="Arial, sans-serif"
+      font-size="7"
+      font-weight="700"
+      fill="#f8fafc">
+
+      a
+
+    </text>
+
+    <!-- Four equal tyres -->
+
+    ${wheel(65, 91)}
+    ${wheel(176, 91)}
+    ${wheel(65, 143)}
+    ${wheel(176, 143)}
+
+    <!-- Car body -->
+
+    <path
+      d="
+        M61 82
+        Q52 89 52 101
+        L52 133
+        Q52 146 61 153
+        L179 153
+        Q192 146 194 133
+        L194 101
+        Q192 89 179 82
+        Z"
+      fill="url(#${ids.carGradient})"
+      fill-opacity="0.93"
+      stroke="#1e40af"
+      stroke-width="1.6"/>
+
+    <!-- Windows -->
+
+    <path
+      d="
+        M84 91
+        L159 91
+        Q170 96 174 107
+        L69 107
+        Q73 96 84 91
+        Z"
+      fill="#dbeafe"
+      stroke="#93c5fd"
+      stroke-width="1"/>
+
+    <path
+      d="
+        M69 129
+        L174 129
+        Q170 140 159 144
+        L84 144
+        Q73 140 69 129
+        Z"
+      fill="#dbeafe"
+      stroke="#93c5fd"
+      stroke-width="1"/>
+
+    <line
+      x1="121"
+      y1="91"
+      x2="121"
+      y2="144"
+      stroke="#1e40af"
+      stroke-width="1"
+      opacity="0.65"/>
+
+    <!-- Direction marker on bonnet -->
+
+    <path
+      d="M151 113 L175 118 L151 123 Z"
+      fill="#ffffff"
+      opacity="0.82"/>
+
+    <!-- ================================================= -->
+    <!-- ONE TOTAL STATIC-TRACTION ARROW                   -->
+    <!-- ================================================= -->
+
+    <g opacity="0">
+
+      <animate
+        attributeName="opacity"
+        values="${staticOpacity}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <line
+        x1="78"
+        y1="165"
+        x2="102"
+        y2="165"
+        stroke="#7c3aed"
+        stroke-width="2.8"
+        marker-end="url(#${ids.staticArrow})">
+
+        <animate
+          attributeName="x2"
+          values="82;94;116;116;116"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </line>
+
+      <text
+        x="122"
+        y="168"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        font-weight="700"
+        fill="#ede9fe">
+
+        Σfₛ
+
+      </text>
+
+    </g>
+
+    <!-- ================================================= -->
+    <!-- ONE TOTAL KINETIC-TRACTION ARROW                  -->
+    <!-- Shorter than maximum static traction              -->
+    <!-- ================================================= -->
+
+    <g opacity="0">
+
+      <animate
+        attributeName="opacity"
+        values="${kineticOpacity}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <line
+        x1="78"
+        y1="165"
+        x2="104"
+        y2="165"
+        stroke="#dc2626"
+        stroke-width="2.8"
+        marker-end="url(#${ids.kineticArrow})"/>
+
+      <text
+        x="111"
+        y="168"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        font-weight="700"
+        fill="#fee2e2">
+
+        Σfₖ
+
+      </text>
+
+    </g>
+
+    <!-- Wheel-spin streaks -->
+
+    <g opacity="0">
+
+      <animate
+        attributeName="opacity"
+        values="${kineticOpacity}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <g
+        stroke="#fb923c"
+        stroke-linecap="round">
+
+        <line
+          x1="43"
+          y1="91"
+          x2="53"
+          y2="91"
+          stroke-width="2"/>
+
+        <line
+          x1="43"
+          y1="143"
+          x2="53"
+          y2="143"
+          stroke-width="2"/>
+
+        <line
+          x1="154"
+          y1="91"
+          x2="164"
+          y2="91"
+          stroke-width="2"/>
+
+        <line
+          x1="154"
+          y1="143"
+          x2="164"
+          y2="143"
+          stroke-width="2"/>
+
+      </g>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE EXPLANATION                                  -->
+  <!-- ================================================= -->
+
+  <rect
+    x="22"
+    y="184"
+    width="228"
+    height="36"
+    rx="9"
+    fill="#f8fafc"
+    stroke="#e2e8f0"/>
+
+  <!-- At rest -->
+
+  <g opacity="1">
+
+    <animate
+      attributeName="opacity"
+      values="${restTextOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="200"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#334155">
+
+      At rest: no traction force is required yet
+
+    </text>
+
+    <text
+      x="136"
+      y="213"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      fill="#64748b">
+
+      Engine torque is about to be applied
+
+    </text>
+
+  </g>
+
+  <!-- Static grip -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${gripTextOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="198"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.6"
+      font-weight="700"
+      fill="#6d28d9">
+
+      Static grip: tyres roll without slipping
+
+    </text>
+
+    <text
+      x="136"
+      y="209"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      fill="#475569">
+
+      Static friction acts forwards and increases as needed
+
+    </text>
+
+    <text
+      x="136"
+      y="218"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.6"
+      fill="#64748b">
+
+      Maximum idealised acceleration: amax = μₛg
+
+    </text>
+
+  </g>
+
+  <!-- Wheel spin -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${spinTextOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="198"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.6"
+      font-weight="700"
+      fill="#b91c1c">
+
+      Wheel spin: contact patches slide backwards
+
+    </text>
+
+    <text
+      x="136"
+      y="209"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      fill="#475569">
+
+      Kinetic friction still pushes the car forwards
+
+    </text>
+
+    <text
+      x="136"
+      y="218"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.6"
+      fill="#64748b">
+
+      Usually μₖ &lt; μₛ, so the acceleration decreases
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="341"
+    y="45"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10.5"
+    font-weight="700"
+    fill="#0f172a">
+
+    Grip versus wheel spin
+
+  </text>
+
+  <!-- Simplified model -->
+
+  <rect
+    x="283"
+    y="58"
+    width="116"
+    height="35"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="72"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.3"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    simplified AWD model
+
+  </text>
+
+  <text
+    x="341"
+    y="86"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.3"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    ΣN = mg
+
+  </text>
+
+  <!-- Static grip -->
+
+  <rect
+    x="283"
+    y="101"
+    width="116"
+    height="43"
+    rx="8"
+    fill="#faf5ff"
+    stroke="#c4b5fd"/>
+
+  <text
+    x="341"
+    y="115"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.3"
+    font-weight="700"
+    fill="#6d28d9">
+
+    rolling without slipping
+
+  </text>
+
+  <text
+    x="341"
+    y="128"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.7"
+    font-weight="700"
+    fill="#6d28d9">
+
+    Σfₛ ≤ μₛmg
+
+  </text>
+
+  <text
+    x="341"
+    y="139"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.1"
+    fill="#64748b">
+
+    amax = μₛg
+
+  </text>
+
+  <!-- Wheel spin -->
+
+  <rect
+    x="283"
+    y="152"
+    width="116"
+    height="43"
+    rx="8"
+    fill="#fef2f2"
+    stroke="#fca5a5"/>
+
+  <text
+    x="341"
+    y="166"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.3"
+    font-weight="700"
+    fill="#b91c1c">
+
+    wheel spin
+
+  </text>
+
+  <text
+    x="341"
+    y="179"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.7"
+    font-weight="700"
+    fill="#b91c1c">
+
+    Σfₖ = μₖmg
+
+  </text>
+
+  <text
+    x="341"
+    y="190"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.1"
+    fill="#64748b">
+
+    usually μₖ &lt; μₛ
+
+  </text>
+
+  <!-- Main message -->
+
+  <rect
+    x="283"
+    y="203"
+    width="116"
+    height="18"
+    rx="7"
+    fill="#f8fafc"
+    stroke="#cbd5e1"/>
+
+  <text
+    x="341"
+    y="214.5"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.4"
+    font-weight="700"
+    fill="#334155">
+
+    Best launch: just below wheel spin
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#64748b">
+
+    Static friction provides the strongest controlled traction; wheel spin usually reduces acceleration.
+
+  </text>
+
+</svg>
+`;
+  })()
+}
+,
+
+{
+  topic: "Mechanics",
+
+  term: "How does friction change as the force pushing a block is gradually increased?",
+
+  equation: "\\boxed{f_s=F\\ \\text{while stationary}}\\qquad\\boxed{f_{s,\\max}=\\mu_sN}\\qquad\\boxed{f_k=\\mu_kN}",
+
+  answer: "Consider a block on a horizontal surface while the applied force is gradually increased from zero. At first, the block remains stationary because static friction adjusts to match the applied force: fₛ = F. Static friction is therefore not always equal to μₛN; this is only its maximum possible value. When the applied force reaches μₛN, static friction has reached its limit. A slightly larger applied force causes the block to slide. The friction then becomes kinetic and drops to fₖ = μₖN. Because the applied force is now greater than the kinetic-friction force, there is a net force on the block and it accelerates.",
+
+  svg: (() => {
+
+    const key =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const ids = {
+      applied: `frictionApplied-${key}`,
+      static: `frictionStatic-${key}`,
+      kinetic: `frictionKinetic-${key}`,
+      net: `frictionNet-${key}`
+    };
+
+    const duration = 12;
+
+    const keyTimes =
+      "0;0.10;0.35;0.56;0.60;0.78;1";
+
+    /*
+      Applied-force lengths:
+
+        2, 10, 24, 44, 48, 60, 70
+
+      Static-friction lengths while stationary:
+
+        2, 10, 24, 44
+
+      Therefore, before sliding:
+
+        |fₛ| = |F|
+    */
+
+    const blockMotion =
+      "0 0;0 0;0 0;0 0;5 0;35 0;64 0";
+
+    const appliedForceEnd =
+      "126;134;148;168;172;184;194";
+
+    const staticFrictionEnd =
+      "66;58;44;24;24;24;24";
+
+    /*
+      Once sliding begins:
+
+        applied force = 48, 60, 70 units
+        kinetic friction = 32 units
+
+      Net force therefore grows after motion begins.
+    */
+
+    const netForceEnd =
+      "88;88;88;88;102;114;124";
+
+    const staticOpacity =
+      "1;1;1;1;0;0;0";
+
+    const kineticOpacity =
+      "0;0;0;0;1;1;1";
+
+    const ordinaryStaticText =
+      "1;1;1;0;0;0;0";
+
+    const limitText =
+      "0;0;0;1;0;0;0";
+
+    const slidingText =
+      "0;0;0;0;1;1;1";
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Applied-force arrow -->
+
+    <marker
+      id="${ids.applied}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#ea580c"/>
+
+    </marker>
+
+    <!-- Static-friction arrow -->
+
+    <marker
+      id="${ids.static}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#7c3aed"/>
+
+    </marker>
+
+    <!-- Kinetic-friction arrow -->
+
+    <marker
+      id="${ids.kinetic}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#dc2626"/>
+
+    </marker>
+
+    <!-- Net-force arrow -->
+
+    <marker
+      id="${ids.net}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.6"
+      markerHeight="3.6"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#0f172a"/>
+
+    </marker>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Increasing the applied force: static friction, then sliding
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="43"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.3"
+    font-weight="700"
+    fill="#334155">
+
+    The pushing force increases gradually from zero
+
+  </text>
+
+  <!-- Surface -->
+
+  <rect
+    x="22"
+    y="147"
+    width="228"
+    height="18"
+    rx="4"
+    fill="#64748b"/>
+
+  <line
+    x1="26"
+    y1="147"
+    x2="246"
+    y2="147"
+    stroke="#334155"
+    stroke-width="2"/>
+
+  <!-- ================================================= -->
+  <!-- BLOCK AND FORCE ARROWS                             -->
+  <!-- ================================================= -->
+
+  <g transform="translate(0 0)">
+
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      values="${blockMotion}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <!-- Block -->
+
+    <rect
+      x="68"
+      y="106"
+      width="56"
+      height="40"
+      rx="5"
+      fill="#dbeafe"
+      stroke="#2563eb"
+      stroke-width="1.8"/>
+
+    <text
+      x="96"
+      y="130"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="11"
+      font-weight="700"
+      fill="#1e3a8a">
+
+      m
+
+    </text>
+
+    <!-- Applied force -->
+
+    <line
+      x1="124"
+      y1="123"
+      x2="126"
+      y2="123"
+      stroke="#ea580c"
+      stroke-width="3"
+      marker-end="url(#${ids.applied})">
+
+      <animate
+        attributeName="x2"
+        values="${appliedForceEnd}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <text
+      x="148"
+      y="116"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#c2410c">
+
+      applied force F
+
+    </text>
+
+    <!-- ================================================= -->
+    <!-- STATIC FRICTION                                   -->
+    <!-- Equal in length to F while block is stationary    -->
+    <!-- ================================================= -->
+
+    <g opacity="1">
+
+      <animate
+        attributeName="opacity"
+        values="${staticOpacity}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <line
+        x1="68"
+        y1="137"
+        x2="66"
+        y2="137"
+        stroke="#7c3aed"
+        stroke-width="3"
+        marker-end="url(#${ids.static})">
+
+        <animate
+          attributeName="x2"
+          values="${staticFrictionEnd}"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </line>
+
+      <text
+        x="48"
+        y="130"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#6d28d9">
+
+        fₛ
+
+      </text>
+
+    </g>
+
+    <!-- ================================================= -->
+    <!-- KINETIC FRICTION                                  -->
+    <!-- Shorter than maximum static friction              -->
+    <!-- ================================================= -->
+
+    <g opacity="0">
+
+      <animate
+        attributeName="opacity"
+        values="${kineticOpacity}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <line
+        x1="68"
+        y1="137"
+        x2="36"
+        y2="137"
+        stroke="#dc2626"
+        stroke-width="3"
+        marker-end="url(#${ids.kinetic})"/>
+
+      <text
+        x="46"
+        y="130"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#b91c1c">
+
+        fₖ
+
+      </text>
+
+    </g>
+
+    <!-- ================================================= -->
+    <!-- NET FORCE AND ACCELERATION                        -->
+    <!-- Appears only after the block begins sliding       -->
+    <!-- ================================================= -->
+
+    <g opacity="0">
+
+      <animate
+        attributeName="opacity"
+        values="${kineticOpacity}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <line
+        x1="86"
+        y1="94"
+        x2="88"
+        y2="94"
+        stroke="#0f172a"
+        stroke-width="2.4"
+        stroke-dasharray="4 2"
+        marker-end="url(#${ids.net})">
+
+        <animate
+          attributeName="x2"
+          values="${netForceEnd}"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </line>
+
+      <text
+        x="82"
+        y="97"
+        text-anchor="end"
+        font-family="Arial, sans-serif"
+        font-size="7.5"
+        font-weight="700"
+        fill="#0f172a">
+
+        ΣF → a
+
+      </text>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE EXPLANATION                                  -->
+  <!-- ================================================= -->
+
+  <rect
+    x="22"
+    y="175"
+    width="228"
+    height="45"
+    rx="9"
+    fill="#f8fafc"
+    stroke="#e2e8f0"/>
+
+  <!-- Ordinary static friction -->
+
+  <g opacity="1">
+
+    <animate
+      attributeName="opacity"
+      values="${ordinaryStaticText}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="190"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#6d28d9">
+
+      The block remains stationary
+
+    </text>
+
+    <text
+      x="136"
+      y="203"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.1"
+      fill="#475569">
+
+      Static friction adjusts to match the applied force
+
+    </text>
+
+    <text
+      x="136"
+      y="214"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.4"
+      font-weight="700"
+      fill="#334155">
+
+      fₛ = F
+
+    </text>
+
+  </g>
+
+  <!-- Maximum static friction -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${limitText}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="190"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#15803d">
+
+      Static friction has reached its maximum
+
+    </text>
+
+    <text
+      x="136"
+      y="204"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8.4"
+      font-weight="700"
+      fill="#15803d">
+
+      fₛ,max = μₛN
+
+    </text>
+
+    <text
+      x="136"
+      y="215"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      fill="#64748b">
+
+      A slightly larger applied force starts the motion
+
+    </text>
+
+  </g>
+
+  <!-- Sliding -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${slidingText}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="189"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#b91c1c">
+
+      The block slides and accelerates
+
+    </text>
+
+    <text
+      x="136"
+      y="202"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.3"
+      font-weight="700"
+      fill="#b91c1c">
+
+      fₖ = μₖN
+
+    </text>
+
+    <text
+      x="136"
+      y="214"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.2"
+      fill="#475569">
+
+      F − fₖ = ma
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- GRAPH PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="341"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.6"
+    font-weight="700"
+    fill="#0f172a">
+
+    Friction force versus applied force
+
+  </text>
+
+  <!-- Axes -->
+
+  <line
+    x1="289"
+    y1="174"
+    x2="399"
+    y2="174"
+    stroke="#334155"
+    stroke-width="1.4"/>
+
+  <line
+    x1="289"
+    y1="174"
+    x2="289"
+    y2="62"
+    stroke="#334155"
+    stroke-width="1.4"/>
+
+  <!-- Axis arrowheads -->
+
+  <path
+    d="M399 174 L393 171 L393 177 Z"
+    fill="#334155"/>
+
+  <path
+    d="M289 62 L286 68 L292 68 Z"
+    fill="#334155"/>
+
+  <!-- Axis labels -->
+
+  <text
+    x="345"
+    y="190"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#475569">
+
+    applied force F
+
+  </text>
+
+  <text
+    x="279"
+    y="115"
+    text-anchor="middle"
+    transform="rotate(-90 279 115)"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#475569">
+
+    friction magnitude
+
+  </text>
+
+  <!-- Static-friction region: fₛ = F -->
+
+  <line
+    x1="289"
+    y1="174"
+    x2="355"
+    y2="108"
+    stroke="#7c3aed"
+    stroke-width="3"
+    stroke-linecap="round"/>
+
+  <!-- Drop from maximum static to kinetic friction -->
+
+  <line
+    x1="355"
+    y1="108"
+    x2="355"
+    y2="130"
+    stroke="#94a3b8"
+    stroke-width="1.4"
+    stroke-dasharray="4 3"/>
+
+  <!-- Kinetic-friction region -->
+
+  <line
+    x1="355"
+    y1="130"
+    x2="397"
+    y2="130"
+    stroke="#dc2626"
+    stroke-width="3"
+    stroke-linecap="round"/>
+
+  <!-- Graph labels -->
+
+  <text
+    x="320"
+    y="132"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#6d28d9">
+
+    fₛ = F
+
+  </text>
+
+  <text
+    x="373"
+    y="123"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#b91c1c">
+
+    fₖ = μₖN
+
+  </text>
+
+  <text
+    x="351"
+    y="99"
+    text-anchor="end"
+    font-family="Arial, sans-serif"
+    font-size="6.8"
+    font-weight="700"
+    fill="#15803d">
+
+    μₛN
+
+  </text>
+
+  <!-- Animated point: static-friction region -->
+
+  <circle
+    cx="289"
+    cy="174"
+    r="4"
+    fill="#7c3aed"
+    stroke="#ffffff"
+    stroke-width="1.5"
+    opacity="1">
+
+    <animate
+      attributeName="cx"
+      values="289;300;326;355;355;355;355"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="cy"
+      values="174;163;137;108;108;108;108"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="opacity"
+      values="${staticOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </circle>
+
+  <!-- Animated point: kinetic-friction region -->
+
+  <circle
+    cx="358"
+    cy="130"
+    r="4"
+    fill="#dc2626"
+    stroke="#ffffff"
+    stroke-width="1.5"
+    opacity="0">
+
+    <animate
+      attributeName="cx"
+      values="355;355;355;355;358;378;395"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <animate
+      attributeName="opacity"
+      values="${kineticOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+  </circle>
+
+  <!-- Graph summary -->
+
+  <rect
+    x="284"
+    y="199"
+    width="114"
+    height="20"
+    rx="7"
+    fill="#f8fafc"
+    stroke="#e2e8f0"/>
+
+  <text
+    x="341"
+    y="208"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.3"
+    font-weight="700"
+    fill="#334155">
+
+    Static friction rises to its limit,
+
+  </text>
+
+  <text
+    x="341"
+    y="216"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.3"
+    font-weight="700"
+    fill="#334155">
+
+    then drops to kinetic friction.
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#64748b">
+
+    Static friction matches the applied force only until its maximum value is reached.
+
+  </text>
+
+</svg>
+`;
+  })()
 }
 
+,
+
+{
+  topic: "Mechanics",
+
+  term: "Why are the normal force and a book’s weight not a Newton’s third-law pair?",
+
+  equation: "\\boxed{N=mg\\ \\text{for a stationary book}}\\qquad\\boxed{\\vec F_{\\text{table on book}}=-\\vec F_{\\text{book on table}}}",
+
+  answer: "For a stationary book on a table, two vertical forces act on the book: the table pushes upward with a normal force N, and the Earth pulls downward with the book’s weight mg. These forces are equal and opposite because the book is in equilibrium, but they are not a Newton’s third-law pair because they both act on the same object: the book. The third-law partner of the normal force is the downward force exerted by the book on the table. The third-law partner of the book’s weight is the gravitational force exerted by the book on the Earth. Third-law pairs always come from the same interaction and act on different objects.",
+
+  svg: `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+    <marker id="arrowGreen"
+            viewBox="0 0 10 10"
+            refX="8.4"
+            refY="5"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z"
+            fill="#16a34a"/>
+    </marker>
+
+    <marker id="arrowRed"
+            viewBox="0 0 10 10"
+            refX="8.4"
+            refY="5"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z"
+            fill="#dc2626"/>
+    </marker>
+
+    <radialGradient id="earthGrad"
+                    cx="35%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="420" height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <!-- Title -->
+  <text x="210" y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Newton’s third law: book on a table
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10" y="28"
+        width="195" height="160"
+        rx="10"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="107.5" y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Book’s perspective
+  </text>
+
+  <!-- Left table -->
+  <rect x="38" y="118"
+        width="138" height="14"
+        rx="3"
+        fill="#94a3b8"
+        stroke="#475569"
+        stroke-width="1.2"/>
+
+  <rect x="50" y="132"
+        width="10" height="34"
+        rx="2"
+        fill="#64748b"/>
+
+  <rect x="154" y="132"
+        width="10" height="34"
+        rx="2"
+        fill="#64748b"/>
+
+  <!-- Left book -->
+  <rect x="78" y="84"
+        width="58" height="32"
+        rx="4"
+        fill="#fef3c7"
+        stroke="#d97706"
+        stroke-width="1.5"/>
+
+  <line x1="84" y1="91"
+        x2="130" y2="91"
+        stroke="#f59e0b"
+        stroke-width="1"/>
+
+  
+  <!-- Normal on book -->
+  <line x1="107" y1="100"
+        x2="107" y2="60"
+        stroke="#16a34a"
+        stroke-width="3"
+        marker-end="url(#arrowGreen)"/>
+
+  <text x="115" y="66"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#15803d">
+    N
+  </text>
+
+  <text x="126" y="56"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#15803d">
+    table on book
+  </text>
+
+  <!-- Weight on book -->
+  <line x1="107" y1="100"
+        x2="107" y2="140"
+        stroke="#dc2626"
+        stroke-width="3"
+        marker-end="url(#arrowRed)"/>
+
+  <text x="115" y="139"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#b91c1c">
+    mg
+  </text>
+
+  <text x="106" y="149"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#b91c1c">
+    Earth on book
+  </text>
+
+  <!-- Left note -->
+  <rect x="24" y="196"
+        width="166" height="25"
+        rx="7"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="107" y="207"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.3"
+        font-weight="700"
+        fill="#1d4ed8">
+    Two forces act on the same object
+  </text>
+
+  <text x="107" y="217"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.7"
+        fill="#475569">
+    so they are not a third-law pair
+  </text>
+
+  <!-- RIGHT PANEL -->
+  <rect x="215" y="28"
+        width="195" height="160"
+        rx="10"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="312.5" y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="11"
+        font-weight="700"
+        fill="#0f172a">
+    Table’s perspective
+  </text>
+
+  <!-- Right table -->
+  <rect x="245" y="118"
+        width="138" height="14"
+        rx="3"
+        fill="#94a3b8"
+        stroke="#475569"
+        stroke-width="1.2"/>
+
+  <rect x="257" y="132"
+        width="10" height="34"
+        rx="2"
+        fill="#64748b"/>
+
+  <rect x="361" y="132"
+        width="10" height="34"
+        rx="2"
+        fill="#64748b"/>
+
+  <!-- Right book: same position relative to table as left, more transparent, dashed -->
+  <rect x="285" y="84"
+        width="58" height="32"
+        rx="4"
+        fill="#fef3c7"
+        fill-opacity="0.28"
+        stroke="#d97706"
+        stroke-opacity="0.7"
+        stroke-width="1.5"
+        stroke-dasharray="5 3"/>
+
+  <line x1="291" y1="91"
+        x2="337" y2="91"
+        stroke="#f59e0b"
+        stroke-opacity="0.45"
+        stroke-width="1"/>
+
+  <text x="314" y="104"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9"
+        font-weight="700"
+        fill="#92400e"
+        fill-opacity="0.55">
+    book
+  </text>
+
+  <!-- Force of book on table: lower / clearer -->
+  <line x1="314" y1="108"
+        x2="314" y2="146"
+        stroke="#16a34a"
+        stroke-width="3"
+        marker-end="url(#arrowGreen)"/>
+
+  <text x="303" y="154"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#15803d">
+    book on table
+  </text>
+
+  <text x="312.5" y="71"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        font-weight="700"
+        fill="#15803d">
+    Third-law partner of the normal force
+  </text>
+
+  <!-- BOTTOM EARTH PANEL -->
+  <rect x="10" y="192"
+        width="400" height="36"
+        rx="10"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <!-- Earth -->
+  <circle cx="48" cy="210"
+          r="13"
+          fill="url(#earthGrad)"
+          stroke="#1d4ed8"
+          stroke-width="1.2"/>
+
+  <path d="M41 204 Q46 201 51 205 L48 210 L42 209 Z"
+        fill="#86efac"/>
+  <path d="M51 212 Q56 211 57 216 L52 219 L48 216 Z"
+        fill="#86efac"/>
+
+  <!-- Small book above Earth: 25% visible -->
+  <rect x="39" y="188"
+        width="18" height="10"
+        rx="2"
+        fill="#fef3c7"
+        fill-opacity="0.25"
+        stroke="#d97706"
+        stroke-opacity="0.5"
+        stroke-width="1"
+        stroke-dasharray="3 2"/>
+
+  <!-- Upward force on Earth -->
+  <line x1="48" y1="210"
+        x2="48" y2="191"
+        stroke="#dc2626"
+        stroke-width="2.6"
+        marker-end="url(#arrowRed)"/>
+
+  <text x="68" y="199"
+        font-family="Arial, sans-serif"
+        font-size="7.6"
+        font-weight="700"
+        fill="#b91c1c">
+    book on Earth
+  </text>
+
+  <text x="68" y="211"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        fill="#475569">
+    Third-law partner of the weight:
+  </text>
+
+  <text x="68" y="221"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        fill="#475569">
+    the book pulls upward on the Earth.
+  </text>
+
+  <!-- Footer -->
+  <text x="210" y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#64748b">
+    Third-law forces come from the same interaction and act on different objects.
+  </text>
+
+</svg>
+`
+},
+
+{
+  topic: "Mechanics",
+
+  term: "What determines an object’s momentum?",
+
+  equation: "\\boxed{\\vec p=m\\vec v}\\qquad\\boxed{[p]=\\mathrm{kg\\,m\\,s^{-1}}}",
+
+  answer: "Momentum describes an object’s quantity of motion and is given by p = mv. It depends on both mass and velocity. Doubling the mass while keeping velocity constant doubles the momentum. Doubling the velocity while keeping mass constant also doubles the momentum. Momentum is a vector, so it always points in the same direction as velocity. Reversing the direction of motion reverses the momentum. An object at rest has zero momentum. The SI unit of momentum is kg m s⁻¹.",
+
+  svg: (() => {
+
+    const key =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const ids = {
+      velocity: `momentumVelocity-${key}`,
+      momentum: `momentumArrow-${key}`,
+      cart: `momentumCart-${key}`
+    };
+
+    const duration = 12;
+
+    /*
+      Four stages:
+
+      1. Baseline: mass m and velocity v
+      2. Double the mass while velocity stays constant
+      3. Double the velocity while mass returns to m
+      4. Reverse the direction of motion
+    */
+
+    const keyTimes =
+      "0;0.24;0.25;0.49;0.50;0.74;0.75;1";
+
+    const cartMotion =
+      "0 0;8 0;8 0;16 0;16 0;32 0;32 0;20 0";
+
+    /*
+      Positive rotation is clockwise in SVG.
+
+      The wheels rotate clockwise while moving right,
+      then anticlockwise when the cart reverses.
+    */
+
+    const wheelRotation =
+      "0;85;85;170;170;340;340;250";
+
+    /*
+      Arrow origin is x = 110.
+
+      Baseline:
+        v length = 30
+        p length = 30
+
+      Double mass:
+        v length = 30
+        p length = 60
+
+      Double speed:
+        v length = 60
+        p length = 60
+
+      Reverse:
+        both arrows point left
+    */
+
+    const velocityEnd =
+      "140;140;140;140;170;170;80;80";
+
+    const momentumEnd =
+      "140;140;170;170;170;170;80;80";
+
+    const baselineOpacity =
+      "1;1;0;0;0;0;0;0";
+
+    const massOpacity =
+      "0;0;1;1;0;0;0;0";
+
+    const speedOpacity =
+      "0;0;0;0;1;1;0;0";
+
+    const reverseOpacity =
+      "0;0;0;0;0;0;1;1";
+
+    const extraMassOpacity =
+      massOpacity;
+
+    const wheel = (x, y) => `
+      <g transform="translate(${x} ${y})">
+
+        <g transform="rotate(0)">
+
+          <animateTransform
+            attributeName="transform"
+            type="rotate"
+            values="${wheelRotation}"
+            keyTimes="${keyTimes}"
+            calcMode="linear"
+            dur="${duration}s"
+            repeatCount="indefinite"/>
+
+          <circle
+            cx="0"
+            cy="0"
+            r="10"
+            fill="#111827"
+            stroke="#64748b"
+            stroke-width="1.4"/>
+
+          <circle
+            cx="0"
+            cy="0"
+            r="4.5"
+            fill="#e2e8f0"
+            stroke="#94a3b8"
+            stroke-width="0.9"/>
+
+          <line
+            x1="-7"
+            y1="0"
+            x2="7"
+            y2="0"
+            stroke="#cbd5e1"
+            stroke-width="1"/>
+
+          <line
+            x1="0"
+            y1="-7"
+            x2="0"
+            y2="7"
+            stroke="#cbd5e1"
+            stroke-width="1"/>
+
+          <circle
+            cx="0"
+            cy="-6.5"
+            r="1.7"
+            fill="#fbbf24"/>
+
+        </g>
+
+      </g>`;
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Velocity arrow -->
+
+    <marker
+      id="${ids.velocity}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#2563eb"/>
+
+    </marker>
+
+    <!-- Momentum arrow -->
+
+    <marker
+      id="${ids.momentum}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#0f172a"/>
+
+    </marker>
+
+    <!-- Cart gradient -->
+
+    <linearGradient
+      id="${ids.cart}"
+      x1="0"
+      y1="0"
+      x2="1"
+      y2="1">
+
+      <stop
+        offset="0%"
+        stop-color="#bfdbfe"/>
+
+      <stop
+        offset="100%"
+        stop-color="#3b82f6"/>
+
+    </linearGradient>
+
+  </defs>
+
+  <!-- Background -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <!-- Title -->
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Momentum depends on both mass and velocity
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.3"
+    font-weight="700"
+    fill="#334155">
+
+    Compare mass, speed and direction
+
+  </text>
+
+  <!-- Track -->
+
+  <rect
+    x="22"
+    y="149"
+    width="228"
+    height="15"
+    rx="4"
+    fill="#64748b"/>
+
+  <line
+    x1="27"
+    y1="149"
+    x2="245"
+    y2="149"
+    stroke="#334155"
+    stroke-width="1.8"/>
+
+  <!-- Moving cart -->
+
+  <g transform="translate(0 0)">
+
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      values="${cartMotion}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <!-- Additional mass -->
+
+    <g opacity="0">
+
+      <animate
+        attributeName="opacity"
+        values="${extraMassOpacity}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <rect
+        x="91"
+        y="59"
+        width="38"
+        height="25"
+        rx="4"
+        fill="#fde68a"
+        stroke="#d97706"
+        stroke-width="1.4"/>
+
+      <text
+        x="110"
+        y="75"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#92400e">
+
+        +m
+
+      </text>
+
+    </g>
+
+    <!-- Main cart body -->
+
+    <rect
+      x="72"
+      y="90"
+      width="76"
+      height="39"
+      rx="6"
+      fill="url(#${ids.cart})"
+      stroke="#1d4ed8"
+      stroke-width="1.7"/>
+
+    <rect
+      x="78"
+      y="83"
+      width="64"
+      height="10"
+      rx="3"
+      fill="#93c5fd"
+      stroke="#1d4ed8"
+      stroke-width="1.2"/>
+
+    <text
+      x="110"
+      y="114"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="11"
+      font-weight="700"
+      fill="#1e3a8a">
+
+      m
+
+    </text>
+
+    <!-- Equal-sized wheels -->
+
+    ${wheel(86, 139)}
+    ${wheel(134, 139)}
+
+    <!-- Velocity vector -->
+
+    <line
+      x1="110"
+      y1="73"
+      x2="140"
+      y2="73"
+      stroke="#2563eb"
+      stroke-width="2.8"
+      marker-end="url(#${ids.velocity})">
+
+      <animate
+        attributeName="x2"
+        values="${velocityEnd}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <text
+      x="107"
+      y="68"
+      text-anchor="end"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#1d4ed8">
+
+      v
+
+    </text>
+
+    <!-- Momentum vector -->
+
+    <line
+      x1="110"
+      y1="172"
+      x2="140"
+      y2="172"
+      stroke="#0f172a"
+      stroke-width="3"
+      marker-end="url(#${ids.momentum})">
+
+      <animate
+        attributeName="x2"
+        values="${momentumEnd}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </line>
+
+    <text
+      x="107"
+      y="175"
+      text-anchor="end"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#0f172a">
+
+      p
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PHASE EXPLANATIONS                                 -->
+  <!-- ================================================= -->
+
+  <rect
+    x="22"
+    y="185"
+    width="228"
+    height="35"
+    rx="9"
+    fill="#f8fafc"
+    stroke="#e2e8f0"/>
+
+  <!-- Baseline -->
+
+  <g opacity="1">
+
+    <animate
+      attributeName="opacity"
+      values="${baselineOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="199"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#334155">
+
+      Baseline: mass m moving with velocity v
+
+    </text>
+
+    <text
+      x="136"
+      y="213"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#0f172a">
+
+      p = mv
+
+    </text>
+
+  </g>
+
+  <!-- Double mass -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${massOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="198"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#b45309">
+
+      Double the mass; keep velocity unchanged
+
+    </text>
+
+    <text
+      x="136"
+      y="212"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#0f172a">
+
+      2m × v = 2p
+
+    </text>
+
+  </g>
+
+  <!-- Double speed -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${speedOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="198"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#1d4ed8">
+
+      Double the velocity; keep mass unchanged
+
+    </text>
+
+    <text
+      x="136"
+      y="212"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#0f172a">
+
+      m × 2v = 2p
+
+    </text>
+
+  </g>
+
+  <!-- Reverse -->
+
+  <g opacity="0">
+
+    <animate
+      attributeName="opacity"
+      values="${reverseOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="198"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#7c3aed">
+
+      Reverse the velocity
+
+    </text>
+
+    <text
+      x="136"
+      y="212"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#0f172a">
+
+      v → −v, so p → −p
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="341"
+    y="45"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10.5"
+    font-weight="700"
+    fill="#0f172a">
+
+    Linear momentum
+
+  </text>
+
+  <!-- Main equation -->
+
+  <rect
+    x="283"
+    y="57"
+    width="116"
+    height="32"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="78"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="14"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    p = mv
+
+  </text>
+
+  <!-- Mass -->
+
+  <rect
+    x="283"
+    y="97"
+    width="116"
+    height="27"
+    rx="8"
+    fill="#fffbeb"
+    stroke="#fcd34d"/>
+
+  <text
+    x="341"
+    y="108"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#92400e">
+
+    greater mass
+
+  </text>
+
+  <text
+    x="341"
+    y="119"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.5"
+    fill="#475569">
+
+    greater momentum
+
+  </text>
+
+  <!-- Speed -->
+
+  <rect
+    x="283"
+    y="131"
+    width="116"
+    height="27"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="142"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    greater speed
+
+  </text>
+
+  <text
+    x="341"
+    y="153"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.5"
+    fill="#475569">
+
+    greater momentum
+
+  </text>
+
+  <!-- Vector direction -->
+
+  <rect
+    x="283"
+    y="165"
+    width="116"
+    height="27"
+    rx="8"
+    fill="#faf5ff"
+    stroke="#c4b5fd"/>
+
+  <text
+    x="341"
+    y="176"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#6d28d9">
+
+    momentum is a vector
+
+  </text>
+
+  <text
+    x="341"
+    y="187"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    fill="#475569">
+
+    p points in the direction of v
+
+  </text>
+
+  <!-- Unit -->
+
+  <rect
+    x="283"
+    y="199"
+    width="116"
+    height="21"
+    rx="7"
+    fill="#f8fafc"
+    stroke="#cbd5e1"/>
+
+  <text
+    x="341"
+    y="208"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.7"
+    font-weight="700"
+    fill="#334155">
+
+    At rest: p = 0
+
+  </text>
+
+  <text
+    x="341"
+    y="217"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.5"
+    fill="#64748b">
+
+    unit: kg m s⁻¹
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#64748b">
+
+    In an isolated system, the total momentum remains constant.
+
+  </text>
+
+</svg>
+`;
+  })()
+},
+
+{
+  topic: "Mechanics",
+
+  term: "How can an internal explosion demonstrate conservation of momentum?",
+
+  equation: "\\boxed{\\vec p_{\\text{before}}=0}\\qquad\\boxed{\\vec p_1+\\vec p_2=0}\\qquad\\boxed{m_1\\vec v_1=-m_2\\vec v_2}",
+
+  answer: "Two balls begin together at rest, so the total momentum of the system is zero. An internal explosion then pushes them apart. If external forces are negligible, the explosion cannot change the total momentum, so the two balls leave with equal-magnitude, opposite momenta: p₁ = −p₂. If the masses are equal, the balls have equal speeds in opposite directions. If one ball is heavier, it moves more slowly while the lighter ball moves faster. The explosion adds kinetic energy to the system, but it does not add momentum. Equal and opposite momentum does not necessarily mean equal and opposite velocity.",
+
+  svg: (() => {
+
+    const key =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const ids = {
+      velocity: `explosionVelocity-${key}`,
+      momentum: `explosionMomentum-${key}`,
+      burst: `explosionBurst-${key}`
+    };
+
+    const duration = 12;
+
+    /*
+      First half:
+        equal masses
+
+      Second half:
+        unequal masses
+    */
+
+    const keyTimes =
+      "0;0.08;0.13;0.30;0.44;0.49;0.50;0.58;0.63;0.80;0.94;1";
+
+    const equalSceneOpacity =
+      "1;1;1;1;1;1;0;0;0;0;0;0";
+
+    const unequalSceneOpacity =
+      "0;0;0;0;0;0;1;1;1;1;1;1";
+
+    const equalPopOpacity =
+      "0;0;1;0;0;0;0;0;0;0;0;0";
+
+    const unequalPopOpacity =
+      "0;0;0;0;0;0;0;0;1;0;0;0";
+
+    const equalArrowOpacity =
+      "0;0;0;1;1;1;0;0;0;0;0;0";
+
+    const unequalArrowOpacity =
+      "0;0;0;0;0;0;0;0;0;1;1;1";
+
+    /*
+      Equal masses move equal distances.
+    */
+
+    const equalLeftMotion =
+      "0 0;0 0;0 0;-18 0;-42 0;-42 0;-42 0;-42 0;-42 0;-42 0;-42 0;-42 0";
+
+    const equalRightMotion =
+      "0 0;0 0;0 0;18 0;42 0;42 0;42 0;42 0;42 0;42 0;42 0;42 0";
+
+    /*
+      Unequal masses:
+
+      The lighter ball moves farther and faster.
+      The heavier ball moves less and more slowly.
+    */
+
+    const lightBallMotion =
+      "0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;-22 0;-52 0;-52 0";
+
+    const heavyBallMotion =
+      "0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;10 0;23 0;23 0";
+
+    const animateOpacity = values => `
+      <animate
+        attributeName="opacity"
+        values="${values}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+    `;
+
+    const ball = (
+      radius,
+      fill,
+      stroke,
+      label
+    ) => `
+      <circle
+        cx="0"
+        cy="0"
+        r="${radius}"
+        fill="${fill}"
+        stroke="${stroke}"
+        stroke-width="1.8"/>
+
+      <circle
+        cx="${-radius * 0.3}"
+        cy="${-radius * 0.32}"
+        r="${radius * 0.22}"
+        fill="#ffffff"
+        opacity="0.42"/>
+
+      <text
+        x="0"
+        y="3"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="${radius < 15 ? 7.4 : 8.3}"
+        font-weight="700"
+        fill="#0f172a">
+
+        ${label}
+
+      </text>
+    `;
+
+    const burst = () => `
+      <g>
+
+        <path
+          d="
+            M 136 88
+            L 141 100
+            L 153 95
+            L 149 107
+            L 160 112
+            L 149 117
+            L 153 129
+            L 141 124
+            L 136 136
+            L 131 124
+            L 119 129
+            L 123 117
+            L 112 112
+            L 123 107
+            L 119 95
+            L 131 100
+            Z"
+          fill="#fbbf24"
+          stroke="#ea580c"
+          stroke-width="1.7"
+          stroke-linejoin="round"/>
+
+        <circle
+          cx="136"
+          cy="112"
+          r="14"
+          fill="#fde68a"
+          opacity="0.82"/>
+
+        <text
+          x="136"
+          y="115"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.5"
+          font-weight="700"
+          fill="#9a3412">
+
+          POP!
+
+        </text>
+
+      </g>
+    `;
+
+    const leftVelocityArrow = (
+      length,
+      label
+    ) => `
+      <line
+        x1="0"
+        y1="-33"
+        x2="${-length}"
+        y2="-33"
+        stroke="#2563eb"
+        stroke-width="2.5"
+        marker-end="url(#${ids.velocity})"/>
+
+      <text
+        x="${-length / 2}"
+        y="-39"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#1d4ed8">
+
+        ${label}
+
+      </text>
+    `;
+
+    const rightVelocityArrow = (
+      length,
+      label
+    ) => `
+      <line
+        x1="0"
+        y1="-33"
+        x2="${length}"
+        y2="-33"
+        stroke="#2563eb"
+        stroke-width="2.5"
+        marker-end="url(#${ids.velocity})"/>
+
+      <text
+        x="${length / 2}"
+        y="-39"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#1d4ed8">
+
+        ${label}
+
+      </text>
+    `;
+
+    /*
+      The momentum arrows have equal lengths in
+      both the equal-mass and unequal-mass cases.
+    */
+
+    const leftMomentumArrow = label => `
+      <line
+        x1="0"
+        y1="34"
+        x2="-29"
+        y2="34"
+        stroke="#0f172a"
+        stroke-width="2.8"
+        marker-end="url(#${ids.momentum})"/>
+
+      <text
+        x="-14.5"
+        y="46"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.1"
+        font-weight="700"
+        fill="#0f172a">
+
+        ${label}
+
+      </text>
+    `;
+
+    const rightMomentumArrow = label => `
+      <line
+        x1="0"
+        y1="34"
+        x2="29"
+        y2="34"
+        stroke="#0f172a"
+        stroke-width="2.8"
+        marker-end="url(#${ids.momentum})"/>
+
+      <text
+        x="14.5"
+        y="46"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.1"
+        font-weight="700"
+        fill="#0f172a">
+
+        ${label}
+
+      </text>
+    `;
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Velocity arrow -->
+
+    <marker
+      id="${ids.velocity}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#2563eb"/>
+
+    </marker>
+
+    <!-- Momentum arrow -->
+
+    <marker
+      id="${ids.momentum}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#0f172a"/>
+
+    </marker>
+
+    <radialGradient
+      id="${ids.burst}"
+      cx="50%"
+      cy="50%"
+      r="60%">
+
+      <stop
+        offset="0%"
+        stop-color="#fef3c7"/>
+
+      <stop
+        offset="65%"
+        stop-color="#fbbf24"/>
+
+      <stop
+        offset="100%"
+        stop-color="#ea580c"/>
+
+    </radialGradient>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Conservation of momentum: an internal explosion
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.2"
+    font-weight="700"
+    fill="#334155">
+
+    Both balls begin together at rest
+
+  </text>
+
+  <!-- Smooth horizontal surface -->
+
+  <line
+    x1="24"
+    y1="137"
+    x2="248"
+    y2="137"
+    stroke="#64748b"
+    stroke-width="2"/>
+
+  <text
+    x="136"
+    y="149"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.5"
+    fill="#64748b">
+
+    external horizontal forces are negligible
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- CASE 1: EQUAL MASSES                               -->
+  <!-- ================================================= -->
+
+  <g opacity="1">
+
+    ${animateOpacity(equalSceneOpacity)}
+
+    <text
+      x="136"
+      y="62"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.5"
+      font-weight="700"
+      fill="#1d4ed8">
+
+      Case 1: equal masses
+
+    </text>
+
+    <!-- Central pop -->
+
+    <g opacity="0">
+
+      ${animateOpacity(equalPopOpacity)}
+
+      ${burst()}
+
+    </g>
+
+    <!-- Left equal-mass ball -->
+
+    <g transform="translate(118 112)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${equalLeftMotion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball(
+        16,
+        "#bfdbfe",
+        "#2563eb",
+        "m"
+      )}
+
+      <g opacity="0">
+
+        ${animateOpacity(equalArrowOpacity)}
+
+        ${leftVelocityArrow(
+          28,
+          "v₁"
+        )}
+
+        ${leftMomentumArrow(
+          "p₁"
+        )}
+
+      </g>
+
+    </g>
+
+    <!-- Right equal-mass ball -->
+
+    <g transform="translate(154 112)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${equalRightMotion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball(
+        16,
+        "#bfdbfe",
+        "#2563eb",
+        "m"
+      )}
+
+      <g opacity="0">
+
+        ${animateOpacity(equalArrowOpacity)}
+
+        ${rightVelocityArrow(
+          28,
+          "v₂"
+        )}
+
+        ${rightMomentumArrow(
+          "p₂"
+        )}
+
+      </g>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- CASE 2: UNEQUAL MASSES                             -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    ${animateOpacity(unequalSceneOpacity)}
+
+    <text
+      x="136"
+      y="62"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.5"
+      font-weight="700"
+      fill="#7c3aed">
+
+      Case 2: unequal masses
+
+    </text>
+
+    <!-- Central pop -->
+
+    <g opacity="0">
+
+      ${animateOpacity(unequalPopOpacity)}
+
+      ${burst()}
+
+    </g>
+
+    <!-- Light ball -->
+
+    <g transform="translate(119 112)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${lightBallMotion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball(
+        13,
+        "#ddd6fe",
+        "#7c3aed",
+        "m"
+      )}
+
+      <g opacity="0">
+
+        ${animateOpacity(unequalArrowOpacity)}
+
+        <!-- Longer velocity arrow -->
+
+        ${leftVelocityArrow(
+          43,
+          "larger v₁"
+        )}
+
+        <!-- Momentum remains equal in magnitude -->
+
+        ${leftMomentumArrow(
+          "p₁"
+        )}
+
+      </g>
+
+    </g>
+
+    <!-- Heavy ball -->
+
+    <g transform="translate(153 112)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${heavyBallMotion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball(
+        20,
+        "#fed7aa",
+        "#ea580c",
+        "2m"
+      )}
+
+      <g opacity="0">
+
+        ${animateOpacity(unequalArrowOpacity)}
+
+        <!-- Shorter velocity arrow -->
+
+        ${rightVelocityArrow(
+          21.5,
+          "smaller v₂"
+        )}
+
+        <!-- Same momentum-arrow length -->
+
+        ${rightMomentumArrow(
+          "p₂"
+        )}
+
+      </g>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- EXPLANATION BOX                                    -->
+  <!-- ================================================= -->
+
+  <rect
+    x="22"
+    y="160"
+    width="228"
+    height="60"
+    rx="9"
+    fill="#f8fafc"
+    stroke="#e2e8f0"/>
+
+  <!-- Equal-mass explanation -->
+
+  <g opacity="1">
+
+    ${animateOpacity(equalSceneOpacity)}
+
+    <text
+      x="136"
+      y="175"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#1d4ed8">
+
+      Equal masses → equal speeds
+
+    </text>
+
+    <text
+      x="136"
+      y="189"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.4"
+      fill="#475569">
+
+      m|v₁| = m|v₂|
+
+    </text>
+
+    <text
+      x="136"
+      y="203"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.3"
+      font-weight="700"
+      fill="#0f172a">
+
+      p₁ and p₂ are equal and opposite
+
+    </text>
+
+    <text
+      x="136"
+      y="215"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      fill="#64748b">
+
+      Total momentum remains zero
+
+    </text>
+
+  </g>
+
+  <!-- Unequal-mass explanation -->
+
+  <g opacity="0">
+
+    ${animateOpacity(unequalSceneOpacity)}
+
+    <text
+      x="136"
+      y="175"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#7c3aed">
+
+      Unequal masses → unequal speeds
+
+    </text>
+
+    <text
+      x="136"
+      y="189"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.3"
+      fill="#475569">
+
+      The lighter ball moves twice as fast
+
+    </text>
+
+    <text
+      x="136"
+      y="203"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.3"
+      font-weight="700"
+      fill="#0f172a">
+
+      Momentum arrows remain equal and opposite
+
+    </text>
+
+    <text
+      x="136"
+      y="215"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      fill="#64748b">
+
+      m|v₁| = 2m|v₂|
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="341"
+    y="45"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10.2"
+    font-weight="700"
+    fill="#0f172a">
+
+    Conservation of momentum
+
+  </text>
+
+  <!-- Before -->
+
+  <rect
+    x="283"
+    y="57"
+    width="116"
+    height="34"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="69"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    before the explosion
+
+  </text>
+
+  <text
+    x="341"
+    y="83"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    ptotal = 0
+
+  </text>
+
+  <!-- After -->
+
+  <rect
+    x="283"
+    y="99"
+    width="116"
+    height="38"
+    rx="8"
+    fill="#f8fafc"
+    stroke="#cbd5e1"/>
+
+  <text
+    x="341"
+    y="112"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7"
+    font-weight="700"
+    fill="#334155">
+
+    after the explosion
+
+  </text>
+
+  <text
+    x="341"
+    y="127"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.5"
+    font-weight="700"
+    fill="#0f172a">
+
+    p₁ + p₂ = 0
+
+  </text>
+
+  <!-- Momentum relation -->
+
+  <rect
+    x="283"
+    y="145"
+    width="116"
+    height="34"
+    rx="8"
+    fill="#faf5ff"
+    stroke="#c4b5fd"/>
+
+  <text
+    x="341"
+    y="157"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.9"
+    font-weight="700"
+    fill="#6d28d9">
+
+    equal and opposite
+
+  </text>
+
+  <text
+    x="341"
+    y="172"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9"
+    font-weight="700"
+    fill="#6d28d9">
+
+    p₁ = −p₂
+
+  </text>
+
+  <!-- Energy distinction -->
+
+  <rect
+    x="283"
+    y="187"
+    width="116"
+    height="33"
+    rx="8"
+    fill="#fff7ed"
+    stroke="#fdba74"/>
+
+  <text
+    x="341"
+    y="199"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.6"
+    font-weight="700"
+    fill="#c2410c">
+
+    The explosion adds
+
+  </text>
+
+  <text
+    x="341"
+    y="209"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.6"
+    font-weight="700"
+    fill="#c2410c">
+
+    kinetic energy—not momentum
+
+  </text>
+
+  <text
+    x="341"
+    y="218"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.2"
+    fill="#64748b">
+
+    to the isolated system
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#64748b">
+
+    Equal and opposite momentum does not necessarily mean equal velocity.
+
+  </text>
+
+</svg>
+`;
+  })()
+},
+
+{
+  topic: "Mechanics",
+
+  term: "What is impulse, and why does increasing the stopping time reduce the force?",
+
+  equation: "\\boxed{\\vec J=\\Delta\\vec p=\\int \\vec F\\,dt}\\qquad\\boxed{F_{\\mathrm{avg}}=\\frac{|\\Delta\\vec p|}{\\Delta t}}",
+
+  answer: "Impulse is the change in an object’s momentum and is equal to the area under a force–time graph. In both examples, the same moving ball is brought to rest, so the momentum change and impulse are the same. A rigid wall stops the ball in a very short time, producing a large average force. A cushion remains in contact with the ball while compressing, so the ball slows gradually and its momentum decreases over a longer time. Increasing the stopping time therefore reduces the average force. The unit of impulse is N s, which is equivalent to kg m s⁻¹.",
+
+  svg: (() => {
+
+    const key =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const ids = {
+      momentum: `impulseMomentum-${key}`,
+      force: `impulseForce-${key}`
+    };
+
+    const duration = 12;
+
+    /*
+      First half: rigid wall
+      Second half: cushion
+
+      In both cases:
+        initial momentum is the same
+        final momentum is zero
+        impulse is the same
+    */
+
+    const keyTimes =
+      "0;0.10;0.30;0.36;0.45;0.49;0.50;0.58;0.70;0.88;0.94;1";
+
+    const rigidSceneOpacity =
+      "1;1;1;1;1;1;0;0;0;0;0;0";
+
+    const softSceneOpacity =
+      "0;0;0;0;0;0;1;1;1;1;1;1";
+
+    /*
+      Rigid stop:
+
+      The ball reaches the wall at translation x = 80.
+
+      Ball centre:
+        78 + 80 = 158
+
+      Ball right edge:
+        158 + 14 = 172
+
+      Wall begins at x = 172.
+    */
+
+    const rigidBallMotion =
+      "0 0;0 0;60 0;80 0;80 0;80 0;80 0;80 0;80 0;80 0;80 0;80 0";
+
+    /*
+      The momentum arrow decreases almost instantly
+      when the rigid wall stops the ball.
+    */
+
+    const rigidMomentumEnd =
+      "38;38;38;4;4;4;4;4;4;4;4;4";
+
+    const rigidMomentumLabelX =
+      "17;17;17;0;0;0;0;0;0;0;0;0";
+
+    const rigidMomentumOpacity =
+      "1;1;1;1;0;0;0;0;0;0;0;0";
+
+    const rigidForceOpacity =
+      "0;0;0;1;0;0;0;0;0;0;0;0";
+
+    const rigidStoppedOpacity =
+      "0;0;0;0;1;1;0;0;0;0;0;0";
+
+    /*
+      Cushioned stop:
+
+      The uncompressed cushion begins at x = 158.
+
+      First contact:
+        ball centre = 144
+        ball right edge = 158
+
+      Therefore:
+        translation = 144 - 78 = 66
+
+      Fully compressed:
+        cushion front moves to x = 169
+        ball centre moves to x = 155
+        translation = 155 - 78 = 77
+
+      The ball and cushion remain in contact throughout.
+    */
+
+    const softBallMotion =
+      "0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;66 0;77 0;77 0;77 0";
+
+    const cushionX =
+      "158;158;158;158;158;158;158;158;158;169;169;169";
+
+    const cushionWidth =
+      "22;22;22;22;22;22;22;22;22;11;11;11";
+
+    /*
+      The momentum remains constant before contact,
+      then gradually decreases while the cushion
+      compresses.
+    */
+
+    const softMomentumEnd =
+      "4;4;4;4;4;4;38;38;38;4;4;4";
+
+    const softMomentumLabelX =
+      "0;0;0;0;0;0;17;17;17;0;0;0";
+
+    const softMomentumOpacity =
+      "0;0;0;0;0;0;1;1;1;1;0;0";
+
+    const softForceOpacity =
+      "0;0;0;0;0;0;0;0;1;1;0;0";
+
+    const softStoppedOpacity =
+      "0;0;0;0;0;0;0;0;0;0;1;1";
+
+    const opacityAnimation = values => `
+      <animate
+        attributeName="opacity"
+        values="${values}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+    `;
+
+    const ball = () => `
+      <circle
+        cx="0"
+        cy="0"
+        r="14"
+        fill="#bfdbfe"
+        stroke="#2563eb"
+        stroke-width="1.8"/>
+
+      <circle
+        cx="-4"
+        cy="-4"
+        r="3.5"
+        fill="#ffffff"
+        opacity="0.45"/>
+
+      <text
+        x="0"
+        y="3"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.5"
+        font-weight="700"
+        fill="#1e3a8a">
+
+        m
+
+      </text>
+    `;
+
+    const momentumArrow = (
+      endValues,
+      labelValues,
+      opacityValues
+    ) => `
+      <g opacity="1">
+
+        ${opacityAnimation(opacityValues)}
+
+        <line
+          x1="-4"
+          y1="-30"
+          x2="38"
+          y2="-30"
+          stroke="#2563eb"
+          stroke-width="2.7"
+          marker-end="url(#${ids.momentum})">
+
+          <animate
+            attributeName="x2"
+            values="${endValues}"
+            keyTimes="${keyTimes}"
+            calcMode="linear"
+            dur="${duration}s"
+            repeatCount="indefinite"/>
+
+        </line>
+
+        <text
+          x="17"
+          y="-37"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#1d4ed8">
+
+          momentum p
+
+          <animate
+            attributeName="x"
+            values="${labelValues}"
+            keyTimes="${keyTimes}"
+            calcMode="linear"
+            dur="${duration}s"
+            repeatCount="indefinite"/>
+
+        </text>
+
+      </g>
+    `;
+
+    const forceArrow = (
+      length,
+      opacityValues,
+      label
+    ) => `
+      <g opacity="0">
+
+        ${opacityAnimation(opacityValues)}
+
+        <line
+          x1="0"
+          y1="0"
+          x2="${-length}"
+          y2="0"
+          stroke="#dc2626"
+          stroke-width="3"
+          marker-end="url(#${ids.force})"/>
+
+        <text
+          x="${-length / 2}"
+          y="-8"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#b91c1c">
+
+          ${label}
+
+        </text>
+
+      </g>
+    `;
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Momentum arrow -->
+
+    <marker
+      id="${ids.momentum}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#2563eb"/>
+
+    </marker>
+
+    <!-- Force arrow -->
+
+    <marker
+      id="${ids.force}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#dc2626"/>
+
+    </marker>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Impulse: increasing the stopping time reduces the force
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.3"
+    font-weight="700"
+    fill="#334155">
+
+    The same moving ball is brought to rest
+
+  </text>
+
+  <!-- Surface -->
+
+  <line
+    x1="24"
+    y1="143"
+    x2="246"
+    y2="143"
+    stroke="#64748b"
+    stroke-width="2"/>
+
+  <!-- ================================================= -->
+  <!-- CASE 1: RIGID WALL                                 -->
+  <!-- ================================================= -->
+
+  <g opacity="1">
+
+    ${opacityAnimation(rigidSceneOpacity)}
+
+    <text
+      x="136"
+      y="62"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.5"
+      font-weight="700"
+      fill="#b91c1c">
+
+      Rigid stop
+
+    </text>
+
+    <!-- Wall -->
+
+    <rect
+      x="172"
+      y="82"
+      width="15"
+      height="62"
+      rx="2"
+      fill="#64748b"
+      stroke="#334155"
+      stroke-width="1.4"/>
+
+    <g
+      stroke="#cbd5e1"
+      stroke-width="1">
+
+      <line x1="174" y1="88" x2="185" y2="99"/>
+      <line x1="174" y1="101" x2="185" y2="112"/>
+      <line x1="174" y1="114" x2="185" y2="125"/>
+      <line x1="174" y1="127" x2="185" y2="138"/>
+
+    </g>
+
+    <text
+      x="179.5"
+      y="76"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7"
+      font-weight="700"
+      fill="#475569">
+
+      rigid wall
+
+    </text>
+
+    <!-- Moving ball -->
+
+    <g transform="translate(78 124)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${rigidBallMotion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball()}
+
+      ${momentumArrow(
+        rigidMomentumEnd,
+        rigidMomentumLabelX,
+        rigidMomentumOpacity
+      )}
+
+      ${forceArrow(
+        44,
+        rigidForceOpacity,
+        "large F"
+      )}
+
+      <g opacity="0">
+
+        ${opacityAnimation(rigidStoppedOpacity)}
+
+        <text
+          x="0"
+          y="-28"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.4"
+          font-weight="700"
+          fill="#334155">
+
+          p = 0
+
+        </text>
+
+      </g>
+
+    </g>
+
+    <!-- Impact marks -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(rigidForceOpacity)}
+
+      <g
+        stroke="#f59e0b"
+        stroke-width="2"
+        stroke-linecap="round">
+
+        <line x1="167" y1="111" x2="160" y2="105"/>
+        <line x1="168" y1="119" x2="158" y2="119"/>
+        <line x1="167" y1="127" x2="160" y2="133"/>
+
+      </g>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- CASE 2: CUSHION                                    -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    ${opacityAnimation(softSceneOpacity)}
+
+    <text
+      x="136"
+      y="62"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.5"
+      font-weight="700"
+      fill="#15803d">
+
+      Cushioned stop
+
+    </text>
+
+    <!-- Rigid backing -->
+
+    <rect
+      x="180"
+      y="82"
+      width="12"
+      height="62"
+      rx="2"
+      fill="#64748b"
+      stroke="#334155"
+      stroke-width="1.4"/>
+
+    <!-- Compressible cushion -->
+
+    <rect
+      x="158"
+      y="88"
+      width="22"
+      height="50"
+      rx="6"
+      fill="#bbf7d0"
+      stroke="#16a34a"
+      stroke-width="1.6">
+
+      <animate
+        attributeName="x"
+        values="${cushionX}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <animate
+        attributeName="width"
+        values="${cushionWidth}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+    </rect>
+
+    <text
+      x="169"
+      y="76"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7"
+      font-weight="700"
+      fill="#15803d">
+
+      cushion
+
+    </text>
+
+    <!-- Moving ball -->
+
+    <g transform="translate(78 124)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${softBallMotion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball()}
+
+      ${momentumArrow(
+        softMomentumEnd,
+        softMomentumLabelX,
+        softMomentumOpacity
+      )}
+
+      ${forceArrow(
+        24,
+        softForceOpacity,
+        "smaller F"
+      )}
+
+      <g opacity="0">
+
+        ${opacityAnimation(softStoppedOpacity)}
+
+        <text
+          x="0"
+          y="-28"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.4"
+          font-weight="700"
+          fill="#334155">
+
+          p = 0
+
+        </text>
+
+      </g>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- LEFT EXPLANATION BOX                               -->
+  <!-- ================================================= -->
+
+  <rect
+    x="22"
+    y="164"
+    width="228"
+    height="56"
+    rx="9"
+    fill="#f8fafc"
+    stroke="#e2e8f0"/>
+
+  <!-- Rigid explanation -->
+
+  <g opacity="1">
+
+    ${opacityAnimation(rigidSceneOpacity)}
+
+    <text
+      x="136"
+      y="179"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#b91c1c">
+
+      Momentum falls to zero very quickly
+
+    </text>
+
+    <text
+      x="136"
+      y="193"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.2"
+      fill="#475569">
+
+      Short stopping time → large average force
+
+    </text>
+
+    <text
+      x="136"
+      y="207"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.5"
+      font-weight="700"
+      fill="#334155">
+
+      J = Δp
+
+    </text>
+
+    <text
+      x="136"
+      y="216"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.5"
+      fill="#64748b">
+
+      large F × short Δt
+
+    </text>
+
+  </g>
+
+  <!-- Cushion explanation -->
+
+  <g opacity="0">
+
+    ${opacityAnimation(softSceneOpacity)}
+
+    <text
+      x="136"
+      y="179"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#15803d">
+
+      Momentum decreases gradually during contact
+
+    </text>
+
+    <text
+      x="136"
+      y="193"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.2"
+      fill="#475569">
+
+      Longer stopping time → smaller average force
+
+    </text>
+
+    <text
+      x="136"
+      y="207"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.5"
+      font-weight="700"
+      fill="#334155">
+
+      J = Δp
+
+    </text>
+
+    <text
+      x="136"
+      y="216"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.5"
+      fill="#64748b">
+
+      smaller F × longer Δt
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="341"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10.1"
+    font-weight="700"
+    fill="#0f172a">
+
+    Force–time graph
+
+  </text>
+
+  <!-- Main relationship -->
+
+  <rect
+    x="283"
+    y="53"
+    width="116"
+    height="28"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="65"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    area under graph
+
+  </text>
+
+  <text
+    x="341"
+    y="76"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.2"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    = impulse = Δp
+
+  </text>
+
+  <!-- Axes -->
+
+  <line
+    x1="291"
+    y1="176"
+    x2="397"
+    y2="176"
+    stroke="#334155"
+    stroke-width="1.4"/>
+
+  <line
+    x1="291"
+    y1="176"
+    x2="291"
+    y2="89"
+    stroke="#334155"
+    stroke-width="1.4"/>
+
+  <path
+    d="M397 176 L391 173 L391 179 Z"
+    fill="#334155"/>
+
+  <path
+    d="M291 89 L288 95 L294 95 Z"
+    fill="#334155"/>
+
+  <text
+    x="344"
+    y="189"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7"
+    font-weight="700"
+    fill="#475569">
+
+    time
+
+  </text>
+
+  <text
+    x="280"
+    y="133"
+    text-anchor="middle"
+    transform="rotate(-90 280 133)"
+    font-family="Arial, sans-serif"
+    font-size="7"
+    font-weight="700"
+    fill="#475569">
+
+    force magnitude
+
+  </text>
+
+  <!-- Rigid-stop pulse -->
+
+  <g opacity="1">
+
+    ${opacityAnimation(rigidSceneOpacity)}
+
+    <!-- Area = 20 × 84 -->
+
+    <rect
+      x="316"
+      y="92"
+      width="20"
+      height="84"
+      fill="#fecaca"
+      fill-opacity="0.78"
+      stroke="#dc2626"
+      stroke-width="1.8"/>
+
+    <text
+      x="326"
+      y="116"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.4"
+      font-weight="700"
+      fill="#991b1b"
+      transform="rotate(-90 326 116)">
+
+      large F
+
+    </text>
+
+    <text
+      x="326"
+      y="197"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.5"
+      font-weight="700"
+      fill="#b91c1c">
+
+      short Δt
+
+    </text>
+
+  </g>
+
+  <!-- Cushioned-stop pulse -->
+
+  <g opacity="0">
+
+    ${opacityAnimation(softSceneOpacity)}
+
+    <!-- Area = 42 × 40: same area as rigid pulse -->
+
+    <rect
+      x="306"
+      y="136"
+      width="42"
+      height="40"
+      fill="#bbf7d0"
+      fill-opacity="0.82"
+      stroke="#16a34a"
+      stroke-width="1.8"/>
+
+    <text
+      x="327"
+      y="155"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.4"
+      font-weight="700"
+      fill="#166534">
+
+      smaller F
+
+    </text>
+
+    <text
+      x="327"
+      y="197"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.5"
+      font-weight="700"
+      fill="#15803d">
+
+      longer Δt
+
+    </text>
+
+  </g>
+
+  <!-- Same impulse -->
+
+  <rect
+    x="284"
+    y="202"
+    width="114"
+    height="18"
+    rx="7"
+    fill="#f8fafc"
+    stroke="#cbd5e1"/>
+
+  <text
+    x="341"
+    y="210"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.3"
+    font-weight="700"
+    fill="#334155">
+
+    Same graph area → same impulse
+
+  </text>
+
+  <text
+    x="341"
+    y="217"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.1"
+    fill="#64748b">
+
+    Both balls have the same Δp
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8"
+    font-weight="700"
+    fill="#64748b">
+
+    Airbags, crumple zones and soft catches reduce force by increasing the stopping time.
+
+  </text>
+
+</svg>
+`;
+  })()
+}
 
 ];
 
