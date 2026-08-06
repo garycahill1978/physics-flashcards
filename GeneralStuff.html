@@ -315,6 +315,71 @@
 }
 
 
+/* ---------- Always-visible animation control ---------- */
+#flashcard-container {
+  padding-bottom: 90px;
+}
+
+.floating-animation-toggle {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 2000;
+
+  margin: 0;
+  padding: 11px 16px;
+
+  background: #1d4ed8;
+  color: #ffffff;
+  border: 2px solid #1e3a8a;
+  border-radius: 999px;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  white-space: nowrap;
+
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.24);
+}
+
+.floating-animation-toggle:hover {
+  background: #1e40af;
+}
+
+.floating-animation-toggle[aria-pressed="true"] {
+  background: #15803d;
+  border-color: #166534;
+}
+
+.floating-animation-toggle[aria-pressed="true"]:hover {
+  background: #166534;
+}
+
+.floating-animation-toggle:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+  .floating-animation-toggle {
+    right: 10px;
+    bottom: 10px;
+    padding: 9px 13px;
+    font-size: 13px;
+  }
+
+  #flashcard-container {
+    padding-bottom: 72px;
+  }
+}
+
+@media print {
+  .floating-animation-toggle {
+    display: none !important;
+  }
+}
+
+
 
   </style>
 
@@ -366,6 +431,16 @@
 </div>
 
 <div id="flashcard-container"></div>
+
+<button
+  id="animation-toggle"
+  class="floating-animation-toggle"
+  type="button"
+  aria-pressed="false"
+  aria-label="Pause all flashcard animations"
+  onclick="toggleAnimations()">
+  ⏸ Pause animations
+</button>
 
 <script>
 const flashcards = [
@@ -35634,126 +35709,39 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
 
   term: "Why does wheel spin reduce a car’s acceleration from rest?",
 
-  equation: "\\boxed{\\sum f_s\\leq\\mu_smg}\\qquad\\boxed{a_{\\max}=\\mu_sg}\\qquad\\boxed{\\sum f_k=\\mu_kmg}",
+  equation: "\\boxed{f_s\\leq\\mu_sN}\\qquad\\boxed{a_{\\max}=\\mu_sg}\\qquad\\boxed{f_k=\\mu_kN}",
 
-  answer: "Consider a simplified four-wheel-drive car accelerating from rest on a level road. All four tyres are the same size. While they roll without slipping, static friction acts forwards on the car and increases as more engine torque is applied, up to a maximum total value of μₛmg. In this simplified model, the greatest possible acceleration without wheel spin is μₛg. If the engine demands more traction than static friction can provide, the tyres spin and their contact patches slide backwards across the road. The friction then becomes kinetic: Σfₖ = μₖmg. Because μₖ is usually smaller than μₛ, the forward traction force and acceleration decrease during wheel spin.",
+  answer: "Consider one simplified driven wheel accelerating a car from rest on a level road. While the tyre rolls without slipping, the contact patch is momentarily at rest relative to the road and the friction is static. Static friction acts forwards on the wheel and can increase up to a maximum value of μₛN, giving a greatest possible acceleration of amax = μₛg in this simplified model. If the driving torque becomes too large, the tyre spins and the contact patch slides backwards across the road. The friction then becomes kinetic: fₖ = μₖN. Because μₖ is usually smaller than μₛ, the forward traction force and acceleration both decrease during wheel spin.",
 
   svg: (() => {
-
     const key =
       Math.random()
         .toString(36)
         .slice(2, 9);
 
     const ids = {
-      staticArrow: `launchStatic-${key}`,
-      kineticArrow: `launchKinetic-${key}`,
-      accelArrow: `launchAccel-${key}`,
-      carGradient: `launchCar-${key}`
+      staticArrow: `wheelStatic-${key}`,
+      kineticArrow: `wheelKinetic-${key}`,
+      accelArrow: `wheelAccel-${key}`,
+      wheelGrad: `wheelGrad-${key}`,
+      bodyGrad: `bodyGrad-${key}`
     };
 
     const duration = 12;
 
-    const keyTimes =
-      "0;0.18;0.58;0.72;1";
-
     /*
       Phase 1: at rest
-      Phase 2: controlled launch using static friction
-      Phase 3: wheel spin using kinetic friction
+      Phase 2: rolling grip (static friction)
+      Phase 3: wheel spin (kinetic friction)
     */
+    const keyTimes = "0;0.18;0.58;0.72;1";
 
-    const carMotion =
-      "0 0;0 0;18 0;26 0;36 0";
+    const wheelMotion = "0 0;0 0;22 0;30 0;42 0";
+    const wheelRotation = "0;0;170;340;980";
 
-    /*
-      Positive SVG rotation is clockwise.
-
-      During wheel spin, the tyres rotate much faster
-      than the forward motion of the car requires.
-    */
-
-    const wheelRotation =
-      "0;0;180;420;980";
-
-    const staticOpacity =
-      "0;1;1;0;0";
-
-    const kineticOpacity =
-      "0;0;0;1;1";
-
-    const restTextOpacity =
-      "1;0;0;0;0";
-
-    const gripTextOpacity =
-      "0;1;1;0;0";
-
-    const spinTextOpacity =
-      "0;0;0;1;1";
-
-    /* ===================================================
-       REUSABLE WHEEL
-
-       All four tyres use exactly the same geometry.
-       =================================================== */
-
-    const wheel = (x, y) => `
-      <g transform="translate(${x} ${y})">
-
-        <g transform="rotate(0)">
-
-          <animateTransform
-            attributeName="transform"
-            type="rotate"
-            values="${wheelRotation}"
-            keyTimes="${keyTimes}"
-            calcMode="linear"
-            dur="${duration}s"
-            repeatCount="indefinite"/>
-
-          <circle
-            cx="0"
-            cy="0"
-            r="12"
-            fill="#111827"
-            stroke="#64748b"
-            stroke-width="1.4"/>
-
-          <circle
-            cx="0"
-            cy="0"
-            r="5.8"
-            fill="#e2e8f0"
-            stroke="#94a3b8"
-            stroke-width="1"/>
-
-          <line
-            x1="-8"
-            y1="0"
-            x2="8"
-            y2="0"
-            stroke="#cbd5e1"
-            stroke-width="1.1"/>
-
-          <line
-            x1="0"
-            y1="-8"
-            x2="0"
-            y2="8"
-            stroke="#cbd5e1"
-            stroke-width="1.1"/>
-
-          <!-- Yellow marker makes rotation visible -->
-
-          <circle
-            cx="0"
-            cy="-8"
-            r="2"
-            fill="#fbbf24"/>
-
-        </g>
-
-      </g>`;
+    const restOpacity = "1;0;0;0;0";
+    const gripOpacity = "0;1;1;0;0";
+    const spinOpacity = "0;0;0;1;1";
 
     return `
 <svg
@@ -35762,82 +35750,67 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
 
   <defs>
 
-    <!-- Static-friction arrow -->
-
     <marker
       id="${ids.staticArrow}"
       viewBox="0 0 10 10"
       refX="8.4"
       refY="5"
-      markerWidth="3.6"
-      markerHeight="3.6"
+      markerWidth="4"
+      markerHeight="4"
       orient="auto">
-
       <path
         d="M0 0 L10 5 L0 10 Z"
         fill="#7c3aed"/>
-
     </marker>
-
-    <!-- Kinetic-friction arrow -->
 
     <marker
       id="${ids.kineticArrow}"
       viewBox="0 0 10 10"
       refX="8.4"
       refY="5"
-      markerWidth="3.6"
-      markerHeight="3.6"
+      markerWidth="4"
+      markerHeight="4"
       orient="auto">
-
       <path
         d="M0 0 L10 5 L0 10 Z"
         fill="#dc2626"/>
-
     </marker>
-
-    <!-- Acceleration arrow -->
 
     <marker
       id="${ids.accelArrow}"
       viewBox="0 0 10 10"
       refX="8.4"
       refY="5"
-      markerWidth="3.6"
-      markerHeight="3.6"
+      markerWidth="4"
+      markerHeight="4"
       orient="auto">
-
       <path
         d="M0 0 L10 5 L0 10 Z"
         fill="#0f172a"/>
-
     </marker>
 
-    <!-- Car body gradient -->
+    <radialGradient
+      id="${ids.wheelGrad}"
+      cx="35%"
+      cy="30%"
+      r="70%">
+      <stop offset="0%" stop-color="#374151"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </radialGradient>
 
     <linearGradient
-      id="${ids.carGradient}"
+      id="${ids.bodyGrad}"
       x1="0"
       y1="0"
       x2="1"
       y2="1">
-
-      <stop
-        offset="0%"
-        stop-color="#93c5fd"/>
-
-      <stop
-        offset="100%"
-        stop-color="#2563eb"/>
-
+      <stop offset="0%" stop-color="#93c5fd"/>
+      <stop offset="100%" stop-color="#2563eb"/>
     </linearGradient>
 
   </defs>
 
-  <!-- ================================================= -->
-  <!-- BACKGROUND                                         -->
-  <!-- ================================================= -->
-
+  <!-- Background -->
   <rect
     width="420"
     height="240"
@@ -35852,15 +35825,10 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
     font-size="13"
     font-weight="700"
     fill="#0f172a">
-
-    Acceleration from rest: grip first, then wheel spin
-
+    Grip first, then wheel spin
   </text>
 
-  <!-- ================================================= -->
-  <!-- LEFT PANEL                                         -->
-  <!-- ================================================= -->
-
+  <!-- LEFT PANEL -->
   <rect
     x="10"
     y="28"
@@ -35879,315 +35847,332 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
     font-size="9.2"
     font-weight="700"
     fill="#334155">
-
-    Simplified AWD car with four equal tyres
-
+    One driven wheel on a level road
   </text>
 
   <!-- Road -->
-
   <rect
     x="18"
-    y="52"
+    y="144"
     width="236"
-    height="123"
-    rx="8"
+    height="42"
+    rx="7"
     fill="#475569"/>
 
   <line
-    x1="24"
-    y1="114"
-    x2="248"
-    y2="114"
+    x1="22"
+    y1="144"
+    x2="250"
+    y2="144"
     stroke="#cbd5e1"
-    stroke-width="1.5"
-    stroke-dasharray="12 9"
-    opacity="0.75"/>
+    stroke-width="2.2"/>
 
   <text
-    x="27"
-    y="64"
+    x="28"
+    y="136"
     font-family="Arial, sans-serif"
-    font-size="6.8"
+    font-size="7"
     font-weight="700"
-    fill="#e2e8f0">
-
-    direction of travel →
-
+    fill="#475569">
+    direction of motion →
   </text>
 
-  <!-- ================================================= -->
-  <!-- MOVING CAR                                         -->
-  <!-- ================================================= -->
-
+  <!-- Moving wheel assembly -->
   <g transform="translate(0 0)">
-
     <animateTransform
       attributeName="transform"
       type="translate"
-      values="${carMotion}"
+      values="${wheelMotion}"
       keyTimes="${keyTimes}"
       calcMode="linear"
       dur="${duration}s"
       repeatCount="indefinite"/>
 
-    <!-- One acceleration indicator -->
+    <!-- Simple vehicle support -->
+    <rect
+      x="86"
+      y="60"
+      width="76"
+      height="18"
+      rx="8"
+      fill="url(#${ids.bodyGrad})"
+      stroke="#1e40af"
+      stroke-width="1.4"/>
 
     <line
+      x1="124"
+      y1="78"
+      x2="124"
+      y2="88"
+      stroke="#1e40af"
+      stroke-width="2"/>
+
+    <!-- Acceleration arrow -->
+    <line
       x1="92"
-      y1="72"
+      y1="58"
       x2="94"
-      y2="72"
+      y2="58"
       stroke="#0f172a"
-      stroke-width="2.4"
+      stroke-width="2.5"
       stroke-dasharray="3 2"
       marker-end="url(#${ids.accelArrow})">
-
       <animate
         attributeName="x2"
-        values="94;110;127;116;116"
+        values="94;110;130;119;119"
         keyTimes="${keyTimes}"
         calcMode="linear"
         dur="${duration}s"
         repeatCount="indefinite"/>
-
     </line>
 
     <text
       x="87"
-      y="75"
+      y="61"
       text-anchor="end"
       font-family="Arial, sans-serif"
       font-size="7"
       font-weight="700"
-      fill="#f8fafc">
-
+      fill="#0f172a">
       a
-
     </text>
 
-    <!-- Four equal tyres -->
-
-    ${wheel(65, 91)}
-    ${wheel(176, 91)}
-    ${wheel(65, 143)}
-    ${wheel(176, 143)}
-
-    <!-- Car body -->
-
-    <path
-      d="
-        M61 82
-        Q52 89 52 101
-        L52 133
-        Q52 146 61 153
-        L179 153
-        Q192 146 194 133
-        L194 101
-        Q192 89 179 82
-        Z"
-      fill="url(#${ids.carGradient})"
-      fill-opacity="0.93"
-      stroke="#1e40af"
-      stroke-width="1.6"/>
-
-    <!-- Windows -->
-
-    <path
-      d="
-        M84 91
-        L159 91
-        Q170 96 174 107
-        L69 107
-        Q73 96 84 91
-        Z"
-      fill="#dbeafe"
-      stroke="#93c5fd"
-      stroke-width="1"/>
-
-    <path
-      d="
-        M69 129
-        L174 129
-        Q170 140 159 144
-        L84 144
-        Q73 140 69 129
-        Z"
-      fill="#dbeafe"
-      stroke="#93c5fd"
-      stroke-width="1"/>
-
-    <line
-      x1="121"
-      y1="91"
-      x2="121"
-      y2="144"
-      stroke="#1e40af"
-      stroke-width="1"
-      opacity="0.65"/>
-
-    <!-- Direction marker on bonnet -->
-
-    <path
-      d="M151 113 L175 118 L151 123 Z"
-      fill="#ffffff"
-      opacity="0.82"/>
-
-    <!-- ================================================= -->
-    <!-- ONE TOTAL STATIC-TRACTION ARROW                   -->
-    <!-- ================================================= -->
-
-    <g opacity="0">
-
-      <animate
-        attributeName="opacity"
-        values="${staticOpacity}"
-        keyTimes="${keyTimes}"
-        calcMode="discrete"
-        dur="${duration}s"
-        repeatCount="indefinite"/>
-
-      <line
-        x1="78"
-        y1="165"
-        x2="102"
-        y2="165"
-        stroke="#7c3aed"
-        stroke-width="2.8"
-        marker-end="url(#${ids.staticArrow})">
-
-        <animate
-          attributeName="x2"
-          values="82;94;116;116;116"
+    <!-- Wheel -->
+    <g transform="translate(124 116)">
+      <g transform="rotate(0)">
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          values="${wheelRotation}"
           keyTimes="${keyTimes}"
           calcMode="linear"
           dur="${duration}s"
           repeatCount="indefinite"/>
 
-      </line>
+        <circle
+          cx="0"
+          cy="0"
+          r="28"
+          fill="url(#${ids.wheelGrad})"
+          stroke="#6b7280"
+          stroke-width="1.8"/>
 
-      <text
-        x="122"
-        y="168"
-        font-family="Arial, sans-serif"
-        font-size="7.2"
-        font-weight="700"
-        fill="#ede9fe">
+        <circle
+          cx="0"
+          cy="0"
+          r="17"
+          fill="#e5e7eb"
+          stroke="#94a3b8"
+          stroke-width="1.2"/>
 
-        Σfₛ
+        <circle
+          cx="0"
+          cy="0"
+          r="3.8"
+          fill="#94a3b8"/>
 
-      </text>
+        <!-- Spokes -->
+        <line
+          x1="-18"
+          y1="0"
+          x2="18"
+          y2="0"
+          stroke="#cbd5e1"
+          stroke-width="1.6"/>
 
+        <line
+          x1="0"
+          y1="-18"
+          x2="0"
+          y2="18"
+          stroke="#cbd5e1"
+          stroke-width="1.6"/>
+
+        <line
+          x1="-12.5"
+          y1="-12.5"
+          x2="12.5"
+          y2="12.5"
+          stroke="#cbd5e1"
+          stroke-width="1.2"/>
+
+        <line
+          x1="-12.5"
+          y1="12.5"
+          x2="12.5"
+          y2="-12.5"
+          stroke="#cbd5e1"
+          stroke-width="1.2"/>
+
+        <!-- Rotation marker -->
+        <circle
+          cx="0"
+          cy="-20"
+          r="3.2"
+          fill="#fbbf24"/>
+      </g>
     </g>
 
-    <!-- ================================================= -->
-    <!-- ONE TOTAL KINETIC-TRACTION ARROW                  -->
-    <!-- Shorter than maximum static traction              -->
-    <!-- ================================================= -->
+    <!-- Contact point -->
+    <circle
+      cx="124"
+      cy="144"
+      r="2.7"
+      fill="#111827"/>
 
+    <!-- Static friction arrow -->
     <g opacity="0">
-
       <animate
         attributeName="opacity"
-        values="${kineticOpacity}"
+        values="${gripOpacity}"
         keyTimes="${keyTimes}"
         calcMode="discrete"
         dur="${duration}s"
         repeatCount="indefinite"/>
 
       <line
-        x1="78"
-        y1="165"
-        x2="104"
-        y2="165"
-        stroke="#dc2626"
-        stroke-width="2.8"
-        marker-end="url(#${ids.kineticArrow})"/>
+        x1="96"
+        y1="160"
+        x2="122"
+        y2="160"
+        stroke="#7c3aed"
+        stroke-width="3"
+        marker-end="url(#${ids.staticArrow})">
+        <animate
+          attributeName="x2"
+          values="98;112;136;136;136"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+      </line>
 
       <text
-        x="111"
-        y="168"
+        x="145"
+        y="163"
         font-family="Arial, sans-serif"
-        font-size="7.2"
+        font-size="8"
         font-weight="700"
-        fill="#fee2e2">
-
-        Σfₖ
-
+        fill="#6d28d9">
+        static friction
       </text>
-
     </g>
 
-    <!-- Wheel-spin streaks -->
-
+    <!-- Kinetic friction arrow -->
     <g opacity="0">
-
       <animate
         attributeName="opacity"
-        values="${kineticOpacity}"
+        values="${spinOpacity}"
         keyTimes="${keyTimes}"
         calcMode="discrete"
         dur="${duration}s"
         repeatCount="indefinite"/>
 
-      <g
+      <line
+        x1="96"
+        y1="160"
+        x2="122"
+        y2="160"
+        stroke="#dc2626"
+        stroke-width="3"
+        marker-end="url(#${ids.kineticArrow})"/>
+
+      <text
+        x="142"
+        y="163"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#b91c1c">
+        kinetic friction
+      </text>
+    </g>
+
+    <!-- Wheel-spin slip marks -->
+    <g opacity="0">
+      <animate
+        attributeName="opacity"
+        values="${spinOpacity}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <line
+        x1="95"
+        y1="147"
+        x2="82"
+        y2="147"
         stroke="#fb923c"
-        stroke-linecap="round">
+        stroke-width="2.2"
+        stroke-linecap="round"/>
 
-        <line
-          x1="43"
-          y1="91"
-          x2="53"
-          y2="91"
-          stroke-width="2"/>
+      <line
+        x1="95"
+        y1="152"
+        x2="85"
+        y2="152"
+        stroke="#fb923c"
+        stroke-width="1.8"
+        stroke-linecap="round"/>
 
-        <line
-          x1="43"
-          y1="143"
-          x2="53"
-          y2="143"
-          stroke-width="2"/>
-
-        <line
-          x1="154"
-          y1="91"
-          x2="164"
-          y2="91"
-          stroke-width="2"/>
-
-        <line
-          x1="154"
-          y1="143"
-          x2="164"
-          y2="143"
-          stroke-width="2"/>
-
-      </g>
-
+      <line
+        x1="95"
+        y1="157"
+        x2="78"
+        y2="157"
+        stroke="#fb923c"
+        stroke-width="1.8"
+        stroke-linecap="round"/>
     </g>
 
   </g>
 
-  <!-- ================================================= -->
-  <!-- PHASE EXPLANATION                                  -->
-  <!-- ================================================= -->
-
+  <!-- Phase explanation box -->
   <rect
     x="22"
-    y="184"
+    y="188"
     width="228"
-    height="36"
+    height="30"
     rx="9"
     fill="#f8fafc"
     stroke="#e2e8f0"/>
 
-  <!-- At rest -->
-
   <g opacity="1">
-
     <animate
       attributeName="opacity"
-      values="${restTextOpacity}"
+      values="${restOpacity}"
+      keyTimes="${keyTimes}"
+      calcMode="discrete"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    <text
+      x="136"
+      y="201"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#334155">
+      At rest: no traction force is needed yet
+    </text>
+
+    <text
+      x="136"
+      y="212"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.7"
+      fill="#64748b">
+      Engine torque is about to be applied
+    </text>
+  </g>
+
+  <g opacity="0">
+    <animate
+      attributeName="opacity"
+      values="${gripOpacity}"
       keyTimes="${keyTimes}"
       calcMode="discrete"
       dur="${duration}s"
@@ -36198,86 +36183,27 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
       y="200"
       text-anchor="middle"
       font-family="Arial, sans-serif"
-      font-size="7.8"
-      font-weight="700"
-      fill="#334155">
-
-      At rest: no traction force is required yet
-
-    </text>
-
-    <text
-      x="136"
-      y="213"
-      text-anchor="middle"
-      font-family="Arial, sans-serif"
-      font-size="6.8"
-      fill="#64748b">
-
-      Engine torque is about to be applied
-
-    </text>
-
-  </g>
-
-  <!-- Static grip -->
-
-  <g opacity="0">
-
-    <animate
-      attributeName="opacity"
-      values="${gripTextOpacity}"
-      keyTimes="${keyTimes}"
-      calcMode="discrete"
-      dur="${duration}s"
-      repeatCount="indefinite"/>
-
-    <text
-      x="136"
-      y="198"
-      text-anchor="middle"
-      font-family="Arial, sans-serif"
-      font-size="7.6"
+      font-size="7.7"
       font-weight="700"
       fill="#6d28d9">
-
-      Static grip: tyres roll without slipping
-
+      Good launch: wheel rolls without slipping
     </text>
 
     <text
       x="136"
-      y="209"
+      y="211"
       text-anchor="middle"
       font-family="Arial, sans-serif"
-      font-size="6.8"
-      fill="#475569">
-
-      Static friction acts forwards and increases as needed
-
-    </text>
-
-    <text
-      x="136"
-      y="218"
-      text-anchor="middle"
-      font-family="Arial, sans-serif"
-      font-size="6.6"
+      font-size="6.7"
       fill="#64748b">
-
-      Maximum idealised acceleration: amax = μₛg
-
+      Static friction grows as needed up to μₛN
     </text>
-
   </g>
 
-  <!-- Wheel spin -->
-
   <g opacity="0">
-
     <animate
       attributeName="opacity"
-      values="${spinTextOpacity}"
+      values="${spinOpacity}"
       keyTimes="${keyTimes}"
       calcMode="discrete"
       dur="${duration}s"
@@ -36285,47 +36211,27 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
 
     <text
       x="136"
-      y="198"
+      y="200"
       text-anchor="middle"
       font-family="Arial, sans-serif"
-      font-size="7.6"
+      font-size="7.7"
       font-weight="700"
       fill="#b91c1c">
-
-      Wheel spin: contact patches slide backwards
-
+      Too much torque: the tyre spins
     </text>
 
     <text
       x="136"
-      y="209"
+      y="211"
       text-anchor="middle"
       font-family="Arial, sans-serif"
-      font-size="6.8"
-      fill="#475569">
-
-      Kinetic friction still pushes the car forwards
-
-    </text>
-
-    <text
-      x="136"
-      y="218"
-      text-anchor="middle"
-      font-family="Arial, sans-serif"
-      font-size="6.6"
+      font-size="6.7"
       fill="#64748b">
-
-      Usually μₖ &lt; μₛ, so the acceleration decreases
-
+      Kinetic friction is smaller, so acceleration drops
     </text>
-
   </g>
 
-  <!-- ================================================= -->
-  <!-- RIGHT PANEL                                        -->
-  <!-- ================================================= -->
-
+  <!-- RIGHT PANEL -->
   <rect
     x="272"
     y="28"
@@ -36344,18 +36250,14 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
     font-size="10.5"
     font-weight="700"
     fill="#0f172a">
-
-    Grip versus wheel spin
-
+    Key idea
   </text>
-
-  <!-- Simplified model -->
 
   <rect
     x="283"
     y="58"
     width="116"
-    height="35"
+    height="39"
     rx="8"
     fill="#eff6ff"
     stroke="#93c5fd"/>
@@ -36365,12 +36267,10 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
     y="72"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="7.3"
+    font-size="7.4"
     font-weight="700"
     fill="#1d4ed8">
-
-    simplified AWD model
-
+    rolling without slipping
   </text>
 
   <text
@@ -36378,113 +36278,73 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
     y="86"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="8.3"
+    font-size="8.8"
     font-weight="700"
     fill="#1d4ed8">
-
-    ΣN = mg
-
+    fₛ ≤ μₛN
   </text>
-
-  <!-- Static grip -->
 
   <rect
     x="283"
-    y="101"
+    y="105"
     width="116"
-    height="43"
+    height="41"
     rx="8"
     fill="#faf5ff"
     stroke="#c4b5fd"/>
 
   <text
     x="341"
-    y="115"
+    y="118"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="7.3"
+    font-size="7.4"
     font-weight="700"
     fill="#6d28d9">
-
-    rolling without slipping
-
+    best possible launch
   </text>
 
   <text
     x="341"
-    y="128"
+    y="132"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="8.7"
+    font-size="8.8"
     font-weight="700"
     fill="#6d28d9">
-
-    Σfₛ ≤ μₛmg
-
-  </text>
-
-  <text
-    x="341"
-    y="139"
-    text-anchor="middle"
-    font-family="Arial, sans-serif"
-    font-size="7.1"
-    fill="#64748b">
-
     amax = μₛg
-
   </text>
-
-  <!-- Wheel spin -->
 
   <rect
     x="283"
-    y="152"
+    y="154"
     width="116"
-    height="43"
+    height="41"
     rx="8"
     fill="#fef2f2"
     stroke="#fca5a5"/>
 
   <text
     x="341"
-    y="166"
+    y="167"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="7.3"
+    font-size="7.4"
     font-weight="700"
     fill="#b91c1c">
-
     wheel spin
-
   </text>
 
   <text
     x="341"
-    y="179"
+    y="181"
     text-anchor="middle"
     font-family="Arial, sans-serif"
-    font-size="8.7"
+    font-size="8.8"
     font-weight="700"
     fill="#b91c1c">
-
-    Σfₖ = μₖmg
-
+    fₖ = μₖN
   </text>
-
-  <text
-    x="341"
-    y="190"
-    text-anchor="middle"
-    font-family="Arial, sans-serif"
-    font-size="7.1"
-    fill="#64748b">
-
-    usually μₖ &lt; μₛ
-
-  </text>
-
-  <!-- Main message -->
 
   <rect
     x="283"
@@ -36503,13 +36363,10 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
     font-size="6.4"
     font-weight="700"
     fill="#334155">
-
     Best launch: just below wheel spin
-
   </text>
 
   <!-- Footer -->
-
   <text
     x="210"
     y="237"
@@ -36518,16 +36375,14 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
     font-size="8"
     font-weight="700"
     fill="#64748b">
-
-    Static friction provides the strongest controlled traction; wheel spin usually reduces acceleration.
-
+    Static friction gives the strongest controlled traction; wheel spin usually reduces acceleration.
   </text>
 
 </svg>
 `;
   })()
-}
-,
+},
+
 
 {
   topic: "Mechanics",
@@ -43640,7 +43495,1112 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
 `;
   })()
 }
+,
 
+{
+  topic: "Mechanics",
+
+  term: "How was G first measured, and why is it still so difficult to determine?",
+
+  equation: "\\boxed{F=G\\frac{m_1m_2}{r^2}}\\qquad\\boxed{G=6.67430(15)\\times10^{-11}\\ \\mathrm{N\\,m^2\\,kg^{-2}}}",
+
+  answer: "Newton formulated the universal inverse-square law of gravitation in 1687, but he did not measure the numerical value of G or independently know Earth’s mass. In 1774, Nevil Maskelyne observed stars from stations on the north and south sides of the Scottish mountain Schiehallion. The stars established the astronomical zenith, while nearby plumb lines were pulled slightly towards the mountain. Charles Hutton combined this deflection with a survey of the mountain to estimate Earth’s mean density. In 1785, Coulomb used a torsion balance to measure electrostatic forces. For gravity, John Michell designed a torsion-balance apparatus that was later used by Henry Cavendish. In 1797–98, Cavendish measured the attraction between lead spheres and reported Earth’s mean density—effectively determining G in modern terms. G is extraordinarily small: two 1 kg masses separated by 1 m attract with a force of only about 6.7 × 10⁻¹¹ N. Because the signal is so tiny and gravity cannot be screened, G remains one of the least precisely known fundamental constants, with an uncertainty of about 22 parts per million.",
+
+  svg: (() => {
+    const key =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const ids = {
+      forceArrow: `historyG-force-${key}`,
+      plumbArrow: `historyG-plumb-${key}`,
+      mountainGradient: `historyG-mountain-${key}`,
+      massGradient: `historyG-mass-${key}`
+    };
+
+    const duration = 15;
+
+    /*
+      Scene 1: Newton and Schiehallion
+      Scene 2: Coulomb, Michell and Cavendish
+      Scene 3: Why G remains difficult to measure
+    */
+
+    const keyTimes =
+      "0;0.30;0.34;0.63;0.67;1";
+
+    const scene1 =
+      "1;1;0;0;0;0";
+
+    const scene2 =
+      "0;0;1;1;0;0";
+
+    const scene3 =
+      "0;0;0;0;1;1";
+
+    const show = values => `
+      <animate
+        attributeName="opacity"
+        values="${values}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+    `;
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker
+      id="${ids.forceArrow}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.8"
+      markerHeight="3.8"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#dc2626"/>
+
+    </marker>
+
+    <marker
+      id="${ids.plumbArrow}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.5"
+      markerHeight="3.5"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#7c3aed"/>
+
+    </marker>
+
+    <linearGradient
+      id="${ids.mountainGradient}"
+      x1="0"
+      y1="0"
+      x2="0"
+      y2="1">
+
+      <stop
+        offset="0%"
+        stop-color="#86efac"/>
+
+      <stop
+        offset="100%"
+        stop-color="#166534"/>
+
+    </linearGradient>
+
+    <radialGradient
+      id="${ids.massGradient}"
+      cx="35%"
+      cy="30%"
+      r="72%">
+
+      <stop
+        offset="0%"
+        stop-color="#dbeafe"/>
+
+      <stop
+        offset="100%"
+        stop-color="#2563eb"/>
+
+    </radialGradient>
+
+  </defs>
+
+  <!-- Background -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="12.6"
+    font-weight="700"
+    fill="#0f172a">
+
+    From Newton’s law to the difficult measurement of G
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT HISTORY PANEL                                 -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="268"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <!-- ================================================= -->
+  <!-- SCENE 1: NEWTON AND SCHIEHALLION                   -->
+  <!-- ================================================= -->
+
+  <g opacity="1">
+
+    ${show(scene1)}
+
+    <!-- Newton milestone -->
+
+    <rect
+      x="22"
+      y="39"
+      width="244"
+      height="30"
+      rx="8"
+      fill="#eff6ff"
+      stroke="#93c5fd"/>
+
+    <text
+      x="144"
+      y="51"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8.5"
+      font-weight="700"
+      fill="#1d4ed8">
+
+      1687 — Newton proposes universal gravitation
+
+    </text>
+
+    <text
+      x="144"
+      y="63"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      fill="#475569">
+
+      The inverse-square law was known, but G was not measured
+
+    </text>
+
+    <!-- Stars -->
+
+    <g
+      fill="#f59e0b">
+
+      <circle
+        cx="40"
+        cy="84"
+        r="1.5"/>
+
+      <circle
+        cx="70"
+        cy="77"
+        r="1.2"/>
+
+      <circle
+        cx="110"
+        cy="85"
+        r="1.4"/>
+
+      <circle
+        cx="166"
+        cy="78"
+        r="1.3"/>
+
+      <circle
+        cx="208"
+        cy="84"
+        r="1.5"/>
+
+      <circle
+        cx="247"
+        cy="76"
+        r="1.2"/>
+
+    </g>
+
+    <text
+      x="144"
+      y="88"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.7"
+      font-weight="700"
+      fill="#92400e">
+
+      stars establish the astronomical zenith
+
+    </text>
+
+    <!-- Schiehallion -->
+
+    <path
+      d="
+        M50 174
+        L87 147
+        L111 116
+        L137 95
+        L161 111
+        L187 146
+        L239 174
+        Z"
+      fill="url(#${ids.mountainGradient})"
+      stroke="#166534"
+      stroke-width="1.4"/>
+
+    <path
+      d="
+        M111 116
+        L137 95
+        L153 118
+        L137 112
+        L124 123
+        Z"
+      fill="#dcfce7"
+      opacity="0.8"/>
+
+    <text
+      x="144"
+      y="151"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.2"
+      font-weight="700"
+      fill="#f0fdf4">
+
+      Schiehallion
+
+    </text>
+
+    <!-- North observatory -->
+
+    <rect
+      x="47"
+      y="137"
+      width="18"
+      height="13"
+      rx="2"
+      fill="#475569"/>
+
+    <path
+      d="M44 137 L56 128 L68 137 Z"
+      fill="#64748b"/>
+
+    <text
+      x="56"
+      y="160"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.5"
+      font-weight="700"
+      fill="#334155">
+
+      north
+
+    </text>
+
+    <!-- South observatory -->
+
+    <rect
+      x="223"
+      y="137"
+      width="18"
+      height="13"
+      rx="2"
+      fill="#475569"/>
+
+    <path
+      d="M220 137 L232 128 L244 137 Z"
+      fill="#64748b"/>
+
+    <text
+      x="232"
+      y="160"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.5"
+      font-weight="700"
+      fill="#334155">
+
+      south
+
+    </text>
+
+    <!-- True vertical reference lines -->
+
+    <line
+      x1="56"
+      y1="97"
+      x2="56"
+      y2="132"
+      stroke="#94a3b8"
+      stroke-width="1.1"
+      stroke-dasharray="3 2"/>
+
+    <line
+      x1="232"
+      y1="97"
+      x2="232"
+      y2="132"
+      stroke="#94a3b8"
+      stroke-width="1.1"
+      stroke-dasharray="3 2"/>
+
+    <!-- Deflected plumb lines -->
+
+    <line
+      x1="56"
+      y1="99"
+      x2="61"
+      y2="131"
+      stroke="#7c3aed"
+      stroke-width="2"/>
+
+    <circle
+      cx="61"
+      cy="131"
+      r="3"
+      fill="#7c3aed"/>
+
+    <line
+      x1="232"
+      y1="99"
+      x2="227"
+      y2="131"
+      stroke="#7c3aed"
+      stroke-width="2"/>
+
+    <circle
+      cx="227"
+      cy="131"
+      r="3"
+      fill="#7c3aed"/>
+
+    <!-- Pull arrows -->
+
+    <line
+      x1="67"
+      y1="119"
+      x2="84"
+      y2="119"
+      stroke="#7c3aed"
+      stroke-width="1.8"
+      marker-end="url(#${ids.plumbArrow})"/>
+
+    <line
+      x1="221"
+      y1="119"
+      x2="204"
+      y2="119"
+      stroke="#7c3aed"
+      stroke-width="1.8"
+      marker-end="url(#${ids.plumbArrow})"/>
+
+    <rect
+      x="25"
+      y="181"
+      width="238"
+      height="35"
+      rx="8"
+      fill="#faf5ff"
+      stroke="#c4b5fd"/>
+
+    <text
+      x="144"
+      y="194"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.4"
+      font-weight="700"
+      fill="#6d28d9">
+
+      1774 — Maskelyne compares observations
+
+    </text>
+
+    <text
+      x="144"
+      y="205"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.7"
+      fill="#475569">
+
+      from both sides: plumb lines tilt towards the mountain
+
+    </text>
+
+    <text
+      x="144"
+      y="214"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.5"
+      fill="#64748b">
+
+      Hutton uses the result to estimate Earth’s mean density
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- SCENE 2: TORSION BALANCES                          -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    ${show(scene2)}
+
+    <!-- Coulomb -->
+
+    <rect
+      x="22"
+      y="39"
+      width="244"
+      height="30"
+      rx="8"
+      fill="#fff7ed"
+      stroke="#fdba74"/>
+
+    <text
+      x="144"
+      y="51"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8.4"
+      font-weight="700"
+      fill="#c2410c">
+
+      1785 — Coulomb uses a torsion balance
+
+    </text>
+
+    <text
+      x="144"
+      y="63"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.8"
+      fill="#475569">
+
+      to measure extremely small electrostatic forces
+
+    </text>
+
+    <!-- Cavendish label -->
+
+    <text
+      x="144"
+      y="84"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.2"
+      font-weight="700"
+      fill="#334155">
+
+      Michell’s gravitational torsion balance
+
+    </text>
+
+    <!-- Support -->
+
+    <rect
+      x="117"
+      y="91"
+      width="54"
+      height="7"
+      rx="3"
+      fill="#64748b"/>
+
+    <!-- Fibre -->
+
+    <line
+      x1="144"
+      y1="98"
+      x2="144"
+      y2="136"
+      stroke="#475569"
+      stroke-width="1.2"/>
+
+    <!-- Reference position -->
+
+    <line
+      x1="79"
+      y1="136"
+      x2="209"
+      y2="136"
+      stroke="#94a3b8"
+      stroke-width="1"
+      stroke-dasharray="4 3"/>
+
+    <!-- Moving balance -->
+
+    <g>
+
+      <animateTransform
+        attributeName="transform"
+        type="rotate"
+        values="
+          0 144 136;
+          0 144 136;
+          4 144 136;
+          4 144 136;
+          0 144 136
+        "
+        keyTimes="0;0.52;0.70;0.92;1"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      <line
+        x1="85"
+        y1="136"
+        x2="203"
+        y2="136"
+        stroke="#0f172a"
+        stroke-width="2.6"
+        stroke-linecap="round"/>
+
+      <circle
+        cx="87"
+        cy="136"
+        r="9"
+        fill="#93c5fd"
+        stroke="#1d4ed8"
+        stroke-width="1.3"/>
+
+      <circle
+        cx="201"
+        cy="136"
+        r="9"
+        fill="#93c5fd"
+        stroke="#1d4ed8"
+        stroke-width="1.3"/>
+
+    </g>
+
+    <!-- Large attracting masses -->
+
+    <circle
+      cx="64"
+      cy="162"
+      r="18"
+      fill="#334155"
+      stroke="#0f172a"
+      stroke-width="1.4"/>
+
+    <circle
+      cx="224"
+      cy="111"
+      r="18"
+      fill="#334155"
+      stroke="#0f172a"
+      stroke-width="1.4"/>
+
+    <!-- Force arrows -->
+
+    <line
+      x1="82"
+      y1="144"
+      x2="71"
+      y2="155"
+      stroke="#dc2626"
+      stroke-width="2.1"
+      marker-end="url(#${ids.forceArrow})"/>
+
+    <line
+      x1="206"
+      y1="128"
+      x2="217"
+      y2="117"
+      stroke="#dc2626"
+      stroke-width="2.1"
+      marker-end="url(#${ids.forceArrow})"/>
+
+    <!-- Tiny twist -->
+
+    <path
+      d="M144 116 A20 20 0 0 1 147.5 116.3"
+      fill="none"
+      stroke="#f59e0b"
+      stroke-width="2.3"
+      stroke-linecap="round"/>
+
+    <text
+      x="154"
+      y="119"
+      font-family="Arial, sans-serif"
+      font-size="7.5"
+      font-weight="700"
+      fill="#b45309">
+
+      tiny twist
+
+    </text>
+
+    <!-- Cavendish result -->
+
+    <rect
+      x="25"
+      y="181"
+      width="238"
+      height="35"
+      rx="8"
+      fill="#eff6ff"
+      stroke="#93c5fd"/>
+
+    <text
+      x="144"
+      y="194"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.5"
+      font-weight="700"
+      fill="#1d4ed8">
+
+      1797–98 — Cavendish measures attraction
+
+    </text>
+
+    <text
+      x="144"
+      y="205"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.7"
+      fill="#475569">
+
+      between lead spheres using Michell’s apparatus
+
+    </text>
+
+    <text
+      x="144"
+      y="214"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.5"
+      fill="#64748b">
+
+      He reported Earth’s density—not G in modern notation
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- SCENE 3: WHY G REMAINS DIFFICULT                   -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    ${show(scene3)}
+
+    <text
+      x="144"
+      y="48"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.5"
+      font-weight="700"
+      fill="#334155">
+
+      The laboratory gravitational force is minute
+
+    </text>
+
+    <!-- Two 1 kg masses -->
+
+    <circle
+      cx="68"
+      cy="101"
+      r="21"
+      fill="url(#${ids.massGradient})"
+      stroke="#1e40af"
+      stroke-width="1.5"/>
+
+    <text
+      x="68"
+      y="105"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9"
+      font-weight="700"
+      fill="#ffffff">
+
+      1 kg
+
+    </text>
+
+    <circle
+      cx="220"
+      cy="101"
+      r="21"
+      fill="url(#${ids.massGradient})"
+      stroke="#1e40af"
+      stroke-width="1.5"/>
+
+    <text
+      x="220"
+      y="105"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9"
+      font-weight="700"
+      fill="#ffffff">
+
+      1 kg
+
+    </text>
+
+    <!-- Gravitational arrows -->
+
+    <line
+      x1="70"
+      y1="70"
+      x2="106"
+      y2="70"
+      stroke="#dc2626"
+      stroke-width="2.5"
+      marker-end="url(#${ids.forceArrow})"/>
+
+    <line
+      x1="218"
+      y1="70"
+      x2="182"
+      y2="70"
+      stroke="#dc2626"
+      stroke-width="2.5"
+      marker-end="url(#${ids.forceArrow})"/>
+
+    <text
+      x="144"
+      y="63"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.6"
+      font-weight="700"
+      fill="#b91c1c">
+
+      arrows enlarged enormously
+
+    </text>
+
+    <!-- Distance -->
+
+    <line
+      x1="68"
+      y1="136"
+      x2="220"
+      y2="136"
+      stroke="#64748b"
+      stroke-width="1.2"/>
+
+    <line
+      x1="68"
+      y1="131"
+      x2="68"
+      y2="141"
+      stroke="#64748b"
+      stroke-width="1.2"/>
+
+    <line
+      x1="220"
+      y1="131"
+      x2="220"
+      y2="141"
+      stroke="#64748b"
+      stroke-width="1.2"/>
+
+    <text
+      x="144"
+      y="149"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.5"
+      font-weight="700"
+      fill="#475569">
+
+      separation = 1 m
+
+    </text>
+
+    <!-- Tiny force -->
+
+    <rect
+      x="25"
+      y="158"
+      width="238"
+      height="29"
+      rx="8"
+      fill="#fef2f2"
+      stroke="#fca5a5"/>
+
+    <text
+      x="144"
+      y="176"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="10.5"
+      font-weight="700"
+      fill="#b91c1c">
+
+      F ≈ 6.7 × 10⁻¹¹ N
+
+    </text>
+
+    <!-- Disturbances -->
+
+    <rect
+      x="25"
+      y="193"
+      width="238"
+      height="23"
+      rx="7"
+      fill="#faf5ff"
+      stroke="#c4b5fd"/>
+
+    <text
+      x="144"
+      y="203"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.7"
+      font-weight="700"
+      fill="#6d28d9">
+
+      vibration · temperature · air currents · static charge
+
+    </text>
+
+    <text
+      x="144"
+      y="212"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.4"
+      fill="#64748b">
+
+      nearby masses and fibre properties can swamp the signal
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL: G TODAY                               -->
+  <!-- ================================================= -->
+
+  <rect
+    x="288"
+    y="28"
+    width="122"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="349"
+    y="45"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10.2"
+    font-weight="700"
+    fill="#0f172a">
+
+    G today
+
+  </text>
+
+  <!-- Value -->
+
+  <rect
+    x="298"
+    y="57"
+    width="102"
+    height="50"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="349"
+    y="71"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    recommended value
+
+  </text>
+
+  <text
+    x="349"
+    y="86"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.7"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    6.67430 × 10⁻¹¹
+
+  </text>
+
+  <text
+    x="349"
+    y="99"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.8"
+    font-weight="700"
+    fill="#475569">
+
+    N m² kg⁻²
+
+  </text>
+
+  <!-- Uncertainty -->
+
+  <rect
+    x="298"
+    y="117"
+    width="102"
+    height="45"
+    rx="8"
+    fill="#fff7ed"
+    stroke="#fdba74"/>
+
+  <text
+    x="349"
+    y="131"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.9"
+    font-weight="700"
+    fill="#c2410c">
+
+    relative uncertainty
+
+  </text>
+
+  <text
+    x="349"
+    y="147"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="11"
+    font-weight="700"
+    fill="#c2410c">
+
+    ≈ 22 ppm
+
+  </text>
+
+  <text
+    x="349"
+    y="157"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.2"
+    fill="#64748b">
+
+    about 0.0022%
+
+  </text>
+
+  <!-- Main statement -->
+
+  <rect
+    x="298"
+    y="172"
+    width="102"
+    height="43"
+    rx="8"
+    fill="#fef2f2"
+    stroke="#fca5a5"/>
+
+  <text
+    x="349"
+    y="184"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.6"
+    font-weight="700"
+    fill="#b91c1c">
+
+    One of the least
+
+  </text>
+
+  <text
+    x="349"
+    y="195"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.6"
+    font-weight="700"
+    fill="#b91c1c">
+
+    precisely measured
+
+  </text>
+
+  <text
+    x="349"
+    y="206"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.6"
+    font-weight="700"
+    fill="#b91c1c">
+
+    fundamental constants
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.7"
+    font-weight="700"
+    fill="#64748b">
+
+    Newton gave the law; mountains and torsion balances finally made gravity measurable in the laboratory.
+
+  </text>
+
+</svg>
+`;
+  })()
+}
 
 
 ];
@@ -43649,6 +44609,46 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
 
 let cards = flashcards;
 let selectedTopics = new Set();
+let animationsPaused = false;
+
+function applyAnimationState(root = document) {
+  root.querySelectorAll(".diagram svg").forEach(svg => {
+    try {
+      if (animationsPaused) {
+        if (typeof svg.pauseAnimations === "function") {
+          svg.pauseAnimations();
+        }
+      } else if (typeof svg.unpauseAnimations === "function") {
+        svg.unpauseAnimations();
+      }
+    } catch (error) {
+      // Some browsers or SVGs do not expose SMIL animation controls.
+    }
+  });
+}
+
+function updateAnimationButton() {
+  const button = document.getElementById("animation-toggle");
+  if (!button) return;
+
+  button.textContent = animationsPaused
+    ? "▶ Play animations"
+    : "⏸ Pause animations";
+
+  button.setAttribute("aria-pressed", String(animationsPaused));
+  button.setAttribute(
+    "aria-label",
+    animationsPaused
+      ? "Play all flashcard animations"
+      : "Pause all flashcard animations"
+  );
+}
+
+function toggleAnimations() {
+  animationsPaused = !animationsPaused;
+  applyAnimationState(document.getElementById("flashcard-container"));
+  updateAnimationButton();
+}
 
 function topicCounts() {
   const counts = {};
@@ -43778,8 +44778,14 @@ function displayFlashcards() {
     container.appendChild(cardEl);
   });
 
+  applyAnimationState(container);
+
   if (window.MathJax && window.MathJax.typesetPromise) {
-    MathJax.typesetPromise([container]);
+    MathJax.typesetPromise([container])
+      .then(() => applyAnimationState(container))
+      .catch(error => {
+        console.error("MathJax display preparation failed:", error);
+      });
   }
 }
 
@@ -43942,6 +44948,7 @@ async function printFlashcards() {
 
 renderTopicButtons();
 displayFlashcards();
+updateAnimationButton();
 </script>
 
 <footer class="site-footer">
