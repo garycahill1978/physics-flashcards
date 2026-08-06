@@ -8,9 +8,26 @@
   <style>
     body { font-family: Arial, sans-serif; background:#f8f9fa; margin:0; color:#111827; }
 
-    .page-title { text-align:center; padding:20px 12px 10px; }
-    .page-title h1 { margin:0; font-size:1.6em; }
-    .page-title p { margin:8px 0 0; color:#4b5563; }
+    .page-title {
+      text-align:center;
+      padding:12px 12px 6px;
+    }
+
+    .page-title h1 {
+      margin:0;
+      font-size:1.55em;
+      line-height:1.2;
+    }
+
+    .author-credit {
+      display:inline-block;
+      margin-left:.5em;
+      color:#6b7280;
+      font-size:.48em;
+      font-weight:400;
+      white-space:nowrap;
+      vertical-align:middle;
+    }
 
     .controls {
       text-align:center; padding:15px; position:sticky; top:0; background:#f8f9fa;
@@ -213,6 +230,15 @@
   overflow-wrap: anywhere;
 }
 
+#print-area .print-credit {
+  flex: 0 0 auto;
+  margin-top: 2px;
+  color: #6b7280;
+  font-size: 6.3px;
+  line-height: 1;
+  text-align: right;
+}
+
 #print-area .print-card mjx-container {
   display: block !important;
   max-width: 100% !important;
@@ -253,6 +279,9 @@
 
   #print-area {
     display: block !important;
+    position: static !important;
+    left: auto !important;
+    top: auto !important;
     width: 194mm !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -262,6 +291,30 @@
     display: none !important;
   }
 }
+.site-footer {
+  max-width: 900px;
+  margin: 28px auto 0;
+  padding: 14px 12px 20px;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 7px;
+
+  border-top: 1px solid #e5e7eb;
+
+  color: #6b7280;
+  font-size: 0.78em;
+  text-align: center;
+}
+
+@media print {
+  .site-footer {
+    display: none !important;
+  }
+}
+
+
 
   </style>
 
@@ -276,10 +329,12 @@
 
 <body>
 
-<div class="page-title">
-  <h1>Physics Flashcards</h1>
-  <p>Edit the title, subtitle, and flashcards array for each set.</p>
-</div>
+<header class="page-title">
+  <h1>
+    Physics Flashcards
+    <span class="author-credit">created by G. Cahill</span>
+  </h1>
+</header>
 
 <div class="controls">
   <div class="control-row">
@@ -306,7 +361,7 @@
   <div class="control-row">
     <button onclick="shuffleAndDisplay()">Shuffle flashcards</button>
     <button onclick="clearRatings()">Clear colour ratings</button>
-    <button onclick="printFlashcards()">Print / Save PDF</button>
+    <button type="button" onclick="printFlashcards()">Print displayed cards / Save PDF</button>
   </div>
 </div>
 
@@ -40503,7 +40558,3090 @@ answer: "Consider a block initially at rest while the angle of the incline is sl
 </svg>
 `;
   })()
+},
+
+{
+  topic: "Mechanics",
+
+  term: "Why is momentum conserved during a collision?",
+
+  equation: "\\boxed{\\vec F_{1\\to2}=-\\vec F_{2\\to1}}\\Rightarrow\\boxed{\\vec J_1=-\\vec J_2}\\Rightarrow\\boxed{\\Delta\\vec p_1=-\\Delta\\vec p_2}\\Rightarrow\\boxed{\\Delta\\vec p_{\\text{total}}=0}",
+
+  answer: "During a collision, each object exerts a force on the other. According to Newton’s third law, these forces are equal in magnitude and opposite in direction. They act over the same contact time, so the impulses delivered to the two objects are also equal and opposite. Since impulse equals change in momentum, one object gains exactly the momentum that the other loses. Therefore, if the net external impulse on the system is negligible, the total momentum remains constant. This applies to elastic, inelastic and perfectly inelastic collisions. The animation shows the simple example of one equal-mass ball transferring its momentum to another.",
+
+  svg: (() => {
+
+    const key =
+      Math.random()
+        .toString(36)
+        .slice(2, 9);
+
+    const ids = {
+      momentum: `collisionMomentum-${key}`,
+      force: `collisionForce-${key}`
+    };
+
+    const duration = 12;
+
+    /*
+      Animation phases:
+
+      0.00–0.30  Ball 1 approaches ball 2
+      0.30–0.56  The balls are in contact
+      0.56–1.00  Ball 2 moves away
+
+      During contact:
+        p₁ decreases
+        p₂ increases
+        equal and opposite forces act
+    */
+
+    const keyTimes =
+      "0;0.08;0.30;0.36;0.46;0.56;0.62;0.84;0.92;1";
+
+    const approachOpacity =
+      "1;1;1;0;0;0;0;0;0;0";
+
+    const contactOpacity =
+      "0;0;0;1;1;1;0;0;0;0";
+
+    const afterOpacity =
+      "0;0;0;0;0;0;1;1;1;1";
+
+    const forceOpacity =
+      "0;0;0;1;1;1;0;0;0;0";
+
+    /*
+      Ball 1 begins at x = 70.
+
+      At contact:
+        ball 1 centre = 122
+        ball 2 centre = 150
+
+      With radii of 14, the balls are touching.
+    */
+
+    const ball1Motion =
+      "0 0;0 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0";
+
+    const ball2Motion =
+      "0 0;0 0;0 0;0 0;0 0;0 0;0 0;34 0;58 0;58 0";
+
+    /*
+      Momentum is transferred from ball 1 to ball 2.
+
+      The two arrow lengths add to approximately
+      the same total throughout the contact interval.
+    */
+
+    const p1End =
+      "36;36;36;28;18;2;2;2;2;2";
+
+    const p2End =
+      "2;2;2;10;20;36;36;36;36;36";
+
+    const p1Opacity =
+      "1;1;1;1;1;1;0;0;0;0";
+
+    const p2Opacity =
+      "0;0;0;1;1;1;1;1;1;1";
+
+    const p2ZeroOpacity =
+      "1;1;1;0;0;0;0;0;0;0";
+
+    const p1ZeroOpacity =
+      "0;0;0;0;0;0;1;1;1;1";
+
+    const opacityAnimation = (
+      values,
+      calcMode = "discrete"
+    ) => `
+      <animate
+        attributeName="opacity"
+        values="${values}"
+        keyTimes="${keyTimes}"
+        calcMode="${calcMode}"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+    `;
+
+    const ball = (
+      fill,
+      stroke,
+      label
+    ) => `
+      <circle
+        cx="0"
+        cy="0"
+        r="14"
+        fill="${fill}"
+        stroke="${stroke}"
+        stroke-width="1.8"/>
+
+      <circle
+        cx="-4"
+        cy="-4"
+        r="3.5"
+        fill="#ffffff"
+        opacity="0.42"/>
+
+      <text
+        x="0"
+        y="3"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8.2"
+        font-weight="700"
+        fill="#0f172a">
+
+        ${label}
+
+      </text>
+    `;
+
+    const momentumArrow = (
+      endValues,
+      opacityValues,
+      label
+    ) => `
+      <g opacity="1">
+
+        ${opacityAnimation(opacityValues)}
+
+        <line
+          x1="-5"
+          y1="-31"
+          x2="36"
+          y2="-31"
+          stroke="#2563eb"
+          stroke-width="2.7"
+          marker-end="url(#${ids.momentum})">
+
+          <animate
+            attributeName="x2"
+            values="${endValues}"
+            keyTimes="${keyTimes}"
+            calcMode="linear"
+            dur="${duration}s"
+            repeatCount="indefinite"/>
+
+        </line>
+
+        <text
+          x="15"
+          y="-38"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.4"
+          font-weight="700"
+          fill="#1d4ed8">
+
+          ${label}
+
+        </text>
+
+      </g>
+    `;
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <!-- Momentum arrowhead -->
+
+    <marker
+      id="${ids.momentum}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#2563eb"/>
+
+    </marker>
+
+    <!-- Force arrowhead -->
+
+    <marker
+      id="${ids.force}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#dc2626"/>
+
+    </marker>
+
+  </defs>
+
+  <!-- ================================================= -->
+  <!-- BACKGROUND                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Why is momentum conserved during a collision?
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.2"
+    font-weight="700"
+    fill="#334155">
+
+    Momentum is transferred between the two objects
+
+  </text>
+
+  <!-- Smooth surface -->
+
+  <line
+    x1="24"
+    y1="139"
+    x2="248"
+    y2="139"
+    stroke="#64748b"
+    stroke-width="2"/>
+
+  <!-- ================================================= -->
+  <!-- BALL 1                                             -->
+  <!-- ================================================= -->
+
+  <g transform="translate(70 120)">
+
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      additive="sum"
+      values="${ball1Motion}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    ${ball(
+      "#bfdbfe",
+      "#2563eb",
+      "1"
+    )}
+
+    ${momentumArrow(
+      p1End,
+      p1Opacity,
+      "p₁"
+    )}
+
+    <!-- Ball 1 stopping-force arrow -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(forceOpacity)}
+
+      <line
+        x1="-2"
+        y1="0"
+        x2="-32"
+        y2="0"
+        stroke="#dc2626"
+        stroke-width="3"
+        marker-end="url(#${ids.force})"/>
+
+      <text
+        x="-18"
+        y="-8"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.8"
+        font-weight="700"
+        fill="#b91c1c">
+
+        F₂ on 1
+
+      </text>
+
+    </g>
+
+    <!-- Ball 1 is at rest after collision -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(p1ZeroOpacity)}
+
+      <text
+        x="0"
+        y="-29"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.4"
+        font-weight="700"
+        fill="#475569">
+
+        p₁ = 0
+
+      </text>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- BALL 2                                             -->
+  <!-- ================================================= -->
+
+  <g transform="translate(150 120)">
+
+    <animateTransform
+      attributeName="transform"
+      type="translate"
+      additive="sum"
+      values="${ball2Motion}"
+      keyTimes="${keyTimes}"
+      calcMode="linear"
+      dur="${duration}s"
+      repeatCount="indefinite"/>
+
+    ${ball(
+      "#fed7aa",
+      "#ea580c",
+      "2"
+    )}
+
+    ${momentumArrow(
+      p2End,
+      p2Opacity,
+      "p₂"
+    )}
+
+    <!-- Ball 2 is initially at rest -->
+
+    <g opacity="1">
+
+      ${opacityAnimation(p2ZeroOpacity)}
+
+      <text
+        x="0"
+        y="-29"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.4"
+        font-weight="700"
+        fill="#475569">
+
+        p₂ = 0
+
+      </text>
+
+    </g>
+
+    <!-- Ball 2 accelerating-force arrow -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(forceOpacity)}
+
+      <line
+        x1="2"
+        y1="0"
+        x2="32"
+        y2="0"
+        stroke="#dc2626"
+        stroke-width="3"
+        marker-end="url(#${ids.force})"/>
+
+      <text
+        x="18"
+        y="-8"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.8"
+        font-weight="700"
+        fill="#b91c1c">
+
+        F₁ on 2
+
+      </text>
+
+    </g>
+
+  </g>
+
+  <!-- Contact highlight -->
+
+  <g opacity="0">
+
+    ${opacityAnimation(forceOpacity)}
+
+    <circle
+      cx="136"
+      cy="120"
+      r="7"
+      fill="#fef3c7"
+      stroke="#f59e0b"
+      stroke-width="1.3"
+      opacity="0.75"/>
+
+    <text
+      x="136"
+      y="91"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7"
+      font-weight="700"
+      fill="#92400e">
+
+      same contact time Δt
+
+    </text>
+
+  </g>
+
+  <!-- Example label -->
+
+  <text
+    x="136"
+    y="153"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.5"
+    fill="#64748b">
+
+    idealised equal-mass elastic example
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- PHASE EXPLANATION                                  -->
+  <!-- ================================================= -->
+
+  <rect
+    x="22"
+    y="163"
+    width="228"
+    height="57"
+    rx="9"
+    fill="#f8fafc"
+    stroke="#e2e8f0"/>
+
+  <!-- Before collision -->
+
+  <g opacity="1">
+
+    ${opacityAnimation(approachOpacity)}
+
+    <text
+      x="136"
+      y="179"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.9"
+      font-weight="700"
+      fill="#1d4ed8">
+
+      Before the collision
+
+    </text>
+
+    <text
+      x="136"
+      y="194"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.4"
+      fill="#475569">
+
+      Ball 1 carries the system momentum
+
+    </text>
+
+    <text
+      x="136"
+      y="210"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#0f172a">
+
+      ptotal = p₁
+
+    </text>
+
+  </g>
+
+  <!-- During collision -->
+
+  <g opacity="0">
+
+    ${opacityAnimation(contactOpacity)}
+
+    <text
+      x="136"
+      y="178"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#b91c1c">
+
+      During contact
+
+    </text>
+
+    <text
+      x="136"
+      y="193"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.2"
+      fill="#475569">
+
+      Equal and opposite forces act for the same time
+
+    </text>
+
+    <text
+      x="136"
+      y="208"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.7"
+      font-weight="700"
+      fill="#0f172a">
+
+      Δp₁ = −Δp₂
+
+    </text>
+
+    <text
+      x="136"
+      y="217"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="6.3"
+      fill="#64748b">
+
+      momentum lost by 1 = momentum gained by 2
+
+    </text>
+
+  </g>
+
+  <!-- After collision -->
+
+  <g opacity="0">
+
+    ${opacityAnimation(afterOpacity)}
+
+    <text
+      x="136"
+      y="179"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.9"
+      font-weight="700"
+      fill="#ea580c">
+
+      After the collision
+
+    </text>
+
+    <text
+      x="136"
+      y="194"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.4"
+      fill="#475569">
+
+      Ball 2 now carries the system momentum
+
+    </text>
+
+    <text
+      x="136"
+      y="210"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="8"
+      font-weight="700"
+      fill="#0f172a">
+
+      ptotal = p₂ = p₁,initial
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="341"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10.1"
+    font-weight="700"
+    fill="#0f172a">
+
+    Why conservation follows
+
+  </text>
+
+  <!-- Newton III -->
+
+  <rect
+    x="283"
+    y="55"
+    width="116"
+    height="35"
+    rx="8"
+    fill="#fef2f2"
+    stroke="#fca5a5"/>
+
+  <text
+    x="341"
+    y="67"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.9"
+    font-weight="700"
+    fill="#b91c1c">
+
+    Newton’s third law
+
+  </text>
+
+  <text
+    x="341"
+    y="82"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.2"
+    font-weight="700"
+    fill="#991b1b">
+
+    F₁→₂ = −F₂→₁
+
+  </text>
+
+  <!-- Impulse -->
+
+  <rect
+    x="283"
+    y="97"
+    width="116"
+    height="35"
+    rx="8"
+    fill="#fff7ed"
+    stroke="#fdba74"/>
+
+  <text
+    x="341"
+    y="109"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.8"
+    font-weight="700"
+    fill="#c2410c">
+
+    same contact time
+
+  </text>
+
+  <text
+    x="341"
+    y="124"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.4"
+    font-weight="700"
+    fill="#9a3412">
+
+    J₁ = −J₂
+
+  </text>
+
+  <!-- Momentum changes -->
+
+  <rect
+    x="283"
+    y="139"
+    width="116"
+    height="35"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="151"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.8"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    J = Δp
+
+  </text>
+
+  <text
+    x="341"
+    y="166"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.3"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    Δp₁ = −Δp₂
+
+  </text>
+
+  <!-- Conservation -->
+
+  <rect
+    x="283"
+    y="181"
+    width="116"
+    height="39"
+    rx="8"
+    fill="#f0fdf4"
+    stroke="#86efac"/>
+
+  <text
+    x="341"
+    y="193"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.8"
+    font-weight="700"
+    fill="#15803d">
+
+    isolated system
+
+  </text>
+
+  <text
+    x="341"
+    y="207"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.1"
+    font-weight="700"
+    fill="#166534">
+
+    Δptotal = 0
+
+  </text>
+
+  <text
+    x="341"
+    y="216"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.2"
+    fill="#64748b">
+
+    total momentum is constant
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.8"
+    font-weight="700"
+    fill="#64748b">
+
+    Internal collision forces redistribute momentum; they do not change the system total.
+
+  </text>
+
+</svg>
+`;
+  })()
+},
+
+{
+  topic: "Mechanics",
+
+  term: "What is the difference between elastic and inelastic collisions?",
+
+  equation: "\\boxed{\\vec p_{\\text{before}}=\\vec p_{\\text{after}}}\\qquad\\boxed{K_i=K_f\\ \\text{only for an elastic collision}}",
+
+  answer: "Momentum is conserved in both elastic and inelastic collisions when the net external impulse is negligible. In an elastic collision, kinetic energy is also conserved. In an inelastic collision, some kinetic energy is transformed into deformation, heat and sound. In a perfectly inelastic collision, the objects stick together and move with a common velocity. For two equal masses, with one initially moving at speed v and the other at rest, an elastic collision transfers the motion to the second ball. In a perfectly inelastic collision, the joined balls move at v/2. Total energy is always conserved, but kinetic energy is not necessarily conserved.",
+
+  svg: (() => {
+
+    const key = Math.random()
+      .toString(36)
+      .slice(2, 9);
+
+    const ids = {
+      momentum: `collisionMomentum-${key}`,
+      burst: `collisionBurst-${key}`
+    };
+
+    const duration = 12;
+
+    /*
+      Elastic collision:
+        0.00–0.28  approach
+        0.28–0.42  contact
+        0.42–0.49  separation
+
+      Perfectly inelastic collision:
+        0.50–0.76  approach
+        0.76–0.80  p₂ appears at contact
+        0.80–0.90  momentum transfer at contact
+        0.91–1.00  joined pair moves away
+    */
+
+    const keyTimes =
+      "0;0.10;0.28;0.33;0.42;0.49;0.50;0.60;0.76;0.80;0.90;0.91;1";
+
+    const elasticSceneOpacity =
+      "1;1;1;1;1;1;0;0;0;0;0;0;0";
+
+    const inelasticSceneOpacity =
+      "0;0;0;0;0;0;1;1;1;1;1;1;1";
+
+    const elasticBeforeOpacity =
+      "1;1;1;0;0;0;0;0;0;0;0;0;0";
+
+    const elasticContactOpacity =
+      "0;0;0;1;0;0;0;0;0;0;0;0;0";
+
+    const elasticAfterOpacity =
+      "0;0;0;0;1;1;0;0;0;0;0;0;0";
+
+    const inelasticBeforeOpacity =
+      "0;0;0;0;0;0;1;1;1;0;0;0;0";
+
+    const inelasticCueOpacity =
+      "0;0;0;0;0;0;0;0;1;0;0;0;0";
+
+    const inelasticTransferOpacity =
+      "0;0;0;0;0;0;0;0;0;1;1;0;0";
+
+    const inelasticAfterOpacity =
+      "0;0;0;0;0;0;0;0;0;0;0;1;1";
+
+    const inelasticContactOpacity =
+      "0;0;0;0;0;0;0;0;1;1;1;0;0";
+
+    /*
+      Initial centres:
+        ball 1 = 70
+        ball 2 = 150
+
+      Contact centres:
+        ball 1 = 122
+        ball 2 = 150
+    */
+
+    const elasticBall1Motion =
+      "0 0;0 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0";
+
+    const elasticBall2Motion =
+      "0 0;0 0;0 0;0 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0;52 0";
+
+    /*
+      The balls remain stationary while the inelastic
+      momentum transfer is shown at the contact point.
+
+      They begin moving together only after the transfer
+      is complete.
+    */
+
+    const inelasticBall1Motion =
+      "0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;52 0;52 0;52 0;52 0;82 0";
+
+    const inelasticBall2Motion =
+      "0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;30 0";
+
+    const joinedMotion =
+      "0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;0 0;30 0";
+
+    /*
+      During inelastic contact:
+
+        p₁ changes from about mv to mv/2
+        p₂ changes from about 0 to mv/2
+
+      Their displayed lengths add to the same total.
+
+      p₂ is visibly introduced before p₁ starts
+      decreasing.
+    */
+
+    const transferP1End =
+      "174;174;174;174;174;174;174;174;174;174;156;156;156";
+
+    const transferP2End =
+      "138;138;138;138;138;138;138;138;138;138;156;156;156";
+
+    const transferP1LabelX =
+      "155;155;155;155;155;155;155;155;155;155;146;146;146";
+
+    const transferP2LabelX =
+      "137;137;137;137;137;137;137;137;137;137;146;146;146";
+
+    const opacityAnimation = (
+      values,
+      calcMode = "discrete"
+    ) => `
+      <animate
+        attributeName="opacity"
+        values="${values}"
+        keyTimes="${keyTimes}"
+        calcMode="${calcMode}"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+    `;
+
+    const ball = (
+      fill,
+      stroke,
+      label
+    ) => `
+      <circle
+        cx="0"
+        cy="0"
+        r="14"
+        fill="${fill}"
+        stroke="${stroke}"
+        stroke-width="1.8"/>
+
+      <circle
+        cx="-4"
+        cy="-4"
+        r="3.5"
+        fill="#ffffff"
+        opacity="0.42"/>
+
+      <text
+        x="0"
+        y="3"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#0f172a">
+
+        ${label}
+
+      </text>
+    `;
+
+    const fixedMomentumArrow = (
+      label,
+      opacityValues,
+      length = 40
+    ) => `
+      <g opacity="0">
+
+        ${opacityAnimation(opacityValues)}
+
+        <line
+          x1="-4"
+          y1="-30"
+          x2="${length}"
+          y2="-30"
+          stroke="#2563eb"
+          stroke-width="2.7"
+          marker-end="url(#${ids.momentum})"/>
+
+        <text
+          x="${(length - 4) / 2}"
+          y="-37"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.3"
+          font-weight="700"
+          fill="#1d4ed8">
+
+          ${label}
+
+        </text>
+
+      </g>
+    `;
+
+    const collisionFlash = () => `
+      <circle
+        cx="136"
+        cy="120"
+        r="8"
+        fill="url(#${ids.burst})"
+        opacity="0.88"/>
+
+      <g
+        stroke="#f59e0b"
+        stroke-width="1.8"
+        stroke-linecap="round">
+
+        <line x1="136" y1="106" x2="136" y2="100"/>
+        <line x1="136" y1="134" x2="136" y2="140"/>
+        <line x1="122" y1="120" x2="116" y2="120"/>
+        <line x1="150" y1="120" x2="156" y2="120"/>
+        <line x1="127" y1="111" x2="122" y2="106"/>
+        <line x1="145" y1="129" x2="150" y2="134"/>
+
+      </g>
+    `;
+
+    return `
+<svg
+  viewBox="0 0 420 240"
+  xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker
+      id="${ids.momentum}"
+      viewBox="0 0 10 10"
+      refX="8.4"
+      refY="5"
+      markerWidth="3.7"
+      markerHeight="3.7"
+      orient="auto">
+
+      <path
+        d="M0 0 L10 5 L0 10 Z"
+        fill="#2563eb"/>
+
+    </marker>
+
+    <radialGradient
+      id="${ids.burst}"
+      cx="50%"
+      cy="50%"
+      r="60%">
+
+      <stop
+        offset="0%"
+        stop-color="#fef3c7"/>
+
+      <stop
+        offset="100%"
+        stop-color="#f59e0b"/>
+
+    </radialGradient>
+
+  </defs>
+
+  <!-- Background -->
+
+  <rect
+    width="420"
+    height="240"
+    rx="12"
+    fill="#f8fafc"/>
+
+  <text
+    x="210"
+    y="17"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="13"
+    font-weight="700"
+    fill="#0f172a">
+
+    Elastic and inelastic collisions
+
+  </text>
+
+  <!-- ================================================= -->
+  <!-- LEFT PANEL                                         -->
+  <!-- ================================================= -->
+
+  <rect
+    x="10"
+    y="28"
+    width="252"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="136"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="9.2"
+    font-weight="700"
+    fill="#334155">
+
+    Momentum is conserved in both collisions
+
+  </text>
+
+  <line
+    x1="24"
+    y1="140"
+    x2="248"
+    y2="140"
+    stroke="#64748b"
+    stroke-width="2"/>
+
+  <!-- ================================================= -->
+  <!-- ELASTIC COLLISION                                  -->
+  <!-- ================================================= -->
+
+  <g opacity="1">
+
+    ${opacityAnimation(elasticSceneOpacity)}
+
+    <text
+      x="136"
+      y="62"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.5"
+      font-weight="700"
+      fill="#15803d">
+
+      Elastic collision
+
+    </text>
+
+    <!-- Ball 1 -->
+
+    <g transform="translate(70 121)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${elasticBall1Motion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball(
+        "#bfdbfe",
+        "#2563eb",
+        "m"
+      )}
+
+      ${fixedMomentumArrow(
+        "p₁ = mv",
+        elasticBeforeOpacity,
+        40
+      )}
+
+      <g opacity="0">
+
+        ${opacityAnimation(elasticAfterOpacity)}
+
+        <text
+          x="0"
+          y="-28"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#475569">
+
+          stopped
+
+        </text>
+
+      </g>
+
+    </g>
+
+    <!-- Ball 2 -->
+
+    <g transform="translate(150 121)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${elasticBall2Motion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball(
+        "#fed7aa",
+        "#ea580c",
+        "m"
+      )}
+
+      ${fixedMomentumArrow(
+        "p₂ = mv",
+        elasticAfterOpacity,
+        40
+      )}
+
+      <g opacity="1">
+
+        ${opacityAnimation(elasticBeforeOpacity)}
+
+        <text
+          x="0"
+          y="-28"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#475569">
+
+          at rest
+
+        </text>
+
+      </g>
+
+    </g>
+
+    <!-- Contact -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(elasticContactOpacity)}
+
+      ${collisionFlash()}
+
+      <text
+        x="136"
+        y="89"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#92400e">
+
+        momentum transferred
+
+      </text>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- PERFECTLY INELASTIC COLLISION                      -->
+  <!-- ================================================= -->
+
+  <g opacity="0">
+
+    ${opacityAnimation(inelasticSceneOpacity)}
+
+    <text
+      x="136"
+      y="62"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="9.5"
+      font-weight="700"
+      fill="#7c3aed">
+
+      Perfectly inelastic collision
+
+    </text>
+
+    <!-- Ball 1 -->
+
+    <g transform="translate(70 121)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${inelasticBall1Motion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball(
+        "#bfdbfe",
+        "#2563eb",
+        "m"
+      )}
+
+      ${fixedMomentumArrow(
+        "p₁ = mv",
+        inelasticBeforeOpacity,
+        40
+      )}
+
+    </g>
+
+    <!-- Ball 2 -->
+
+    <g transform="translate(150 121)">
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        additive="sum"
+        values="${inelasticBall2Motion}"
+        keyTimes="${keyTimes}"
+        calcMode="linear"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+
+      ${ball(
+        "#fed7aa",
+        "#ea580c",
+        "m"
+      )}
+
+      <g opacity="1">
+
+        ${opacityAnimation(inelasticBeforeOpacity)}
+
+        <text
+          x="0"
+          y="-28"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          font-weight="700"
+          fill="#475569">
+
+          p₂ = 0
+
+        </text>
+
+      </g>
+
+    </g>
+
+    <!-- Contact flash -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(inelasticContactOpacity)}
+
+      ${collisionFlash()}
+
+    </g>
+
+    <!--
+      p₂ is introduced at the contact point before
+      the momentum-transfer animation begins.
+    -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(inelasticCueOpacity)}
+
+      <circle
+        cx="136"
+        cy="103"
+        r="2.5"
+        fill="#2563eb"/>
+
+      <text
+        x="142"
+        y="106"
+        font-family="Arial, sans-serif"
+        font-size="7.2"
+        font-weight="700"
+        fill="#1d4ed8">
+
+        p₂ begins
+
+      </text>
+
+      <text
+        x="136"
+        y="88"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.8"
+        font-weight="700"
+        fill="#92400e">
+
+        contact established
+
+      </text>
+
+    </g>
+
+    <!--
+      Momentum transfer shown only at the contact point.
+
+      p₁ shrinks while p₂ grows.
+      Their combined arrow lengths remain constant.
+    -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(inelasticTransferOpacity)}
+
+      <!-- p1 share -->
+
+      <line
+        x1="136"
+        y1="91"
+        x2="174"
+        y2="91"
+        stroke="#2563eb"
+        stroke-width="2.6"
+        marker-end="url(#${ids.momentum})">
+
+        <animate
+          attributeName="x2"
+          values="${transferP1End}"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </line>
+
+      <text
+        x="155"
+        y="86"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#1d4ed8">
+
+        p₁
+
+        <animate
+          attributeName="x"
+          values="${transferP1LabelX}"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </text>
+
+      <!-- p2 share -->
+
+      <line
+        x1="136"
+        y1="105"
+        x2="138"
+        y2="105"
+        stroke="#2563eb"
+        stroke-width="2.6"
+        marker-end="url(#${ids.momentum})">
+
+        <animate
+          attributeName="x2"
+          values="${transferP2End}"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </line>
+
+      <text
+        x="137"
+        y="118"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#1d4ed8">
+
+        p₂
+
+        <animate
+          attributeName="x"
+          values="${transferP2LabelX}"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+      </text>
+
+      <text
+        x="136"
+        y="76"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.8"
+        font-weight="700"
+        fill="#6d28d9">
+
+        momentum redistributed during contact
+
+      </text>
+
+    </g>
+
+    <!-- Joined pair after transfer -->
+
+    <g opacity="0">
+
+      ${opacityAnimation(inelasticAfterOpacity)}
+
+      <!-- Connector moves with both balls -->
+
+      <g>
+
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          values="${joinedMotion}"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <rect
+          x="133"
+          y="116"
+          width="6"
+          height="10"
+          rx="2"
+          fill="#7c3aed"/>
+
+      </g>
+
+      <!-- One constant system-momentum arrow -->
+
+      <g transform="translate(166 0)">
+
+        <animateTransform
+          attributeName="transform"
+          type="translate"
+          additive="sum"
+          values="${joinedMotion}"
+          keyTimes="${keyTimes}"
+          calcMode="linear"
+          dur="${duration}s"
+          repeatCount="indefinite"/>
+
+        <line
+          x1="-20"
+          y1="84"
+          x2="20"
+          y2="84"
+          stroke="#2563eb"
+          stroke-width="2.7"
+          marker-end="url(#${ids.momentum})"/>
+
+        <text
+          x="0"
+          y="77"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.1"
+          font-weight="700"
+          fill="#1d4ed8">
+
+          p(total) = mv
+
+        </text>
+
+        <text
+          x="0"
+          y="155"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.1"
+          font-weight="700"
+          fill="#6d28d9">
+
+          2m moving at v/2
+
+        </text>
+
+      </g>
+
+    </g>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- EXPLANATION BOX                                    -->
+  <!-- ================================================= -->
+
+  <rect
+    x="22"
+    y="164"
+    width="228"
+    height="56"
+    rx="9"
+    fill="#f8fafc"
+    stroke="#e2e8f0"/>
+
+  <!-- Elastic explanation -->
+
+  <g opacity="1">
+
+    ${opacityAnimation(elasticSceneOpacity)}
+
+    <text
+      x="136"
+      y="179"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#15803d">
+
+      Equal masses exchange velocities
+
+    </text>
+
+    <text
+      x="136"
+      y="193"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.3"
+      fill="#475569">
+
+      Before: mv &nbsp;&nbsp;&nbsp; After: mv
+
+    </text>
+
+    <text
+      x="136"
+      y="207"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.5"
+      font-weight="700"
+      fill="#166534">
+
+      Momentum conserved ✓
+
+    </text>
+
+    <text
+      x="136"
+      y="217"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7"
+      font-weight="700"
+      fill="#166534">
+
+      Kinetic energy conserved ✓
+
+    </text>
+
+  </g>
+
+  <!-- Inelastic explanation -->
+
+  <g opacity="0">
+
+    ${opacityAnimation(inelasticSceneOpacity)}
+
+    <text
+      x="136"
+      y="179"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.8"
+      font-weight="700"
+      fill="#7c3aed">
+
+      The two equal masses stick together
+
+    </text>
+
+    <text
+      x="136"
+      y="193"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.3"
+      fill="#475569">
+
+      mv = (2m)(v/2)
+
+    </text>
+
+    <text
+      x="136"
+      y="207"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7.5"
+      font-weight="700"
+      fill="#166534">
+
+      Momentum conserved ✓
+
+    </text>
+
+    <text
+      x="136"
+      y="217"
+      text-anchor="middle"
+      font-family="Arial, sans-serif"
+      font-size="7"
+      font-weight="700"
+      fill="#b91c1c">
+
+      Kinetic energy decreases
+
+    </text>
+
+  </g>
+
+  <!-- ================================================= -->
+  <!-- RIGHT PANEL                                        -->
+  <!-- ================================================= -->
+
+  <rect
+    x="272"
+    y="28"
+    width="138"
+    height="199"
+    rx="11"
+    fill="#ffffff"
+    stroke="#cbd5e1"
+    stroke-width="1.2"/>
+
+  <text
+    x="341"
+    y="44"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="10"
+    font-weight="700"
+    fill="#0f172a">
+
+    What is conserved?
+
+  </text>
+
+  <!-- Momentum -->
+
+  <rect
+    x="283"
+    y="55"
+    width="116"
+    height="37"
+    rx="8"
+    fill="#eff6ff"
+    stroke="#93c5fd"/>
+
+  <text
+    x="341"
+    y="67"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.8"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    both collision types
+
+  </text>
+
+  <text
+    x="341"
+    y="82"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="8.4"
+    font-weight="700"
+    fill="#1d4ed8">
+
+    p before = p after
+
+  </text>
+
+  <!-- Elastic -->
+
+  <rect
+    x="283"
+    y="100"
+    width="116"
+    height="47"
+    rx="8"
+    fill="#f0fdf4"
+    stroke="#86efac"/>
+
+  <text
+    x="341"
+    y="113"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#15803d">
+
+    Elastic
+
+  </text>
+
+  <text
+    x="341"
+    y="127"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.8"
+    fill="#475569">
+
+    objects separate
+
+  </text>
+
+  <text
+    x="341"
+    y="140"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.5"
+    font-weight="700"
+    fill="#166534">
+
+    Kᵢ = Kf
+
+  </text>
+
+  <!-- Inelastic -->
+
+  <rect
+    x="283"
+    y="155"
+    width="116"
+    height="65"
+    rx="8"
+    fill="#faf5ff"
+    stroke="#c4b5fd"/>
+
+  <text
+    x="341"
+    y="168"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.2"
+    font-weight="700"
+    fill="#6d28d9">
+
+    Inelastic
+
+  </text>
+
+  <text
+    x="341"
+    y="181"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.7"
+    fill="#475569">
+
+    kinetic energy becomes
+
+  </text>
+
+  <text
+    x="341"
+    y="192"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.7"
+    fill="#475569">
+
+    heat, sound and deformation
+
+  </text>
+
+  <text
+    x="341"
+    y="207"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.5"
+    font-weight="700"
+    fill="#b91c1c">
+
+    Kᵢ &gt; Kf
+
+  </text>
+
+  <text
+    x="341"
+    y="216"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="6.2"
+    fill="#64748b">
+
+    perfectly inelastic → stick
+
+  </text>
+
+  <!-- Footer -->
+
+  <text
+    x="210"
+    y="237"
+    text-anchor="middle"
+    font-family="Arial, sans-serif"
+    font-size="7.8"
+    font-weight="700"
+    fill="#64748b">
+
+    Momentum is conserved in both; kinetic energy is conserved only in an elastic collision.
+
+  </text>
+
+</svg>
+`;
+  })()
+},
+
+{
+  topic: "Mechanics",
+
+  term: "How do mass and distance affect gravitational force?",
+
+  equation: "\\boxed{F=G\\frac{m_1m_2}{r^2}}\\qquad\\boxed{\\vec F_{1\\to2}=-\\vec F_{2\\to1}}",
+
+  answer: "Newton’s law of universal gravitation says that every pair of masses attracts one another. The force is proportional to the product m₁m₂ and inversely proportional to the square of the centre-to-centre distance r. Doubling one mass doubles the gravitational force. Doubling the separation reduces the force to one quarter. The two objects always experience equal-magnitude, opposite-direction forces, even if their masses are different. This card keeps the drawn sphere sizes fixed, so the labels carry the physics and the arrows simply show direction and relative strength clearly.",
+
+  svg: (() => {
+    const key = Math.random().toString(36).slice(2, 9);
+
+    const ids = {
+      forceArrow: `gravForceArrow-${key}`,
+      distArrow: `gravDistArrow-${key}`,
+      blueGrad: `gravBlueGrad-${key}`,
+      orangeGrad: `gravOrangeGrad-${key}`
+    };
+
+    const duration = 12;
+
+    /*
+      4 scenes, each 3 s:
+
+      1. Baseline for mass comparison
+      2. Double one mass
+      3. Baseline for distance comparison
+      4. Double the distance
+    */
+    const keyTimes = "0;0.24;0.26;0.49;0.51;0.74;0.76;1";
+
+    const scene1 = "1;1;0;0;0;0;0;0";
+    const scene2 = "0;0;1;1;0;0;0;0";
+    const scene3 = "0;0;0;0;1;1;0;0";
+    const scene4 = "0;0;0;0;0;0;1;1";
+
+    const show = values => `
+      <animate
+        attributeName="opacity"
+        values="${values}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+    `;
+
+    const mass = (cx, cy, label, ring = false, badge = "") => `
+      <g>
+        ${ring ? `
+          <circle cx="${cx}" cy="${cy}" r="20.5"
+                  fill="none"
+                  stroke="#7c3aed"
+                  stroke-width="2.2"
+                  stroke-dasharray="4 3"/>` : ``}
+
+        <circle cx="${cx}" cy="${cy}" r="16"
+                fill="url(#${label.includes("m₂") ? ids.orangeGrad : ids.blueGrad})"
+                stroke="${label.includes("m₂") ? "#ea580c" : "#2563eb"}"
+                stroke-width="1.8"/>
+
+        <circle cx="${cx - 5}" cy="${cy - 5}" r="3.8"
+                fill="#ffffff"
+                opacity="0.38"/>
+
+        <text x="${cx}" y="${cy + 3}"
+              text-anchor="middle"
+              font-family="Arial, sans-serif"
+              font-size="8.2"
+              font-weight="700"
+              fill="#0f172a">
+          ${label}
+        </text>
+
+        ${badge ? `
+          <rect x="${cx - 13}" y="${cy - 33}" width="26" height="12"
+                rx="6" fill="#ede9fe" stroke="#a78bfa"/>
+          <text x="${cx}" y="${cy - 24.5}"
+                text-anchor="middle"
+                font-family="Arial, sans-serif"
+                font-size="6.5"
+                font-weight="700"
+                fill="#6d28d9">
+            ${badge}
+          </text>` : ``}
+      </g>
+    `;
+
+    const forcePairAbove = (leftCx, rightCx, y, leftLen, rightLen, strokeW, labelLeft, labelRight) => `
+      <!-- left mass feels force to the right -->
+      <line x1="${leftCx - 2}" y1="${y}" x2="${leftCx + leftLen}" y2="${y}"
+            stroke="#dc2626" stroke-width="${strokeW}"
+            marker-end="url(#${ids.forceArrow})"/>
+
+      <!-- right mass feels force to the left -->
+      <line x1="${rightCx + 2}" y1="${y}" x2="${rightCx - rightLen}" y2="${y}"
+            stroke="#dc2626" stroke-width="${strokeW}"
+            marker-end="url(#${ids.forceArrow})"/>
+
+      <text x="${leftCx + leftLen/2 - 2}" y="${y - 8}"
+            text-anchor="middle"
+            font-family="Arial, sans-serif"
+            font-size="7"
+            font-weight="700"
+            fill="#b91c1c">
+        ${labelLeft}
+      </text>
+
+      <text x="${rightCx - rightLen/2 + 2}" y="${y - 8}"
+            text-anchor="middle"
+            font-family="Arial, sans-serif"
+            font-size="7"
+            font-weight="700"
+            fill="#b91c1c">
+        ${labelRight}
+      </text>
+    `;
+
+    const distanceLine = (x1, x2, y, label) => `
+      <line x1="${x1}" y1="112" x2="${x1}" y2="${y + 4}"
+            stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+      <line x1="${x2}" y1="112" x2="${x2}" y2="${y + 4}"
+            stroke="#94a3b8" stroke-width="1" stroke-dasharray="3 3"/>
+
+      <line x1="${x1}" y1="${y}" x2="${x2}" y2="${y}"
+            stroke="#475569" stroke-width="1.5"
+            marker-start="url(#${ids.distArrow})"
+            marker-end="url(#${ids.distArrow})"/>
+
+      <text x="${(x1 + x2)/2}" y="${y - 6}"
+            text-anchor="middle"
+            font-family="Arial, sans-serif"
+            font-size="7.3"
+            font-weight="700"
+            fill="#334155">
+        ${label}
+      </text>
+    `;
+
+    return `
+<svg viewBox="0 0 420 240" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <marker id="${ids.forceArrow}" viewBox="0 0 10 10"
+            refX="8.4" refY="5"
+            markerWidth="4" markerHeight="4"
+            orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z" fill="#dc2626"/>
+    </marker>
+
+    <marker id="${ids.distArrow}" viewBox="0 0 10 10"
+            refX="5" refY="5"
+            markerWidth="3.3" markerHeight="3.3"
+            orient="auto-start-reverse">
+      <path d="M10 0 L0 5 L10 10 Z" fill="#475569"/>
+    </marker>
+
+    <radialGradient id="${ids.blueGrad}" cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#dbeafe"/>
+      <stop offset="100%" stop-color="#60a5fa"/>
+    </radialGradient>
+
+    <radialGradient id="${ids.orangeGrad}" cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#ffedd5"/>
+      <stop offset="100%" stop-color="#fb923c"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="420" height="240" rx="12" fill="#f8fafc"/>
+
+  <text x="210" y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Newton’s law of universal gravitation
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10" y="28" width="252" height="199" rx="11"
+        fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+
+  <text x="136" y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.2"
+        font-weight="700"
+        fill="#334155">
+    Compare how mass and distance change the force
+  </text>
+
+  <!-- Scene 1: baseline mass comparison -->
+  <g opacity="1">
+    ${show(scene1)}
+
+    <text x="136" y="61"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="9.2"
+          font-weight="700"
+          fill="#1d4ed8">
+      Baseline: m₁ and m₂ at distance r
+    </text>
+
+    ${forcePairAbove(88, 184, 82, 24, 24, 3, "F", "F")}
+    ${mass(88, 112, "m₁")}
+    ${mass(184, 112, "m₂")}
+    ${distanceLine(88, 184, 150, "centre-to-centre distance r")}
+  </g>
+
+  <!-- Scene 2: double one mass -->
+  <g opacity="0">
+    ${show(scene2)}
+
+    <text x="136" y="61"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="9.2"
+          font-weight="700"
+          fill="#7c3aed">
+      Double one mass, keep r the same
+    </text>
+
+    ${forcePairAbove(88, 184, 82, 34, 34, 3.8, "2F", "2F")}
+    ${mass(88, 112, "2m₁", true, "×2 mass")}
+    ${mass(184, 112, "m₂")}
+    ${distanceLine(88, 184, 150, "same distance r")}
+  </g>
+
+  <!-- Scene 3: baseline distance comparison -->
+  <g opacity="0">
+    ${show(scene3)}
+
+    <text x="136" y="61"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="9.2"
+          font-weight="700"
+          fill="#1d4ed8">
+      Baseline again: m₁ and m₂ at distance r
+    </text>
+
+    ${forcePairAbove(88, 184, 82, 24, 24, 3, "F", "F")}
+    ${mass(88, 112, "m₁")}
+    ${mass(184, 112, "m₂")}
+    ${distanceLine(88, 184, 150, "centre-to-centre distance r")}
+  </g>
+
+  <!-- Scene 4: double the distance -->
+  <g opacity="0">
+    ${show(scene4)}
+
+    <text x="136" y="61"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="9.2"
+          font-weight="700"
+          fill="#b45309">
+      Double the distance, keep masses the same
+    </text>
+
+    ${forcePairAbove(64, 208, 82, 14, 14, 2.1, "F/4", "F/4")}
+    ${mass(64, 112, "m₁")}
+    ${mass(208, 112, "m₂")}
+    ${distanceLine(64, 208, 150, "centre-to-centre distance 2r")}
+  </g>
+
+  <!-- Explanation box -->
+  <rect x="22" y="168" width="228" height="51" rx="9"
+        fill="#f8fafc" stroke="#e2e8f0"/>
+
+  <g opacity="1">
+    ${show(scene1)}
+    <text x="136" y="184"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#1d4ed8">
+      Start with a reference force F
+    </text>
+    <text x="136" y="201"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          font-weight="700"
+          fill="#0f172a">
+      F = Gm₁m₂/r²
+    </text>
+    <text x="136" y="214"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.6"
+          fill="#64748b">
+      The arrows show equal and opposite attractive forces.
+    </text>
+  </g>
+
+  <g opacity="0">
+    ${show(scene2)}
+    <text x="136" y="184"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#7c3aed">
+      Force is proportional to each mass
+    </text>
+    <text x="136" y="201"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          font-weight="700"
+          fill="#0f172a">
+      2m₁ → 2F
+    </text>
+    <text x="136" y="214"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.6"
+          fill="#64748b">
+      Doubling either mass doubles the gravitational force.
+    </text>
+  </g>
+
+  <g opacity="0">
+    ${show(scene3)}
+    <text x="136" y="184"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#1d4ed8">
+      Use the same baseline before changing distance
+    </text>
+    <text x="136" y="201"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          font-weight="700"
+          fill="#0f172a">
+      F = Gm₁m₂/r²
+    </text>
+    <text x="136" y="214"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.6"
+          fill="#64748b">
+      Only the separation will change in the next step.
+    </text>
+  </g>
+
+  <g opacity="0">
+    ${show(scene4)}
+    <text x="136" y="184"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8"
+          font-weight="700"
+          fill="#b45309">
+      Force follows an inverse-square law
+    </text>
+    <text x="136" y="201"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="10"
+          font-weight="700"
+          fill="#0f172a">
+      2r → F/4
+    </text>
+    <text x="136" y="214"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.6"
+          fill="#64748b">
+      Doubling the distance makes the force four times weaker.
+    </text>
+  </g>
+
+  <!-- RIGHT PANEL -->
+  <rect x="272" y="28" width="138" height="199" rx="11"
+        fill="#ffffff" stroke="#cbd5e1" stroke-width="1.2"/>
+
+  <text x="341" y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#0f172a">
+    Key ideas
+  </text>
+
+  <rect x="283" y="55" width="116" height="38" rx="8"
+        fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="341" y="70"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.1"
+        font-weight="700"
+        fill="#1d4ed8">
+    F = Gm₁m₂/r²
+  </text>
+  <text x="341" y="84"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.4"
+        fill="#475569">
+    r is centre-to-centre separation
+  </text>
+
+  <rect x="283" y="101" width="116" height="35" rx="8"
+        fill="#faf5ff" stroke="#c4b5fd"/>
+  <text x="341" y="114"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#6d28d9">
+    double either mass
+  </text>
+  <text x="341" y="127"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#6d28d9">
+    force doubles
+  </text>
+
+  <rect x="283" y="144" width="116" height="35" rx="8"
+        fill="#fff7ed" stroke="#fdba74"/>
+  <text x="341" y="157"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7"
+        font-weight="700"
+        fill="#c2410c">
+    double the distance
+  </text>
+  <text x="341" y="170"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="8"
+        font-weight="700"
+        fill="#c2410c">
+    force becomes F/4
+  </text>
+
+  <rect x="283" y="187" width="116" height="33" rx="8"
+        fill="#f0fdf4" stroke="#86efac"/>
+  <text x="341" y="199"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.8"
+        font-weight="700"
+        fill="#15803d">
+    forces are equal and opposite
+  </text>
+  <text x="341" y="212"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.1"
+        fill="#64748b">
+    gravity is always attractive
+  </text>
+
+  <text x="210" y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#64748b">
+    Gravity gets stronger with mass and weaker with the square of the distance.
+  </text>
+</svg>
+`;
+  })()
+},
+
+{
+  topic: "Earth & Space",
+
+  term: "Why does the Moon produce two tidal bulges on Earth?",
+
+  equation: "\\boxed{g_{\\text{near}}>g_{\\text{centre}}>g_{\\text{far}}}\\qquad\\boxed{\\Delta g\\propto\\frac{M_{\\text{Moon}}R_{\\text{Earth}}}{r^3}}",
+
+  answer: "Tides are caused by the Moon’s gravity not being equally strong across Earth. The side of Earth nearest the Moon is pulled more strongly than Earth’s centre, so water there is pulled slightly ahead, producing a near-side bulge. The far side is pulled less strongly than Earth’s centre, so Earth moves slightly more towards the Moon than that far-side water does. Relative to Earth, the far-side water is left behind, producing a second bulge. This is why the Moon produces two high tides rather than one. The important idea is differential gravity across Earth, not simply that the Moon ‘pulls the oceans upward’.",
+
+  svg: (() => {
+    const key = Math.random().toString(36).slice(2, 9);
+
+    const ids = {
+      earthGrad: `tideEarthGrad-${key}`,
+      moonGrad: `tideMoonGrad-${key}`,
+      gravArrow: `tideGravArrow-${key}`,
+      relArrow: `tideRelArrow-${key}`,
+      waterGrad: `tideWaterGrad-${key}`
+    };
+
+    const duration = 12;
+
+    /*
+      Two main scenes:
+
+      Scene 1:
+        Unequal lunar gravity across Earth
+
+      Scene 2:
+        Relative effect gives two bulges
+    */
+
+    const keyTimes = "0;0.48;0.52;1";
+
+    const scene1 = "1;1;0;0";
+    const scene2 = "0;0;1;1";
+
+    const show = values => `
+      <animate
+        attributeName="opacity"
+        values="${values}"
+        keyTimes="${keyTimes}"
+        calcMode="discrete"
+        dur="${duration}s"
+        repeatCount="indefinite"/>
+    `;
+
+    return `
+<svg viewBox="0 0 420 240"
+     xmlns="http://www.w3.org/2000/svg">
+
+  <defs>
+
+    <marker id="${ids.gravArrow}"
+            viewBox="0 0 10 10"
+            refX="8.4"
+            refY="5"
+            markerWidth="4"
+            markerHeight="4"
+            orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z"
+            fill="#dc2626"/>
+    </marker>
+
+    <marker id="${ids.relArrow}"
+            viewBox="0 0 10 10"
+            refX="8.2"
+            refY="5"
+            markerWidth="3.8"
+            markerHeight="3.8"
+            orient="auto">
+      <path d="M0 0 L10 5 L0 10 Z"
+            fill="#059669"/>
+    </marker>
+
+    <radialGradient id="${ids.earthGrad}"
+                    cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#bfdbfe"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </radialGradient>
+
+    <radialGradient id="${ids.moonGrad}"
+                    cx="35%" cy="30%" r="72%">
+      <stop offset="0%" stop-color="#f3f4f6"/>
+      <stop offset="100%" stop-color="#9ca3af"/>
+    </radialGradient>
+
+    <radialGradient id="${ids.waterGrad}"
+                    cx="50%" cy="50%" r="70%">
+      <stop offset="0%" stop-color="#dbeafe" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#60a5fa" stop-opacity="0.55"/>
+    </radialGradient>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="420" height="240"
+        rx="12"
+        fill="#f8fafc"/>
+
+  <text x="210" y="17"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="13"
+        font-weight="700"
+        fill="#0f172a">
+    Why does the Moon produce two tidal bulges?
+  </text>
+
+  <!-- LEFT PANEL -->
+  <rect x="10" y="28"
+        width="252"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="136" y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="9.2"
+        font-weight="700"
+        fill="#334155">
+    The Moon pulls more strongly on the near side than the far side
+  </text>
+
+  <!-- Moon -->
+  <g>
+    <circle cx="214" cy="108" r="20"
+            fill="url(#${ids.moonGrad})"
+            stroke="#6b7280"
+            stroke-width="1.5"/>
+    <circle cx="208" cy="102" r="4"
+            fill="#ffffff"
+            opacity="0.35"/>
+    <text x="214" y="112"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.5"
+          font-weight="700"
+          fill="#111827">
+      Moon
+    </text>
+  </g>
+
+  <!-- Scene 1: unequal lunar gravity -->
+  <g opacity="1">
+    ${show(scene1)}
+
+    <text x="136" y="62"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="9.1"
+          font-weight="700"
+          fill="#b91c1c">
+      Scene 1: lunar gravity is not the same everywhere
+    </text>
+
+    <!-- Earth -->
+    <circle cx="96" cy="108" r="44"
+            fill="url(#${ids.earthGrad})"
+            stroke="#1d4ed8"
+            stroke-width="1.8"/>
+
+    <!-- very simple continents -->
+    <path d="
+      M 76 92
+      C 84 82, 96 84, 101 92
+      C 105 98, 99 105, 90 105
+      C 82 105, 79 112, 73 109
+      C 68 104, 69 97, 76 92 Z"
+      fill="#86efac"
+      opacity="0.88"/>
+
+    <path d="
+      M 106 114
+      C 116 111, 122 118, 120 126
+      C 117 135, 107 139, 100 135
+      C 97 129, 99 118, 106 114 Z"
+      fill="#86efac"
+      opacity="0.88"/>
+
+    <text x="96" y="112"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.3"
+          font-weight="700"
+          fill="#ffffff">
+      Earth
+    </text>
+
+    <!-- centre marker -->
+    <circle cx="96" cy="108" r="2.4"
+            fill="#0f172a"/>
+
+    <!-- labels for near, centre, far -->
+    <text x="52" y="75"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7"
+          font-weight="700"
+          fill="#475569">
+      far side
+    </text>
+
+    <text x="96" y="75"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7"
+          font-weight="700"
+          fill="#475569">
+      centre
+    </text>
+
+    <text x="140" y="75"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7"
+          font-weight="700"
+          fill="#475569">
+      near side
+    </text>
+
+    <!-- gravity arrows -->
+    <line x1="53" y1="108" x2="75" y2="108"
+          stroke="#dc2626"
+          stroke-width="2.1"
+          marker-end="url(#${ids.gravArrow})"/>
+
+    <line x1="96" y1="94" x2="128" y2="94"
+          stroke="#dc2626"
+          stroke-width="2.6"
+          marker-end="url(#${ids.gravArrow})"/>
+
+    <line x1="139" y1="108" x2="183" y2="108"
+          stroke="#dc2626"
+          stroke-width="3"
+          marker-end="url(#${ids.gravArrow})"/>
+
+    <text x="60" y="100"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          font-weight="700"
+          fill="#b91c1c">
+      g_far
+    </text>
+
+    <text x="112" y="87"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          font-weight="700"
+          fill="#b91c1c">
+      g_centre
+    </text>
+
+    <text x="160" y="100"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          font-weight="700"
+          fill="#b91c1c">
+      g_near
+    </text>
+
+  </g>
+
+  <!-- Scene 2: tidal bulges -->
+  <g opacity="0">
+    ${show(scene2)}
+
+    <text x="136" y="62"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="9.1"
+          font-weight="700"
+          fill="#059669">
+      Scene 2: relative differences create two bulges
+    </text>
+
+    <!-- tidal bulge water shape -->
+    <ellipse cx="96" cy="108"
+             rx="58"
+             ry="38"
+             fill="url(#${ids.waterGrad})"
+             stroke="#60a5fa"
+             stroke-width="1.2"
+             opacity="0.95">
+      <animate attributeName="rx"
+               values="58;61;58"
+               dur="3s"
+               repeatCount="indefinite"/>
+    </ellipse>
+
+    <!-- Earth -->
+    <circle cx="96" cy="108" r="44"
+            fill="url(#${ids.earthGrad})"
+            stroke="#1d4ed8"
+            stroke-width="1.8"/>
+
+    <path d="
+      M 76 92
+      C 84 82, 96 84, 101 92
+      C 105 98, 99 105, 90 105
+      C 82 105, 79 112, 73 109
+      C 68 104, 69 97, 76 92 Z"
+      fill="#86efac"
+      opacity="0.88"/>
+
+    <path d="
+      M 106 114
+      C 116 111, 122 118, 120 126
+      C 117 135, 107 139, 100 135
+      C 97 129, 99 118, 106 114 Z"
+      fill="#86efac"
+      opacity="0.88"/>
+
+    <text x="96" y="112"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="8.3"
+          font-weight="700"
+          fill="#ffffff">
+      Earth
+    </text>
+
+    <circle cx="96" cy="108" r="2.4"
+            fill="#0f172a"/>
+
+    <!-- reference arrow for Earth centre -->
+    <line x1="96" y1="94" x2="128" y2="94"
+          stroke="#dc2626"
+          stroke-width="2.6"
+          marker-end="url(#${ids.gravArrow})"/>
+
+    <text x="112" y="86"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          font-weight="700"
+          fill="#b91c1c">
+      Earth centre
+    </text>
+
+    <!-- relative effect arrows -->
+    <line x1="139" y1="127" x2="165" y2="127"
+          stroke="#059669"
+          stroke-width="2.4"
+          marker-end="url(#${ids.relArrow})"/>
+
+    <line x1="53" y1="127" x2="31" y2="127"
+          stroke="#059669"
+          stroke-width="2.4"
+          marker-end="url(#${ids.relArrow})"/>
+
+    <text x="168" y="132"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          font-weight="700"
+          fill="#047857">
+      pulled more
+    </text>
+
+    <text x="28" y="132"
+          text-anchor="end"
+          font-family="Arial, sans-serif"
+          font-size="6.8"
+          font-weight="700"
+          fill="#047857">
+      left behind relative to Earth
+    </text>
+
+    <!-- bulge labels -->
+    <text x="26" y="100"
+          font-family="Arial, sans-serif"
+          font-size="7"
+          font-weight="700"
+          fill="#1d4ed8">
+      far-side bulge
+    </text>
+
+    <text x="150" y="100"
+          font-family="Arial, sans-serif"
+          font-size="7"
+          font-weight="700"
+          fill="#1d4ed8">
+      near-side bulge
+    </text>
+
+  </g>
+
+  <!-- Explanation box -->
+  <rect x="22" y="166"
+        width="228"
+        height="54"
+        rx="9"
+        fill="#f8fafc"
+        stroke="#e2e8f0"/>
+
+  <!-- Scene 1 explanation -->
+  <g opacity="1">
+    ${show(scene1)}
+
+    <text x="136" y="181"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.9"
+          font-weight="700"
+          fill="#b91c1c">
+      The Moon’s gravity decreases with distance
+    </text>
+
+    <text x="136" y="195"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.2"
+          fill="#475569">
+      near side pulled most, centre less, far side least
+    </text>
+
+    <text x="136" y="210"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#0f172a">
+      g_near > g_centre > g_far
+    </text>
+  </g>
+
+  <!-- Scene 2 explanation -->
+  <g opacity="0">
+    ${show(scene2)}
+
+    <text x="136" y="179"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.9"
+          font-weight="700"
+          fill="#059669">
+      Tides come from these relative differences
+    </text>
+
+    <text x="136" y="194"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.1"
+          fill="#475569">
+      near side is pulled ahead; far side lags behind
+    </text>
+
+    <text x="136" y="209"
+          text-anchor="middle"
+          font-family="Arial, sans-serif"
+          font-size="7.5"
+          font-weight="700"
+          fill="#0f172a">
+      Result: two high-tide bulges
+    </text>
+  </g>
+
+  <!-- RIGHT PANEL -->
+  <rect x="272" y="28"
+        width="138"
+        height="199"
+        rx="11"
+        fill="#ffffff"
+        stroke="#cbd5e1"
+        stroke-width="1.2"/>
+
+  <text x="341" y="44"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="10"
+        font-weight="700"
+        fill="#0f172a">
+    Key ideas
+  </text>
+
+  <rect x="283" y="55"
+        width="116"
+        height="37"
+        rx="8"
+        fill="#eff6ff"
+        stroke="#93c5fd"/>
+
+  <text x="341" y="68"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.9"
+        font-weight="700"
+        fill="#1d4ed8">
+    unequal lunar gravity
+  </text>
+
+  <text x="341" y="82"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.8"
+        font-weight="700"
+        fill="#1d4ed8">
+    across Earth
+  </text>
+
+  <rect x="283" y="99"
+        width="116"
+        height="44"
+        rx="8"
+        fill="#f0fdf4"
+        stroke="#86efac"/>
+
+  <text x="341" y="111"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.9"
+        font-weight="700"
+        fill="#15803d">
+    near side
+  </text>
+
+  <text x="341" y="124"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.7"
+        fill="#475569">
+    pulled a little more
+  </text>
+
+  <text x="341" y="136"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.7"
+        fill="#475569">
+    than Earth’s centre
+  </text>
+
+  <rect x="283" y="150"
+        width="116"
+        height="48"
+        rx="8"
+        fill="#fff7ed"
+        stroke="#fdba74"/>
+
+  <text x="341" y="162"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.9"
+        font-weight="700"
+        fill="#c2410c">
+    far side
+  </text>
+
+  <text x="341" y="175"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.7"
+        fill="#475569">
+    pulled a little less
+  </text>
+
+  <text x="341" y="187"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.7"
+        fill="#475569">
+    than Earth’s centre
+  </text>
+
+  <rect x="283" y="205"
+        width="116"
+        height="15"
+        rx="7"
+        fill="#faf5ff"
+        stroke="#c4b5fd"/>
+
+  <text x="341" y="215"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="6.9"
+        font-weight="700"
+        fill="#6d28d9">
+    two bulges → two high tides
+  </text>
+
+  <!-- Footer -->
+  <text x="210" y="237"
+        text-anchor="middle"
+        font-family="Arial, sans-serif"
+        font-size="7.7"
+        font-weight="700"
+        fill="#64748b">
+    Tides are caused by differences in gravity across Earth, not by a single upward pull on the oceans.
+
+  </text>
+
+</svg>
+`;
+  })()
 }
+
+
 
 ];
 
@@ -40616,6 +43754,11 @@ function displayFlashcards() {
     const cardEl = document.createElement("div");
     cardEl.className = "flashcard";
 
+    // Retain the card's position in the current (possibly shuffled) array.
+    // The print function reads these visible elements, so it prints exactly
+    // the cards currently on screen and in the same order.
+    cardEl.dataset.cardIndex = String(index);
+
     if (rating) cardEl.style.border = "4px solid " + rating;
 
     cardEl.innerHTML = `
@@ -40654,40 +43797,99 @@ function shuffleAndDisplay() {
 }
 
 
+function escapeRegExp(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+function namespaceSvgIds(svgMarkup, prefix) {
+  let output = String(svgMarkup || "");
+  const matches = [...output.matchAll(/\bid=(["'])([^"']+)\1/g)];
+  const ids = [...new Set(matches.map(match => match[2]))];
+
+  ids.forEach((oldId, number) => {
+    const newId = `${prefix}-${number}-${oldId}`
+      .replace(/[^A-Za-z0-9_:.-]/g, "-");
+    const escapedOldId = escapeRegExp(oldId);
+
+    output = output.replace(
+      new RegExp(`\\bid=(["'])${escapedOldId}\\1`, "g"),
+      `id="${newId}"`
+    );
+
+    output = output.replace(
+      new RegExp(`url\\(\\s*#${escapedOldId}\\s*\\)`, "g"),
+      `url(#${newId})`
+    );
+
+    output = output.replace(
+      new RegExp(`\\b(href|xlink:href)=(["'])#${escapedOldId}\\2`, "g"),
+      `$1="#${newId}"`
+    );
+
+    output = output.replace(
+      new RegExp(`\\b(begin|end)=(["'])${escapedOldId}\\.`, "g"),
+      `$1=$2${newId}.`
+    );
+  });
+
+  return output;
+}
+
 async function printFlashcards() {
-  const oldPrintArea = document.getElementById('print-area');
+  // Read the actual cards currently rendered after topic/colour filtering.
+  // Their DOM order also preserves the current shuffled order.
+  const visibleCardElements = Array.from(
+    document.querySelectorAll("#flashcard-container .flashcard")
+  );
+
+  const cardsToPrint = visibleCardElements
+    .map(element => cards[Number(element.dataset.cardIndex)])
+    .filter(Boolean);
+
+  if (cardsToPrint.length === 0) {
+    window.alert("There are no displayed flashcards to print.");
+    return;
+  }
+
+  const oldPrintArea = document.getElementById("print-area");
   if (oldPrintArea) oldPrintArea.remove();
 
-  const printArea = document.createElement('div');
-  printArea.id = 'print-area';
+  const printArea = document.createElement("div");
+  printArea.id = "print-area";
+  printArea.setAttribute("aria-hidden", "true");
 
-  // Use the actual A4 printable width while MathJax and SVGs are measured.
-  printArea.style.display = 'block';
-  printArea.style.position = 'absolute';
-  printArea.style.left = '-10000px';
-  printArea.style.top = '0';
-  printArea.style.width = '194mm';
+  // Keep the print copy visible to the layout engine but off-screen.
+  // The @media print rule moves it back onto the printed page.
+  printArea.style.display = "block";
+  printArea.style.position = "absolute";
+  printArea.style.left = "-10000px";
+  printArea.style.top = "0";
+  printArea.style.width = "194mm";
 
-  // Six cards give enough vertical space for the longer answers and equations.
   const cardsPerPage = 6;
 
-  for (let i = 0; i < flashcards.length; i += cardsPerPage) {
-    const page = document.createElement('div');
-    page.className = 'print-page';
+  for (let i = 0; i < cardsToPrint.length; i += cardsPerPage) {
+    const page = document.createElement("div");
+    page.className = "print-page";
 
-    const pageCards = flashcards.slice(i, i + cardsPerPage);
+    const pageCards = cardsToPrint.slice(i, i + cardsPerPage);
 
     pageCards.forEach((card, j) => {
       const cardNumber = i + j + 1;
-      const cardDiv = document.createElement('div');
-      cardDiv.className = 'print-card';
+      const cardDiv = document.createElement("div");
+      cardDiv.className = "print-card";
+
+      const safeSvg = card.svg
+        ? namespaceSvgIds(card.svg, `print-${i}-${j}`)
+        : "";
 
       cardDiv.innerHTML = `
         <div class="print-topic">${card.topic || "Physics"}</div>
         <div class="print-term">${cardNumber}. ${card.term || ""}</div>
-        <div class="print-diagram">${card.svg || ""}</div>
-        <div class="print-equation">$$${card.equation || ""}$$</div>
+        ${safeSvg ? `<div class="print-diagram">${safeSvg}</div>` : ""}
+        ${card.equation ? `<div class="print-equation">$$${card.equation}$$</div>` : ""}
         <div class="print-answer">${card.answer || ""}</div>
+        <div class="print-credit">© 2026 Gary Cahill</div>
       `;
 
       page.appendChild(cardDiv);
@@ -40698,32 +43900,57 @@ async function printFlashcards() {
 
   document.body.appendChild(printArea);
 
+  // Force copied SVGs to fit their print boxes.
+  printArea.querySelectorAll(".print-diagram svg").forEach(svg => {
+    svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
+  });
+
   if (window.MathJax && window.MathJax.typesetPromise) {
-    await MathJax.typesetPromise([printArea]);
+    try {
+      await MathJax.typesetPromise([printArea]);
+    } catch (error) {
+      console.error("MathJax print preparation failed:", error);
+    }
   }
 
   if (document.fonts && document.fonts.ready) {
     await document.fonts.ready;
   }
 
-  // Give the browser two complete layout frames before opening print preview.
+  // Freeze SVG animations at their initial frame for a predictable printout.
+  printArea.querySelectorAll("svg").forEach(svg => {
+    try {
+      if (typeof svg.setCurrentTime === "function") svg.setCurrentTime(0);
+      if (typeof svg.pauseAnimations === "function") svg.pauseAnimations();
+    } catch (error) {
+      // Some browsers do not expose SMIL animation controls.
+    }
+  });
+
   await new Promise(resolve =>
     requestAnimationFrame(() => requestAnimationFrame(resolve))
   );
 
-  // Remove only the off-screen positioning. The shared print rules remain active.
-  printArea.style.position = '';
-  printArea.style.left = '';
-  printArea.style.top = '';
-  printArea.style.width = '';
-  printArea.style.display = '';
+  const cleanUpPrintArea = () => {
+    if (printArea.isConnected) printArea.remove();
+    window.removeEventListener("afterprint", cleanUpPrintArea);
+  };
 
+  window.addEventListener("afterprint", cleanUpPrintArea);
   window.print();
 }
 
 renderTopicButtons();
 displayFlashcards();
 </script>
+
+<footer class="site-footer">
+  <span>© 2026 Gary Cahill</span>
+  <span aria-hidden="true">·</span>
+  <span>Physics Flashcards</span>
+  <span aria-hidden="true">·</span>
+  <span>Version 0.9</span>
+</footer>
 
 </body>
 </html>
