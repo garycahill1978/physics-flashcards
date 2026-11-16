@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fingerprints of Light — Emission & Absorption v4.1</title>
+<style>
+:root{color-scheme:dark;--bg:#080e1d;--panel:#101b30;--panel2:#15233b;--edge:#263a56;--ink:#eaf3ff;--dim:#a9b9d1;--blue:#75baff;--gold:#ffc66d;--green:#61dfbb;--red:#fc737b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 40% -15%,#192c4a 0%,#080e1d 54%);font:15px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif;color:var(--ink)}
+main{max-width:1320px;margin:0 auto;padding:23px 22px 40px}
+header{display:flex;justify-content:space-between;gap:24px;align-items:start;margin-bottom:16px}
+.eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#6dbadf;font-weight:800}
+h1{margin:3px 0 5px;font-size:clamp(25px,3.2vw,37px);letter-spacing:-.045em;font-weight:780}h1 span{color:var(--blue)}
+.subtitle{margin:0;color:var(--dim);max-width:760px} .stamp{border:1px solid var(--edge);border-radius:99px;padding:8px 13px;color:#9ab7d4;white-space:nowrap;font-size:12px}
+nav{display:flex;align-items:center;gap:7px;margin:19px 0 14px;flex-wrap:wrap}button,select,input{font:inherit}
+button{cursor:pointer;color:var(--ink);background:#172640;border:1px solid #385171;border-radius:10px;padding:9px 14px;transition:background .15s,border-color .15s;white-space:nowrap}
+button:hover{background:#253e5e;border-color:#82b8e4}button.active{background:#214e7c;border-color:#64bcfa;box-shadow:inset 0 0 0 1px #3697ce}button:focus-visible,input:focus-visible{outline:2px solid #90cfff;outline-offset:2px}
+nav button{font-weight:680;font-size:15px;padding:11px 18px}.tagline{margin-left:auto;color:#89a5c3;font-size:12px}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 287px;gap:13px;align-items:start}
+.panel{background:linear-gradient(160deg,#132138e9,#0c1729f5);border:1px solid var(--edge);border-radius:15px;overflow:hidden;min-width:0}
+.settings{padding:14px 16px;display:flex;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:12px}
+.settinggroup{display:flex;gap:7px;align-items:center;flex-wrap:wrap}.settinggroup>span,.ctrl-title{color:var(--dim);font-size:12px;font-weight:650}
+.gasbutton{min-width:56px;padding:8px 10px;font-size:13px}
+.gasbutton.hydrogen.active{border-color:#f28c8d;background:#5d293b}.gasbutton.helium.active{border-color:#f5cc82;background:#645027}.gasbutton.iron.active{border-color:#a8bcdf;background:#37465f}
+.stage-header,.spectrum-header{display:flex;justify-content:space-between;gap:15px;align-items:center;padding:13px 17px 11px}
+h2{font-size:15px;letter-spacing:.01em;margin:0;font-weight:750}.muted{font-size:12px;color:var(--dim)}
+.canvas-wrap{padding:0 12px 12px}canvas{width:100%;display:block;border-radius:9px;touch-action:pan-y}
+#stage{height:274px;background:#07101e;border:1px solid #273754}
+.control-panel{margin:0 12px 12px;border:1px solid #293c53;border-radius:11px;background:#0a1528;padding:12px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 21px}
+.control{display:flex;flex-direction:column;gap:2px;min-width:145px;flex:1}.control label{font-size:12px;color:#bacce3;display:flex;gap:7px;justify-content:space-between}
+.control label strong{color:white;font-variant-numeric:tabular-nums}input[type=range]{width:100%;accent-color:#6dbafe;height:20px;cursor:pointer}
+.actionset{display:flex;gap:7px;flex-wrap:wrap;align-items:center}.actionset button{padding:8px 12px;font-size:13px}
+button.primary{background:#235e90;border-color:#60b7e6}
+#statusText{color:#afc6dc;font-size:12px;padding:0 15px 11px;min-height:28px}
+.spectrum{margin-top:12px}.spectrum-body{padding:0 13px 13px}
+.spec-title{font-weight:730;color:#dbe9fd;font-size:12px;margin:9px 0 5px}.spec-title span{font-weight:450;color:var(--dim);margin-left:8px}
+#emStrip,#abStrip{height:74px;border:1px solid #34465f;background:#050a12}#sourceStrip{height:48px;border:1px solid #34465f;background:#050a12}.countbar{display:flex;align-items:center;flex-wrap:wrap;gap:10px;justify-content:space-between;margin:4px 0 9px;padding:9px 11px;border:1px solid #2e4763;border-radius:9px;background:#0a1b30}.countbar strong{font-variant-numeric:tabular-nums;font-size:13px}.countbar span{font-size:12px;color:#a4bfdb}.countbar button{font-size:12px;padding:5px 9px}.countflash{color:#9ad7ff}#curve{height:228px;background:#081422;border:1px solid #293c55;margin-top:10px}
+#scale{height:32px;background:transparent}
+.badges{display:flex;gap:8px;flex-wrap:wrap;margin:7px 0 0}.pill{border:1px solid #34475f;color:#c7d6e9;background:#15233a;border-radius:30px;padding:4px 10px;font-size:11px}
+.inspector{padding:15px;display:flex;flex-direction:column;gap:12px}
+.inspector h2{font-size:15px;margin-bottom:2px}
+#energy{height:265px;border:1px solid #273957;background:#0a1629}
+.infobox{background:#0b1829;border:1px solid #263953;border-radius:11px;padding:12px}
+.bigval{font-size:27px;font-weight:730;line-height:1.2;letter-spacing:-.04em;font-variant-numeric:tabular-nums}
+.textdim{color:var(--dim);font-size:12px}.info-row{display:flex;justify-content:space-between;gap:10px;margin-top:8px;font-size:12px;color:#bdd0e6}.info-row strong{color:#e8f3ff;font-variant-numeric:tabular-nums}
+#linebuttons{display:flex;flex-wrap:wrap;gap:6px;max-height:142px;overflow:auto}.linebtn{font-size:11px;padding:5px 8px;border-radius:7px;min-width:0;white-space:nowrap}.linebtn.selected{outline:1px solid #b9dfff;border-color:#9dd5ff;background:#1e496d}
+#lessonNote{border-left:3px solid #5fb4e5;padding-left:10px;margin:2px 0;color:#b8cde4;font-size:12px;line-height:1.52}
+footer{font-size:12px;color:#a8b9cb;margin:17px 4px;line-height:1.65}footer a{color:#98ceff}footer p{margin:7px 0}
+.check{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim);white-space:nowrap}.check input{accent-color:#74bcf0}
+.hide{display:none!important}.infohint{font-size:11px;color:#91abc7;margin:3px 0 1px}
+@media(max-width:1040px){.layout{grid-template-columns:minmax(0,1fr) 248px}.inspector{padding:10px}.settings{gap:11px}}
+@media(max-width:790px){main{padding:15px 12px}header{flex-wrap:wrap}.stamp{display:none}.layout{grid-template-columns:1fr}.inspector{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:12px}.inspector h2{grid-column:1/-1}.energybox{grid-row:span 2}#energy{height:245px}#stage{height:235px}.tagline{display:none}}
+@media(max-width:510px){nav button{padding:9px 12px;font-size:13px}.settings{padding:12px}.inspector{display:flex}.control{min-width:130px}#stage{height:245px}#curve{height:200px}.stage-header,.spectrum-header{display:block}.spectrum-header .muted{display:block;margin-top:3px}}
+</style>
+</head>
+<body><main>
+<header><div><div class="eyebrow">Interactive physics · Atomic spectroscopy</div><h1>Fingerprints <span>of light</span></h1><p class="subtitle">From excited atoms to bright emission lines — and from starlight passing through gas to dark absorption lines.</p></div><div class="stamp">OFFLINE · LECTURE EDITION</div></header>
+<nav aria-label="Teaching mode"><button class="mode active" data-mode="emission">✦ Emission</button><button class="mode" data-mode="absorption">◐ Absorption</button><button class="mode" data-mode="compare">⇄ Compare</button><span class="tagline">Same wavelengths. Different appearance.</span></nav>
+<section class="panel settings"><div class="settinggroup"><span>Element</span><button class="gasbutton active" data-gas="H">Hydrogen</button><button class="gasbutton" data-gas="He">Helium</button><button class="gasbutton" data-gas="Na">Sodium</button><button class="gasbutton" data-gas="Hg">Mercury</button><button class="gasbutton" data-gas="Ne">Neon</button><button class="gasbutton" data-gas="Ar">Argon</button><button class="gasbutton" data-gas="Mg">Magnesium</button><button class="gasbutton" data-gas="Ca">Calcium</button><button class="gasbutton" data-gas="O">Oxygen</button><button class="gasbutton" data-gas="Li">Lithium</button><button class="gasbutton" data-gas="Cd">Cadmium</button><button class="gasbutton" data-gas="Cu">Copper</button><button class="gasbutton" data-gas="Zn">Zinc</button><button class="gasbutton" data-gas="Fe">Iron</button><button class="gasbutton" data-gas="Mix">Mixture</button></div><label class="check"><input type="checkbox" id="labels" checked> Show line labels</label><label class="check"><input type="checkbox" id="zoom"> Zoom selected line</label><label class="check"><input type="checkbox" id="motion" checked> Animate photons</label></section>
+<div class="layout">
+ <div>
+  <section class="panel"><div class="stage-header"><h2 id="stageTitle">01 — Excite atoms in a discharge tube</h2><span class="muted" id="stageDesc">Electron impacts → excited atoms → photons</span></div><div class="canvas-wrap"><canvas id="stage" aria-label="Animated discharge tube and photons"></canvas></div>
+  <div class="control-panel">
+   <div class="control" id="driveControl"><label>Electron beam rate <strong id="rateVal">10 /s</strong></label><input type="range" id="rate" min="0" max="36" step="1" value="10"></div>
+   <div class="control" id="electronEnergyControl"><label>Electron energy (hydrogen) <strong id="energyVal">14.0 eV</strong></label><input type="range" id="electronEnergy" min="0" max="18" step="0.1" value="14"></div>
+   <div class="control hide" id="starControl"><label>Source temperature <strong id="tempVal">6500 K</strong></label><input type="range" id="starTemp" min="3000" max="12000" step="250" value="6500"></div>
+   <div class="control hide" id="columnControl"><label>Absorbing gas column <strong id="columnVal">65%</strong></label><input type="range" id="column" min="0" max="100" step="1" value="65"></div>
+   <div class="control hide" id="lowerControl"><label>H/He optical lower-state population <strong id="lowerVal">70%</strong></label><input type="range" id="lower" min="0" max="100" step="5" value="70"></div>
+   <div class="control" id="resControl"><label>Instrument resolving power <strong id="resVal">R = 600</strong></label><input type="range" id="res" min="100" max="4000" step="50" value="600"></div>
+   <div class="actionset" id="emitActions"><button id="fire5" class="primary">Fire 5 electrons</button><button id="fire10">Fire 10</button><button id="fire30">Fire 30</button></div>
+   <div class="actionset"><button id="pause">Pause</button><button id="reset">Reset</button></div>
+  </div><div id="statusText" role="status">At 14.0 eV, electron impacts can excite ground-state hydrogen to n = 3, 4, 5 or 6.</div>
+  </section>
+  <section class="panel spectrum"><div class="spectrum-header"><h2>02 — What the spectrometer sees</h2><span class="muted"><span id="axisRange">390–740 nm</span> · linear wavelength scale · air wavelengths</span></div><div class="spectrum-body">
+  <div class="countbar" id="countBar"><div><strong id="totalCounts">Detected photons: 0</strong><span id="recentCount"> · Emission lines build as photons reach the spectrometer</span></div><button id="clearCounts" title="Clear the spectrum and stop the automatic electron beam">Clear + stop beam</button></div>
+  <div id="emitBar"><div class="spec-title">Emission <span>live counts build the bright lines</span></div><canvas id="emStrip" aria-label="Accumulating photon-count emission spectrum"></canvas></div>
+  <div id="sourceBar" class="hide"><div class="spec-title">Original continuum <span>before the gas — no absorption lines</span></div><canvas id="sourceStrip" aria-label="Unabsorbed smooth continuous spectrum"></canvas></div>
+  <div id="absBar" class="hide"><div class="spec-title">After the gas <span>same continuum with narrow absorption lines</span></div><canvas id="abStrip" aria-label="Continuous spectrum with atomic absorption lines"></canvas></div>
+  <canvas id="scale" aria-label="Spectrum wavelength labels"></canvas>
+  <canvas id="curve" aria-label="Spectral intensity plotted against wavelength"></canvas>
+  <div class="badges"><span class="pill" id="curveCaption">Line positions: measured references</span><span class="pill">Line heights &amp; widths: illustrative model</span><span class="pill">Click a line to inspect</span></div>
+  </div></section>
+ </div>
+ <aside class="panel inspector">
+  <h2>Explore an atomic transition</h2>
+  <div class="energybox"><canvas id="energy" aria-label="Atomic energy-level diagram"></canvas><div class="infohint" id="levelHint">Hydrogen levels from Eₙ = −13.6/n² eV. Diagram spacing is schematic.</div></div>
+  <div class="infobox"><div class="textdim" id="selectedName">Hα · n = 3 → 2</div><div class="bigval" id="selectedWavelength">656.28 nm</div><div class="info-row"><span>Photon energy</span><strong id="selectedEnergy">1.889 eV</strong></div><div class="info-row"><span>Frequency</span><strong id="selectedFrequency">456.8 THz</strong></div><div class="info-row" id="selectedCountRow"><span>Detected at this line</span><strong id="selectedCount">0 photons</strong></div></div>
+  <div><div class="ctrl-title" style="margin:0 0 7px">Select a reference line</div><div id="linebuttons"></div></div>
+  <p id="lessonNote"></p>
+ </aside>
+</div>
+<footer><p><strong>What is real?</strong> Selected visible wavelengths are based on published atomic line data. Some entries involve different ionic states (for example Ca II) or forbidden auroral oxygen lines; a discharge lamp will not display every listed line. Except for hydrogen, the energy diagrams display independent illustrative transition pairs; they do not give complete or physically positioned term levels. The observed line-count build-up, relative line strengths, ionisation balance, collision rates, level populations and photon animations are deliberately simplified. Electrons stop in the discharge chamber; the spectrometer records illustrated arriving photons. These are <em>not</em> measured or predicted lamp/stellar spectra; all elements show selected transitions, not complete spectra. Absorption is an illustrative excited-state population model, not a prediction that every listed emission line absorbs strongly in a cool gas. Spectral line widths use a Gaussian instrumental profile (FWHM ≈ λ/R), with a minimum onscreen width to avoid disappearing at limited pixel resolution.</p><p><strong>Sources:</strong> <a href="https://physics.nist.gov/PhysRefData/Handbook/Tables/irontable2_a.htm" target="_blank" rel="noopener">NIST strong iron lines</a> · <a href="https://physics.nist.gov/PhysRefData/Handbook/Tables/heliumtable3.htm" target="_blank" rel="noopener">NIST helium lines</a> · <a href="https://www.nist.gov/pml/atomic-spectra-database" target="_blank" rel="noopener">NIST Atomic Spectra Database</a> · <a href="https://phys.libretexts.org/Bookshelves/Astronomy__Cosmology/Stellar_Atmospheres_%28Tatum%29/07%3A_Atomic_Spectroscopy/7.03%3A_The_Hydrogen_Spectrum" target="_blank" rel="noopener">Hydrogen Balmer wavelengths</a> · <a href="https://science.nasa.gov/mission/webb/science-overview/science-explainers/spectroscopy-101-how-absorption-and-emission-spectra-work/" target="_blank" rel="noopener">NASA spectroscopy explainer</a>. All data and code required to run are embedded in this HTML.</p></footer>
+</main>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const H=[
+ {nm:410.17,label:'Hδ',upper:6,weight:.32},{nm:434.05,label:'Hγ',upper:5,weight:.45},
+ {nm:486.13,label:'Hβ',upper:4,weight:.69},{nm:656.28,label:'Hα',upper:3,weight:1}
+].map(x=>({...x,sp:'H',lower:2}));
+const He=[
+ [402.62,.18],[438.79,.24],[447.15,.76],[471.31,.43],[492.19,.53],[501.57,.67],[504.77,.25],
+ [587.56,1],[667.82,.74],[706.52,.48]
+].map(([nm,weight])=>({sp:'He',nm,weight,label:'He I'}));
+const Na=[
+ [498.28,.18],[514.88,.12],[568.26,.28],[568.82,.26],[588.995,1],[589.592,.96],[615.42,.21],[616.07,.20]
+].map(([nm,weight])=>({sp:'Na',nm,weight,label:'Na I'}));
+const Hg=[
+ [404.66,.55],[407.78,.22],[435.83,.92],[491.61,.20],[546.07,1],[576.96,.56],[579.07,.54],[690.75,.10]
+].map(([nm,weight])=>({sp:'Hg',nm,weight,label:'Hg I'}));
+const Ne=[
+ [540.06,.18],[585.25,.60],[588.19,.33],[594.48,.24],[597.55,.21],[602.99,.30],[607.43,.28],[609.62,.20],
+ [614.31,.22],[616.36,.26],[621.73,.36],[626.65,.44],[630.48,.48],[633.44,.39],[638.30,.35],[640.22,.32],
+ [650.65,.58],[653.29,.44],[659.90,.70],[667.83,.52],[671.70,.43],[692.95,.30],[703.24,.28]
+].map(([nm,weight])=>({sp:'Ne',nm,weight,label:'Ne I'}));
+const Ar=[
+ [394.90,.12],[404.44,.16],[415.86,.26],[420.07,.22],[425.94,.18],[427.22,.24],[696.54,1],[706.72,.84],
+ [714.70,.66],[727.29,.54],[738.40,.70]
+].map(([nm,weight])=>({sp:'Ar',nm,weight,label:'Ar I'}));
+const Mg=[
+ [457.11,.14],[470.30,.10],[516.73,.86],[517.27,1],[518.36,.92],[552.84,.14],[571.11,.10]
+].map(([nm,weight])=>({sp:'Mg',nm,weight,label:'Mg I'}));
+const Ca=[
+ [393.37,1],[396.85,.98],[422.67,.56],[443.49,.13],[445.48,.12],[558.88,.10],[610.27,.08],[612.22,.08],[616.22,.10],[643.91,.16],[646.26,.14]
+].map(([nm,weight])=>({sp:'Ca',nm,weight,label:nm<400?'Ca II':'Ca I'}));
+const O=[
+ [436.84,.12],[557.73,1],[615.82,.10],[630.03,.55],[636.38,.46]
+].map(([nm,weight])=>({sp:'O',nm,weight,label:'O I'}));
+// Selected strong neutral-iron lines (Fe I) from NIST strong-lines table, standard air nm.
+const Fe=[
+ [400.524,.13],[404.581,.95],[406.359,.60],[407.174,.50],[413.206,.16],[414.387,.34],
+ [420.203,.15],[421.618,.16],[425.079,.12],[426.047,.34],[427.176,.49],[428.240,.49],
+ [430.790,.48],[432.576,.60],[437.593,.32],[438.354,.83],[440.475,.48],[441.512,.13],
+ [442.730,.24],[446.165,.17],[492.050,.20],[495.760,.60],[516.749,1],[517.160,.19],
+ [522.715,.40],[526.954,.50],[527.036,.32],[532.804,.32],[532.853,.13],[534.102,.20],
+ [537.149,.16],[539.713,.12]
+].map(([nm,weight])=>({sp:'Fe',nm,weight,label:'Fe I'}));
+// Additional representative air wavelengths (nm) from NIST strong-lines tables.
+const Li=[
+ [413.262,.07],[460.283,.11],[460.290,.15],[610.354,.57],[610.365,.70],[670.777,.65],[670.793,1]
+].map(([nm,weight])=>({sp:'Li',nm,weight,label:'Li I'}));
+const Cd=[
+ [467.815,.27],[479.991,.38],[508.582,.77],[609.914,.23],[643.847,1],[734.567,.13]
+].map(([nm,weight])=>({sp:'Cd',nm,weight,label:'Cd I'}));
+const Cu=[
+ [406.264,.23],[465.112,.18],[510.554,.70],[515.324,.79],[521.820,1],
+ [529.252,.32],[570.024,.40],[578.213,.49]
+].map(([nm,weight])=>({sp:'Cu',nm,weight,label:'Cu I'}));
+const Zn=[
+ [468.014,.27],[472.216,.70],[481.053,1],[636.235,.14]
+].map(([nm,weight])=>({sp:'Zn',nm,weight,label:'Zn I'}));
+const speciesOrder=['H','He','Na','Hg','Ne','Ar','Mg','Ca','O','Li','Cd','Cu','Zn','Fe'];
+const linesByGas={H,He,Na,Hg,Ne,Ar,Mg,Ca,O,Li,Cd,Cu,Zn,Fe,Mix:speciesOrder.flatMap(k=>[...({H,He,Na,Hg,Ne,Ar,Mg,Ca,O,Li,Cd,Cu,Zn,Fe}[k])]).sort((a,b)=>a.nm-b.nm)};
+const state={mode:'emission',gas:'H',sel:H.at(-1),paused:false,clock:0,last:0,atoms:[],electrons:[],photons:[],sparks:[],nextEmission:0,nextAbs:0,lastSpawn:0,flash:0,showAllFe:false,counts:Object.create(null),totalDetected:0,lastDetected:null,spectraDirty:false,lastSpectrumUpdate:0};
+const wlMin=390,wlMax=740,hcEV=1239.841984,cTHz=299792.458;
+function getRange(){if(!$('zoom').checked)return [wlMin,wlMax];const n=state.sel?.nm??550;const lo=clamp(n-20,wlMin,wlMax-40);return [lo,lo+40];}
+const energyN=n=>-13.6/(n*n), threshold=n=>13.6*(1-1/(n*n));
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x));
+const rnd=(lo,hi)=>lo+Math.random()*(hi-lo);
+const fmt=(v,n=1)=>Number(v).toFixed(n);
+function gasLines(){return linesByGas[state.gas]}
+function allowedLines(){const arr=gasLines();const E=+$('electronEnergy').value;return arr.filter(l=>l.sp!=='H'||state.gas==='Mix'|| E+1e-9>=threshold(l.upper));}
+function presentLines(){return state.mode==='absorption'?gasLines():allowedLines()}
+function gasLabel(key){return ({H:'hydrogen',He:'helium',Na:'sodium vapour',Hg:'mercury vapour',Ne:'neon',Ar:'argon',Mg:'magnesium',Ca:'calcium',O:'oxygen',Li:'lithium',Cd:'cadmium',Cu:'copper',Zn:'zinc',Fe:'neutral iron',Mix:'mixed gas'})[key]}
+function colorForSpecies(sp){return ({H:'#f59aaa',He:'#ffcf82',Na:'#ffe36d',Hg:'#9ff0f7',Ne:'#ff9f5f',Ar:'#d39cff',Mg:'#c7f0c1',Ca:'#b6ff93',O:'#8fd6ff',Li:'#ff5e69',Cd:'#83ffa1',Cu:'#ffad65',Zn:'#8cf4ff',Fe:'#c2d1e5'})[sp]||'#d7e2ef';}
+function pickDefaultLine(g){const maps={H:656.28,He:587.56,Na:588.995,Hg:546.07,Ne:659.90,Ar:696.54,Mg:517.27,Ca:422.67,O:557.73,Li:670.793,Cd:643.847,Cu:521.820,Zn:481.053,Fe:438.354};
+ if(g==='Mix')return H.at(-1); const arr=linesByGas[g]||H; const target=maps[g]||arr[0]?.nm||656.28; return arr.reduce((best,l)=>Math.abs(l.nm-target)<Math.abs(best.nm-target)?l:best,arr[0]);}
+function getWidth(canvas){return Math.max(1,canvas.getBoundingClientRect().width)}
+function setupCanvas(canvas){const rect=canvas.getBoundingClientRect();const dpr=Math.min(window.devicePixelRatio||1,2);const W=rect.width,H=rect.height;if(!W||!H)return null;const rw=Math.round(W*dpr),rh=Math.round(H*dpr);if(canvas.width!==rw||canvas.height!==rh){canvas.width=rw;canvas.height=rh;}const ctx=canvas.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);return {ctx,W,H};}
+function nmToRgb(w){let r=0,g=0,b=0;
+ if(w<440){r=-(w-440)/60;b=1;}else if(w<490){g=(w-440)/50;b=1;}else if(w<510){g=1;b=-(w-510)/20;}
+ else if(w<580){r=(w-510)/70;g=1;}else if(w<645){r=1;g=-(w-645)/65;}else{r=1;}
+ let fac=w<420? .3+.7*(w-390)/30 :w>700? .3+.7*(740-w)/40:1;
+ return [r,g,b].map(v=>Math.round(clamp(v*fac,0,1)*255));}
+function rgb(w,a=1){const [r,g,b]=nmToRgb(w);return `rgba(${r},${g},${b},${a})`;}
+function xAt(nm,x0,width,min=wlMin,max=wlMax){return x0+(nm-min)/(max-min)*width;}
+// Exactly the same plot margins for every spectrum strip, the ruler and the graph.
+function plotArea(W){const L=46,R=W-16;return {L,R,PW:R-L};}
+function lineKey(l){return `${l.sp}:${l.nm.toFixed(3)}`;}
+function getCount(l){return state.counts[lineKey(l)]||0;}
+function clearCounts(){state.counts=Object.create(null);state.totalDetected=0;state.lastDetected=null;state.spectraDirty=true;publishCounts();}
+function registerDetection(p){const l=p.line;if(!l)return;const key=lineKey(l);state.counts[key]=(state.counts[key]||0)+1;state.totalDetected++;state.lastDetected=l;state.spectraDirty=true;}
+function countStrength(l){return 1-Math.exp(-getCount(l)/7);}
+function publishCounts(){
+ $('totalCounts').textContent=`Detected photons: ${state.totalDetected}`;
+ $('recentCount').textContent=state.lastDetected?` · Last: ${state.lastDetected.sp==='H'?state.lastDetected.label:state.lastDetected.sp+' I'} ${fmt(state.lastDetected.nm,1)} nm`:' · Lines build as photons reach the spectrometer';
+ updateCountSelected();renderLineButtons();
+}
+function updateCountSelected(){if(state.sel)$('selectedCount').textContent=getCount(state.sel)+' photons';}
+function selectedChange(line){state.sel=line;updateSelected();drawAll();}
+function updateSelected(){let l=state.sel;if(!l)return;
+ const n=fmt(l.nm,2),ev=hcEV/l.nm,thz=cTHz/l.nm;
+ $('selectedName').textContent=l.sp==='H'?`${l.label} · n = ${l.upper} ↔ 2`:`${l.sp==='Ca'&&l.nm<400?'Ca II':l.sp==='Ca'?'Ca I':l.label} · reference transition`;
+ $('selectedWavelength').textContent=`${n} nm`;$('selectedEnergy').textContent=fmt(ev,3)+' eV';$('selectedFrequency').textContent=fmt(thz,1)+' THz';updateCountSelected();
+ $('levelHint').textContent=l.sp==='H'?'Hydrogen: Eₙ = −13.6/n² eV. The vertical spacing is illustrative.':`For ${gasLabel(l.sp)}, each pair shows one real photon energy difference (hc/λ), but their absolute level energies and term assignments are not shown. Not a complete atomic term diagram.`;
+ let s='';if(state.mode==='emission')s='Bright lines: photons are emitted when excited atoms return to lower energy states.';
+ if(state.mode==='absorption')s='Dark lines: photons are removed from the direct beam; subsequent re-emission need not travel towards the spectrometer.';
+ if(state.mode==='compare')s='Compare the same atomic wavelength in bright-line emission and dark-line absorption.';
+ if(l.sp==='H')s+=' Visible Balmer absorption requires hydrogen already in n = 2.';
+ if(l.sp==='He')s+=' Visible He I absorption also requires appropriate excited lower levels.';
+ if(l.sp==='Fe')s+=' Fe I is neutral iron; these are selected lines, not the complete iron spectrum.';
+ $('lessonNote').textContent=s;
+}
+function renderLineButtons(){const all=gasLines(), container=$('linebuttons');container.innerHTML='';let selected=all;
+ const byWeight=[...all].sort((a,b)=>b.weight-a.weight);
+ if(state.gas==='Fe')selected=byWeight.slice(0,13).sort((a,b)=>a.nm-b.nm);
+ else if(state.gas==='Mix')selected=byWeight.slice(0,18).sort((a,b)=>a.nm-b.nm);
+ else if(all.length>12)selected=byWeight.slice(0,12).sort((a,b)=>a.nm-b.nm);
+ for(const l of selected){const b=document.createElement('button');b.type='button';b.className='linebtn'+(state.sel===l?' selected':'');b.style.borderLeft=`3px solid ${rgb(l.nm)}`;b.textContent=`${state.gas==='Mix'?l.sp+' ':''}${l.sp==='H'?l.label+' · ':''}${fmt(l.nm,1)} nm${state.mode!=='absorption'?' · '+getCount(l):''}`;
+  b.addEventListener('click',()=>{selectedChange(l);renderLineButtons();});container.appendChild(b);}
+ if(all.length>selected.length){const b=document.createElement('button');b.className='linebtn';b.textContent=`Show all ${all.length} lines ↗`;b.addEventListener('click',()=>{container.innerHTML='';for(const l of all){const btn=document.createElement('button');btn.className='linebtn'+(state.sel===l?' selected':'');btn.style.borderLeft=`3px solid ${rgb(l.nm)}`;btn.textContent=`${state.gas==='Mix'?l.sp+' ':''}${l.sp==='H'?l.label+' · ':''}${fmt(l.nm,1)} nm${state.mode!=='absorption'?' · '+getCount(l):''}`;btn.onclick=()=>{selectedChange(l);renderLineButtons();};container.appendChild(btn);}});container.appendChild(b);}
+}
+function syncControls(){const mode=state.mode;const emitting=mode!=='absorption';const absorbing=mode!=='emission';
+ $('driveControl').classList.toggle('hide',!emitting);$('electronEnergyControl').classList.toggle('hide',!emitting||state.gas!=='H');
+ $('emitActions').classList.toggle('hide',!emitting);$('starControl').classList.toggle('hide',!absorbing);
+ $('columnControl').classList.toggle('hide',!absorbing);$('lowerControl').classList.toggle('hide',!absorbing||!['H','He'].includes(state.gas));
+ $('emitBar').classList.toggle('hide',mode==='absorption');$('sourceBar').classList.toggle('hide',mode==='emission');$('absBar').classList.toggle('hide',mode==='emission');$('countBar').classList.toggle('hide',mode==='absorption');$('selectedCountRow').classList.toggle('hide',mode==='absorption');
+ $('rateVal').textContent=$('rate').value+' /s';$('energyVal').textContent=fmt($('electronEnergy').value,1)+' eV';
+ $('tempVal').textContent=$('starTemp').value+' K';$('columnVal').textContent=$('column').value+'%';$('lowerVal').textContent=$('lower').value+'%';$('resVal').textContent='R = '+$('res').value;
+ $('curveCaption').textContent=mode==='emission'?'Accumulating detected photon counts (illustrative)':mode==='absorption'?'Continuous source × atomic line transmission':'Counted emission versus transmitted continuum';
+ const titles={emission:['01 — Discharge tube','Incoming electrons excite atoms; visible photons escape'],absorption:['01 — Starlight through cooler gas','A continuum passes through an absorbing gas layer'],compare:['01 — Two ways of seeing the same atoms','Discharge emission above · stellar absorption below']};
+ $('stageTitle').textContent=titles[mode][0];$('stageDesc').textContent=titles[mode][1];
+ for(const b of document.querySelectorAll('.mode'))b.classList.toggle('active',b.dataset.mode===mode);
+ for(const b of document.querySelectorAll('.gasbutton'))b.classList.toggle('active',b.dataset.gas===state.gas);
+ $('pause').textContent=state.paused?'Resume':'Pause';
+ let description='';if(state.mode!=='absorption'){
+ if(state.gas==='H'){const n=[3,4,5,6].filter(n=> +$('electronEnergy').value>=threshold(n));
+ description=n.length?`For ground-state hydrogen, ${fmt($('electronEnergy').value,1)} eV can excite n = ${n.join(', ')} (visible Balmer pathways).`:`At ${fmt($('electronEnergy').value,1)} eV, electron impacts cannot directly excite ground-state hydrogen to n ≥ 3, so this model shows no Balmer emission.`;
+ }else description=`Electron impacts illuminate selected ${gasLabel(state.gas)} lines. Relative intensities and excitation cross-sections are illustrative rather than fully modelled.`;
+ }else description='Absorbed light is re-emitted in other directions; optical line depths depend on lower-state populations, optical depth and instrumental resolution.';
+ $('statusText').textContent=description;
+}
+function changeMode(m){state.mode=m;clearAnimations();syncControls();updateSelected();renderLineButtons();drawAll();}
+function changeGas(g){state.gas=g;state.sel=pickDefaultLine(g);initAtoms();clearAnimations();clearCounts();syncControls();updateSelected();drawAll();}
+function clearAnimations(){state.electrons=[];state.photons=[];state.sparks=[];state.nextEmission=0;state.nextAbs=0;state.flash=0;}
+function initAtoms(){state.atoms=[];const mixSpecies=speciesOrder;let N=state.gas==='Fe'?34:state.gas==='Mix'?40:(['Ne','Ar'].includes(state.gas)?34:28);
+ for(let i=0;i<N;i++){const sp=state.gas==='Mix'?mixSpecies[i%mixSpecies.length]:state.gas;
+ state.atoms.push({x:rnd(.30,.73),y:rnd(.17,.85),vx:rnd(-.022,.022),vy:rnd(-.018,.018),sp,r:rnd(2.3,4.5),phase:rnd(0,2*Math.PI),excited:0});}}
+function updateAtoms(dt){for(const a of state.atoms){a.x+=a.vx*dt;a.y+=a.vy*dt;if(a.x<.30||a.x>.73){a.vx*=-1;a.x=clamp(a.x,.30,.73);}if(a.y<.17||a.y>.85){a.vy*=-1;a.y=clamp(a.y,.17,.85);}}}
+function pickWeighted(arr){let sum=arr.reduce((s,x)=>s+x.weight,0),k=Math.random()*sum;for(const x of arr){k-=x.weight;if(k<=0)return x;}return arr.at(-1);}
+function shootElectron(){if(state.electrons.length>150)return;const atom=state.atoms[Math.floor(Math.random()*state.atoms.length)];
+ state.electrons.push({x:.11,y:atom?atom.y+rnd(-.017,.017):rnd(.2,.8),target:atom,speed:rnd(.42,.58),hit:false,age:0});}
+function burst(n){if(state.paused)state.paused=false;for(let i=0;i<n;i++){const a=state.atoms[i%state.atoms.length];state.electrons.push({x:.11-i*.015,y:a?a.y+rnd(-.02,.02):.5,target:a,speed:rnd(.42,.56),hit:false,age:0});}syncControls();}
+function emitPhoton(atom,line){if(!line)return;atom.excited=1;state.sparks.push({x:atom.x,y:atom.y,age:0,kind:'emit',sp:atom.sp});
+ for(let j=0;j<1+(Math.random()<.22?1:0);j++){const detectorX=.575+rnd(-.055,.055), detectorY=.025;const dx=detectorX-atom.x,dy=detectorY-atom.y;const ang=Math.atan2(dy,dx)+rnd(-.025,.025);
+  state.photons.push({x:atom.x,y:atom.y,angle:ang,kind:'emission',nm:line.nm,sp:line.sp,age:0,speed:rnd(.50,.70),line,detected:false});}}
+function handleCollision(atom){if(!atom)return;const options=allowedLines().filter(l=>l.sp===atom.sp);if(!options.length){state.sparks.push({x:atom.x,y:atom.y,age:0,kind:'noexcite'});return;} const line=pickWeighted(options);emitPhoton(atom,line);}
+function emissionStep(dt){const rate=+$('rate').value;state.nextEmission+=rate*dt;while(state.nextEmission>=1){shootElectron();state.nextEmission-=1;}
+ updateAtoms(dt*.55);
+ for(const e of state.electrons){const prev=e.x;e.x+=e.speed*dt;e.age+=dt; if(e.target&&!e.hit&&prev<e.target.x&&e.x>=e.target.x){e.hit=true;e.x=e.target.x;handleCollision(e.target);} if(e.x>=.775)e.hit=true;}
+ state.electrons=state.electrons.filter(e=>!e.hit&&e.x<.775&&e.age<3);
+ for(const p of state.photons){if(p.kind!=='emission')continue;p.age+=dt;p.x+=Math.cos(p.angle)*p.speed*dt;p.y+=Math.sin(p.angle)*p.speed*dt; if(!p.detected&&p.y<=.08&&p.x>.46&&p.x<.69){p.detected=true;registerDetection(p);}}
+ state.photons=state.photons.filter(p=>p.kind!=='emission'||(!p.detected&&p.x>-.15&&p.x<1.15&&p.y>-.15&&p.y<1.2));
+ for(const s of state.sparks){if(s.kind!=='absorb')s.age+=dt;}state.sparks=state.sparks.filter(s=>s.kind==='absorb'||s.age<.65);
+ for(const a of state.atoms)a.excited=Math.max(0,a.excited-dt*1.7);
+}
+function absorptionStep(dt){updateAtoms(dt*.40);state.nextAbs+=(12+24*(+$('column').value/100))*dt;
+ while(state.nextAbs>=1){state.nextAbs-=1;const hit=Math.random() < Math.min(.90,(+$('column').value/100)*.92);const from=gasLines();const line=pickWeighted(from);
+  state.photons.push({x:.08,y:rnd(.26,.77),angle:rnd(-.01,.01),nm:hit?line.nm:rnd(400,730),sp:line.sp,kind:'absorption',age:0,speed:.44,absorb:hit,absorbed:false});}
+ const lower=+$('lower').value/100;
+ for(const p of state.photons){if(p.kind!=='absorption')continue;p.age+=dt;p.x+=Math.cos(p.angle)*p.speed*dt;p.y+=Math.sin(p.angle)*p.speed*dt;
+  if(!p.absorbed&&p.absorb&&p.x>.40&&p.x<.77){let f=(['H','He'].includes(p.sp)?lower:1),col=+$('column').value/100;if(Math.random()<.085*f*col){p.absorbed=true;state.sparks.push({x:p.x,y:p.y,age:0,kind:'absorb',sp:p.sp,nm:p.nm});}}}
+ state.photons=state.photons.filter(p=>p.kind!=='absorption'||(!p.absorbed&&p.x<1.06&&p.age<3));
+ for(const s of state.sparks){if(s.kind==='absorb')s.age+=dt;}state.sparks=state.sparks.filter(s=>s.kind!=='absorb'||s.age<1.25);
+}
+function inlayText(ctx,s,x,y,color='#c8d9f0',size=12){ctx.fillStyle=color;ctx.font=`${size}px system-ui`;ctx.fillText(s,x,y);}
+function drawEmissionStage(ctx,W,H,top=0,height=H){
+ const yy=y=>top+y*height;
+ ctx.fillStyle='#07101e';ctx.fillRect(0,top,W,height);
+ const xL=.23*W,xR=.79*W,yL=yy(.10),yR=yy(.88);
+ ctx.fillStyle='#0a1d2f';ctx.fillRect(xL,yL,xR-xL,yR-yL);
+ ctx.strokeStyle='#315675';ctx.lineWidth=1.5;ctx.strokeRect(xL,yL,xR-xL,yR-yL);
+ ctx.fillStyle='#1c3d58';ctx.fillRect(.08*W,yy(.20),.033*W,yy(.60));
+ ctx.fillStyle='#67a6d2';ctx.fillRect(.106*W,yy(.23),.005*W,yy(.54));
+ ctx.textAlign='center';inlayText(ctx,'electron gun',.105*W,yy(.17),'#a4d5ff',11);inlayText(ctx,state.gas==='Mix'?'multi-element gas mixture':gasLabel(state.gas)+' gas',.51*W,yy(.16),'#bad5e7',12);
+ ctx.fillStyle='#385068';ctx.fillRect(.765*W,yy(.25),.012*W,yy(.50));
+ ctx.strokeStyle='#a5b9d0';ctx.beginPath();ctx.moveTo(.766*W,yy(.26));ctx.lineTo(.766*W,yy(.74));ctx.stroke();
+ inlayText(ctx,'beam stop',.735*W,yy(.95),'#a7b8c7',10);
+ ctx.fillStyle='#1c3d58';ctx.fillRect(.46*W,yy(.02),.23*W,yy(.06));ctx.fillStyle='#1e85af';ctx.fillRect(.46*W,yy(.02),.23*W,.008*height);ctx.strokeStyle='#6bc9ff';ctx.strokeRect(.46*W,yy(.02),.23*W,yy(.06));
+ inlayText(ctx,W<470?'detector':'optical detector',.575*W,yy(.115),'#b8dfff',W<470?9:11);
+ ctx.strokeStyle='rgba(157,205,245,.23)';ctx.setLineDash([5,5]);ctx.beginPath();ctx.moveTo(.18*W,yy(.53));ctx.lineTo(.77*W,yy(.53));ctx.stroke();ctx.beginPath();ctx.moveTo(.57*W,yy(.20));ctx.lineTo(.57*W,yy(.79));ctx.stroke();ctx.setLineDash([]);
+ const time=state.clock;
+ for(const a of state.atoms){const px=a.x*W,py=yy(a.y); if(py<yL||py>yR)continue;const clr=colorForSpecies(a.sp);
+  if(a.excited>0){ctx.beginPath();ctx.arc(px,py,8+a.excited*9,0,Math.PI*2);ctx.strokeStyle=`rgba(255,216,128,${a.excited*.75})`;ctx.lineWidth=1.7;ctx.stroke();}
+  ctx.beginPath();ctx.arc(px,py,a.r,0,Math.PI*2);ctx.fillStyle=clr;ctx.fill();}
+ for(const e of state.electrons){if(!$('motion').checked||e.x<-.02)continue;const x=e.x*W,y=yy(e.y); ctx.beginPath();ctx.moveTo(x-13,y);ctx.lineTo(x+3,y);ctx.strokeStyle='rgba(93,181,255,.48)';ctx.lineWidth=2;ctx.stroke();ctx.beginPath();ctx.arc(x,y,2.7,0,Math.PI*2);ctx.fillStyle='#6ad8ff';ctx.fill();}
+ for(const p of state.photons){if(!$('motion').checked||p.kind!=='emission')continue;const x=p.x*W,y=yy(p.y),tail=11; ctx.beginPath();ctx.moveTo(x-Math.cos(p.angle)*tail,y-Math.sin(p.angle)*tail);ctx.lineTo(x,y);ctx.strokeStyle=rgb(p.nm,.58);ctx.lineWidth=2.5;ctx.stroke();ctx.beginPath();ctx.arc(x,y,3,0,Math.PI*2);ctx.fillStyle=rgb(p.nm);ctx.fill();}
+ for(const s of state.sparks){if(s.kind==='absorb')continue;const x=s.x*W,y=yy(s.y),alpha=1-s.age/.65;ctx.beginPath();ctx.arc(x,y,6+s.age*22,0,2*Math.PI);ctx.strokeStyle=s.kind==='noexcite'?`rgba(128,172,211,${alpha*.3})`:`rgba(245,212,140,${alpha*.65})`;ctx.lineWidth=2;ctx.stroke();}
+ ctx.textAlign='left';inlayText(ctx,'Electron beam across the tube · emitted light sampled at right angles',.245*W,yy(.97),'#7d9dba',10);
+}
+function drawAbsorptionStage(ctx,W,H,top=0,height=H){
+ const yy=y=>top+y*height;ctx.fillStyle='#07101e';ctx.fillRect(0,top,W,height);
+ const starX=.105*W,starY=yy(.53),radius=Math.min(42,height*.23);
+ const halo=ctx.createRadialGradient(starX,starY,8,starX,starY,radius*2.4);halo.addColorStop(0,'rgba(255,240,177,.30)');halo.addColorStop(1,'rgba(255,176,65,0)');ctx.fillStyle=halo;ctx.fillRect(starX-radius*2.5,starY-radius*2.5,radius*5,radius*5);
+ ctx.beginPath();ctx.arc(starX,starY,radius,0,2*Math.PI);ctx.fillStyle='#ffe4a1';ctx.fill();ctx.beginPath();ctx.arc(starX,starY,radius*.85,0,2*Math.PI);ctx.fillStyle='#fff1c5';ctx.fill();
+ ctx.fillStyle='#0e2b34';ctx.fillRect(.37*W,yy(.09),.40*W,yy(.82));ctx.strokeStyle='#549383';ctx.lineWidth=1.3;ctx.strokeRect(.37*W,yy(.09),.40*W,yy(.82));
+ ctx.textAlign='center';inlayText(ctx,'hot source',starX,yy(.13),'#ffda94',11);inlayText(ctx,'cooler intervening gas',.57*W,yy(.15),'#9ce7b7',12);
+ ctx.fillStyle='#244861';ctx.fillRect(.89*W,yy(.22),.046*W,yy(.56));ctx.fillStyle='#76bdf7';ctx.fillRect(.89*W,yy(.22),.006*W,yy(.56));inlayText(ctx,'spectrometer',.914*W,yy(.15),'#bde0ff',11);
+ ctx.save();ctx.globalAlpha=.17;for(let i=0;i<10;i++){ctx.strokeStyle=rgb(390+i*35);ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(starX+radius,yy(.31+i*.047));ctx.lineTo(.9*W,yy(.31+i*.047));ctx.stroke();}ctx.restore();
+ for(const a of state.atoms){const x=(.385+(a.x-.30)/(.73-.30)*.37)*W,y=yy(a.y);const clr=colorForSpecies(a.sp);ctx.beginPath();ctx.arc(x,y,Math.max(1.8,a.r*.65),0,2*Math.PI);ctx.fillStyle=clr;ctx.fill();}
+ for(const p of state.photons){if(!$('motion').checked||p.kind!=='absorption')continue;const x=p.x*W,y=yy(p.y);ctx.beginPath();ctx.moveTo(x-11,y);ctx.lineTo(x,y);ctx.strokeStyle=rgb(p.nm,.85);ctx.lineWidth=2.4;ctx.stroke();ctx.beginPath();ctx.arc(x,y,2.8,0,Math.PI*2);ctx.fillStyle=rgb(p.nm);ctx.fill();}
+ for(const s of state.sparks){if(s.kind!=='absorb')continue;const px=s.x*W,py=yy(s.y),al=1-s.age/1.25;ctx.beginPath();ctx.arc(px,py,7+s.age*17,Math.PI*.22,Math.PI*1.62);ctx.strokeStyle=`rgba(255,205,134,${al*.8})`;ctx.lineWidth=1.7;ctx.stroke();
+  ctx.beginPath();ctx.moveTo(px,py);ctx.lineTo(px+Math.cos(s.nm%7)*s.age*46,py-31*s.age);ctx.strokeStyle=`rgba(184,224,255,${al*.7})`;ctx.stroke();}
+}
+function drawStage(){const o=setupCanvas($('stage'));if(!o)return;const {ctx,W,H}=o;ctx.clearRect(0,0,W,H);
+ if(state.mode==='emission')drawEmissionStage(ctx,W,H);
+ if(state.mode==='absorption')drawAbsorptionStage(ctx,W,H);
+ if(state.mode==='compare'){drawEmissionStage(ctx,W,H,0,H/2);ctx.fillStyle='#6a9ebe';ctx.fillRect(0,H/2-1,W,2);drawAbsorptionStage(ctx,W,H,H/2,H/2);}
+}
+const gauss=(x,s)=>Math.exp(-.5*(x/s)**2);
+function sigma(l){const [lo,hi]=getRange();const px=(hi-lo)/Math.max(280,getWidth($('curve'))-62);return Math.max(.055,l.nm/(+$('res').value)/2.35482,px*.40);}
+function levelsFactor(l){return l.sp==='Fe'?1:+$('lower').value/100;}
+function opticalDepth(l,nm){const s=sigma(l);return 2.3*l.weight*(+$('column').value/100)*levelsFactor(l)*gauss(nm-l.nm,s);}
+function transmission(nm){let tau=0;for(const l of gasLines())tau+=opticalDepth(l,nm);return Math.exp(-tau);}
+function emissionAt(nm){let sum=0;for(const l of allowedLines()){const count=getCount(l);if(!count)continue;const s=sigma(l);sum+=countStrength(l)*gauss(nm-l.nm,s);}return sum;}
+const h=6.62607015e-34,kB=1.380649e-23,light=299792458;
+function planck(nm){const T=+$('starTemp').value,wl=nm*1e-9,expo=h*light/(wl*kB*T);if(expo>700)return 0;return 2*h*light*light/(wl**5*Math.expm1(expo));}
+function paintStrip(id,type){
+ const o=setupCanvas($(id));if(!o)return;const {ctx,W,H}=o,{L,R,PW}=plotArea(W),[lo,hi]=getRange();
+ ctx.fillStyle='#081422';ctx.fillRect(0,0,W,H);ctx.fillStyle='#02050a';ctx.fillRect(L,0,PW,H);
+ const maxRad=Math.max(...Array.from({length:220},(_,i)=>planck(lo+(hi-lo)*i/219)));
+ if(type==='em'){
+  for(let i=0;i<Math.ceil(PW);i++){
+   const nm=lo+(hi-lo)*(i+.5)/PW,[r,g,b]=nmToRgb(nm);const v=clamp(emissionAt(nm)*1.1,0,1);
+   ctx.fillStyle=`rgb(${Math.round(r*v)},${Math.round(g*v)},${Math.round(b*v)})`;ctx.fillRect(L+i,0,1.02,H);
+  }
+ } else {
+  const grad=ctx.createLinearGradient(L,0,R,0); const stops=160;
+  for(let i=0;i<=stops;i++){
+   const t=i/stops,nm=lo+(hi-lo)*t,[r,g,b]=nmToRgb(nm); const norm=maxRad>0?planck(nm)/maxRad:0; const base=clamp(.22+.76*Math.pow(norm,.45),0,1);
+   grad.addColorStop(t,`rgb(${Math.round(r*base)},${Math.round(g*base)},${Math.round(b*base)})`);
+  }
+  ctx.fillStyle=grad; ctx.fillRect(L,0,PW,H);
+  // Gentle luminance veil smooths the colour field so the continuum reads as continuous, not zebra-striped.
+  const veil=ctx.createLinearGradient(0,0,0,H); veil.addColorStop(0,'rgba(255,255,255,.06)'); veil.addColorStop(.5,'rgba(255,255,255,.02)'); veil.addColorStop(1,'rgba(0,0,0,.08)');
+  ctx.fillStyle=veil; ctx.fillRect(L,0,PW,H);
+  if(type==='ab'){
+   for(const l of gasLines()){
+    if(l.nm<lo||l.nm>hi)continue; const x=xAt(l.nm,L,PW,lo,hi); const depth=clamp(0.18+0.70*(1-transmission(l.nm)),0,0.92); const sw=Math.max(1.1, sigma(l)*PW/(hi-lo)*2.15);
+    ctx.strokeStyle=`rgba(6,10,16,${depth})`; ctx.lineWidth=sw; ctx.beginPath(); ctx.moveTo(x,H*.08); ctx.lineTo(x,H*.92); ctx.stroke();
+   }
+  }
+ }
+ if(type==='em'&&state.totalDetected){
+  const lineSet=gasLines().filter(l=>getCount(l)>0);
+  for(const l of lineSet){
+   const x=xAt(l.nm,L,PW,lo,hi);if(x<L||x>R)continue;
+   const v=countStrength(l),lit=rgb(l.nm,Math.min(.94,.20+.67*v));
+   ctx.strokeStyle=lit;ctx.lineWidth=Math.max(1.2,2.4*(v+.25));ctx.beginPath();ctx.moveTo(x,H*.2);ctx.lineTo(x,H);ctx.stroke();
+  }
+  if(lineSet.length<=6){ctx.font='bold 12px system-ui';ctx.textAlign='center';ctx.fillStyle='#f1f6ff';
+   for(const l of lineSet){const x=xAt(l.nm,L,PW,lo,hi);if(x>L+18&&x<R-18)ctx.fillText(String(getCount(l)),x,13);}}
+ }
+ if(type!=='source'&&state.sel&&$('labels').checked){const x=xAt(state.sel.nm,L,PW,lo,hi);
+  if(x>=L&&x<=R){ctx.strokeStyle='rgba(255,255,255,.68)';ctx.setLineDash([3,4]);ctx.beginPath();ctx.moveTo(x+.5,0);ctx.lineTo(x+.5,H);ctx.stroke();ctx.setLineDash([]);
+   ctx.fillStyle='#f8fbff';ctx.font='bold 10px system-ui';ctx.textAlign=x>R-108?'right':'left';
+   const lab=`${state.sel.sp==='H'?state.sel.label:(state.sel.sp==='Ca'&&state.sel.nm<400?'Ca II':state.sel.label)}  ${fmt(state.sel.nm,1)} nm`;
+   ctx.fillText(lab,x+(x>R-108?-6:6),H*.45);
+  }}
+}
+function paintScale(){const o=setupCanvas($('scale'));if(!o)return;const {ctx,W,H}=o,{L,R,PW}=plotArea(W),[lo,hi]=getRange();ctx.clearRect(0,0,W,H);
+ ctx.font='11px system-ui';const step=(hi-lo)>100?(W<470?100:50):(W<500?10:5);
+ for(let nm=Math.ceil(lo/step)*step;nm<=hi;nm+=step){const x=xAt(nm,L,PW,lo,hi);ctx.fillStyle='#aabfd7';ctx.textAlign=x<L+34?'left':x>R-34?'right':'center';ctx.fillText(nm+' nm',Math.max(L,Math.min(R,x)),17);ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,5);ctx.strokeStyle='#647f9c';ctx.stroke();}
+}
+function paintCurve(){const o=setupCanvas($('curve'));if(!o)return;const {ctx,W,H}=o,{L,R,PW}=plotArea(W),T=17,B=H-37,PH=B-T,[lo,hi]=getRange();
+ ctx.fillStyle='#071322';ctx.fillRect(0,0,W,H);
+ const arr=[];const n=hi-lo>100?Math.max(1400,Math.ceil(PW*2)):860;let cMax=0;
+ for(let i=0;i<=n;i++){const wl=lo+(hi-lo)*i/n,c=planck(wl);arr.push({wl,c,e:emissionAt(wl),ab:transmission(wl)});cMax=Math.max(c,cMax);}
+ ctx.strokeStyle='#253b52';ctx.lineWidth=1;ctx.font='11px system-ui';ctx.textAlign='center';const tick=hi-lo>100?(W<470?100:50):(W<480?10:5);
+ for(let nm=Math.ceil(lo/tick)*tick;nm<=hi;nm+=tick){const x=xAt(nm,L,PW,lo,hi);ctx.beginPath();ctx.moveTo(x,T);ctx.lineTo(x,B);ctx.stroke();ctx.fillStyle='#9fb2cb';ctx.fillText(nm,x,B+19);}
+ for(let j=0;j<=4;j++){const y=B-PH*j/4;ctx.beginPath();ctx.moveTo(L,y);ctx.lineTo(R,y);ctx.stroke();ctx.fillStyle='#8da7bd';ctx.textAlign='right';ctx.fillText(fmt(j/4,2),L-7,y+4);}
+ ctx.fillStyle='#b6c9dc';ctx.textAlign='left';ctx.font='11px system-ui';ctx.fillText('Relative intensity',L+4,T+12);ctx.textAlign='right';ctx.fillText('Wavelength (nm)',R,B+33);
+ if(state.mode!=='emission'){
+  ctx.setLineDash([5,4]);ctx.beginPath();ctx.strokeStyle='rgba(245,191,107,.50)';ctx.lineWidth=1.3;
+  for(let i=0;i<arr.length;i++){const p=arr[i],x=xAt(p.wl,L,PW,lo,hi),y=B-(p.c/cMax)*PH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();ctx.setLineDash([]);
+  ctx.beginPath();ctx.strokeStyle='#ffbf75';ctx.lineWidth=2.4;
+  for(let i=0;i<arr.length;i++){const p=arr[i],x=xAt(p.wl,L,PW,lo,hi),y=B-(p.c/cMax*p.ab)*PH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();}
+ if(state.mode!=='absorption'){
+  const scale=state.mode==='compare'?.57:1;ctx.beginPath();ctx.strokeStyle='#79bbff';ctx.lineWidth=2.1;
+  for(let i=0;i<arr.length;i++){const p=arr[i],x=xAt(p.wl,L,PW,lo,hi),y=B-clamp(p.e*scale,0,1)*PH;if(i===0)ctx.moveTo(x,y);else ctx.lineTo(x,y);}ctx.stroke();
+  if(!state.totalDetected){ctx.fillStyle='#87a9c7';ctx.textAlign='center';ctx.font='12px system-ui';ctx.fillText('Fire electrons or increase beam rate to build the spectrum',L+PW/2,T+PH*.45);}
+ }
+ if(state.sel&&$('labels').checked){const x=xAt(state.sel.nm,L,PW,lo,hi);if(x>=L&&x<=R){ctx.strokeStyle='rgba(244,253,255,.66)';ctx.setLineDash([4,4]);ctx.beginPath();ctx.moveTo(x,T);ctx.lineTo(x,B);ctx.stroke();ctx.setLineDash([]);}}
+ const label=state.mode==='emission'?'Blue: detected photon counts':state.mode==='absorption'?'Gold: transmitted · dashed: source':'Gold: absorption · Blue: counted emission';ctx.fillStyle='#e3effe';ctx.textAlign='right';ctx.font='11px system-ui';ctx.fillText(label,R,T+12);
+}
+function diagramLinesFor(sp,selected){
+ const a=linesByGas[sp]||[];
+ if(sp==='H')return [];
+ // Each row is a separate transition pair: we DO NOT assume all lines share a lower level.
+ const chosen=[...a].sort((x,y)=>y.weight-x.weight).slice(0,6);
+ if(selected?.sp===sp&&!chosen.includes(selected))chosen.push(selected);
+ return chosen.sort((x,y)=>x.nm-y.nm);
+}
+function drawEnergy(){
+ const o=setupCanvas($('energy'));if(!o)return;
+ const {ctx,W,H}=o, l=state.sel;ctx.fillStyle='#0a1629';ctx.fillRect(0,0,W,H);
+ if(!l)return;
+ if(l.sp==='H'){
+  ctx.textAlign='left';inlayText(ctx,'HYDROGEN · discrete energy levels',12,17,'#abcbeb',11);
+  // The genuine bound-state hydrogen energy ladder, labelled in eV.
+  const Ys={1:H-27,2:H-86,3:H-125,4:H-154,5:H-180,6:H-204};
+  for(let n=1;n<=6;n++){
+   const y=Ys[n],active=n===l.upper||n===2;
+   ctx.lineWidth=active?2.3:1.35;ctx.strokeStyle=active?'#77c2fc':'#56718d';
+   ctx.beginPath();ctx.moveTo(42,y);ctx.lineTo(W-18,y);ctx.stroke();
+   ctx.font='11px system-ui';ctx.fillStyle=active?'#e6f5ff':'#a1b9d5';ctx.textAlign='left';ctx.fillText('n='+n,9,y-5);
+   ctx.textAlign='right';ctx.fillText(fmt(energyN(n),2)+' eV',W-18,y-5);
+  }
+  const upper=Ys[l.upper],lower=Ys[2],x=W*.53,abs=state.mode==='absorption';
+  const from=abs?lower-5:upper+5,to=abs?upper+10:lower-10;
+  ctx.strokeStyle=rgb(l.nm);ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(x,from);ctx.lineTo(x,to);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(x-6,to+(abs?8:-8));ctx.lineTo(x,to);ctx.lineTo(x+6,to+(abs?8:-8));ctx.fillStyle=rgb(l.nm);ctx.fill();
+  ctx.textAlign='center';ctx.fillStyle='#8caac7';ctx.font='10px system-ui';ctx.fillText('Balmer transitions connect with n = 2',W/2,37);
+  return;
+ }
+ const rows=diagramLinesFor(l.sp,l),n=rows.length;
+ const name=(gasLabel(l.sp)||l.sp).toUpperCase();
+ ctx.textAlign='left';ctx.fillStyle='#bad5ed';ctx.font='bold 11px system-ui';ctx.fillText(`${name} · photon energy gaps`,11,19);
+ ctx.fillStyle='#87a9c4';ctx.font='10px system-ui';ctx.fillText('Independent transition pairs (schematic)',11,36);
+ if(!n)return;
+ const first=54,last=H-36,step=(last-first)/n,centerX=Math.min(W*.43,104),lineL=27,lineR=centerX-7,arrowX=centerX+9,labelX=centerX+28;
+ rows.forEach((t,i)=>{
+  const y=first+(i+.5)*step,ev=hcEV/t.nm,gap=clamp(10+(ev-1.65)*7,11,21),up=y-gap/2,down=y+gap/2;
+  const selected=Math.abs(t.nm-l.nm)<.015&&t.sp===l.sp;
+  const ink=selected?'#e5f5ff':'#7692b0';
+  if(selected){ctx.fillStyle='rgba(65,120,175,.18)';ctx.fillRect(6,y-step*.48,W-12,step*.96);}
+  ctx.strokeStyle=ink;ctx.lineWidth=selected?2.35:1.45;
+  for(const yy of [up,down]){ctx.beginPath();ctx.moveTo(lineL,yy);ctx.lineTo(lineR,yy);ctx.stroke();}
+  const absorbing=state.mode==='absorption',from=absorbing?down-2:up+2,to=absorbing?up+3:down-3;
+  ctx.strokeStyle=rgb(t.nm);ctx.lineWidth=selected?3:2;
+  ctx.beginPath();ctx.moveTo(arrowX,from);ctx.lineTo(arrowX,to);ctx.stroke();
+  ctx.beginPath();ctx.moveTo(arrowX-4.5,to+(absorbing?6:-6));ctx.lineTo(arrowX,to);ctx.lineTo(arrowX+4.5,to+(absorbing?6:-6));ctx.fillStyle=rgb(t.nm);ctx.fill();
+  ctx.textAlign='left';ctx.fillStyle=selected?'#fff':'#b9cde1';ctx.font=selected?'bold 11px system-ui':'11px system-ui';
+  ctx.fillText(fmt(t.nm,1)+' nm',labelX,y+4);
+ });
+ ctx.textAlign='center';ctx.font='10px system-ui';ctx.fillStyle='#91aac5';
+ ctx.fillText(`${n} displayed of ${linesByGas[l.sp].length} listed lines · select any line below`,W/2,H-20);
+ ctx.fillText(`Selected ΔE = ${fmt(hcEV/l.nm,3)} eV`,W/2,H-6);
+}
+function drawAll(){const [lo,hi]=getRange();$('axisRange').textContent=`${fmt(lo,0)}–${fmt(hi,0)} nm`;paintStrip('emStrip','em');paintStrip('sourceStrip','source');paintStrip('abStrip','ab');paintScale();paintCurve();drawEnergy();drawStage();}
+function selectNearest(ev,canvas){const rect=canvas.getBoundingClientRect();const x=ev.clientX-rect.left;const w=rect.width,[lo,hi]=getRange(),wl=lo+clamp(x/w,0,1)*(hi-lo);
+ let arr=gasLines(),best=arr.reduce((a,b)=>Math.abs(a.nm-wl)<Math.abs(b.nm-wl)?a:b);selectedChange(best);renderLineButtons();}
+for(const id of ['emStrip','sourceStrip','abStrip','scale','curve'])$(id).addEventListener('click',ev=>{const rect=ev.currentTarget.getBoundingClientRect();let wl;
+ const [lo,hi]=getRange();const {L,PW}=plotArea(rect.width);wl=lo+clamp((ev.clientX-rect.left-L)/PW,0,1)*(hi-lo);
+ const best=gasLines().reduce((a,b)=>Math.abs(a.nm-wl)<Math.abs(b.nm-wl)?a:b);selectedChange(best);renderLineButtons();});
+for(const btn of document.querySelectorAll('.mode'))btn.onclick=()=>changeMode(btn.dataset.mode);
+for(const btn of document.querySelectorAll('.gasbutton'))btn.onclick=()=>changeGas(btn.dataset.gas);
+for(const id of ['rate','electronEnergy','starTemp','column','lower','res'])$(id).addEventListener('input',()=>{syncControls();drawAll();});
+for(const id of ['labels','motion','zoom'])$(id).onchange=()=>drawAll();
+$('pause').onclick=()=>{state.paused=!state.paused;syncControls();};
+$('reset').onclick=()=>{state.paused=false;state.clock=0;initAtoms();clearAnimations();clearCounts();syncControls();drawAll();};
+$('clearCounts').onclick=()=>{$('rate').value='0';clearAnimations();clearCounts();syncControls();drawAll();};
+// A new energy setting starts a new measurement rather than retaining lines made at the old energy.
+$('electronEnergy').addEventListener('change',()=>{clearAnimations();clearCounts();drawAll();});
+$('fire5').onclick=()=>burst(5);$('fire10').onclick=()=>burst(10);$('fire30').onclick=()=>burst(30);
+function animate(t){if(!state.last)state.last=t;let dt=Math.min(.04,Math.max(0,(t-state.last)/1000));state.last=t;
+ if(!state.paused){state.clock+=dt;
+ if(state.mode==='emission')emissionStep(dt);if(state.mode==='absorption')absorptionStep(dt);if(state.mode==='compare'){const old=state.mode;state.mode='emission';emissionStep(dt);state.mode='absorption';absorptionStep(dt);state.mode=old;}}
+ if(state.spectraDirty&&t-state.lastSpectrumUpdate>90){state.lastSpectrumUpdate=t;state.spectraDirty=false;publishCounts();drawAll();}
+ drawStage();requestAnimationFrame(animate);
+}
+initAtoms();syncControls();updateSelected();publishCounts();drawAll();requestAnimationFrame(animate);
+window.addEventListener('resize',()=>drawAll());
+// Executable scientific integrity checks, available in the browser console.
+console.assert(plotArea(800).L===46&&plotArea(800).PW===738,'Shared wavelength plotting area');
+console.assert(countStrength(H.at(-1))===0,'No line count before recorded photon');
+console.assert(Math.abs(hcEV/H.at(-1).nm-1.889)<.01,'H alpha photon energy');
+console.assert(threshold(3)>12&&threshold(3)<12.1,'Hydrogen n=3 excitation threshold');
+console.assert(threshold(6)>threshold(4),'Higher hydrogen excitation threshold');
+console.assert(gasLines().every(l=>l.nm>=wlMin&&l.nm<=wlMax),'All visible lines within plot');
+</script></body></html>
