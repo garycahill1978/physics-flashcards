@@ -1,363 +1,624 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Thermal Motion → Distributions</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Temperature: atoms, speeds and light | Interactive physics</title>
 <style>
-body {
-  font-family: system-ui;
-  background:#f5f7fb;
-  display:flex;
-  justify-content:center;
-  padding:20px;
-  color:#111;
-}
-.wrap {
-  background:#ffffff;
-  padding:20px;
-  border-radius:18px;
-  width:1200px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.1);
-}
-canvas {
-  border-radius:14px;
-  width:100%;
-  height:520px;
-  background:#ffffff;
-  border:1px solid #ddd;
-}
-.controls {
-  margin-bottom:12px;
-  display:flex;
-  gap:15px;
-  align-items:center;
-  flex-wrap:wrap;
-}
-button { padding:6px 10px; border-radius:8px; border:none; cursor:pointer; }
+:root { --ink:#17243a; --muted:#5c6879; --line:#dbe3ed; --teal:#008e9b; --blue:#2868d6; --orange:#d86c28; --bg:#f3f6fb; --card:#fff; }
+* { box-sizing:border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:16px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif; }
+button,input,select { font:inherit; }
+button { cursor:pointer; }
+button:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #63b7f6; outline-offset:3px; }
+.shell { max-width:1510px; margin:auto; padding:22px 25px 36px; }
+.header { display:flex; align-items:center; justify-content:space-between; gap:24px; margin-bottom:17px; }
+.kicker { color:#39727e; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.16em; }
+h1 { margin:4px 0 5px; font-size:clamp(26px,2.4vw,39px); line-height:1.1; letter-spacing:-.038em; }
+.subheading { margin:0; color:var(--muted); font-size:15px; }
+.presentation-btn { background:#fff; border:1px solid var(--line); border-radius:10px; padding:9px 14px; color:var(--ink); font-weight:650; white-space:nowrap; }
+.toolbar { background:#fff; border:1px solid var(--line); border-radius:17px; padding:17px 20px; box-shadow:0 5px 18px #1f35560b; margin-bottom:16px; }
+.temper-row { display:grid; grid-template-columns:175px minmax(150px,1fr) auto; align-items:center; gap:20px; }
+.temperature-readout .large { font-size:31px; font-weight:790; line-height:1.05; font-variant-numeric:tabular-nums; letter-spacing:-.035em; }
+.temperature-readout .small { color:var(--muted); font-size:13px; margin-top:4px; }
+input[type="range"] { accent-color:var(--teal); width:100%; cursor:pointer; }
+.temperature-range { display:flex; align-items:center; gap:12px; }
+.endpoint { color:#738093; font-size:12px; white-space:nowrap; }
+.presets { display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end; }
+.preset { color:#31445c; background:#f0f5f9; border:1px solid #e3ebf4; border-radius:8px; padding:8px 10px; font-size:13px; font-weight:700; }
+.preset[aria-pressed="true"] { background:#e6f6f6; border-color:#73bac1; color:#007583; }
+.settings { border-top:1px solid var(--line); display:flex; flex-wrap:wrap; align-items:end; gap:13px 24px; padding-top:13px; margin-top:14px; }
+.field { display:flex; align-items:center; gap:9px; color:#47546a; font-size:13px; font-weight:670; }
+select { border:1px solid var(--line); border-radius:8px; color:#223550; padding:6px 12px; background:#fff; }
+.small-range { width:126px!important; }
+.control-value { font-variant-numeric:tabular-nums; min-width:28px; color:var(--ink); }
+.actions { margin-left:auto; display:flex; flex-wrap:wrap; gap:8px; }
+.action { border:1px solid #cddae6; background:#fff; color:#274158; padding:7px 12px; border-radius:9px; font-size:13px; font-weight:750; }
+.action.primary { color:#fff; background:#123755; border-color:#123755; }
+.panels { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px; align-items:stretch; }
+.panel { min-width:0; border-radius:17px; background:var(--card); border:1px solid var(--line); overflow:hidden; box-shadow:0 5px 16px #1f355609; display:flex; flex-direction:column; }
+.panel-head { padding:17px 18px 7px; display:flex; align-items:start; gap:12px; min-height:96px; }
+.panel-index { flex:0 0 auto; border-radius:9px; background:#e8f4f7; color:#027785; min-width:30px; height:30px; display:grid; place-items:center; font-weight:850; font-size:14px; }
+.panel:nth-child(2) .panel-index { background:#eaf0fe; color:#2a5ebd; }
+.panel:nth-child(3) .panel-index { background:#fff0e4; color:#bd5b23; }
+.panel h2 { margin:0; font-size:18px; letter-spacing:-.02em; }
+.panel .descriptor { color:var(--muted); font-size:13px; margin:3px 0 0; }
+.canvas-box { margin:2px 12px 0; position:relative; flex:1; }
+canvas { display:block; width:100%; height:325px; }
+.panel-footer { padding:10px 18px 17px; border-top:1px solid #edf1f5; min-height:78px; font-size:13px; color:#5c687a; }
+.metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px; margin:15px 0; }
+.metric { border:1px solid var(--line); background:#fff; border-radius:13px; padding:12px 16px; min-width:0; }
+.metric .label { color:#637186; font-size:12px; font-weight:710; margin-bottom:5px; }
+.metric .value { font-size:25px; font-weight:780; line-height:1.2; letter-spacing:-.025em; font-variant-numeric:tabular-nums; }
+.metric .unit { font-size:12px; color:#637186; font-weight:600; margin-left:4px; }
+.info { display:flex; align-items:flex-start; gap:13px; border:1px solid #d7e5e9; background:#eaf4f7; border-radius:13px; padding:14px 17px; }
+.info-icon { font-size:20px; line-height:1.1; }
+.info strong { display:block; font-size:14px; }
+.info p { margin:4px 0 0; color:#395666; font-size:14px; }
+.note { margin:13px 3px 0; color:#778294; font-size:12px; }
+.note a { color:#315ca0; }
+.tiny-toggle { display:inline-flex; align-items:center; gap:7px; margin-left:auto; font-size:12px; color:#5e6b7d; font-weight:650; white-space:nowrap; }
+.tiny-toggle input { accent-color:var(--orange); }
+.comparison-field { padding:6px 10px; border-radius:9px; background:#f1f6fa; border:1px solid #dbe7ee; }
+.comparison-field input { accent-color:var(--blue); width:16px; height:16px; }
+.zero-notice { border-radius:9px; margin:12px 0 0; background:#f2f5fa; border:1px solid #d7e2ed; color:#3b4d66; padding:9px 12px; font-size:13px; }
+.zero-notice[hidden] { display:none; }
+.panels.comparing { grid-template-columns:1.28fr 1fr 1fr; }
+.spec-controls { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:9px; }
+.spec-controls .tiny-toggle {margin-left:0;}
+.spec-controls select {font-size:12px; padding:4px 6px;}
+.spec-actions { display:flex; align-items:center; justify-content:space-between; gap:7px; flex-wrap:wrap; margin-bottom:6px; }
+#spectrumLegend {font-size:11px; color:#64728a; flex:1; min-width:150px;}
+#pinnedLabel {display:block; line-height:1.35;}
+.panel:last-child canvas {height:348px;}
+
+.spec-pin { background:#fff7ef; border:1px solid #f0d5c0; color:#994b1b; padding:5px 8px; font-size:12px; border-radius:7px; font-weight:700; }
+#pinnedLabel { font-size:11px; color:#a36535; }
+@media(max-width:1100px){.panels,.panels.comparing{grid-template-columns:1fr 1fr}.panel:last-child{grid-column:1/-1}.panel:last-child canvas{height:295px}.temper-row{grid-template-columns:155px 1fr}.presets{grid-column:1/-1;justify-content:flex-start}.metrics{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:680px){.panels.comparing{grid-template-columns:1fr}.shell{padding:14px 10px}.header{align-items:start}.presentation-btn{display:none}.toolbar{padding:13px}.temper-row{grid-template-columns:1fr;gap:8px}.presets{grid-column:auto}.settings{gap:12px}.actions{margin-left:0}.panels{grid-template-columns:1fr}.panel:last-child{grid-column:auto}canvas,.panel:last-child canvas{height:295px}.metrics{gap:8px}.metric{padding:11px}.metric .value{font-size:21px}.panel-head{min-height:auto;padding-bottom:12px}.tiny-toggle{margin-left:0}}
+body.presentation .shell { max-width:100%; }
+body.presentation .panel canvas { height:min(44vh,485px); }
+body.presentation .panel .panel-footer{min-height:75px}
+@media(prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; transition:none!important; } }
 </style>
 </head>
 <body>
-<div class="wrap">
-<h2>Thermal Motion → Distributions</h2>
-<div class="controls">
-Temperature: <input type="range" id="temp" min="300" max="8000" value="3000" step="50">
-<span id="tval">3000 K</span>
+<div class="shell">
+  <header class="header">
+    <div>
+      <div class="kicker">Interactive physics · kinetic theory &amp; thermal radiation</div>
+      <h1>Temperature: atoms, speeds and light</h1>
+      <p class="subheading">Two different idealised systems, both controlled by the same temperature.</p>
+    </div>
+    <button class="presentation-btn" id="presentationBtn" type="button">⛶ Presentation view</button>
+  </header>
 
-Speed: <input type="range" id="speed" min="0.2" max="3" value="1" step="0.1">
-<span id="sval">1x</span>
+  <section class="toolbar" aria-label="Simulation controls">
+    <div class="temper-row">
+      <div class="temperature-readout">
+        <div class="large" id="temperatureValue">300 K</div>
+        <div class="small" id="celsiusValue">27 °C</div>
+      </div>
+      <div class="temperature-range"><span class="endpoint">300 K</span><input id="temp" type="range" min="300" max="8000" step="50" value="300" aria-label="Temperature in kelvin"><span class="endpoint">8000 K</span></div>
+      <div class="presets" aria-label="Temperature presets">
+        <button class="preset" type="button" data-temp="0" title="Classical zero-temperature limit; a real gas cannot exist in this state">0 K · ideal limit</button>
+        <button class="preset" type="button" data-temp="300">Room · 300 K</button>
+        <button class="preset" type="button" data-temp="1000">1000 K</button>
+        <button class="preset" type="button" data-temp="3000">3000 K</button>
+        <button class="preset" type="button" data-temp="5800">Sun-like · 5800 K</button>
+      </div>
+    </div>
+    <p class="zero-notice" id="zeroNotice" hidden><strong>0 K is an unattainable ideal limit.</strong> This classical model shows zero thermal motion and zero blackbody emission. Real argon and helium would not remain ideal gases, and quantum zero-point motion is not included. Use the temperature slider or a preset to return to a positive temperature.</p>
+    <div class="settings">
+      <label class="field">Gas species
+        <select id="gas"><option value="Ar">Argon (Ar) · 39.95 u</option><option value="He">Helium (He) · 4.00 u</option></select>
+      </label>
+      <label class="field comparison-field" title="Run a second, independent sample at 300 K using the same gas and atom count"><input id="compare" type="checkbox"> Compare with 300 K</label>
+      <label class="field">Atoms <input class="small-range" id="atoms" type="range" min="100" max="700" step="50" value="350"><span id="atomsValue" class="control-value">350</span></label>
+      <label class="field">Animation rate <input class="small-range" id="rate" type="range" min="0.25" max="2" step="0.25" value="1"><span id="rateValue" class="control-value">1×</span></label>
+      <div class="actions"><button class="action primary" id="pauseBtn" type="button">❚❚ Pause</button><button class="action" id="resetBtn" type="button">↺ New sample</button></div>
+    </div>
+  </section>
 
-Particles: <input type="range" id="npart" min="50" max="1000" value="400" step="50">
-<span id="nval">400</span>
+  <main class="panels">
+    <section class="panel">
+      <div class="panel-head"><div class="panel-index">1</div><div><h2>Motion of atoms</h2><p class="descriptor" id="motionDescriptor">Three-dimensional ideal monatomic gas</p></div></div>
+      <div class="canvas-box"><canvas id="moleculeCanvas" role="img" aria-label="Atoms moving in a three-dimensional box, drawn as a two-dimensional perspective projection"></canvas></div>
+      <div class="panel-footer">Elastic atom–atom and atom–wall collisions. Compare shows <strong>independent, equal-sized samples</strong> at 300 K and the selected temperature. The box, atom sizes and animation timescale are schematic.</div>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><div class="panel-index">2</div><div><h2>Molecular speeds</h2><p class="descriptor">3D Maxwell–Boltzmann distribution</p></div></div>
+      <div class="canvas-box"><canvas id="speedCanvas" role="img" aria-label="Histogram of simulated atom speeds compared with the theoretical Maxwell-Boltzmann distribution"></canvas></div>
+      <div class="panel-footer">Bars = sampled atoms · Curves = 3D Maxwell–Boltzmann theory. With comparison enabled, grey represents 300 K. Speed is in real m/s; the graph rescales for clarity. At 0 K the limiting distribution becomes a spike at zero.</div>
+    </section>
+    <section class="panel">
+      <div class="panel-head"><div class="panel-index">3</div><div style="flex:1;min-width:0"><h2>Blackbody radiation</h2><p class="descriptor">Planck’s law · radiance per unit wavelength · separate ideal blackbody</p></div></div>
+      <div class="canvas-box"><canvas id="spectrumCanvas" role="img" aria-label="Blackbody spectral radiance plotted against wavelength, with the visible range highlighted"></canvas></div>
+      <div class="panel-footer">
+        <div class="spec-controls">
+          <label class="tiny-toggle"><input id="showRefs" type="checkbox" checked> Show reference curves</label>
+          <label class="tiny-toggle"><input id="normalise" type="checkbox"> Normalise each curve</label>
+          <label class="tiny-toggle">Wavelength axis
+            <select id="wavelengthRange" aria-label="Blackbody graph wavelength range">
+              <option value="auto">Auto</option>
+              <option value="3">0–3 µm</option>
+              <option value="10">0–10 µm</option>
+              <option value="30">0–30 µm</option>
+            </select>
+          </label>
+        </div>
+        <div class="spec-actions"><span id="spectrumLegend">Orange = selected temperature; blue = reference temperatures.</span><div><button class="spec-pin" id="pinBtn" type="button">Pin current</button> <button class="spec-pin" id="clearPinBtn" type="button" hidden>Clear pin</button></div></div>
+        <span id="pinnedLabel">Visible band: 380–750 nm. The area beneath each unnormalised curve increases strongly with temperature.</span>
+      </div>
+    </section>
+  </main>
 
-<button id="pauseBtn">Pause</button>
-</div>
-<canvas id="c"></canvas>
+  <section class="metrics" aria-label="Physical quantities">
+    <div class="metric"><div class="label">Most probable atom speed</div><div class="value" id="mostProbable">353 <span class="unit">m/s</span></div></div>
+    <div class="metric"><div class="label">RMS atom speed</div><div class="value" id="rmsSpeed">433 <span class="unit">m/s</span></div></div>
+    <div class="metric"><div class="label">Blackbody peak wavelength</div><div class="value" id="peakWavelength">9.66 <span class="unit">µm</span></div></div>
+    <div class="metric"><div class="label">Blackbody emitted power / m²</div><div class="value" id="radiantPower">459 <span class="unit">W/m²</span></div></div>
+  </section>
+  <section class="info" aria-live="polite"><div class="info-icon">ⓘ</div><div><strong>Important: these are two different physical models.</strong><p id="insight">At room temperature, atoms move hundreds of metres per second, yet a blackbody emits almost entirely infrared radiation. Molecular speed does not set photon colour.</p></div></section>
+  <p class="note">Models and equations: monatomic ideal gas; Maxwell–Boltzmann distribution in three dimensions; Planck's spectral radiance law, Wien's displacement law and the Stefan–Boltzmann law. A dilute gas is not necessarily a blackbody; gas excitation, emission lines, dissociation and ionisation are deliberately excluded. All calculations run locally in this HTML file. Space = pause/resume.</p>
 </div>
 <script>
-const canvas = document.getElementById('c');
-const ctx = canvas.getContext('2d');
-const slider = document.getElementById('temp');
-const tval = document.getElementById('tval');
-const speedSlider = document.getElementById('speed');
-const sval = document.getElementById('sval');
-const npartSlider = document.getElementById('npart');
-const nval = document.getElementById('nval');
-const pauseBtn = document.getElementById('pauseBtn');
-
-let particles = [];
-let paused = false;
-let lastCanvasWidth = 0;
-let lastCanvasHeight = 0;
-
-function resize(){
-  const dpr = window.devicePixelRatio || 1;
-  const rect = canvas.getBoundingClientRect();
-  const nextW = Math.round(rect.width * dpr);
-  const nextH = Math.round(rect.height * dpr);
-
-  if (nextW === lastCanvasWidth && nextH === lastCanvasHeight) return;
-
-  lastCanvasWidth = nextW;
-  lastCanvasHeight = nextH;
-  canvas.width = nextW;
-  canvas.height = nextH;
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-}
-
-function randn() {
-  let u = 0;
-  let v = 0;
-  while (u === 0) u = Math.random();
-  while (v === 0) v = Math.random();
-  return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-}
-
-function init(){
-  particles = [];
-  const N = Number(npartSlider.value);
-  nval.textContent = N;
-
-  const T = Number(slider.value);
-  const sigma = velocitySigma(T);
-
-  for(let i = 0; i < N; i++){
-    particles.push({
-      x: Math.random(),
-      y: Math.random(),
-      vx: sigma * randn(),
-      vy: sigma * randn()
-    });
+'use strict';
+(() => {
+  // CODATA / SI exact defined constants where applicable.
+  const kB = 1.380649e-23, h = 6.62607015e-34, c = 299792458,
+        u = 1.66053906660e-27, sigmaSB = 5.670374419e-8,
+        wien = 2.897771955e-3;
+  const gases = {He: {mass:4.002602, name:'helium'}, Ar:{mass:39.948,name:'argon'}};
+  const $ = id => document.getElementById(id);
+  const state = {T:300, gas:'Ar', n:350, rate:1, paused:false, compare:false, referenceT:300, normalise:false, showRefs:true, wavelengthRange:'auto', pinned:null, atoms:[], referenceAtoms:[], last:0, lastGraphs:0};
+  const cvs = {box:$('moleculeCanvas'), speed:$('speedCanvas'), spectrum:$('spectrumCanvas')};
+  const ctx = Object.fromEntries(Object.entries(cvs).map(([k,v])=>[k,v.getContext('2d')]));
+  const rad = 0.018;
+  const radiance = (lambda,T) => {
+    if(T<=0) return 0;
+    const x=h*c/(lambda*kB*T);
+    if(x>700) return 0;
+    return (2*h*c*c / Math.pow(lambda,5)) / Math.expm1(x) * 1e-6; // W m^-2 sr^-1 µm^-1
+  };
+  const gaussian = () => {
+    const a=Math.max(1e-12,Math.random());
+    return Math.sqrt(-2*Math.log(a))*Math.cos(2*Math.PI*Math.random());
+  };
+  const sigmaV = (T=state.T) => Math.sqrt(kB*Math.max(0,T)/(gases[state.gas].mass*u));
+  const vMost = (T=state.T) => Math.sqrt(2)*sigmaV(T);
+  const velocityPdf = (v,T=state.T) => {
+    if(T<=0) return 0; // At T=0 the limiting speed distribution is a Dirac delta at v=0.
+    const s=sigmaV(T);
+    return Math.sqrt(2/Math.PI)*v*v/(s*s*s)*Math.exp(-v*v/(2*s*s));
+  };
+  const formatNumber = x => new Intl.NumberFormat('en-IE',{maximumFractionDigits:0}).format(x);
+  const compact = v => v >= 1e9 ? (v/1e9).toFixed(2)+' G' : v >= 1e6 ? (v/1e6).toFixed(2)+' M' : v >= 1e3 ? (v/1e3).toFixed(1)+' k' : v >= 10 ? v.toFixed(0) : v >= 1 ? v.toFixed(1) : v.toPrecision(2);
+  const formatPower = value => {
+    const scale = value>=1e9?[1e9,'GW/m²']:value>=1e6?[1e6,'MW/m²']:value>=1e3?[1e3,'kW/m²']:[1,'W/m²'];
+    const v=value/scale[0];
+    return `${v>=100?Math.round(v):v>=10?v.toFixed(1):v.toFixed(2)}<span class="unit">${scale[1]}</span>`;
+  };
+  const lightRange = (t) => {
+    if(t<=0) return 0;
+    const xmin=h*c/(750e-9*kB*t), xmax=h*c/(380e-9*kB*t), n=360, dx=(xmax-xmin)/n;
+    let sum=0;
+    for(let i=0;i<=n;i++){
+      const x=xmin+i*dx;
+      const term=x>700?0:x*x*x/Math.expm1(x);
+      sum+=(i===0||i===n?1:(i%2?4:2))*term;
+    }
+    return sum*dx/3/(Math.PI**4/15);
+  };
+  function makeAtom(T){
+    const s=sigmaV(T);
+    return {x:rad+(1-2*rad)*Math.random(),y:rad+(1-2*rad)*Math.random(),z:rad+(1-2*rad)*Math.random(),
+      vx:s*gaussian(),vy:s*gaussian(),vz:s*gaussian()};
   }
-}
-
-function velocitySigma(T) {
-  return 0.006 * Math.sqrt(T / 300);
-}
-
-function stepParticles(T){
-  if (paused) return;
-
-  const speedFactor = Number(speedSlider.value);
-  sval.textContent = speedFactor.toFixed(1) + "x";
-
-  // Ornstein-Uhlenbeck velocity update.
-  // This gives Gaussian vx, vy and therefore a Maxwell/Rayleigh speed distribution in 2D.
-  const dt = 0.25;
-  const gamma = 0.08;
-  const sigma = velocitySigma(T);
-  const noiseStrength = sigma * Math.sqrt(2 * gamma * dt);
-
-  particles.forEach(p => {
-    p.vx += -gamma * p.vx * dt + noiseStrength * randn();
-    p.vy += -gamma * p.vy * dt + noiseStrength * randn();
-
-    p.x += p.vx * dt * speedFactor;
-    p.y += p.vy * dt * speedFactor;
-
-    if (p.x < 0 || p.x > 1) p.vx *= -1;
-    if (p.y < 0 || p.y > 1) p.vy *= -1;
-
-    p.x = Math.max(0, Math.min(1, p.x));
-    p.y = Math.max(0, Math.min(1, p.y));
-  });
-}
-
-function draw(){
-  resize();
-  const rect = canvas.getBoundingClientRect();
-  const W = rect.width;
-  const H = rect.height;
-  ctx.fillStyle = "#ffffff";
-  ctx.fillRect(0, 0, W, H);
-
-  const T = Number(slider.value);
-  tval.textContent = T + " K";
-  sval.textContent = Number(speedSlider.value).toFixed(1) + "x";
-
-  const leftW = W * 0.33;
-  const midW = W * 0.33;
-  const rightX = leftW + midW;
-  const rightW = W - rightX;
-
-  stepParticles(T);
-
-  // --- Brownian particles ---
-  const particleColorScale = velocitySigma(T) * 4;
-
-  particles.forEach(p => {
-    const v = Math.hypot(p.vx, p.vy);
-    const speedNorm = Math.min(1, v / particleColorScale);
-    const hue = 240 * Math.pow(speedNorm, 1.4); // red low speed → blue high speed
-    const radius = 2.2;
-
-    ctx.fillStyle = `hsla(${hue},100%,55%,0.75)`;
-    ctx.beginPath();
-    ctx.arc(p.x * leftW, p.y * H, radius, 0, 2 * Math.PI);
-    ctx.fill();
-  });
-
-  // --- Speed distribution panel ---
-  const bins = 90;
-  const hist = new Array(bins).fill(0);
-  const sigma = velocitySigma(T);
-  // FIX: use fixed axis so peak shifts with temperature
-  const vMax = 0.05; // shows low-speed region clearly and still includes the tail
-
-  particles.forEach(p => {
-    const v = Math.hypot(p.vx, p.vy);
-    const idx = Math.min(bins - 1, Math.floor((v / vMax) * bins));
-    if (idx >= 0) hist[idx]++;
-  });
-
-  const N = particles.length || 1;
-  const binWidth = vMax / bins;
-  const smooth = new Array(bins).fill(0);
-  for(let i = 0; i < bins; i++){
-    let sum = 0;
-    let count = 0;
-    for(let j = -2; j <= 2; j++){
-      if(i + j >= 0 && i + j < bins){
-        sum += hist[i + j];
-        count++;
+  function createSample(T){
+    const arr=Array.from({length:state.n},()=>makeAtom(T));
+    if(T===0) return arr;
+    // Give the sample zero net momentum and the correct mean kinetic energy.
+    const n=arr.length, components=['vx','vy','vz'];
+    const mean=components.map(p=>arr.reduce((total,a)=>total+a[p],0)/n);
+    let meanV2=0;
+    for(const a of arr){a.vx-=mean[0];a.vy-=mean[1];a.vz-=mean[2];meanV2+=a.vx*a.vx+a.vy*a.vy+a.vz*a.vz;}
+    const factor=Math.sqrt(3*n*sigmaV(T)**2/meanV2);
+    for(const a of arr){a.vx*=factor;a.vy*=factor;a.vz*=factor;}
+    return arr;
+  }
+  function makeSample(){
+    state.atoms=createSample(state.T);
+    if(state.compare)state.referenceAtoms=createSample(state.referenceT);
+    else state.referenceAtoms=[];
+    drawAll(true);
+  }
+  function setT(T){
+    const old=state.T;
+    state.T=T;
+    if(old===0&&T>0){state.atoms=createSample(T);}
+    else if(old>0){
+      const scale=Math.sqrt(T/old);
+      for(const a of state.atoms){a.vx*=scale;a.vy*=scale;a.vz*=scale;}
+    }
+    // 0 K is a deliberate preset, not part of the slider's 300–8000 K range.
+    if(T>=300)$('temp').value=String(T);
+    $('temp').setAttribute('aria-valuetext',T===0?'0 kelvin, classical ideal limit':`${T} kelvin`);
+    updateInterface();drawAll(true);
+  }
+  function updateInterface(){
+    const T=state.T;
+    $('temperatureValue').textContent=formatNumber(T)+' K';
+    $('celsiusValue').textContent=(T-273.15).toLocaleString('en-IE',{maximumFractionDigits:2})+' °C';
+    $('zeroNotice').hidden=T!==0;
+    $('motionDescriptor').textContent=state.compare?'Side-by-side: reference 300 K versus current temperature':'Three-dimensional ideal monatomic gas';
+    document.querySelector('.panels').classList.toggle('comparing',state.compare);
+    cvs.box.setAttribute('aria-label',state.compare?'Two independent equal-sized three-dimensional samples of atoms, 300 kelvin on the left and selected temperature on the right':'Atoms moving in a three-dimensional box, drawn as a perspective projection');
+    $('atomsValue').textContent=state.n;
+    $('rateValue').textContent=state.rate+'×';
+    document.querySelectorAll('.preset').forEach(b=>b.setAttribute('aria-pressed',String(Number(b.dataset.temp)===T)));
+    $('mostProbable').innerHTML=`${formatNumber(vMost())}<span class="unit">m/s</span>`;
+    $('rmsSpeed').innerHTML=`${formatNumber(Math.sqrt(3)*sigmaV())}<span class="unit">m/s</span>`;
+    if(T===0)$('peakWavelength').innerHTML='None<span class="unit">(no emission)</span>';
+    else {const lam = wien/T;
+    $('peakWavelength').innerHTML=lam<1e-6?`${Math.round(lam*1e9)}<span class="unit">nm</span>`:`${(lam*1e6).toFixed(2)}<span class="unit">µm</span>`;}
+    const power=sigmaSB*T**4;
+    $('radiantPower').innerHTML=formatPower(power);
+    const visible=100*lightRange(T);
+    let insight;
+    if(T===0) insight='At the unattainable classical limit of 0 K, translational thermal motion vanishes and the blackbody emits no thermal radiation. A real gas could not remain an ideal gas, and quantum zero-point motion is outside this model.';
+    else if(T<900) insight='Even though atoms are moving rapidly, a perfect blackbody at this temperature emits almost exclusively infrared radiation. Speed and photon wavelength are not interchangeable.';
+    else if(T<3500) insight=`The blackbody peak is still in the infrared. Only ${visible<0.01?'a tiny fraction':visible.toFixed(1)+'%'} of its emitted power lies between 380 and 750 nm.`;
+    else insight=`The blackbody spectrum now overlaps strongly with visible light. About ${visible.toFixed(1)}% of its emitted power is in the visible band, but the gas atom speeds do not determine those wavelengths.`;
+    $('insight').textContent=insight;
+  }
+  function sizeCanvas(canvas){
+    const r=canvas.getBoundingClientRect(), w=Math.max(1,Math.round(r.width)), h=Math.max(1,Math.round(r.height));
+    const dpr=Math.min(2,window.devicePixelRatio||1);
+    if(canvas.width!==Math.round(w*dpr)||canvas.height!==Math.round(h*dpr)){
+      canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
+    }
+    const ctxt=canvas.getContext('2d');ctxt.setTransform(dpr,0,0,dpr,0,0);
+    return {w,h};
+  }
+  function roundedBox(g,x,y,w,h,color){g.fillStyle=color;g.fillRect(x,y,w,h);}
+  function advanceGroup(arr,T,dtWall){
+    if(T===0||!arr.length)return;
+    // Scene seconds are arbitrarily scaled so motion is viewable; velocities retain SI m/s.
+    const desired=dtWall*.00042*state.rate;
+    let maxV=0;
+    for(const p of arr) maxV=Math.max(maxV,Math.hypot(p.vx,p.vy,p.vz));
+    const nSteps=Math.max(1,Math.min(16,Math.ceil(maxV*desired/(rad*.8))));
+    // Each substep is short enough to resolve almost all sphere encounters.
+    const dt=Math.min(desired/nSteps,rad*.8/Math.max(1,maxV));
+    const cell=2*rad, nc=Math.ceil(1/cell);
+    for(let step=0;step<nSteps;step++){
+      for(const a of arr){
+        for(const [pos,vel] of [['x','vx'],['y','vy'],['z','vz']]){
+          a[pos]+=a[vel]*dt;
+          if(a[pos]<rad){a[pos]=2*rad-a[pos];a[vel]=Math.abs(a[vel]);}
+          if(a[pos]>1-rad){a[pos]=2*(1-rad)-a[pos];a[vel]=-Math.abs(a[vel]);}
+          a[pos]=Math.max(rad,Math.min(1-rad,a[pos]));
+        }
+      }
+      const cells=new Map();
+      for(let i=0;i<arr.length;i++){
+        const a=arr[i], ix=Math.floor(a.x/cell), iy=Math.floor(a.y/cell), iz=Math.floor(a.z/cell), key=ix+nc*(iy+nc*iz);
+        if(!cells.has(key))cells.set(key,[]);
+        cells.get(key).push(i);
+      }
+      for(let i=0;i<arr.length;i++){
+        const p=arr[i],ix=Math.floor(p.x/cell),iy=Math.floor(p.y/cell),iz=Math.floor(p.z/cell);
+        for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)for(let dz=-1;dz<=1;dz++){
+          const xx=ix+dx,yy=iy+dy,zz=iz+dz;
+          if(xx<0||yy<0||zz<0||xx>=nc||yy>=nc||zz>=nc) continue;
+          const group=cells.get(xx+nc*(yy+nc*zz)); if(!group)continue;
+          for(const j of group){
+            if(j<=i)continue;
+            const q=arr[j];let rx=q.x-p.x,ry=q.y-p.y,rz=q.z-p.z;
+            const r2=rx*rx+ry*ry+rz*rz;
+            if(r2>=4*rad*rad)continue;
+            const d=Math.sqrt(Math.max(r2,1e-16));
+            if(d<1e-7){rx=1;ry=0;rz=0;}else{rx/=d;ry/=d;rz/=d;}
+            const overlap=2*rad-d;
+            p.x-=rx*overlap/2;p.y-=ry*overlap/2;p.z-=rz*overlap/2;
+            q.x+=rx*overlap/2;q.y+=ry*overlap/2;q.z+=rz*overlap/2;
+            for(const a of [p,q]) {a.x=Math.max(rad,Math.min(1-rad,a.x));a.y=Math.max(rad,Math.min(1-rad,a.y));a.z=Math.max(rad,Math.min(1-rad,a.z));}
+            const rel=(q.vx-p.vx)*rx+(q.vy-p.vy)*ry+(q.vz-p.vz)*rz;
+            if(rel<0){p.vx+=rel*rx;p.vy+=rel*ry;p.vz+=rel*rz;q.vx-=rel*rx;q.vy-=rel*ry;q.vz-=rel*rz;}
+          }
+        }
       }
     }
-    smooth[i] = sum / count;
   }
-
-  // Rayleigh/2D Maxwell speed distribution: p(v)=v/sigma² exp(-v²/(2sigma²))
-  const theory = new Array(bins).fill(0).map((_, i) => {
-    const v = (i / (bins - 1)) * vMax;
-    return (v / (sigma * sigma)) * Math.exp(-(v * v) / (2 * sigma * sigma));
-  });
-
-  const empiricalDensity = smooth.map(count => count / (N * binWidth));
-  // FIX: keep peak height visually stable by normalizing to theoretical peak
-  const theoryMax = Math.max(...theory);
-  const yMax = theoryMax * 1.2;
-
-  const graphTop = H * 0.12;
-  const graphBottom = H * 0.92;
-  const graphHeight = graphBottom - graphTop;
-  const xMap = i => leftW + i * (midW / (bins - 1));
-  const yMap = value => graphBottom - (value / yMax) * graphHeight;
-
-  ctx.fillStyle = "#f8fafc";
-  ctx.fillRect(leftW, graphTop, midW, graphHeight);
-
-  ctx.strokeStyle = "rgba(0,0,0,0.08)";
-  ctx.lineWidth = 1;
-  for(let i = 0; i <= 5; i++){
-    const y = graphBottom - i * (graphHeight / 5);
-    ctx.beginPath();
-    ctx.moveTo(leftW, y);
-    ctx.lineTo(leftW + midW, y);
-    ctx.stroke();
+  function advance(dtWall){
+    if(state.paused)return;
+    advanceGroup(state.atoms,state.T,dtWall);
+    if(state.compare)advanceGroup(state.referenceAtoms,state.referenceT,dtWall);
   }
-
-  ctx.strokeStyle = "#333";
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(leftW, graphTop);
-  ctx.lineTo(leftW, graphBottom);
-  ctx.lineTo(leftW + midW, graphBottom);
-  ctx.stroke();
-
-  // Theoretical curve that should generate the speed distribution.
-  ctx.beginPath();
-  ctx.strokeStyle = "rgba(0,0,0,0.55)";
-  ctx.lineWidth = 2;
-  for(let i = 0; i < bins; i++){
-    const x = xMap(i);
-    const y = yMap(theory[i]);
-    if(i === 0) ctx.moveTo(x, graphBottom); // physically p(0)=0
-    else ctx.lineTo(x, y);
-  }
-  ctx.stroke();
-
-  // Empirical curve.
-  ctx.beginPath();
-  ctx.strokeStyle = "#0066cc";
-  ctx.lineWidth = 3;
-  for(let i = 0; i < bins; i++){
-    const x = xMap(i);
-    const y = yMap(empiricalDensity[i]);
-    if(i === 0) ctx.moveTo(x, graphBottom);
-    else ctx.lineTo(x, y);
-  }
-  ctx.stroke();
-
-  // Vertical line at most probable speed: v_mp = sigma for 2D Rayleigh distribution.
-  const vMostProbable = sigma;
-  const peakX = leftW + (vMostProbable / vMax) * midW;
-  ctx.beginPath();
-  ctx.strokeStyle = "#cc0000";
-  ctx.lineWidth = 2;
-  ctx.moveTo(peakX, graphBottom);
-  ctx.lineTo(peakX, graphTop);
-  ctx.stroke();
-
-  // Labels.
-  ctx.fillStyle = "#222";
-  ctx.font = "14px system-ui";
-  ctx.fillText("speed distribution", leftW + 10, graphTop + 18);
-  ctx.fillStyle = "#0066cc";
-  ctx.fillText("blue: simulated particles", leftW + 10, graphTop + 38);
-  ctx.fillStyle = "#333";
-  ctx.fillText("black: Maxwell-Boltzmann/Rayleigh", leftW + 10, graphTop + 58);
-  ctx.fillStyle = "#cc0000";
-  ctx.fillText("red: most probable speed", leftW + 10, graphTop + 78);
-  ctx.fillStyle = "#222";
-  ctx.fillText("low speed", leftW + 5, graphBottom - 8);
-  ctx.fillText("high speed", leftW + midW - 75, graphBottom - 8);
-
-  // --- Blackbody-like wave modes (linked to speed distribution) ---
-  const modes = 10;
-  const time = Date.now() * 0.004;
-
-  for(let i = 0; i < modes; i++){
-    const f = i / (modes - 1); // 0 = red (low), 1 = blue (high)
-    const yCenter = 60 + i * (H - 120) / (modes - 1);
-
-    // wavelength ratio ~2x (red ≈ 2× blue)
-    const base = 120;
-    const wavelength = base * (1 + (1 - f)); // red=240, blue=120
-
-    const hue = 240 * f;
-
-    // link prominence to Maxwell distribution
-    const v = f * vMax;
-    const prob = (v / (sigma * sigma)) * Math.exp(-(v * v) / (2 * sigma * sigma));
-    const alpha = Math.min(1, prob / theoryMax);
-
-    // link wave speed to particle speed distribution
-    const phaseSpeed = 0.5 + 2 * (v / (vMax || 1));
-
-    ctx.beginPath();
-    for(let x = 0; x <= rightW; x += 2){
-      const y = yCenter + 14 * Math.sin((x / wavelength) * 2 * Math.PI + time * phaseSpeed);
-      if (x === 0) ctx.moveTo(rightX + x, y);
-      else ctx.lineTo(rightX + x, y);
+  function drawBox(){
+    const {w,h}=sizeCanvas(cvs.box),g=ctx.box;
+    g.clearRect(0,0,w,h);g.fillStyle='#f8fbfd';g.fillRect(0,0,w,h);
+    function scene(x0,width,arr,T,color,tag){
+      g.save();g.translate(x0,0);
+      const dual=state.compare;
+      const ox=dual?17:34,oy=dual?50:38, sx=Math.max(20,width-(dual?58:95)),sy=h-(dual?111:95), depX=dual?18:28,depY=dual?17:22;
+      const P=(x,y,z)=>[ox+x*sx+z*depX,oy+(1-y)*sy-z*depY];
+      const seg=(a,b,stroke,lw=1)=>{g.strokeStyle=stroke;g.lineWidth=lw;g.beginPath();g.moveTo(...a);g.lineTo(...b);g.stroke();};
+      for(const z of [1,0]){
+        const stroke=z===1?'#dce8ee':'#afcbd2';
+        for(let i=0;i<=4;i++){seg(P(i/4,0,z),P(i/4,1,z),stroke,.9);seg(P(0,i/4,z),P(1,i/4,z),stroke,.9);}
+      }
+      for(const x of [0,1])for(const y of [0,1])seg(P(x,y,0),P(x,y,1),'#bed3db',1.3);
+      for(const a of arr.slice().sort((a,b)=>b.z-a.z)){
+        const [x,y]=P(a.x,a.y,a.z);
+        const size=(dual?1.15:1.65)+(1-a.z)*(dual?.95:1.3);
+        const alpha=.48+(1-a.z)*.43;
+        g.fillStyle= color==='grey'?`rgba(102,120,145,${alpha})`:`rgba(0,128,144,${alpha})`;
+        g.beginPath();g.arc(x,y,size,0,Math.PI*2);g.fill();
+      }
+      for(const x of [0,1])seg(P(x,0,0),P(x,1,0),'#84aab7',1.6);
+      for(const y of [0,1])seg(P(0,y,0),P(1,y,0),'#84aab7',1.6);
+      g.font=(dual?'bold 12':'12')+'px system-ui, sans-serif';g.fillStyle=color==='grey'?'#53657d':'#057d8b';
+      g.fillText(tag,dual?10:18,dual?19:20);
+      if(dual){
+        g.font='11px system-ui';g.fillStyle='#667688';
+        g.fillText(`${gases[state.gas].name} · ${formatNumber(state.n)} atoms`,10,h-13);
+      }
+      if(T===0){
+        g.font='bold 12px system-ui';g.textAlign='center';g.fillStyle='#44566c';
+        g.fillText('Classical motion = 0',width/2,h-35);g.textAlign='left';
+      }
+      g.restore();
     }
-
-    ctx.strokeStyle = `hsla(${hue},100%,50%,${0.2 + 0.8 * alpha})`;
-    ctx.lineWidth = 2 + 2 * alpha;
-    ctx.stroke();
+    if(state.compare){
+      const gap=8, half=(w-gap)/2;
+      scene(0,half,state.referenceAtoms,state.referenceT,'grey','REFERENCE · 300 K');
+      g.strokeStyle='#d9e3eb';g.lineWidth=1;g.beginPath();g.moveTo(half+gap/2,11);g.lineTo(half+gap/2,h-9);g.stroke();
+      scene(half+gap,half,state.atoms,state.T,'teal',`CURRENT · ${formatNumber(state.T)} K`);
+    }else scene(0,w,state.atoms,state.T,'teal',`${gases[state.gas].name} atoms · 3D · ${formatNumber(state.T)} K`);
+    if(state.paused){g.fillStyle='#0d344bdc';g.fillRect(w/2-36,h/2-19,72,38);g.fillStyle='#fff';g.font='bold 15px system-ui';g.textAlign='center';g.fillText('PAUSED',w/2,h/2+5);g.textAlign='left';}
   }
-}
-
-slider.addEventListener('input', () => { init(); draw(); });
-speedSlider.addEventListener('input', draw);
-npartSlider.addEventListener('input', () => { init(); draw(); });
-pauseBtn.addEventListener('click', () => {
-  paused = !paused;
-  pauseBtn.textContent = paused ? 'Resume' : 'Pause';
-});
-window.addEventListener('resize', draw);
-
-function runTests(){
-  console.assert(typeof randn === 'function', 'randn exists');
-  console.assert(typeof velocitySigma === 'function', 'velocitySigma exists');
-  console.assert(velocitySigma(1200) > velocitySigma(300), 'velocity spread increases with temperature');
-  init();
-  console.assert(particles.length === Number(npartSlider.value), 'init creates selected number of particles');
-  stepParticles(3000);
-  console.assert(particles.every(p => Number.isFinite(p.x) && Number.isFinite(p.y)), 'particle positions remain finite');
-  console.assert(particles.every(p => p.x >= 0 && p.x <= 1 && p.y >= 0 && p.y <= 1), 'particles stay inside bounds');
-  paused = true;
-  const frozen = particles.map(p => ({x:p.x, y:p.y}));
-  stepParticles(3000);
-  console.assert(particles.every((p, i) => p.x === frozen[i].x && p.y === frozen[i].y), 'pause freezes particle positions');
-  paused = false;
-}
-
-function loop(){
-  draw();
-  requestAnimationFrame(loop);
-}
-
-runTests();
-init();
-loop();
+  function axes(g,w,h,pad){
+    g.strokeStyle='#a7b3c1';g.lineWidth=1;
+    g.beginPath();g.moveTo(pad.l,pad.t);g.lineTo(pad.l,h-pad.b);g.lineTo(w-pad.r,h-pad.b);g.stroke();
+  }
+  function niceCeiling(x){
+    const decade=10**Math.floor(Math.log10(x||1));
+    for(const m of [1,1.2,1.5,2,2.5,3,4,5,6,8,10]) if(m*decade>=x) return m*decade;
+    return 10*decade;
+  }
+  function drawSpeed(){
+    const {w,h}=sizeCanvas(cvs.speed),g=ctx.speed;
+    g.clearRect(0,0,w,h);g.fillStyle='#fff';g.fillRect(0,0,w,h);
+    const pad={l:54,r:14,t:42,b:48},pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+    const currentSigma=sigmaV(state.T),refSigma=state.compare?sigmaV(state.referenceT):0;
+    const axisSigma=Math.max(currentSigma,refSigma,sigmaV(300)*.25);
+    const vMax=niceCeiling(4.7*axisSigma),nbins=32,binW=vMax/nbins;
+    const sampleBins=arr=>{
+      const bins=Array(nbins).fill(0);
+      for(const a of arr){const v=Math.hypot(a.vx,a.vy,a.vz);if(v>=0&&v<vMax)bins[Math.floor(v/binW)]++;}
+      return bins.map(n=>n/Math.max(1,arr.length));
+    };
+    const now=state.T===0?Array(nbins).fill(0):sampleBins(state.atoms); // Delta peak at v=0 is drawn separately.
+    const ref=state.compare?sampleBins(state.referenceAtoms):null;
+    let ymax=0;
+    for(let i=0;i<nbins;i++){
+      ymax=Math.max(ymax,now[i],velocityPdf((i+.5)*binW,state.T)*binW);
+      if(ref)ymax=Math.max(ymax,ref[i],velocityPdf((i+.5)*binW,state.referenceT)*binW);
+    }
+    ymax=state.T===0&&!state.compare?1:Math.max(.01,ymax*1.17);
+    const X=v=>pad.l+v/vMax*pw, Y=val=>h-pad.b-val/ymax*ph;
+    for(let i=0;i<=4;i++){
+      const y=pad.t+i*ph/4;
+      g.strokeStyle='#e9eef3';g.lineWidth=1;g.beginPath();g.moveTo(pad.l,y);g.lineTo(w-pad.r,y);g.stroke();
+      g.fillStyle='#62758a';g.font='10px system-ui';g.textAlign='right';g.fillText((100*ymax*(1-i/4)).toFixed(state.T===0&&!state.compare?0:1)+'%',pad.l-7,y+4);
+    }
+    // Reference sample is drawn first so the current sample remains legible.
+    if(ref){for(let i=0;i<nbins;i++){
+      const x=X(i*binW)+.8, width=pw/nbins-1.5;
+      g.fillStyle='rgba(118,130,151,.35)';g.fillRect(x,Y(ref[i]),Math.max(1,width),h-pad.b-Y(ref[i]));
+    }}
+    for(let i=0;i<nbins;i++){
+      const x=X(i*binW)+(ref?pw/nbins*.22:1),width=(pw/nbins)*(ref?.52:.94)-1;
+      g.fillStyle='rgba(8,148,169,.45)';g.fillRect(x,Y(now[i]),Math.max(1,width),h-pad.b-Y(now[i]));
+    }
+    function curve(T,color,dashed=false){
+      if(T===0)return;
+      g.save();g.beginPath();g.strokeStyle=color;g.lineWidth=dashed?2:2.8;if(dashed)g.setLineDash([5,4]);
+      for(let i=0;i<=320;i++){
+        const v=vMax*i/320,x=X(v),y=Y(velocityPdf(v,T)*binW);
+        if(i===0)g.moveTo(x,y);else g.lineTo(x,y);
+      }
+      g.stroke();g.restore();
+    }
+    if(state.compare)curve(state.referenceT,'#8a96a6',true);
+    curve(state.T,'#2469d7');
+    if(state.T>0){
+      const vm=vMost();g.save();g.setLineDash([4,4]);g.strokeStyle='#d46c2c';g.lineWidth=1.7;
+      g.beginPath();g.moveTo(X(vm),pad.t);g.lineTo(X(vm),h-pad.b);g.stroke();g.restore();
+    }else{
+      g.save();g.strokeStyle='#d46c2c';g.lineWidth=3;g.beginPath();g.moveTo(X(0)+2,pad.t+19);g.lineTo(X(0)+2,h-pad.b);g.stroke();g.restore();
+      g.fillStyle='#a05122';g.font='bold 11px system-ui';g.textAlign='left';g.fillText('0 K: delta peak at speed 0',pad.l+7,pad.t+16);
+    }
+    axes(g,w,h,pad);
+    g.font='11px system-ui';g.fillStyle='#62758a';g.textAlign='center';
+    for(let i=0;i<=5;i++){
+      const v=i*vMax/5;g.fillText(vMax>=10000?(v/1000).toFixed(1)+'k':formatNumber(v),X(v),h-pad.b+17);
+    }
+    g.font='12px system-ui';g.fillStyle='#324763';g.fillText('Speed (m/s)',pad.l+pw/2,h-9);
+    g.save();g.translate(12,pad.t+ph/2);g.rotate(-Math.PI/2);g.font='10px system-ui';g.fillStyle='#657487';g.fillText('Atoms per bin',0,0);g.restore();
+    g.textAlign='left';g.font='11px system-ui';
+    const legendY=16;
+    g.fillStyle='#078a9c';g.fillRect(pad.l,legendY-7,10,9);g.fillStyle='#52667a';g.fillText('Current',pad.l+14,legendY+1);
+    g.strokeStyle='#2469d7';g.lineWidth=2.4;g.beginPath();g.moveTo(pad.l+79,legendY-3);g.lineTo(pad.l+96,legendY-3);g.stroke();g.fillText('Theory',pad.l+100,legendY+1);
+    if(state.compare){g.strokeStyle='#8a96a6';g.setLineDash([4,3]);g.lineWidth=2;g.beginPath();g.moveTo(pad.l+162,legendY-3);g.lineTo(pad.l+179,legendY-3);g.stroke();g.setLineDash([]);g.fillText('300 K',pad.l+183,legendY+1);}
+    else {g.strokeStyle='#d46c2c';g.setLineDash([4,3]);g.lineWidth=2;g.beginPath();g.moveTo(pad.l+162,legendY-3);g.lineTo(pad.l+179,legendY-3);g.stroke();g.setLineDash([]);g.fillText('Peak',pad.l+183,legendY+1);}
+  }
+  // Planck's B_lambda: textbook wavelength-based blackbody curves (NOT B_nu).
+  // On a linear wavelength axis a true Planck curve is strongly asymmetric.
+  // Reference sets remain close enough to the selected T to be readable, with
+  // the familiar fixed 3000, 4000, 5000, 6000 K set for hot temperatures.
+  function spectrumReferenceTemps(T){
+    if(T===0) return [];
+    if(T<=550) return [200,250,350,400];
+    if(T<=1500) return [600,800,1000,1400];
+    if(T<2600) return [1600,1800,2200,2600];
+    return [3000,4000,5000,6000];
+  }
+  function spectrumAxisEnd(){
+    if(state.wavelengthRange!=='auto')return Number(state.wavelengthRange);
+    return state.T<=550?30:state.T<=1500?10:3;
+  }
+  function drawSpectrum(){
+    const {w,h}=sizeCanvas(cvs.spectrum),g=ctx.spectrum;
+    g.clearRect(0,0,w,h);g.fillStyle='#fff';g.fillRect(0,0,w,h);
+    const pad={l:w<380?54:61,r:14,t:55,b:48};
+    const pw=w-pad.l-pad.r,ph=h-pad.t-pad.b;
+    const xMax=spectrumAxisEnd(),X=lambda=>pad.l+lambda/xMax*pw;
+    const refs=state.showRefs?spectrumReferenceTemps(state.T):[];
+    const isZero=state.T===0;
+    const samples=T=>{
+      const n=600,points=[];let peak=0;
+      for(let i=0;i<=n;i++){
+        const lam=xMax*i/n;
+        const val=i===0?0:radiance(lam*1e-6,T);
+        peak=Math.max(peak,val);points.push({lam,val});
+      }
+      return {T,points,peak};
+    };
+    const current=samples(state.T),background=refs.map(samples);
+    const pinned=state.pinned!==null?samples(state.pinned):null;
+    const all=[...background,...(pinned?[pinned]:[]),current];
+    const absolutePeak=Math.max(0,...all.map(item=>item.peak));
+    const yTop=state.normalise?1.06:(absolutePeak>0?niceCeiling(absolutePeak*1.04):1);
+    const Y=value=>h-pad.b-value/yTop*ph;
+    // Visible band: always correctly mapped into the linear wavelength axis.
+    const visibleL=X(.38),visibleR=X(.75);
+    g.fillStyle='#ffefb936';g.fillRect(visibleL,pad.t,visibleR-visibleL,ph);
+    const rainbow=g.createLinearGradient(visibleL,0,visibleR,0);
+    for(const [t,col] of [[0,'#6c3bb1'],[.17,'#345bb8'],[.35,'#1b9db4'],[.52,'#51a55b'],[.72,'#dfb42c'],[1,'#d35b36']])rainbow.addColorStop(t,col);
+    g.fillStyle=rainbow;g.globalAlpha=.88;
+    g.fillRect(visibleL,h-pad.b+5,Math.max(1,visibleR-visibleL),6);g.globalAlpha=1;
+    // Grid and labelled y-axis in scaled physical SI units.
+    const sciPower=state.normalise?0:Math.floor(Math.log10(Math.max(yTop,1e-30))/3)*3;
+    const yUnit=10**sciPower;
+    for(let i=0;i<=4;i++){
+      const fraction=i/4,y=Y(yTop*fraction);
+      g.strokeStyle='#e6edf4';g.lineWidth=1;g.beginPath();g.moveTo(pad.l,y);g.lineTo(w-pad.r,y);g.stroke();
+      g.font='10px system-ui';g.fillStyle='#5b6e84';g.textAlign='right';
+      const tick=state.normalise?fraction:(yTop*fraction)/yUnit;
+      const decimals=state.normalise?2:tick>=10?0:tick>=1?1:2;
+      g.fillText(tick.toFixed(decimals),pad.l-7,y+3);
+    }
+    g.save();g.beginPath();g.rect(pad.l,pad.t,pw,ph);g.clip();
+    function plot(item,color,width,dash){
+      if(!item||item.T===0)return;
+      const denom=state.normalise?Math.max(item.peak,1e-300):1;
+      g.beginPath();g.strokeStyle=color;g.lineWidth=width;g.setLineDash(dash||[]);
+      item.points.forEach((p,i)=>{
+        const x=X(p.lam),y=Y(p.val/denom);
+        if(i===0)g.moveTo(x,y);else g.lineTo(x,y);
+      });
+      g.stroke();g.setLineDash([]);
+    }
+    const referenceColours=['#c0d1eb','#9ab5db','#6f94c8','#426ca9'];
+    background.forEach((ref,i)=>plot(ref,referenceColours[i],1.9,[]));
+    if(pinned)plot(pinned,'#555e70',2.2,[7,4]);
+    plot(current,'#db6624',3.3,[]);
+    // Wien's wavelength peak marker, only if inside this chosen range.
+    const lamPeak=state.T>0?wien/state.T*1e6:NaN;
+    if(lamPeak<xMax&&lamPeak>0){
+      const x=X(lamPeak);g.strokeStyle='#d97951';g.lineWidth=1.2;g.setLineDash([3,4]);
+      g.beginPath();g.moveTo(x,pad.t);g.lineTo(x,h-pad.b);g.stroke();g.setLineDash([]);
+      g.fillStyle='#b4532b';g.beginPath();g.arc(x,Y(current.peak/(state.normalise?Math.max(current.peak,1e-300):1)),3,0,Math.PI*2);g.fill();
+    }
+    g.restore();
+    axes(g,w,h,pad);
+    // Linear-axis tick labels and correct physically based axis captions.
+    const xStep=xMax===3?.5:xMax===10?2:5;
+    g.font='11px system-ui';g.fillStyle='#53677c';g.textAlign='center';
+    for(let t=0;t<=xMax+.0001;t+=xStep)g.fillText(Number.isInteger(t)?String(t):t.toFixed(1),X(t),h-pad.b+17);
+    g.fillStyle='#354862';g.font='12px system-ui';g.fillText('Wavelength (µm) · linear scale',pad.l+pw/2,h-8);
+    g.save();g.translate(12,pad.t+ph/2);g.rotate(-Math.PI/2);g.fillStyle='#5b6e84';g.textAlign='center';
+    g.font='10px system-ui';g.fillText(state.normalise?'Relative spectral radiance, Bλ':'Bλ (W m⁻² sr⁻¹ µm⁻¹)',0,0);g.restore();
+    if(!state.normalise&&sciPower!==0){
+      g.textAlign='left';g.font='10px system-ui';g.fillStyle='#53677c';
+      g.fillText('×10'+String(sciPower).replaceAll('-','⁻').replace(/\d/g,ch=>'⁰¹²³⁴⁵⁶⁷⁸⁹'[Number(ch)]),pad.l-1,pad.t-8);
+    }
+    // Key is legible even when the panel is only a third of a lecture slide.
+    g.font='bold 11px system-ui';g.fillStyle='#db6624';g.textAlign='left';
+    g.fillText(`●  Current: ${formatNumber(state.T)} K`,pad.l,17);
+    if(refs.length){
+      g.font='10px system-ui';g.fillStyle='#496f9e';
+      g.fillText('Blue: '+refs.join(' · ')+' K',pad.l,34);
+    }else if(pinned){g.fillStyle='#5b677a';g.font='10px system-ui';g.fillText(`Grey dashed: ${formatNumber(state.pinned)} K`,pad.l,34);}
+    else {g.font='10px system-ui';g.fillStyle='#5b677a';g.fillText('No reference curves',pad.l,34);}
+    if(xMax===3){
+      const center=(visibleL+visibleR)/2;
+      g.font='bold 10px system-ui';g.fillStyle='#91671e';g.textAlign='center';g.fillText('VISIBLE',center,pad.t+16);
+    }
+    if(isZero){
+      g.textAlign='center';g.font='bold 13px system-ui';g.fillStyle='#52647c';
+      g.fillText('0 K: no blackbody radiation',pad.l+pw/2,pad.t+ph*.53);
+    }
+    const contextLabel=refs.length?'Reference curves: '+refs.join(', ')+' K. ':'Reference curves hidden. ';
+    $('spectrumLegend').textContent=state.T===0?'0 K: no thermal emission.':contextLabel;
+    $('spectrumCanvas').setAttribute('aria-label',`Planck blackbody spectral radiance B lambda against wavelength on a linear axis from zero to ${xMax} micrometres; current temperature ${state.T} kelvin; ${contextLabel}`);
+    $('pinnedLabel').textContent=`${xMax===3?'Visible and near-infrared':xMax===10?'Near-infrared':'Thermal infrared'} view · Visible band: 380–750 nm.`
+      +(state.pinned!==null?` Grey dashed curve pinned at ${formatNumber(state.pinned)} K.`:'')
+      +(state.normalise?' Each curve scaled to its own maximum.':' Unnormalised curves use the same radiance scale.');
+  }
+  function drawAll(force=false){drawBox();if(force){drawSpeed();drawSpectrum();}}
+  function frame(time){
+    const elapsed=Math.min(.04,(time-(state.last||time))/1000);state.last=time;
+    advance(elapsed);
+    drawBox();
+    if(time-state.lastGraphs>180){drawSpeed();state.lastGraphs=time;}
+    requestAnimationFrame(frame);
+  }
+  // Events.
+  $('temp').addEventListener('input',e=>setT(Number(e.target.value)));
+  document.querySelectorAll('.preset').forEach(b=>b.addEventListener('click',()=>setT(Number(b.dataset.temp))));
+  $('gas').addEventListener('change',e=>{state.gas=e.target.value;makeSample();updateInterface();});
+  $('compare').addEventListener('change',e=>{state.compare=e.target.checked;makeSample();updateInterface();drawAll(true);});
+  $('atoms').addEventListener('input',e=>{state.n=Number(e.target.value);makeSample();updateInterface();});
+  $('rate').addEventListener('input',e=>{state.rate=Number(e.target.value);updateInterface();});
+  function togglePause(){state.paused=!state.paused;$('pauseBtn').textContent=state.paused?'▶ Resume':'❚❚ Pause';drawAll(true);}
+  $('pauseBtn').addEventListener('click',togglePause);
+  $('resetBtn').addEventListener('click',makeSample);
+  $('normalise').addEventListener('change',e=>{state.normalise=e.target.checked;drawSpectrum();});
+  $('showRefs').addEventListener('change',e=>{state.showRefs=e.target.checked;drawSpectrum();});
+  $('wavelengthRange').addEventListener('change',e=>{state.wavelengthRange=e.target.value;drawSpectrum();});
+  $('pinBtn').addEventListener('click',()=>{
+    state.pinned=state.T;
+    $('clearPinBtn').hidden=false;drawSpectrum();
+  });
+  $('clearPinBtn').addEventListener('click',()=>{
+    state.pinned=null;$('clearPinBtn').hidden=true;drawSpectrum();
+  });
+  $('presentationBtn').addEventListener('click',async()=>{
+    if(!document.fullscreenElement){
+      document.body.classList.add('presentation');
+      try { await document.documentElement.requestFullscreen(); }
+      catch(e) { /* CSS presentation view remains available if full screen is blocked. */ }
+    }else{await document.exitFullscreen();document.body.classList.remove('presentation');}
+    drawAll(true);
+  });
+  document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)document.body.classList.remove('presentation');drawAll(true);});
+  document.addEventListener('keydown',e=>{
+    if(e.code==='Space' && !['INPUT','SELECT','BUTTON','TEXTAREA'].includes(document.activeElement.tagName)) {e.preventDefault();togglePause();}
+  });
+  window.addEventListener('resize',()=>drawAll(true));
+  // A few built-in numerical checks guard against accidental mistakes in this teaching model.
+  console.assert(Math.abs(wien/300*1e6-9.65924)<.01,'300 K peak is near 9.66 µm');
+  console.assert(Math.abs(Math.sqrt(2*kB*300/(39.948*u))-353.38)<.1,'Argon mode is near 353 m/s');
+  console.assert(Math.abs(sigmaSB*300**4-459.3)<1,'300 K blackbody flux is near 459 W/m²');
+  console.assert(radiance(550e-9,0)===0&&velocityPdf(100,0)===0,'zero K ideal limits are safe');
+  console.assert(radiance(500e-9,5800)>radiance(500e-9,3000),'Hotter blackbody brighter at the same wavelength');
+  console.assert(spectrumAxisEnd()===30&&Math.abs(wien/5800*1e6-.4996)<.002,'Infrared room-temperature and visible Sun-like peaks');
+  makeSample();updateInterface();drawAll(true);requestAnimationFrame(frame);
+})();
 </script>
 </body>
 </html>
