@@ -1,0 +1,373 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moving Charge Laboratory — retarded fields and secondary radiation</title>
+<style>
+:root{color-scheme:dark;--bg:#080e19;--panel:#101b2b;--edge:#30415c;--ink:#e9f1ff;--muted:#a0b5cd;--cyan:#66d9f6;--gold:#ffcb75;--red:#ff647b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -5%,#1b2d46,#080e19 65%);color:var(--ink);font:14px/1.45 system-ui,Segoe UI,sans-serif}main{max-width:1420px;margin:auto;padding:17px clamp(10px,2vw,26px) 32px}
+header{display:flex;justify-content:space-between;gap:16px;align-items:end;margin-bottom:13px;flex-wrap:wrap}h1{font-size:clamp(23px,2.5vw,34px);margin:0;letter-spacing:-.6px}h1 b{color:var(--cyan)}.eyebrow{color:#83bbdd;letter-spacing:2px;text-transform:uppercase;font-size:10px;font-weight:700}header p{margin:6px 0 0;color:var(--muted);max-width:850px}.chip{border:1px solid #41637b;border-radius:8px;padding:8px 10px;font-size:12px;color:#a6dff2;white-space:nowrap}
+.panel{background:linear-gradient(155deg,rgba(18,33,52,.98),rgba(11,20,35,.98));border:1px solid var(--edge);border-radius:13px;overflow:hidden}.controls{padding:13px 15px;margin:12px 0;display:grid;grid-template-columns:auto 1fr;gap:12px 20px;align-items:center}.row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}.group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.lbl{font-size:11px;font-weight:700;letter-spacing:.8px;color:#a6c1dd;text-transform:uppercase;white-space:nowrap}button,select{background:#162c43;border:1px solid #45617b;border-radius:7px;color:var(--ink);padding:8px 11px;font:inherit;cursor:pointer}button:hover,button:focus-visible{background:#24415f;outline:1px solid #87caff}button.active{background:#145878;border-color:#66d9f6;color:#fff}button.primary{background:#0b7394;border-color:#60d0f1;font-weight:700}button[disabled]{opacity:.45;cursor:not-allowed}.sliders{display:flex;flex-wrap:wrap;gap:12px 20px}.slide{min-width:140px;flex:1 1 145px;max-width:260px}.slide label{display:flex;justify-content:space-between;gap:5px;color:#b5cbe2;font-size:12px}.slide output{font-variant-numeric:tabular-nums;color:#f6e7ab}input[type=range]{width:100%;accent-color:#6acdea;cursor:pointer}.check{display:flex;align-items:center;gap:6px;color:#b6cce2;font-size:12px;white-space:nowrap}.check input{accent-color:#69ceec}
+.layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(315px,350px);gap:13px}.layout>section.panel{align-self:start}.stagehead{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 14px;font-size:12px;color:var(--muted)}.stagehead strong{color:var(--ink);font-size:14px}.canvasarea{position:relative;touch-action:none}canvas{display:block;width:100%}#stage{height:clamp(370px,54vh,590px);background:#02060d;touch-action:none;cursor:crosshair}.hint{position:absolute;left:13px;bottom:12px;color:#9fb6cf;font-size:11px;pointer-events:none;background:#071321c9;border-radius:5px;padding:5px 8px}.legend{padding:9px 13px;display:flex;gap:13px;flex-wrap:wrap;border-top:1px solid #263a53;font-size:11px;color:#b7c9dd}.swatch{display:inline-block;width:12px;height:12px;border-radius:50%;vertical-align:middle;margin-right:4px}.aside{display:flex;flex-direction:column;gap:13px}.aside .panel{padding:14px}.aside h2,.timeseries h2{font-size:14px;margin:0 0 10px}.readout{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:7px;border-bottom:1px solid #26364c;padding:7px 0;font-size:12px;color:#b2c8df}.readout strong{color:#f3f5ff;font-variant-numeric:tabular-nums;font-size:13px}.info{font-size:12px;color:#aec5df;line-height:1.55;margin:8px 0 0}.info strong{color:#e4f5ff}.note{border-left:2px solid #5dbfdc;padding-left:10px}.info b{color:#ffdd9c}.timeseries{margin-top:13px;padding:12px 14px}.timeseries .top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}.timeseries h2{margin-bottom:4px}.timeseries .muted{color:var(--muted);font-size:12px}#graph{height:292px;background:#07111e;border-radius:6px;margin-top:9px}.footer{font-size:12px;color:#95abc5;margin-top:13px;line-height:1.6}.footer b{color:#d8e8f7}.togglebar{display:flex;gap:13px;flex-wrap:wrap;grid-column:1/-1;border-top:1px solid #26384f;padding-top:9px}.responsive{display:none}#secondaryControl,#secondaryVectorControl,#gainControl{opacity:.95}#secondaryControl.inactive,#secondaryVectorControl.inactive,#gainControl.inactive{display:none}#gainControl input{max-width:82px}#secondaryReadout[hidden]{display:none}
+
+/* Place the signal monitor beside the field so both are visible in a lecture. */
+.aside>.timeseries{margin-top:0;padding:13px 13px 11px}
+.timeseries .top{align-items:center;gap:8px}.timeseries .top h2{margin:0;font-size:14px}
+.graphTools{display:flex;gap:6px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-top:10px}
+.graphTools label{font-size:11px;color:#b9d1e9;display:flex;align-items:center;gap:6px}
+.graphTools select{padding:5px 6px;font-size:11px}
+.graphTools button{padding:5px 9px;font-size:11px}
+.timeseries .graphHelp{color:#b1c5dc;font-size:11px;line-height:1.45;margin:7px 0 0}
+#graphBackdrop{position:fixed;inset:0;background:rgba(0,5,12,.77);z-index:90}
+#graphBackdrop.hide{display:none}
+.timeseries.enlarged{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:91;width:min(1150px,calc(100vw - 24px));max-height:calc(100vh - 24px);overflow:auto;box-shadow:0 24px 65px #000b}
+.timeseries.enlarged #graph{height:clamp(380px,60vh,620px)}
+@media(max-width:1160px) and (min-width:771px){.layout{grid-template-columns:minmax(0,1fr) minmax(270px,315px)}}
+@media(max-width:1000px){.layout{grid-template-columns:minmax(0,1fr) 290px}.controls{grid-template-columns:1fr}.aside .panel{padding:11px}}@media(max-width:770px){.layout{grid-template-columns:1fr}.aside{display:grid;grid-template-columns:1fr 1fr}.stagehead{display:block}.chip{display:none}#stage{height:440px}}@media(max-width:525px){main{padding:12px 8px 20px}header{padding:0 4px}h1{font-size:23px}button{padding:7px 9px;font-size:12px}.controls{padding:10px}.aside{grid-template-columns:1fr}.stagehead strong{display:block}#stage{height:350px}.hint{font-size:10px}.legend{gap:8px}.slide{min-width:125px}}
+</style>
+</head><body><main>
+<header><div><div class="eyebrow">Interactive electromagnetism · Retarded fields</div><h1>When a charge moves, <b>when does its field change?</b></h1><p>A charge does not release its entire electric field like a detached object. Changes in its motion propagate outwards at the speed of light.</p></div><div class="chip">SELF-CONTAINED · OFFLINE · CLASSROOM EDITION</div></header>
+<section class="panel controls" aria-label="Simulation controls">
+  <div class="row"><span class="lbl">Experiment</span><button id="bump" class="primary">⚡ Bump and return</button><button id="shift">↥ Move and stay</button><button id="oscillate">∿ Oscillate</button><button id="dragMode">✋ Position charge</button></div>
+  <div class="row"><span class="lbl">Playback</span><button id="pause">Pause</button><button id="step">Step frame</button><button id="reset">Reset</button><label class="check" style="margin-left:4px"><input id="guides" type="checkbox"> Light-front guides</label></div>
+  <div class="sliders" style="grid-column:1/-1"><div class="slide"><label for="amplitude">Displacement <output id="ampV">0.38</output></label><input type="range" id="amplitude" min="0.12" max="0.55" value="0.38" step="0.01"></div><div class="slide"><label for="duration">Movement duration <output id="durV">1.9 s</output></label><input type="range" id="duration" min="1.6" max="3.2" value="1.9" step="0.1"></div><div class="slide"><label for="frequency">Oscillation frequency <output id="freqV">0.55 Hz</output></label><input type="range" id="frequency" min="0.2" max="1.0" value="0.55" step="0.05"></div><div class="slide"><label for="speed">Playback speed <output id="speedV">1.0×</output></label><input type="range" id="speed" min="0.25" max="2" value="1" step="0.25"></div><div class="slide"><label for="density">Field lines <output id="densityV">24</output></label><input type="range" id="density" min="12" max="40" value="24" step="4"></div><div class="slide"><label for="viewZoom">View zoom <output id="zoomV">1.0×</output></label><input type="range" id="viewZoom" min="0.5" max="1.6" value="1" step="0.1" title="Zoom out to watch the disturbance travel farther"></div></div>
+  <div class="togglebar"><label class="check"><input id="arrows" type="checkbox"> Field direction arrows</label><label class="check"><input id="tests" type="checkbox"> + and − test charges</label><label class="check"><input id="radiationOnly" type="checkbox"> Show radiative field only</label><label class="check"><input id="gridVectors" type="checkbox"> Small E-field vectors</label><label class="check"><input id="originMarker" type="checkbox"> Mark initial charge position</label><label class="check" id="secondaryControl"><input id="secondaryWaves" type="checkbox" checked> Secondary radiation from test charges</label><label class="check" id="secondaryVectorControl"><input id="secondaryVectors" type="checkbox"> Show secondary E-field arrows</label><label class="check" id="gainControl"> Test motion ×<input id="testGain" type="range" min="1" max="6" step="1" value="3" style="width:78px"><output id="testGainV">3</output></label></div>
+</section>
+<div class="layout"><section class="panel"><div class="stagehead"><strong>Electric field in the plane of the charge's motion</strong><span>Position charge sets a new start · dragging during motion shows delayed fields</span></div><div class="canvasarea"><canvas id="stage" aria-label="Retarded electric field lines around a moving charge"></canvas><div class="hint" id="stageHint">Select Position charge to choose a starting location, then Oscillate — no reset to the centre.</div></div><div class="legend"><span><span class="swatch" style="background:#ff6579"></span>positive source</span><span><span class="swatch" style="background:#dae7ff"></span>E-field lines</span><span><span class="swatch" style="background:#64e0fa"></span>movable field detector</span><span><span class="swatch" style="background:#ffce7a"></span>change-front guides</span></div></section>
+<aside class="aside"><section class="panel timeseries" id="graphPanel"><div class="top"><h2>Live motion &amp; delayed response</h2><button id="expandGraph" title="Enlarge the two traces">⤢ Enlarge</button></div><canvas id="graph" aria-label="Two separate time graphs, source position above and delayed detector electric field below"></canvas><div class="graphTools"><label>Graph view <select id="graphView"><option value="delay">Motion + detector</option><option value="falloff">Radiation: near &amp; far</option></select></label><label>Vertical scale <select id="graphScale"><option value="auto">Auto fit</option><option value="hold">Hold peak scale</option></select></label><span style="font-size:11px;color:#9cc5df">Shared time axis · 8 s window</span></div><p class="graphHelp" id="graphHelp">Red: source displacement. Cyan: detector field change. Select <b>Radiation: near &amp; far</b> to compare two electric-field signals on exactly the same scale.</p></section><section class="panel"><h2>What is happening?</h2><div class="readout"><span>Elapsed simulation time</span><strong id="clock">0.00 s</strong></div><div class="readout"><span>Light speed (model units)</span><strong id="cVal">2.10 units/s</strong></div><div class="readout"><span>Charge speed</span><strong id="vVal">0.00 c</strong></div><div class="readout"><span>Detector distance</span><strong id="dVal">2.40 units</strong></div><div class="readout"><span>Light-travel time*</span><strong id="delayVal">1.14 s</strong></div><div class="readout"><span>Field change at detector</span><strong id="fieldVal">0.000</strong></div><div class="readout" id="secondaryReadout"><span>Secondary radiation at detector</span><strong id="secondaryVal">0.0000</strong></div><p class="info" id="liveMessage">The charge is stationary. Its electric field points radially outward.</p><p class="info note">*Distance ÷ c is a useful estimate; the exact field is calculated at the <strong>retarded position</strong> of the charge.</p></section><section class="panel"><h2>Try these demonstrations</h2><p class="info"><strong>1. Bump and return:</strong> A finite change propagates away even after the charge is back where it started.</p><p class="info"><strong>2. Move and stay:</strong> Close to the charge, the field reflects its new position; far away it still reflects the old one until the update arrives.</p><p class="info"><strong>3. Position, then oscillate:</strong> Click Position charge, drag the red source anywhere, and then choose Oscillate. This is a new starting condition; for a physical moving-charge disturbance, drag the source during another experiment.</p><p class="info"><strong>4. Test-charge scattering:</strong> Enable the test charges and their secondary radiation. They are <em>bound-charge models</em>, not free particles.</p><p class="info"><strong>5. Radiation fall-off:</strong> Select <em>Radiation: near &amp; far</em> on the graph. Both electric-field traces use the <em>same</em> vertical scale; the red source-motion trace has different units.</p></section></aside></div>
+
+<div class="footer"><b>How to read the picture:</b> These are instantaneous electric-field integral curves, not physical strings attached to the charge. The deformation travels because the field at each point depends on the charge’s earlier motion. The field lines are traced to the view boundary rather than given an artificial fixed length. Dragging during an experiment preserves the past field and produces delayed changes; Position charge instead prepares a new stationary initial condition without claiming that a charge teleports physically. <b>Physics and limitations:</b> This is a dimensionless demonstration of the Liénard–Wiechert electric field of a prescribed, sub-light-speed point charge, including velocity (<i>1/r²</i>) and acceleration (<i>1/r</i>) terms. The field is evaluated at the appropriate retarded time. Optional dashed circles are <i>light-travel-time guides</i>, not physical detached electric-field rings. Positive and negative test charges represent <i>spring-bound</i> charges responding to changes in the source field, with a user-adjustable display-response gain. They can re-radiate weak acceleration-dependent fields, visualised as outward-moving wavefront segments and calculated using a retarded non-relativistic <i>1/r</i> approximation. Secondary fields are shown with amplified opacity; they do not drive the primary source, and multiple scattering / radiation reaction are omitted. Field-line displacement is <i>not</i> a measure of electric-field magnitude: the radiative-field vectors and near/far graph show actual relative field strengths in the model. Source charge, test charges and field strengths are not drawn to scale; no quantum photons are included. Distances and seconds are illustrative model units. Animation times are greatly slowed down relative to light propagation in nature.</div>
+</main><div id="graphBackdrop" class="hide" aria-hidden="true"></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id), C=2.1, DT=1/60, MAX_TIME=10;
+const stage=$('stage'), graph=$('graph'),ctx=stage.getContext('2d'),gctx=graph.getContext('2d');
+const clamp=(x,a,b)=>Math.max(a,Math.min(b,x)),hypot=Math.hypot;
+const state={t:0,accum:0,last:0,paused:false,mode:'pulse',oscStart:null,events:[],base:{x:0,y:0},initial:{x:0,y:0},history:[],dragTarget:{x:0,y:0},dragging:false,dragVel:{x:0,y:0},pendingOsc:false,probe:{x:2.45,y:0.1},tests:[{x:2.2,y:-1.45,sign:1,dx:0,dy:0,vx:0,vy:0,ax:0,ay:0,trail:[],hist:[],rings:[],lastRing:-99},{x:-2.2,y:1.45,sign:-1,dx:0,dy:0,vx:0,vy:0,ax:0,ay:0,trail:[],hist:[],rings:[],lastRing:-99}],trace:[],graphHold:{y:.04,ey:.002,near:.002,far:.002,rad:.002},activeDrag:null,changedAt:-1};
+let dims={W:800,H:520,scale:70};
+function fmt(x,n=2){return Number(x).toFixed(n)}
+function smooth(u){if(u<=0)return [0,0,0];if(u>=1)return [1,0,0];return [u*u*u*(10+u*(-15+6*u)),30*u*u*(1-u)*(1-u),60*u*(1-u)*(1-2*u)]}
+function hill(u){if(u<=0||u>=1)return [0,0,0];const om=1-u;return [64*u*u*u*om*om*om,192*u*u*om*om*(1-2*u),384*u*om*(1-5*u+5*u*u)]}
+function analytic(t){let x=state.base.x,y=state.base.y,vx=0,vy=0,ax=0,ay=0;
+ for(const e of state.events){if(t<e.start)continue;const u=(t-e.start)/e.duration;const f=e.type==='shift'?smooth(u):hill(u);let X=e.A*f[0],V=e.A*f[1]/e.duration,A=e.A*f[2]/(e.duration*e.duration);y+=X;vy+=V;ay+=A;}
+ if(state.oscStart!==null && t>=state.oscStart){const u=t-state.oscStart,w=2*Math.PI*(+$('frequency').value),ramp=1.05;const v=smooth(u/ramp),F=v[0],Fd=v[1]/ramp,Fdd=v[2]/(ramp*ramp),a=Math.min(+$('amplitude').value,0.54*C/Math.max(.2,w),Math.max(0,Math.min(worldBounds(21).yMax-state.base.y,state.base.y-worldBounds(21).yMin)-.02)),sn=Math.sin(w*u),cs=Math.cos(w*u);y+=a*F*sn;vy+=a*(Fd*sn+F*w*cs);ay+=a*(Fdd*sn+2*Fd*w*cs-F*w*w*sn);}
+ return {x,y,vx,vy,ax,ay};}
+function historySample(tt){if(tt<=0||state.history.length===0)return {x:state.initial.x,y:state.initial.y,vx:0,vy:0,ax:0,ay:0};const index=tt/DT,i=Math.floor(index),a=state.history[Math.min(i,state.history.length-1)],b=state.history[Math.min(i+1,state.history.length-1)],f=clamp(index-i,0,1);const s={};for(const key of ['x','y','vx','vy','ax','ay'])s[key]=a[key]+(b[key]-a[key])*f;return s;}
+function now(){return state.history[state.history.length-1]||historySample(0)}
+function retarded(x,y,t){const latest=historySample(t);let tr=t-hypot(x-latest.x,y-latest.y)/C;
+ for(let i=0;i<10;i++){const q=historySample(tr),R=hypot(x-q.x,y-q.y),next=t-R/C;if(Math.abs(next-tr)<.00007){tr=next;break;}tr=next;}
+ const q=historySample(tr);return {q,tr,R:hypot(x-q.x,y-q.y)};}
+function field(x,y,t,onlyRad=false){const {q,tr,R:rawR}=retarded(x,y,t),R=Math.max(.095,rawR);let nx=(x-q.x)/R,ny=(y-q.y)/R;
+ if(rawR<.095){const nn=Math.max(1e-8,hypot(nx,ny));nx/=nn;ny/=nn;}
+ const bx=clamp(q.vx/C,-.88,.88),by=clamp(q.vy/C,-.88,.88),b2=Math.min(.85,bx*bx+by*by),kap=Math.max(.27,1-nx*bx-ny*by),common=kap*kap*kap;
+ let ex=0,ey=0;if(!onlyRad){const fac=(1-b2)/(common*R*R);ex=(nx-bx)*fac;ey=(ny-by)*fac;}
+ const cross=(nx-bx)*q.ay/C-(ny-by)*q.ax/C,fac2=cross/(C*common*R);
+ ex+=ny*fac2;ey-=nx*fac2;return {x:ex,y:ey,tr,q};}
+function staticField(x,y){const dx=x-state.initial.x,dy=y-state.initial.y,R=Math.max(.13,hypot(dx,dy));return {x:dx/(R**3),y:dy/(R**3)};}
+function deltaField(x,y){const e=field(x,y,state.t),b=staticField(x,y);return {x:e.x-b.x,y:e.y-b.y};}
+// A selected near and far sampling point on the same ray from the source's stationary centre.
+function probePair(){const origin=state.base,far=state.probe;return {near:{x:origin.x+.5*(far.x-origin.x),y:origin.y+.5*(far.y-origin.y)},far};}
+function radiationCompare(){const {near,far}=probePair();const a=field(near.x,near.y,state.t,true),b=field(far.x,far.y,state.t,true);return {near:a.y,far:b.y};}
+function sampleSecondary(p,t){const h=p.hist;if(!h.length||t<h[0].t)return null;const ix=clamp(Math.floor((t-h[0].t)/DT),0,h.length-1),a=h[ix],b=h[Math.min(ix+1,h.length-1)],f=b.t>a.t?clamp((t-a.t)/(b.t-a.t),0,1):0;return {x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f,ax:a.ax+(b.ax-a.ax)*f,ay:a.ay+(b.ay-a.ay)*f};}
+// Leading-order nonrelativistic acceleration field of a bound secondary charge.
+// The plotted field is intentionally one-way: no multiple scattering or backreaction.
+function secondaryField(p,x,y,t){if(!p.hist.length)return {x:0,y:0};
+ let s=p.hist.at(-1),tr=t-hypot(x-s.x,y-s.y)/C;
+ for(let i=0;i<5;i++){const q=sampleSecondary(p,tr);if(!q)return {x:0,y:0};s=q;tr=t-hypot(x-q.x,y-q.y)/C;}
+ s=sampleSecondary(p,tr);if(!s)return {x:0,y:0};
+ const dx=x-s.x,dy=y-s.y,r=Math.max(.18,hypot(dx,dy)),nx=dx/r,ny=dy/r,dot=nx*s.ax+ny*s.ay;
+ const factor=.16*p.sign/(C*C*r);
+ return {x:factor*(nx*dot-s.ax),y:factor*(ny*dot-s.ay)};
+}
+function secondaryAtDetector(){let x=0,y=0;for(const p of state.tests){const e=secondaryField(p,state.probe.x,state.probe.y,state.t);x+=e.x;y+=e.y;}return {x,y};}
+
+function updateModel(dt){state.t+=dt;
+ let q;
+ if(state.mode==='drag'||state.mode==='settle'){
+  const prior=now(),v=state.dragVel,target=state.dragTarget;let ax=clamp(9*(target.x-prior.x)-5.1*v.x,-3.8,3.8),ay=clamp(9*(target.y-prior.y)-5.1*v.y,-3.8,3.8);
+  v.x+=ax*dt;v.y+=ay*dt;const vmax=.55*C,mag=hypot(v.x,v.y);if(mag>vmax){v.x*=vmax/mag;v.y*=vmax/mag;}
+  q={x:prior.x+v.x*dt,y:prior.y+v.y*dt,vx:v.x,vy:v.y,ax,ay};
+  const limits=worldBounds(19);
+  if(q.x<limits.xMin||q.x>limits.xMax){q.x=clamp(q.x,limits.xMin,limits.xMax);v.x=0;q.vx=0;q.ax=0;}
+  if(q.y<limits.yMin||q.y>limits.yMax){q.y=clamp(q.y,limits.yMin,limits.yMax);v.y=0;q.vy=0;q.ay=0;}
+ }else q=analytic(state.t);
+ state.history.push(q);
+ if(state.mode==='settle' && state.pendingOsc && hypot(q.x-state.dragTarget.x,q.y-state.dragTarget.y)<.012 && hypot(q.vx,q.vy)<.025){
+  activateOsc({x:state.dragTarget.x,y:state.dragTarget.y});
+ }
+ for(const p of state.tests){
+   const E=deltaField(p.x+p.dx,p.y+p.dy),gain=+$('testGain').value;
+   // Driven damped bound charge: spring cancels the static equilibrium force.
+   const drive=4.0*gain,stiffness=7.2,damping=2.1;
+   p.ax=clamp(p.sign*E.x*drive,-17,17)-stiffness*p.dx-damping*p.vx;
+   p.ay=clamp(p.sign*E.y*drive,-17,17)-stiffness*p.dy-damping*p.vy;
+   p.vx+=p.ax*dt;p.vy+=p.ay*dt;
+   p.dx=clamp(p.dx+p.vx*dt,-.68,.68);p.dy=clamp(p.dy+p.vy*dt,-.68,.68);
+   if(Math.abs(p.dx)>.679)p.vx=0;if(Math.abs(p.dy)>.679)p.vy=0;
+   const pos={x:p.x+p.dx,y:p.y+p.dy};
+   p.hist.push({t:state.t,x:pos.x,y:pos.y,ax:p.ax,ay:p.ay});
+   p.trail.push(pos);if(p.trail.length>110)p.trail.shift();
+   const a=hypot(p.ax,p.ay);
+   if(a>.30 && state.t-p.lastRing>.45){p.rings.push({t:state.t,x:pos.x,y:pos.y,ax:p.ax,ay:p.ay,sign:p.sign});p.lastRing=state.t;}
+   p.rings=p.rings.filter(r=>state.t-r.t<5.0);
+ }
+
+ if(state.history.length%3===0){const de=deltaField(state.probe.x,state.probe.y),rad=radiationCompare();state.trace.push({t:state.t,y:q.y-state.base.y,ey:de.y,near:rad.near,far:rad.far});if(state.trace.length>1300)state.trace.shift();}
+}
+function reset(full=true){state.t=0;state.accum=0;state.last=0;state.mode='pulse';state.events=[];state.oscStart=null;state.base={x:0,y:0};state.initial={x:0,y:0};state.dragTarget={x:0,y:0};state.dragVel={x:0,y:0};state.pendingOsc=false;state.activeDrag=null;state.history=[{x:0,y:0,vx:0,vy:0,ax:0,ay:0}];state.trace=[{t:0,y:0,ey:0,near:0,far:0}];state.graphHold={y:.04,ey:.002,near:.002,far:.002,rad:.002};state.changedAt=-1;state.tests.forEach(p=>{p.dx=p.dy=p.vx=p.vy=p.ax=p.ay=0;p.trail=[];p.hist=[];p.rings=[];p.lastRing=-99;});state.paused=false;syncControls();draw();}
+function schedule(type){
+ // Start a new prescribed movement from the charge's CURRENT position, preserving its past field.
+ const q=now();
+ if(state.mode!=='pulse'||state.oscStart!==null){state.base={x:q.x,y:q.y};state.events=[];state.oscStart=null;}
+ state.pendingOsc=false;state.mode='pulse';
+ const start=Math.max(state.t+.10,state.events.length?state.events.at(-1).start+state.events.at(-1).duration+.20:0);
+ state.events.push({type,start,duration:+$('duration').value,A:+$('amplitude').value});
+ state.changedAt=start;state.paused=false;syncControls();
+}
+function activateOsc(position){
+ state.mode='osc';state.pendingOsc=false;state.base={x:position.x,y:position.y};state.events=[];
+ state.oscStart=state.t+.12;state.changedAt=state.oscStart;
+ state.dragTarget={...state.base};state.dragVel={x:0,y:0};state.paused=false;syncControls();
+}
+function startOsc(){
+ const q=now();
+ // Allow drag mode to settle at the user's requested position before starting the sine wave.
+ if(state.mode==='drag'||state.mode==='settle'){
+  state.mode='settle';state.pendingOsc=true;state.paused=false;
+  if(hypot(q.x-state.dragTarget.x,q.y-state.dragTarget.y)<.012&&hypot(q.vx,q.vy)<.025)activateOsc(state.dragTarget);
+  else syncControls();
+ }else{
+  state.mode='settle';state.pendingOsc=true;state.dragTarget={x:q.x,y:q.y};
+  state.dragVel={x:q.vx,y:q.vy};state.paused=false;
+  if(hypot(q.vx,q.vy)<.025)activateOsc(q);else syncControls();
+ }
+}
+function setStartPosition(position){
+ // SETUP operation: establish a new stationary initial condition without pretending
+ // that an instantaneous move generated a physical wave. Drag charge normally to model motion.
+ const pos=clampVisible(position,19),q={x:pos.x,y:pos.y,vx:0,vy:0,ax:0,ay:0};
+ state.t=0;state.accum=0;state.initial={...pos};state.base={...pos};state.events=[];
+ state.oscStart=null;state.pendingOsc=false;state.dragTarget={...pos};state.dragVel={x:0,y:0};
+ state.history=[q];state.trace=[{t:0,y:0,ey:0,near:0,far:0}];state.graphHold={y:.04,ey:.002,near:.002,far:.002,rad:.002};
+ state.tests.forEach(tp=>{tp.dx=tp.dy=tp.vx=tp.vy=tp.ax=tp.ay=0;tp.trail=[];tp.hist=[];tp.rings=[];tp.lastRing=-99;});
+}
+function startPosition(){
+ setStartPosition(now());state.mode='position';state.paused=false;syncControls();draw();
+}
+function startDrag(){
+ const q=now();state.mode='drag';state.pendingOsc=false;state.events=[];state.oscStart=null;
+ state.base={x:q.x,y:q.y};state.dragTarget={x:q.x,y:q.y};state.dragVel={x:q.vx,y:q.vy};
+ state.changedAt=state.t;state.paused=false;syncControls();
+}
+function syncControls(){const names={pulse:'Bump / move',osc:'Oscillating source',drag:'Drag charge'};$('oscillate').classList.toggle('active',state.mode==='osc'||state.mode==='settle');$('dragMode').classList.toggle('active',state.mode==='position');$('pause').textContent=state.paused?'Resume':'Pause';$('ampV').textContent=fmt($('amplitude').value);$('durV').textContent=fmt($('duration').value,1)+' s';$('freqV').textContent=fmt($('frequency').value,2)+' Hz';$('speedV').textContent=fmt($('speed').value,2)+'×';$('densityV').textContent=$('density').value; $('zoomV').textContent=fmt($('viewZoom').value,1)+'×'; $('testGainV').textContent=$('testGain').value; $('secondaryControl').classList.toggle('inactive',!$('tests').checked);$('secondaryVectorControl').classList.toggle('inactive',!$('tests').checked);$('gainControl').classList.toggle('inactive',!$('tests').checked);$('stageHint').textContent=state.mode==='position'?'Place the red charge anywhere (new stationary setup); then choose Oscillate.':state.mode==='drag'?'The source is moving causally; select Position charge to place it instantly.':state.mode==='settle'?'Settling at the chosen position before oscillating…':state.mode==='osc'?'Oscillating about the new position · source and detector remain draggable.':'Drag either marker, or use Bump and return / Move and stay.';}
+function updateReadouts(){const q=now(),R=hypot(state.probe.x-q.x,state.probe.y-q.y),delta=deltaField(state.probe.x,state.probe.y);$('clock').textContent=fmt(state.t)+' s';$('vVal').textContent=fmt(hypot(q.vx,q.vy)/C,2)+' c';$('dVal').textContent=fmt(R)+' units';$('delayVal').textContent=fmt(R/C,2)+' s';$('fieldVal').textContent=(delta.y>=0?'+':'')+fmt(delta.y,3)+' (ΔEᵧ)';const sec=secondaryAtDetector();$('secondaryVal').textContent=(sec.y>=0?'+':'')+fmt(sec.y,4)+' (model Eᵧ)';$('secondaryReadout').hidden=!$('tests').checked||!$('secondaryWaves').checked;const msg=state.t<.01?'The charge is at rest. Its Coulomb field points radially outwards.':state.mode==='position'?'Positioning is a new static starting condition (not instantaneous physical motion). Select Oscillate after placing the charge.':state.mode==='drag'?'The red charge follows your pointer with a speed limit. The cyan detector responds to its earlier motion.':state.mode==='osc'?'The accelerating charge creates a continuing radiative field, strongest across its direction of oscillation.': state.events.length ? 'Changes to the field propagate causally. The white lines are instantaneous field-line visualisations of the retarded electric field.' : 'Bump the charge to create an outward-propagating change in the electric field.';$('liveMessage').textContent=msg;}
+function resize(){for(const cv of [stage,graph]){const dpr=Math.min(window.devicePixelRatio||1,2),r=cv.getBoundingClientRect();if(!r.width||!r.height)continue;const w=Math.round(r.width*dpr),h=Math.round(r.height*dpr);if(cv.width!==w||cv.height!==h){cv.width=w;cv.height=h;}cv.getContext('2d').setTransform(dpr,0,0,dpr,0,0);}
+ const r=stage.getBoundingClientRect();dims={W:r.width,H:r.height,scale:Math.min(r.width/10.9,r.height/7.25)*(+$('viewZoom').value)};}
+function screen(x,y){return [dims.W/2+x*dims.scale,dims.H/2-y*dims.scale]}
+function world(px,py){return {x:(px-dims.W/2)/dims.scale,y:(dims.H/2-py)/dims.scale}}
+function worldBounds(marginPx=20){return {xMin:(-dims.W/2+marginPx)/dims.scale,xMax:(dims.W/2-marginPx)/dims.scale,yMin:(-dims.H/2+marginPx)/dims.scale,yMax:(dims.H/2-marginPx)/dims.scale};}
+function clampVisible(p,marginPx=20){const b=worldBounds(marginPx);return {x:clamp(p.x,b.xMin,b.xMax),y:clamp(p.y,b.yMin,b.yMax)};}
+function segment(ctx,a,b,color,width=1){ctx.beginPath();ctx.moveTo(a[0],a[1]);ctx.lineTo(b[0],b[1]);ctx.strokeStyle=color;ctx.lineWidth=width;ctx.stroke();}
+function arrow(ctx,from,to,color,scale=5){const dx=to[0]-from[0],dy=to[1]-from[1],len=hypot(dx,dy);if(len<1)return;const ux=dx/len,uy=dy/len;ctx.beginPath();ctx.moveTo(to[0],to[1]);ctx.lineTo(to[0]-ux*scale-uy*scale*.65,to[1]-uy*scale+ux*scale*.65);ctx.lineTo(to[0]-ux*scale+uy*scale*.65,to[1]-uy*scale-ux*scale*.65);ctx.closePath();ctx.fillStyle=color;ctx.fill();}
+function drawGrid(){const {W,H}=dims;ctx.fillStyle='#020810';ctx.fillRect(0,0,W,H);ctx.strokeStyle='rgba(105,138,175,.085)';ctx.lineWidth=1;const xMax=W/(2*dims.scale),yMax=H/(2*dims.scale);ctx.beginPath();for(let i=-Math.ceil(xMax);i<=xMax;i++){const a=screen(i,-yMax),b=screen(i,yMax);ctx.moveTo(...a);ctx.lineTo(...b);}for(let j=-Math.ceil(yMax);j<=yMax;j++){const a=screen(-xMax,j),b=screen(xMax,j);ctx.moveTo(...a);ctx.lineTo(...b);}ctx.stroke();}
+function drawFronts(){if(!$('guides').checked)return;ctx.save();ctx.setLineDash([5,8]);const evs=state.events.slice(-4);for(const ev of evs){for(const [tt,alpha] of [[ev.start,.48],[ev.start+ev.duration,.32]]){if(state.t<=tt)continue;const r=C*(state.t-tt)*dims.scale,origin=historySample(tt),[sx,sy]=screen(origin.x,origin.y);ctx.beginPath();ctx.arc(sx,sy,r,0,Math.PI*2);ctx.strokeStyle=`rgba(255,205,120,${alpha})`;ctx.lineWidth=1.2;ctx.stroke();}}
+ if(state.oscStart!==null){const period=1/(+$('frequency').value),start=state.oscStart;for(let i=0;i<8;i++){const tt=start+i*period*.5;if(tt>=state.t)break;const q=historySample(tt),[sx,sy]=screen(q.x,q.y);ctx.beginPath();ctx.arc(sx,sy,C*(state.t-tt)*dims.scale,0,Math.PI*2);ctx.strokeStyle='rgba(255,195,115,.15)';ctx.stroke();}}
+ ctx.restore();}
+// Trace instantaneous E-field integral curves until they leave the viewport.
+// Variable arclength steps reduce work in weak far fields without shortening bent lines.
+function traceFieldLine(angle,xlim,ylim){
+ const q=now(),seedR=.11;
+ let x=q.x+Math.cos(angle)*seedR,y=q.y+Math.sin(angle)*seedR;
+ const pts=[screen(x,y)];let arc=0, reason='cap';
+ const guard=0.16, maxArc=85, maxIterations=1200;
+ for(let j=0;j<maxIterations;j++){
+  const e=field(x,y,state.t),mag=hypot(e.x,e.y);
+  if(!Number.isFinite(mag)||mag<1e-11){reason='singular';break;}
+  const ux=e.x/mag,uy=e.y/mag;
+  const r=hypot(x-q.x,y-q.y),step=clamp(.045+.026*r,.052,.145);
+  const mid=field(x+ux*step*.5,y+uy*step*.5,state.t),mm=hypot(mid.x,mid.y);
+  if(!Number.isFinite(mm)||mm<1e-11){reason='singular';break;}
+  const nx=x+mid.x/mm*step,ny=y+mid.y/mm*step;
+  arc+=step;
+  // Clip the final segment to the boundary rather than extending outside the canvas.
+  if(Math.abs(nx)>=xlim||Math.abs(ny)>=ylim){
+   let t=1;const dx=nx-x,dy=ny-y;
+   if(dx>0)t=Math.min(t,(xlim-x)/dx);else if(dx<0)t=Math.min(t,(-xlim-x)/dx);
+   if(dy>0)t=Math.min(t,(ylim-y)/dy);else if(dy<0)t=Math.min(t,(-ylim-y)/dy);
+   pts.push(screen(x+dx*clamp(t,0,1),y+dy*clamp(t,0,1)));
+   reason='edge';break;
+  }
+  x=nx;y=ny;pts.push(screen(x,y));
+  if(arc>=maxArc){reason='cap';break;}
+  if(!Number.isFinite(x)||!Number.isFinite(y)){reason='singular';break;}
+ }
+ return {pts,reason,arc};
+}
+function drawFieldLines(){
+ const N=+$('density').value,only=$('radiationOnly').checked,arrowOn=$('arrows').checked,
+   xlim=dims.W/(2*dims.scale),ylim=dims.H/(2*dims.scale);
+ if(only){const dx=2*xlim/26,dy=2*ylim/19;ctx.save();for(let x=-xlim;x<xlim;x+=dx)for(let y=-ylim;y<ylim;y+=dy){const v=field(x,y,state.t,true),mag=hypot(v.x,v.y);if(!isFinite(mag)||mag<.003)continue;const L=clamp(52*mag,0,28);if(L<1.0)continue;const px=screen(x,y),ex=[px[0]+L*v.x/mag,px[1]-L*v.y/mag];segment(ctx,px,ex,'rgba(110,211,249,.79)',1.5);arrow(ctx,px,ex,'rgba(110,211,249,.86)',3.5);}ctx.restore();return;}
+ for(let i=0;i<N;i++){
+  const angle=2*Math.PI*(i+.23)/N;
+  const {pts}=traceFieldLine(angle,xlim,ylim);
+  if(pts.length<3)continue;
+  ctx.beginPath();ctx.moveTo(...pts[0]);for(let j=1;j<pts.length;j++)ctx.lineTo(...pts[j]);
+  ctx.strokeStyle='rgba(221,234,255,.83)';ctx.lineWidth=1.1;ctx.stroke();
+  if(arrowOn){let last=0,spacing=1.37*dims.scale;
+   for(let j=3;j<pts.length-2;j++){
+    const a=pts[j-1],b=pts[j],seg=hypot(b[0]-a[0],b[1]-a[1]);last+=seg;
+    if(last>=spacing){arrow(ctx,pts[j-2],pts[j+1],'rgba(234,245,255,.9)',5.3);last=0;}
+   }
+  }
+ }
+}
+function drawVectors(){if(!$('gridVectors').checked)return;const xlim=dims.W/(2*dims.scale),ylim=dims.H/(2*dims.scale);for(let x=-xlim+.3;x<xlim;x+=.6)for(let y=-ylim+.3;y<ylim;y+=.6){if(hypot(x-now().x,y-now().y)<.35)continue;const e=field(x,y,state.t,$('radiationOnly').checked),mag=hypot(e.x,e.y);if(mag<.001)continue;const pp=screen(x,y),len=clamp(8*Math.log1p(mag),2,17),ee=[pp[0]+len*e.x/mag,pp[1]-len*e.y/mag];segment(ctx,pp,ee,'rgba(118,215,255,.59)',1);arrow(ctx,pp,ee,'rgba(118,215,255,.65)',3.1);}}
+function drawSourceOrigin(){
+ if(!$('originMarker').checked)return;
+ const q=now(),p=state.initial;
+ if(hypot(q.x-p.x,q.y-p.y)<.075)return;
+ const [x,y]=screen(p.x,p.y);
+ ctx.save();ctx.setLineDash([4,5]);ctx.lineWidth=1.4;ctx.strokeStyle='rgba(255,203,126,.78)';
+ ctx.beginPath();ctx.arc(x,y,9,0,2*Math.PI);ctx.stroke();ctx.setLineDash([]);
+ ctx.font='10px system-ui';ctx.textAlign='left';ctx.fillStyle='rgba(255,219,160,.85)';ctx.fillText('starting position',x+13,y+4);ctx.restore();
+}
+function drawSource(){const q=now(),[x,y]=screen(q.x,q.y);ctx.shadowColor='rgba(255,85,110,.7)';ctx.shadowBlur=17;ctx.beginPath();ctx.arc(x,y,9.5,0,Math.PI*2);ctx.fillStyle='#f45166';ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle='#ffd3da';ctx.lineWidth=1.1;ctx.stroke();ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle='white';ctx.font='bold 15px system-ui';ctx.fillText('+',x,y+.4);}
+function drawNearSample(){if($('graphView').value!=='falloff')return;const p=probePair().near,[x,y]=screen(p.x,p.y);ctx.save();ctx.strokeStyle='#ffcd81';ctx.fillStyle='#ffcd81';ctx.lineWidth=1.6;ctx.beginPath();ctx.arc(x,y,7,0,2*Math.PI);ctx.stroke();ctx.beginPath();ctx.arc(x,y,2.2,0,2*Math.PI);ctx.fill();ctx.font='10px system-ui';ctx.textAlign=x<dims.W-85?'left':'right';ctx.fillText('NEAR (r/2)',x<dims.W-85?x+10:x-10,y-13);ctx.restore();}
+function drawDetector(){const p=state.probe,[x,y]=screen(p.x,p.y),rp=retarded(p.x,p.y,state.t),[px,py]=screen(rp.q.x,rp.q.y);ctx.beginPath();ctx.moveTo(x-7,y);ctx.lineTo(x+7,y);ctx.moveTo(x,y-7);ctx.lineTo(x,y+7);ctx.strokeStyle='#6be7fc';ctx.lineWidth=2;ctx.stroke();ctx.beginPath();ctx.arc(x,y,12,0,2*Math.PI);ctx.strokeStyle='#7de3fa';ctx.lineWidth=1;ctx.stroke();ctx.font='11px system-ui';ctx.fillStyle='#b7efff';ctx.textAlign=x>dims.W-135?'right':'left';ctx.textBaseline='alphabetic';const labelX=x>dims.W-135?x-17:x+17;const labelY=y<32?y+27:y-11;ctx.fillText('FIELD DETECTOR',labelX,labelY);ctx.setLineDash([3,5]);segment(ctx,[px,py],[x,y],'rgba(93,195,220,.26)',1);ctx.setLineDash([]);}
+function drawTestCharges(){if(!$('tests').checked)return;for(const p of state.tests){const color=p.sign>0?'#ffbb78':'#84a9ff',x=p.x+p.dx,y=p.y+p.dy;ctx.beginPath();for(let i=0;i<p.trail.length;i++){const v=screen(p.trail[i].x,p.trail[i].y);if(!i)ctx.moveTo(...v);else ctx.lineTo(...v);}ctx.strokeStyle=color+'75';ctx.lineWidth=1.5;ctx.stroke();let [cx,cy]=screen(x,y),[ax,ay]=screen(p.x,p.y);ctx.setLineDash([3,5]);segment(ctx,[ax,ay],[cx,cy],'rgba(198,220,245,.25)',1);ctx.setLineDash([]);ctx.beginPath();ctx.arc(cx,cy,7,0,2*Math.PI);ctx.fillStyle=color;ctx.fill();ctx.fillStyle='#06111f';ctx.textAlign='center';ctx.textBaseline='middle';ctx.font='bold 12px system-ui';ctx.fillText(p.sign>0?'+':'−',cx,cy+.4);}}
+// Outgoing wavefront pieces: sin(theta) angular pattern and a 1/r fading envelope.
+// A coloured ring is a time-of-flight guide; local vector lengths indicate E amplitude.
+function drawSecondaryWaves(){if(!$('tests').checked||!$('secondaryWaves').checked)return;
+ const w=dims.W,h=dims.H;
+ ctx.save();ctx.beginPath();ctx.rect(0,0,w,h);ctx.clip();
+ for(const p of state.tests){const color=p.sign>0?'255,180,115':'118,174,255';
+  for(const ring of p.rings){const age=state.t-ring.t,r=C*age,rr=r*dims.scale;if(rr<3)continue;
+   const a=hypot(ring.ax,ring.ay),maxAlpha=clamp(.70*a/3.8,.08,.62)/(1+.30*r);
+   if(maxAlpha<.014)continue;
+   for(let i=0;i<48;i++){
+    const t1=i*2*Math.PI/48,t2=(i+.8)*2*Math.PI/48,tt=(t1+t2)/2;
+    const pattern=Math.abs(Math.cos(tt)*ring.ay-Math.sin(tt)*ring.ax)/(a||1);
+    const alpha=maxAlpha*pattern;if(alpha<.007)continue;
+    const [cx,cy]=screen(ring.x,ring.y);ctx.strokeStyle=`rgba(${color},${alpha})`;ctx.lineWidth=1.0;
+    ctx.beginPath();ctx.arc(cx,cy,rr,t1,t2);ctx.stroke();
+   }
+  }
+  // Optional retarded acceleration-field vectors. Their LENGTH is proportional to |E_secondary|.
+  if(!$('secondaryVectors').checked)continue;
+  const spacing=Math.max(34,Math.min(w,h)/11);for(let px=spacing/2;px<w;px+=spacing)for(let py=spacing/2;py<h;py+=spacing){
+   const v=world(px,py);if(hypot(v.x-(p.x+p.dx),v.y-(p.y+p.dy))<.23)continue;
+   const E=secondaryField(p,v.x,v.y,state.t),mag=hypot(E.x,E.y);
+   const length=clamp(mag*530,0,19);if(length<1.15)continue;
+   const ex=px+length*E.x/mag,ey=py-length*E.y/mag;
+   segment(ctx,[px,py],[ex,ey],`rgba(${color},${clamp(.24+length/30,.24,.78)})`,1.35);
+   arrow(ctx,[px,py],[ex,ey],`rgba(${color},.8)`,3);
+  }
+ }
+ ctx.restore();
+}
+function draw(){resize();drawGrid();drawFronts();drawFieldLines();drawVectors();drawSecondaryWaves();drawTestCharges();drawNearSample();drawDetector();drawSourceOrigin();drawSource();updateReadouts();drawGraph();}
+function drawGraph(){
+ const r=graph.getBoundingClientRect(),W=r.width,H=r.height;
+ if(!W||!H)return;
+ gctx.fillStyle='#06101d';gctx.fillRect(0,0,W,H);
+ const L=W<380?48:62,R=W-14,T=24,B=H-31,gap=24,section=(B-T-gap)/2;
+ const range=8,start=Math.max(0,state.t-range),end=start+range;
+ const samples=state.trace.filter(s=>s.t>=start-.002&&s.t<=end+.002);
+ const mx=t=>L+(t-start)/range*(R-L);
+ const formatScale=(v)=>Math.abs(v)>=1?fmt(v,2):Math.abs(v)>=.01?fmt(v,3):fmt(v,4);
+ const mode=$('graphScale').value,graphMode=$('graphView').value;
+ function drawSeries(key, top, colour, label, unit, minScale){
+   const bot=top+section, mid=(top+bot)/2;
+   const maxObserved=Math.max(0,...samples.map(p=>Math.abs(p[key])));
+   let peak;
+   if(mode==='hold'){
+     state.graphHold[key]=Math.max(state.graphHold[key],maxObserved*1.18,minScale);
+     peak=state.graphHold[key];
+   } else peak=Math.max(maxObserved*1.16,minScale);
+   const my=v=>mid-v/peak*(section*.435);
+   gctx.fillStyle=key==='y'?'rgba(255,94,118,.045)':'rgba(59,213,246,.05)';gctx.fillRect(L,top,R-L,section);
+   gctx.lineWidth=1;gctx.strokeStyle='rgba(123,162,196,.18)';
+   for(const val of [-1,0,1]){const y=my(val*peak);gctx.beginPath();gctx.moveTo(L,y);gctx.lineTo(R,y);gctx.stroke();}
+   gctx.fillStyle=colour;gctx.textAlign='left';gctx.font='bold 11px system-ui';gctx.fillText(label,L+5,top+12);
+   gctx.fillStyle='#b9cede';gctx.textAlign='right';gctx.font='10px system-ui';
+   gctx.fillText('+'+formatScale(peak),L-5,top+10);
+   gctx.fillText('0',L-5,mid+3);
+   gctx.fillText('−'+formatScale(peak),L-5,bot-2);
+   gctx.save();gctx.beginPath();gctx.rect(L,top,R-L,section);gctx.clip();
+   gctx.beginPath();let first=true;
+   for(const s of samples){const x=mx(s.t),y=my(s[key]);if(first){gctx.moveTo(x,y);first=false;}else gctx.lineTo(x,y);}
+   gctx.strokeStyle=colour;gctx.lineWidth=2.4;gctx.lineJoin='round';gctx.lineCap='round';gctx.stroke();
+   if(samples.length){const last=samples[samples.length-1];const x=mx(last.t),y=my(last[key]);gctx.beginPath();gctx.arc(x,y,3.5,0,2*Math.PI);gctx.fillStyle=colour;gctx.fill();}
+   gctx.restore();
+   gctx.fillStyle='#9bb3cc';gctx.font='10px system-ui';gctx.textAlign='right';gctx.fillText(unit,R-2,top+12);
+ }
+ drawSeries('y',T,'#ff798d','SOURCE: Δy','position (units)',.04);
+ if(graphMode==='falloff'){
+  const top=T+section+gap, bot=top+section, mid=(top+bot)/2, vals=samples.flatMap(s=>[Math.abs(s.near||0),Math.abs(s.far||0)]);
+  const observed=Math.max(0,...vals);let peak;
+  if(mode==='hold'){state.graphHold.rad=Math.max(state.graphHold.rad,observed*1.14,.002);peak=state.graphHold.rad;}else peak=Math.max(.002,observed*1.14);
+  const my=v=>mid-v/peak*(section*.435);
+  gctx.fillStyle='rgba(40,180,205,.045)';gctx.fillRect(L,top,R-L,section);
+  gctx.lineWidth=1;gctx.strokeStyle='rgba(123,162,196,.20)';for(const val of [-1,0,1]){let yy=my(val*peak);gctx.beginPath();gctx.moveTo(L,yy);gctx.lineTo(R,yy);gctx.stroke();}
+  gctx.font='10px system-ui';gctx.fillStyle='#c1d3e5';gctx.textAlign='right';gctx.fillText('+'+formatScale(peak),L-5,top+10);gctx.fillText('0',L-5,mid+3);gctx.fillText('−'+formatScale(peak),L-5,bot-2);
+  gctx.save();gctx.beginPath();gctx.rect(L,top,R-L,section);gctx.clip();
+  for(const [key,clr] of [['near','#ffcd81'],['far','#72eaff']]){
+   gctx.beginPath();let first=true;for(const s of samples){const x=mx(s.t),y=my(s[key]||0);if(first){gctx.moveTo(x,y);first=false;}else gctx.lineTo(x,y);}
+   gctx.strokeStyle=clr;gctx.lineWidth=key==='near'?2.5:2.2;gctx.stroke();
+  }
+  gctx.restore();
+  gctx.fillStyle='#ffcd81';gctx.textAlign='left';gctx.font='bold 11px system-ui';gctx.fillText('NEAR (r/2)',L+5,top+13);
+  gctx.fillStyle='#72eaff';gctx.fillText('FAR (r)',L+102,top+13);
+  gctx.fillStyle='#a5bbd2';gctx.textAlign='right';gctx.font='10px system-ui';gctx.fillText('shared Eᵧ scale',R-2,top+12);
+ } else drawSeries('ey',T+section+gap,'#72eaff','DETECTOR: ΔEᵧ','field (model units)',.002);
+ const yAxis=H-19;
+ gctx.strokeStyle='rgba(130,169,208,.45)';gctx.beginPath();gctx.moveTo(L,yAxis-7);gctx.lineTo(R,yAxis-7);gctx.stroke();
+ const tick=range/4;
+ for(let i=0;i<=4;i++){const v=start+tick*i,x=mx(v);gctx.strokeStyle='rgba(130,169,208,.6)';gctx.beginPath();gctx.moveTo(x,yAxis-8);gctx.lineTo(x,yAxis-3);gctx.stroke();gctx.fillStyle='#b7c9df';gctx.font='10px system-ui';gctx.textAlign=i===0?'left':i===4?'right':'center';gctx.fillText(fmt(v,1)+'s',x,H-5);}
+}
+function frame(tms){if(!state.last)state.last=tms;let dt=Math.min(.06,(tms-state.last)/1000);state.last=tms;if(!state.paused){state.accum+=dt*(+$('speed').value);let steps=0;while(state.accum>=DT&&steps<9){updateModel(DT);state.accum-=DT;steps++;}}draw();requestAnimationFrame(frame);}
+function loc(ev){const r=stage.getBoundingClientRect();return {px:ev.clientX-r.left,py:ev.clientY-r.top};}
+function hit(a,b,threshold){return hypot(a[0]-b[0],a[1]-b[1])<threshold;}
+stage.addEventListener('pointerdown',ev=>{
+ const p=loc(ev),q=now();let target=null;
+ if(hit([p.px,p.py],screen(q.x,q.y),22)){
+  if(state.mode!=='position'&&state.mode!=='drag')startDrag(); target='source';
+ }else if(hit([p.px,p.py],screen(state.probe.x,state.probe.y),22))target='detector';
+ else if($('tests').checked)for(let i=0;i<state.tests.length;i++)if(hit([p.px,p.py],screen(state.tests[i].x+state.tests[i].dx,state.tests[i].y+state.tests[i].dy),19))target='test'+i;
+ if(target){state.activeDrag=target;stage.setPointerCapture(ev.pointerId);ev.preventDefault();}
+});
+stage.addEventListener('pointermove',ev=>{
+ if(!state.activeDrag)return;const p=loc(ev),w=world(p.px,p.py),a=state.activeDrag;
+ if(a==='source'){if(state.mode==='position')setStartPosition(w);else Object.assign(state.dragTarget,clampVisible(w,19));}
+ else if(a==='detector'){
+  Object.assign(state.probe,clampVisible(w,22));
+  state.graphHold={y:.04,ey:.002,near:.002,far:.002,rad:.002};const rd=radiationCompare();state.trace=[{t:state.t,y:now().y-state.base.y,ey:deltaField(state.probe.x,state.probe.y).y,near:rd.near,far:rd.far}];
+ }else{
+  const tc=state.tests[+a.slice(-1)];const pp=clampVisible(w,15);
+  tc.x=pp.x;tc.y=pp.y;tc.dx=tc.dy=tc.vx=tc.vy=tc.ax=tc.ay=0;tc.trail=[];tc.hist=[];tc.rings=[];tc.lastRing=-99;
+ }ev.preventDefault();
+});
+function release(){state.activeDrag=null;}
+stage.addEventListener('pointerup',release);stage.addEventListener('pointercancel',release);
+function toggleBigGraph(force){const pane=$('graphPanel'),open=force===undefined?!pane.classList.contains('enlarged'):force;
+ pane.classList.toggle('enlarged',open);$('graphBackdrop').classList.toggle('hide',!open);$('expandGraph').textContent=open?'⤡ Close':'⤢ Enlarge';draw();}
+$('expandGraph').onclick=()=>toggleBigGraph();
+$('graphBackdrop').onclick=()=>toggleBigGraph(false);
+window.addEventListener('keydown',ev=>{if(ev.key==='Escape')toggleBigGraph(false)});
+$('graphScale').onchange=()=>{state.graphHold={y:.04,ey:.002,near:.002,far:.002,rad:.002};drawGraph();};
+$('graphView').onchange=()=>{state.graphHold.rad=.002;$('graphHelp').innerHTML=$('graphView').value==='falloff'
+ ?'<b>Shared field scale:</b> amber = near (half the detector distance), cyan = far (detector). Both show the acceleration-dependent Eᵧ only. A field amplitude normally decreases ∝ 1/r in the radiation zone. Their arrival times differ; the source position above uses different units.'
+ :'Red: source displacement (position units). Cyan: total field change at the detector (field units). Those quantities cannot share a meaningful numeric vertical scale.';drawGraph();};
+$('tests').addEventListener('change',()=>{if($('tests').checked){state.tests.forEach(p=>{p.trail=[];p.rings=[];p.lastRing=-99;});}syncControls();draw();});
+$('secondaryWaves').onchange=draw;$('secondaryVectors').onchange=draw;
+$('testGain').oninput=()=>{syncControls();draw();};
+$('bump').onclick=()=>schedule('bump');$('shift').onclick=()=>schedule('shift');$('oscillate').onclick=startOsc;$('dragMode').onclick=startPosition;
+$('pause').onclick=()=>{state.paused=!state.paused;syncControls()};$('step').onclick=()=>{state.paused=true;updateModel(DT);syncControls();draw()};$('reset').onclick=()=>reset();
+for(const k of ['amplitude','duration','frequency','speed','density','viewZoom'])$(k).addEventListener('input',()=>{if(state.mode==='osc'&&['amplitude','frequency'].includes(k))startOsc();syncControls();draw();});
+for(const k of ['arrows','radiationOnly','gridVectors','guides','originMarker'])$(k).addEventListener('change',draw);
+window.addEventListener('resize',draw);reset();requestAnimationFrame(frame);
+// Physical checks: retarded time, static Coulomb limit, and subluminal model motion.
+console.assert(Math.abs(field(2,0,0).x-.25)<.001,'Static Coulomb 1/r² field');
+console.assert(retarded(2.1,0,0).tr<0,'Field evaluated in source past');
+console.assert(hill(0)[0]===0&&hill(1)[0]===0,'Bump returns to the starting position');
+</script></body></html>
